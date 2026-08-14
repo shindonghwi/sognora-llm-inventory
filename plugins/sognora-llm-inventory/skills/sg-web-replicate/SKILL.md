@@ -27,7 +27,7 @@ description: 레퍼런스 웹사이트의 **화면(프론트)** 을 눈대중이
 
 ### 2. 라우트 탐색 (브라우저 1회)
 ```
-node scripts/discover.mjs --url <URL> --out _replica/routes.json [--depth 3] [--max 2000]
+node scripts/discover.mjs --url <URL> --out _replica/routes.json   # 기본 depth 3 · max 1000
 ```
 - sitemap·robots(가장 싸고 정확) + 링크 크롤을 합쳐 원장을 만들고 `status`·`title`·`auth`를 기록한다.
 - **탐색된 라우트가 전부 대상이다.** `--max`는 폭주 방지 장치이지 작업 범위가 아니다 — 걸리면 올려서 재탐색한다.

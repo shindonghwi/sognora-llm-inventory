@@ -1,6 +1,6 @@
 # 페이지 명세 — {라우트}
 
-> 모든 수치에는 근거를 단다: `(ref/1440x900/initial.json #hero-title)`
+> 모든 수치에는 근거를 단다: `(ref/1440x900/measure.json #hero-title)`
 > 근거 없는 수치는 명세에 적지 않는다.
 
 ## 0. 계약 요약

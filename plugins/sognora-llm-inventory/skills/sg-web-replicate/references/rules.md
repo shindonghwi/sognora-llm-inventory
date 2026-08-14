@@ -44,6 +44,13 @@
 
 - 안티앨리어싱 때문에 pixel-perfect 0%는 불가능하다. 위 허용치가 현실적 기준이다.
 - `override.json`에 선언된 의도적 차이는 diff 대상에서 제외한다. **선언되지 않은 차이는 전부 결함이다.**
+- `override.json` 형식 — diff가 읽는 것은 `ignore` 배열뿐이다. 요소 키는 diff 리포트의 `el` 값(`태그.첫클래스`)과 같은 형식으로 쓴다:
+  ```json
+  { "ignore": ["img.logo", "a.brand-link"],
+    "substituted_assets": [{"file": "images/hero.jpg", "reason": "403"}],
+    "notes": "로고는 사용자 지시로 교체" }
+  ```
+  `substituted_assets`·`notes`는 보고용 기록이다(diff는 무시).
 - 게이트 미통과 상태에서 "완료"를 선언하지 않는다. 남은 오차를 표로 보고한다.
 
 ## 캡처 신뢰 규칙

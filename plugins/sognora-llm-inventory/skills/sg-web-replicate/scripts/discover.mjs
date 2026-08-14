@@ -27,8 +27,9 @@ const { chromium } = pw;
 
 const start = new URL(args.url);
 const origin = start.origin;
-const maxDepth = Number(args.depth ?? 2);
-const maxRoutes = Number(args.max ?? 100);
+// 기본값은 "전부 찾는다"에 맞춘다 — 상한은 폭주 방지용 백스톱일 뿐이다(rules.md).
+const maxDepth = Number(args.depth ?? 3);
+const maxRoutes = Number(args.max ?? 1000);
 
 const found = new Map(); // path -> {path, source, status, title, auth}
 const skipped = [];
