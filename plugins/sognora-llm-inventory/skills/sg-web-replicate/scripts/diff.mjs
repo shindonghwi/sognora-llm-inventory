@@ -93,7 +93,12 @@ for (const label of viewportDirs) {
 
   // 같은 스크롤 지점에서 스크린샷
   const pixelResults = [];
-  for (const f of (await readdir(refDir)).filter((f) => /^scroll-\d+\.png$/.test(f))) {
+  // 캡처와 같은 순서(숫자 오름차순)로 돈다. readdir의 알파벳순(0→100→50)으로 돌면
+  // 스크롤 방향에 반응하는 애니메이션이 다른 상태로 도착해 동일 조건이 깨진다.
+  const scrollShots = (await readdir(refDir))
+    .filter((f) => /^scroll-\d+\.png$/.test(f))
+    .sort((a, b) => Number(a.match(/\d+/)[0]) - Number(b.match(/\d+/)[0]));
+  for (const f of scrollShots) {
     const pct = Number(f.match(/\d+/)[0]);
     await page.evaluate((p) => window.scrollTo(0, (document.body.scrollHeight - window.innerHeight) * (p / 100)), pct);
     await page.waitForTimeout(150);
