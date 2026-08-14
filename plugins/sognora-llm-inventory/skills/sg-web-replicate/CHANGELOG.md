@@ -47,3 +47,5 @@
 ## 0.1.8 — 2026-08-15
 
 - 전수 점검(모델 전환 후 재검토)에서 나온 3건 수정: spec-template 예시의 존재하지 않는 파일명(initial.json→measure.json), discover.mjs 기본값이 문서·규칙과 어긋나던 것(depth 2/max 100 → 3/1000), override.json 스키마 미정의(ignore 키 형식 명문화).
+
+- description 압축 — 트리거·비대상 보존, 절차 설명 제거 (상시 로드 비용 절감)
