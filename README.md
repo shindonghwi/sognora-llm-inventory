@@ -89,7 +89,3 @@ codex plugin add sognora-llm-inventory@sognora-llm-inventory
 - 릴리스 시 버전 bump는 **세 곳 동시**: `plugins/sognora-llm-inventory/.claude-plugin/plugin.json` + `.codex-plugin/plugin.json`(strict semver 필수) + `.claude-plugin/marketplace.json`. → git tag `v<버전>` + 스킬별 CHANGELOG 갱신.
 - 롤백: main에서 `git revert` 후 사용자 쪽 marketplace update. 클론 사용자는 `git checkout v<버전>`으로 특정 버전 고정 가능.
 - Codex manifest 검증: `python3 ~/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/sognora-llm-inventory`
-
-## Credits
-
-- `sg-ko-humanize`의 패턴 체계는 [epoko77-ai/im-not-ai](https://github.com/epoko77-ai/im-not-ai) (MIT)의 quick-rules를 기반으로 간소화·재구성했다.
