@@ -87,5 +87,10 @@ codex plugin add sognora-llm-inventory@sognora-llm-inventory
 
 - **main = 배포 브랜치.** 양쪽 마켓플레이스 모두 main을 바라본다. 작업은 dev 브랜치에서, main 머지 = 배포.
 - 릴리스 시 버전 bump는 **세 곳 동시**: `plugins/sognora-llm-inventory/.claude-plugin/plugin.json` + `.codex-plugin/plugin.json`(strict semver 필수) + `.claude-plugin/marketplace.json`. → git tag `v<버전>` + 스킬별 CHANGELOG 갱신.
+- **버전 올리는 기준**:
+  - **patch (0.6.0 → 0.6.1) — 기본값.** 기존 스킬의 룰 보강·문구 수정·버그픽스 등 모든 일상 변경은 patch만 올린다.
+  - **minor (0.6 → 0.7)**: 새 스킬 추가.
+  - **major (→ 1.0)**: 설치 방식·레포 구조가 바뀌어 사용자 조치가 필요할 때.
+  - 플러그인 내용이 안 바뀌는 변경(레포 문서·스크립트만)은 bump 없이 커밋만 한다.
 - 롤백: main에서 `git revert` 후 사용자 쪽 marketplace update. 클론 사용자는 `git checkout v<버전>`으로 특정 버전 고정 가능.
 - Codex manifest 검증: `python3 ~/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/sognora-llm-inventory`
