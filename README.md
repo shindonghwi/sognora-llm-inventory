@@ -54,10 +54,18 @@ codex plugin add sognora-llm-inventory@sognora-llm-inventory
 └── new-skill.sh / install.sh / update.sh / uninstall.sh
 ```
 
+## 네이밍 규칙
+
+스킬 이름은 **`sg-<도메인>-<동작>`** kebab-case로 짓는다. `sg-` 접두사가 내 스킬임을 표시해 타 플러그인과의 충돌을 막고, 도메인 접두사로 목록이 묶인다.
+
+- 도메인 어휘(고정, 필요 시 추가): `ko`(한국어 글) · `code` · `doc` · `git` · `web` · `test`
+- 동작은 동사 하나: `sg-ko-humanize`, `sg-ko-proofread`, `sg-git-release`, `sg-doc-translate`
+- 소문자·숫자·하이픈만. 버전·날짜를 이름에 넣지 않는다.
+
 ## 새 스킬 추가
 
 ```bash
-./new-skill.sh my-skill
+./new-skill.sh sg-ko-humanize   # 네이밍 규칙 준수
 ```
 
 1. `SKILL.md`의 **description**부터 채운다 — 자동 발동을 결정하는 전부다. 트리거 문구(변형 포함)와 **비대상**(인접 요청은 어느 스킬 담당인지)을 명시할 것. 스킬이 늘수록 오발동 방지가 핵심.
@@ -81,3 +89,7 @@ codex plugin add sognora-llm-inventory@sognora-llm-inventory
 - 릴리스 시 버전 bump는 **세 곳 동시**: `plugins/sognora-llm-inventory/.claude-plugin/plugin.json` + `.codex-plugin/plugin.json`(strict semver 필수) + `.claude-plugin/marketplace.json`. → git tag `v<버전>` + 스킬별 CHANGELOG 갱신.
 - 롤백: main에서 `git revert` 후 사용자 쪽 marketplace update. 클론 사용자는 `git checkout v<버전>`으로 특정 버전 고정 가능.
 - Codex manifest 검증: `python3 ~/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/sognora-llm-inventory`
+
+## Credits
+
+- `sg-ko-humanize`의 패턴 체계는 [epoko77-ai/im-not-ai](https://github.com/epoko77-ai/im-not-ai) (MIT)의 quick-rules를 기반으로 간소화·재구성했다.
