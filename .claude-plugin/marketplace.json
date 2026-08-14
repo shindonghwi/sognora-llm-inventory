@@ -5,7 +5,7 @@
   },
   "metadata": {
     "description": "sognora 개인 스킬 무기고 마켓플레이스 — 플러그인 하나로 전 스킬 번들 설치",
-    "version": "0.6.0",
+    "version": "0.6.1",
     "pluginRoot": "."
   },
   "plugins": [
@@ -13,7 +13,7 @@
       "name": "sognora-llm-inventory",
       "source": "./plugins/sognora-llm-inventory",
       "description": "설치 한 번으로 전체 스킬 장착. 스킬은 각자 독립 동작(폴더 단위 자기완결).",
-      "version": "0.6.0"
+      "version": "0.6.1"
     }
   ]
 }
