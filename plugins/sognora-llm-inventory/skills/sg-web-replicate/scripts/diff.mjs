@@ -149,9 +149,17 @@ for (const label of viewportDirs) {
     );
     if (d > GATE.box) boxOffenders.push({ el: key, delta: +d.toFixed(1), ref: a.box, local: b.box });
     if (a.font !== b.font) {
-      const fa = Number(a.font.match(/(\d+(?:\.\d+)?)px/)?.[1] ?? 0);
-      const fb = Number(b.font.match(/(\d+(?:\.\d+)?)px/)?.[1] ?? 0);
-      if (Math.abs(fa - fb) > GATE.font) fontOffenders.push({ el: key, ref: a.font, local: b.font });
+      // 폰트 family 불일치는 크기 오차와 무관하게 그 자체로 실패다(rules.md).
+      // 다른 폰트로 그리면 글자 폭이 달라져 모든 치수가 어긋난다.
+      const famA = a.font.split(" ")[0];
+      const famB = b.font.split(" ")[0];
+      if (famA !== famB) {
+        fontOffenders.push({ el: key, kind: "family", ref: a.font, local: b.font });
+      } else {
+        const fa = Number(a.font.match(/(\d+(?:\.\d+)?)px/)?.[1] ?? 0);
+        const fb = Number(b.font.match(/(\d+(?:\.\d+)?)px/)?.[1] ?? 0);
+        if (Math.abs(fa - fb) > GATE.font) fontOffenders.push({ el: key, kind: "size", ref: a.font, local: b.font });
+      }
     }
   }
 
