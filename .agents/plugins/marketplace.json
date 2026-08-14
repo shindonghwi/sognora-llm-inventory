@@ -1,0 +1,20 @@
+{
+  "name": "sognora-llm-inventory",
+  "interface": {
+    "displayName": "Sognora LLM Inventory"
+  },
+  "plugins": [
+    {
+      "name": "sognora-llm-inventory",
+      "source": {
+        "source": "local",
+        "path": "./plugins/sognora-llm-inventory"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

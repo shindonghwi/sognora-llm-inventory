@@ -1,0 +1,22 @@
+{
+  "name": "sognora-llm-inventory",
+  "version": "0.1.0",
+  "description": "개인 스킬 무기고 — 설치 한 번으로 전체 스킬 장착. Claude Code + Codex CLI 지원.",
+  "author": {
+    "name": "donghwishin"
+  },
+  "license": "MIT",
+  "keywords": ["skills", "toolkit", "claude-code", "codex"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Sognora LLM Inventory",
+    "shortDescription": "개인 스킬 무기고 — 전 스킬 일괄 장착",
+    "longDescription": "설치 한 번으로 전체 스킬이 장착되는 개인 스킬 번들. 각 스킬은 폴더 단위로 자기완결이며 독립적으로 동작한다.",
+    "developerName": "donghwishin",
+    "category": "Productivity",
+    "capabilities": ["Interactive", "Write"],
+    "defaultPrompt": [
+      "사용 가능한 스킬 목록 보여줘"
+    ]
+  }
+}
