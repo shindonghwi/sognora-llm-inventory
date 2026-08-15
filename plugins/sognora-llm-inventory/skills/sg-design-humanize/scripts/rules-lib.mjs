@@ -23,6 +23,7 @@ export const RULES = {
   IC4: { sev: "yellow", layer: "surface", judge: "suspect", scope: "section" },
   DE1: { sev: "red", layer: "structural", judge: "det", scope: "section" },
   DE2: { sev: "yellow", layer: "structural", judge: "det", scope: "section" },
+  AS1: { sev: "yellow", layer: "surface", judge: "det", scope: "page" },
   MO1: { sev: "yellow", layer: "surface", judge: "det", scope: "page" },
   KO1: { sev: "yellow", layer: "surface", judge: "det", scope: "page" },
   KO2: { sev: "yellow", layer: "surface", judge: "det", scope: "page" },

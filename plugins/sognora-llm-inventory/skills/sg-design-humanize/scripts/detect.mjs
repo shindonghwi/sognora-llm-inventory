@@ -193,6 +193,11 @@ async function extract(p) {
           skeleton: [...c.children].map((g) => g.tagName.toLowerCase()).join(","),
           textLen: (c.innerText || "").trim().length,
           numText: /^\s*\d[\d,.]*\s*[+%]?/.test((c.innerText || "").trim()),
+          // 실미디어(100x100+ 이미지·비디오) 보유 여부 — 아이콘은 미디어로 치지 않는다
+          hasMedia: [...c.querySelectorAll("img,video,canvas,picture,svg")].some((mm) => {
+            const mr = mm.getBoundingClientRect();
+            return mr.width * mr.height >= 10000;
+          }),
         };
       };
       const containers = [];
@@ -374,9 +379,10 @@ function evaluateTells(raw, viewport, theme, isDesktop) {
         const k = `${Math.round(c.w / EPS.size)}x${Math.round(c.h / EPS.size)}|${c.skeleton}`;
         (groups[k] = groups[k] ?? []).push(c);
       }
-      const uni = Object.values(groups).find((g) => g.length >= 3 && sideBySide(g));
+      // 실미디어가 들어찬 카드 나열은 티가 아니다(레퍼런스 검증: 빈 카드가 죄) — 과반이 미디어 없을 때만
+      const uni = Object.values(groups).find((g) => g.length >= 3 && sideBySide(g) && g.filter((c) => !c.hasMedia).length > g.length / 2);
       if (uni) {
-        add("LA1", s.index, `동일 크기·동일 골격 형제 카드 ${uni.length}개 가로 나열 (${Math.round(uni[0].w)}x${Math.round(uni[0].h)})`);
+        add("LA1", s.index, `동일 크기·동일 골격 형제 카드 ${uni.length}개 가로 나열, 실미디어 없음 (${Math.round(uni[0].w)}x${Math.round(uni[0].h)})`);
         if (isDesktop) {
           const thin = uni.filter((c) => c.textLen <= 60 && c.h >= 150);
           if (thin.length > uni.length / 2) add("DE2", s.index, `카드 ${uni.length}개 중 ${thin.length}개가 저밀도(텍스트 ≤60자, 높이 ≥150px)`);
@@ -431,6 +437,25 @@ function evaluateTells(raw, viewport, theme, isDesktop) {
   if (mute.length >= 3) for (const sec of new Set(mute.map((e) => e.sec))) add("IC3", sec, `텍스트·aria 없는 아이콘 ${mute.filter((e) => e.sec === sec).length}개`);
   const blobs = els.filter((e) => e.pos === "absolute" && e.textLen === 0 && Math.min(e.w, e.h) >= 80 && e.br >= Math.min(e.w, e.h) / 2 && (e.hasOwnBg || e.bgImage.includes("gradient")));
   for (const sec of new Set(blobs.map((e) => e.sec))) add("IC4", sec, `장식 블롭(absolute 원형) ${blobs.filter((e) => e.sec === sec).length}개`);
+
+  // 6b. 자산 빈곤 — 같은 이미지를 돌려쓰는 것은 "채울 자산이 없다"는 신호
+  const assetKey = (src) => {
+    // 이미지 최적화 프록시(/_next/image?url=… 등)는 원본 url 파라미터가 실체다
+    try {
+      const u = new URL(src, "http://x");
+      const inner = u.searchParams.get("url") || u.searchParams.get("src");
+      return decodeURIComponent(inner || u.pathname).split("?")[0].split("/").pop();
+    } catch {
+      return String(src).split("?")[0].split("/").pop();
+    }
+  };
+  const srcCount = {};
+  for (const im of raw.images) {
+    const k = assetKey(im.src);
+    if (k) srcCount[k] = (srcCount[k] ?? 0) + 1;
+  }
+  const reused = Object.entries(srcCount).filter(([, n]) => n >= 3);
+  if (reused.length) add("AS1", null, `동일 이미지 재사용: ${reused.map(([k, n]) => `${k}×${n}`).slice(0, 3).join(", ")}`);
 
   // 7. 모션
   const loops = els.filter((e) => e.animIter?.includes("infinite") && e.animName && e.animName !== "none");
