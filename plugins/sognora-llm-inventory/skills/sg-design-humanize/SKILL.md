@@ -31,7 +31,7 @@ description: AI 티 나는 웹 UI를 감지하고 기본값으로 **완전 개�
 ## 절차 (개편 모드 — 축소 모드는 해당 단계만)
 
 1. **계약** — 대상(URL/소스)·단위(페이지|섹션|컴포넌트)·모드·렌더 가능 여부·스타일링 관례·디자인 시스템 유무(surgical/bold)를 `_design/contract.md`에. **`_design/history.json`을 읽는다** — 없으면 현재 화면을 0번째 실행으로 기록(베이스 팔레트·정렬·자산 언어). 이게 "같은 형태 재생산"을 막는 기준점이다.
-2. **벤치마크 실측** — benchmarks.md 프로토콜. 같은 단위·장르 잘 만든 실물 2~3개를 `detect.mjs`로 스캔 → 갭 표(폰트 단수·디스플레이 배율·밀도·**고유 자산 수**) → 가장 벌어진 축이 재설계 1순위. 고유 자산 목표치를 여기서 숫자로 확정한다.
+2. **벤치마크 — 라이브러리 우선** — `references/library/INDEX.md`에서 같은 장르·단위의 분석 문서 2~3개를 **읽는다**(매 실행 분석 금지 — 비용 0). 라이브러리에 없는 장르이거나 사용자가 URL을 준 경우만 scan+probe 1회 후 **분석 문서를 라이브러리에 저장·등록**(benchmarks.md §0). 갭 표(폰트 단수·디스플레이 배율·밀도·**고유 자산 수**·인터랙션 언어)에서 가장 벌어진 축이 재설계 1순위, 고유 자산 목표치를 숫자로 확정.
 3. **before 스캔 + Squint** — `node scripts/detect.mjs --url <URL> --out _design/before` (렌더 불가 시 `--static --src <dir>`, 항목에 [코드확실]/[추정] 태그). 섹션 크롭을 실제로 보고 구성 5축(rules.md Squint)을 audit.md에. 혐의 룰 승격분은 `_design/before/confirmed.json`. impeccable 설치 시 `npx impeccable detect --json` 병행(보조 신호, 없으면 생략).
 4. **방향 추첨 (히스토리 강제 차별)** — directions.md 7축. **하드 제약: history.json의 모든 이전 실행과 ① 베이스 팔레트 계열 상이(게이트가 검사) ② 7축 중 3축 이상 상이 ③ 반프로필(원본 슬롭 + AI 수렴 룩 + 이전 산출물).** 재생성 자기검증 후 `_design/direction.md`에 근거·갭 표와 함께 기록.
 5. **재설계 계획서** — `_design/plan.json`: `{"redesign":[섹션...], "preserve":[{"sec":n,"reason":"..."}], "minUniqueAssets":N}`. 구조성 티·DE1·Squint 미달 섹션은 redesign에 필수(게이트가 검사), preserve는 사유 필수. **개편 모드에서 계획서 없이 게이트를 돌리면 실패한다.**
