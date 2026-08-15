@@ -138,8 +138,12 @@ if (args.overhaul && !weakGate) {
     }
   }
   // 탈바꿈 검사: 베이스 팔레트가 직전 실행과 같은 계열이면 실패
+  // 절차상 history 기록은 게이트 통과 "후"다. 통과·기록 뒤의 재검증에서는 마지막 항목이 곧 이번 실행이므로
+  // --history-exclude-last 로 직전-이전 실행과 비교한다 (자기 자신과의 비교 = 항상 [같은 옷] 오탐).
   const history = await readFile(args.history ?? "_design/history.json", "utf8").then(JSON.parse).catch(() => null);
-  const prevBase = history?.runs?.length ? history.runs[history.runs.length - 1].baseHex : null;
+  const runs = history?.runs ?? [];
+  const cmpRuns = args["history-exclude-last"] ? runs.slice(0, -1) : runs;
+  const prevBase = cmpRuns.length ? cmpRuns[cmpRuns.length - 1].baseHex : null;
   if (prevBase && after.page?.bodyBg) {
     const { samePaletteFamily } = await import("./rules-lib.mjs");
     if (samePaletteFamily(parseColor(prevBase), parseColor(after.page.bodyBg)))
