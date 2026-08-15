@@ -39,7 +39,7 @@ git clone https://github.com/shindonghwi/sognora-llm-inventory.git && cd sognora
 | `sg-web-replicate` | 레퍼런스 사이트의 화면을 측정값으로 복제. 라우트 탐색 → 캡처·측정 → 원본 자산 수집 → 구현 → pixel/box diff 게이트 수렴. 화면 전용 |
 | `sg-biz-validate` | 사업 아이디어 검증. 인터뷰(질문 수 예고) → 경쟁사 3곳+ 실물 분석 → 진입/조건부/철회 판정 → PRD |
 | `sg-growth-expose` | 검색·스토어·AI 답변 노출 최적화. 웹/앱을 자동 판별해 — 웹은 SEO+GEO(AI 크롤러 가시성) 감사 후 적용, 앱은 로케일별 스토어 리스팅 생성. 역효과 전술은 거부 |
-| `sg-design-humanize` | 웹 UI를 실측 기준으로 완전 개편. 레퍼런스 라이브러리(잘 만든 사이트 8종 심층 분석 축적)를 기준선으로 탐지 37룰 + 게이트 5종 + 프로브 — "조정만 함"·"매번 같은 형태"·텍스트 훼손은 스크립트가 차단 |
+| `sg-landing-craft` | 랜딩을 제품 사실+레퍼런스 실측 문법으로 제작·재제작. 시작 시 수준·방향·자산 정책을 질문 → 서사·카피·자산·인터랙션까지 무인 완주. 라이브러리(8개 사이트 심층 실측) 차용 강제, 탐지 37룰·프로브로 검수 |
 
 ## 구조
 
@@ -62,7 +62,7 @@ git clone https://github.com/shindonghwi/sognora-llm-inventory.git && cd sognora
 
 ```bash
 ./new-skill.sh sg-<도메인>-<동작>    # 예: sg-ko-proofread
-# 도메인 어휘: ko(한국어 글) · web · biz · growth(노출·유입) · design(화면 미감·재설계) · code · doc · git · test
+# 도메인 어휘: ko(한국어 글) · web · biz · growth(노출·유입) · landing(랜딩 제작) · code · doc · git · test
 ```
 
 1. `SKILL.md`의 **description**부터 — 자동 발동을 결정합니다. 트리거 문구와 비대상을 명시.
