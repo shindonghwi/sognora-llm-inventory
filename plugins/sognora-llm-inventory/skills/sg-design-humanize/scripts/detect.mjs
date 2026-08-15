@@ -86,6 +86,7 @@ for (let i = 0; i < viewports.length; i++) {
       imagesInformative: raw.images.filter((im) => im.informative).map((im) => im.src),
       imagesDecorative: raw.images.filter((im) => !im.informative).map((im) => im.src),
       bodyFont: raw.bodyFont,
+      bodyBg: raw.bodyBg,
       fontSizes: raw.fontSizes,
       koreanPage: raw.koreanPage,
     };
@@ -478,6 +479,7 @@ function evaluateTells(raw, viewport, theme, isDesktop) {
   // 4b. 사이드 액센트 보더 — 한 변만 2px+ 유채색(가장 알아보기 쉬운 AI 티 중 하나)
   const sideAccent = els.filter((e) => {
     if (!e.bw || !e.bwc) return false;
+    if (!e.hasOwnBg && !e.shadow) return false; // 티의 본질은 "서피스에 붙은 스트라이프" — 구획용 괘선·타임라인 스파인은 무죄
     const mx = Math.max(...e.bw);
     const rest = e.bw.filter((v) => v !== mx);
     if (mx < 2 || mx < 2 * Math.max(...rest, 0.01)) return false;

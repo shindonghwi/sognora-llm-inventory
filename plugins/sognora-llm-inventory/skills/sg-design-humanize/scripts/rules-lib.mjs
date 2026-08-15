@@ -70,8 +70,24 @@ export function isOrdinal(s) {
 // ---------- 색 ----------
 
 export function parseColor(str) {
-  const m = /rgba?\(\s*(\d+)[,\s]+(\d+)[,\s]+(\d+)(?:[,/\s]+([\d.]+))?/.exec(str ?? "");
+  const s = String(str ?? "").trim();
+  const hex = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(s);
+  if (hex) {
+    let h = hex[1];
+    if (h.length === 3) h = [...h].map((c) => c + c).join("");
+    return { r: parseInt(h.slice(0, 2), 16), g: parseInt(h.slice(2, 4), 16), b: parseInt(h.slice(4, 6), 16), a: 1 };
+  }
+  const m = /rgba?\(\s*(\d+)[,\s]+(\d+)[,\s]+(\d+)(?:[,/\s]+([\d.]+))?/.exec(s);
   return m ? { r: +m[1], g: +m[2], b: +m[3], a: m[4] === undefined ? 1 : +m[4] } : null;
+}
+
+// 두 색이 같은 "베이스 팔레트 계열"인가 — 게이트 5(탈바꿈 검사)의 결정 기준
+export function samePaletteFamily(c1, c2) {
+  if (!c1 || !c2) return false;
+  const a = rgbToHsl(c1), b = rgbToHsl(c2);
+  const dh = Math.min(Math.abs(a.h - b.h), 360 - Math.abs(a.h - b.h));
+  if (a.s < 0.15 && b.s < 0.15) return Math.abs(a.l - b.l) < 0.15; // 둘 다 무채색권: 명도대만 비교
+  return dh < 30 && Math.abs(a.l - b.l) < 0.15 && Math.abs(a.s - b.s) < 0.25;
 }
 
 export function rgbToHsl({ r, g, b }) {
