@@ -42,7 +42,7 @@ description: AI 티 나는 웹 UI를 감지하고 기본값으로 **완전 개�
    node scripts/gate.mjs --before _design/before --after _design/after --overhaul \
         --plan _design/plan.json --history _design/history.json
    ```
-   판정(rules.md "게이트 기준"): ① 티 사후조건 ② 시그니처 린트(redesign 전 섹션) ③ 텍스트·링크·이미지 불변 ④ **개편 커버리지**(콘텐츠 섹션 변화율 ≥60%) ⑤ **탈바꿈 검사**(베이스 팔레트가 히스토리와 같은 계열이면 실패, 고유 자산 ≥ minUniqueAssets). exit 0 전 완료 선언 금지. 통과 후 **성공 판정 3테스트**(Justified/Coherent/Not-a-re-run).
+   판정(rules.md "게이트 기준"): ① 티 사후조건 ② 시그니처 린트(redesign 전 섹션) ③ 텍스트·링크·이미지 불변 ④ **개편 커버리지**(콘텐츠 섹션 변화율 ≥60%) ⑤ **탈바꿈 검사**(베이스 팔레트가 히스토리와 같은 계열이면 실패, 고유 자산 ≥ minUniqueAssets). exit 0 전 완료 선언 금지. **게이트 통과가 곧 끝이 아니다 — after 크롭에 Squint 패스를 다시 돌려 눈으로 확인한다**(게이트는 구성·마감의 절반만 본다. 실전 사고: 게이트 통과본에서 레터박스 비디오·한글 모노폰트·오버레이 뭉개짐이 눈검증 생략으로 살아남았다). 이후 **성공 판정 3테스트**(Justified/Coherent/Not-a-re-run). 히스토리 기록 후 재검증은 `--history-exclude-last`.
 9. **보고 + 기록** — 섹션별 전후 캡처 표, 게이트 5종·퀄리티 바·3테스트 항별 판정, preserve 사유, 삭제 장식 목록, 등급. **history.json에 이번 실행(방향·7축·베이스 팔레트 hex·자산 언어)을 append** — 다음 실행이 같은 옷을 못 입게. 확정 토큰은 프로젝트 DESIGN.md로 고정.
 
 ## 자산 생성 파이프라인 (생성이 필요할 때)
