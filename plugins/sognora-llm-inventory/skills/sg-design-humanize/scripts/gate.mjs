@@ -122,7 +122,16 @@ if (args.overhaul && !weakGate) {
     else notes.push(`개편 커버리지 ${Math.round(ratio * 100)}% (${changed.length}/${content.length})`);
     // 고유 자산 하한
     if (plan.minUniqueAssets) {
-      const uniq = new Set((after.page.imagesInformative ?? []).map((u) => String(u).split("?")[0].split("/").pop()));
+      const assetKey = (u) => {
+        try {
+          const x = new URL(String(u), "http://x");
+          const inner = x.searchParams.get("url") || x.searchParams.get("src");
+          return decodeURIComponent(inner || x.pathname).split("?")[0].split("/").pop();
+        } catch {
+          return String(u).split("?")[0].split("/").pop();
+        }
+      };
+      const uniq = new Set((after.page.imagesInformative ?? []).map(assetKey));
       if (uniq.size < plan.minUniqueAssets)
         failures.push(`[자산 미달] 고유 정보성 자산 ${uniq.size}개 < 목표 ${plan.minUniqueAssets}개 — 자산 없는 골격은 허접함을 재생산한다`);
       else notes.push(`고유 자산 ${uniq.size}개 ≥ 목표 ${plan.minUniqueAssets}`);
@@ -184,15 +193,20 @@ if (!weakGate) {
   }
   for (const [k, n] of aLinks) if (n > 0) warnings.push(`링크 추가됨: ${k}`);
 
-  // 정보성 이미지: basename 멀티셋 (자산 이동은 허용, 삭제는 위반)
-  const base = (u) => String(u).split("?")[0].split("/").pop();
-  const aImgs = new Map();
-  for (const s of after.page.imagesInformative ?? []) aImgs.set(base(s), (aImgs.get(base(s)) ?? 0) + 1);
-  for (const s of before.page.imagesInformative ?? []) {
-    const k = base(s);
-    if (aImgs.get(k) > 0) aImgs.set(k, aImgs.get(k) - 1);
-    else failures.push(`[정보성 이미지 소실] ${k}`);
-  }
+  // 정보성 이미지: basename "고유 세트" 비교 — 중복 배치 축소는 AS1의 처방이므로 허용, 고유 자산 소실만 위반
+  // 이미지 최적화 프록시(/_next/image?url=…)는 원본 파라미터가 실체다 (detect의 assetKey와 동일 규칙)
+  const base = (u) => {
+    try {
+      const x = new URL(String(u), "http://x");
+      const inner = x.searchParams.get("url") || x.searchParams.get("src");
+      return decodeURIComponent(inner || x.pathname).split("?")[0].split("/").pop();
+    } catch {
+      return String(u).split("?")[0].split("/").pop();
+    }
+  };
+  const aImgSet = new Set((after.page.imagesInformative ?? []).map(base));
+  for (const k of new Set((before.page.imagesInformative ?? []).map(base)))
+    if (!aImgSet.has(k)) failures.push(`[정보성 이미지 소실] ${k}`);
   const decoRemoved = (before.page.imagesDecorative ?? []).map(base).filter((k) => !(after.page.imagesDecorative ?? []).map(base).includes(k));
   if (decoRemoved.length) notes.push(`장식 이미지 제거 ${decoRemoved.length}건 — 제거 목록으로 보고할 것`);
 }

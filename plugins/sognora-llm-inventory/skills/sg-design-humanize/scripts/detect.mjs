@@ -189,11 +189,13 @@ async function extract(p) {
       const secW = right - left;
       const childInfo = (c) => {
         const r = c.getBoundingClientRect();
+        const cs2c = getComputedStyle(c);
         return {
           tag: c.tagName.toLowerCase(), x: r.x, y: r.y, w: r.width, h: r.height,
           skeleton: [...c.children].map((g) => g.tagName.toLowerCase()).join(","),
           textLen: (c.innerText || "").trim().length,
           numText: /^\s*\d[\d,.]*\s*[+%]?/.test((c.innerText || "").trim()),
+          surface: cs2c.backgroundColor !== "rgba(0, 0, 0, 0)" || cs2c.boxShadow !== "none",
           // 실미디어(100x100+ 이미지·비디오) 보유 여부 — 아이콘은 미디어로 치지 않는다
           hasMedia: [...c.querySelectorAll("img,video,canvas,picture,svg")].some((mm) => {
             const mr = mm.getBoundingClientRect();
@@ -345,13 +347,21 @@ async function extract(p) {
     }
 
     const bodyCs = getComputedStyle(document.body);
+    // 사용자 눈에 보이는 "페이지 필드" 색 — body가 투명하거나 main이 화면 대부분을 덮으면 main의 배경이 실체다
+    let baseBg = bodyCs.backgroundColor;
+    const mainEl = document.querySelector("main");
+    if (mainEl) {
+      const mc = getComputedStyle(mainEl).backgroundColor;
+      const mr = mainEl.getBoundingClientRect();
+      if (mc !== "rgba(0, 0, 0, 0)" && mr.height >= 0.6 * docH) baseBg = mc;
+    }
     const fontSizes = [...new Set(els.filter((e) => e.textLen > 0 && e.fs).map((e) => Math.round(e.fs * 2) / 2))].sort((a, b) => a - b);
     return {
       viewport: { w: vw, h: vh }, sections,
       textBlocks: sections.flatMap((s) => s.textBlocks),
       els, links, images, hiddenText, nestedCards,
       hOverflow: document.documentElement.scrollWidth > vw + 1,
-      bodyFont: bodyCs.fontFamily, bodyBg: bodyCs.backgroundColor,
+      bodyFont: bodyCs.fontFamily, bodyBg: baseBg,
       fontSizes, koreanPage: /[가-힣]/.test((document.body.innerText || "").slice(0, 4000)),
     };
   }, EPS);
@@ -418,7 +428,8 @@ function evaluateTells(raw, viewport, theme, isDesktop) {
         (groups[k] = groups[k] ?? []).push(c);
       }
       // 실미디어가 들어찬 카드 나열은 티가 아니다(레퍼런스 검증: 빈 카드가 죄) — 과반이 미디어 없을 때만
-      const uni = Object.values(groups).find((g) => g.length >= 3 && sideBySide(g) && g.filter((c) => !c.hasMedia).length > g.length / 2);
+      // 카드(서피스) 나열만 티다 — 배경·그림자 없는 텍스트 칼럼(신문 칼럼)은 정당한 에디토리얼
+      const uni = Object.values(groups).find((g) => g.length >= 3 && sideBySide(g) && g.filter((c) => !c.hasMedia).length > g.length / 2 && g.filter((c) => c.surface).length > g.length / 2);
       if (uni) {
         add("LA1", s.index, `동일 크기·동일 골격 형제 카드 ${uni.length}개 가로 나열, 실미디어 없음 (${Math.round(uni[0].w)}x${Math.round(uni[0].h)})`);
         if (isDesktop) {
