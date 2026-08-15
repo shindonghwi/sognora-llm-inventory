@@ -269,7 +269,13 @@ async function extract(p) {
       const cs = getComputedStyle(el);
       const t = ownText(el);
       const svg = el.tagName === "svg" ? [...el.querySelectorAll("path")].map((pp) => pp.getAttribute("d") || "").join("|").slice(0, 400) : null;
+      const bws = [cs.borderTopWidth, cs.borderRightWidth, cs.borderBottomWidth, cs.borderLeftWidth].map((v) => parseFloat(v) || 0);
+      const bmax = Math.max(...bws);
       els.push({
+        bw: bws,
+        bwc: bmax >= 2 ? [cs.borderTopColor, cs.borderRightColor, cs.borderBottomColor, cs.borderLeftColor][bws.indexOf(bmax)] : null,
+        clipText: (cs.webkitBackgroundClip || cs.backgroundClip || "").includes("text"),
+        sized: el.tagName === "IMG" ? el.hasAttribute("width") && el.hasAttribute("height") : null,
         sec: sectionOf(el), tag: el.tagName.toLowerCase(),
         x: r.x, y: r.y, w: r.width, h: r.height,
         fs: parseFloat(cs.fontSize), lh: parseFloat(cs.lineHeight) || null,
@@ -307,12 +313,43 @@ async function extract(p) {
       if (m3) images.push({ src: m3[1], informative: true });
     }
 
+    // 정지 상태에서 안 보이는 텍스트 — reduced-motion 환경에서 스크롤 리빌이 영영 안 풀리는 실버그
+    const hiddenText = [];
+    for (const el of document.querySelectorAll("body *")) {
+      if (hiddenText.length >= 10) break;
+      const t2 = ownText(el);
+      if (!t2 || t2.length < 8) continue;
+      const cs2 = getComputedStyle(el);
+      const r2 = el.getBoundingClientRect();
+      if ((parseFloat(cs2.opacity) === 0 || cs2.visibility === "hidden") && r2.width > 1 && r2.height > 1 && !el.closest('[aria-hidden="true"]'))
+        hiddenText.push(t2.slice(0, 40));
+    }
+    // 중첩 카드(카드 안의 카드)
+    const isCard = (el) => {
+      const r3 = el.getBoundingClientRect();
+      if (r3.width * r3.height < 20000) return false;
+      const c3 = getComputedStyle(el);
+      return (parseFloat(c3.borderRadius) || 0) >= 8 && c3.backgroundColor !== "rgba(0, 0, 0, 0)";
+    };
+    const nestedCards = [];
+    let cardScan = 0;
+    for (const el of document.querySelectorAll("body *")) {
+      if (++cardScan > 2000 || nestedCards.length >= 6) break;
+      if (!vis(el) || !isCard(el)) continue;
+      let anc = el.parentElement;
+      while (anc && anc !== document.body) {
+        if (isCard(anc)) { nestedCards.push(sectionOf(el)); break; }
+        anc = anc.parentElement;
+      }
+    }
+
     const bodyCs = getComputedStyle(document.body);
     const fontSizes = [...new Set(els.filter((e) => e.textLen > 0 && e.fs).map((e) => Math.round(e.fs * 2) / 2))].sort((a, b) => a - b);
     return {
       viewport: { w: vw, h: vh }, sections,
       textBlocks: sections.flatMap((s) => s.textBlocks),
-      els, links, images,
+      els, links, images, hiddenText, nestedCards,
+      hOverflow: document.documentElement.scrollWidth > vw + 1,
       bodyFont: bodyCs.fontFamily, bodyBg: bodyCs.backgroundColor,
       fontSizes, koreanPage: /[가-힣]/.test((document.body.innerText || "").slice(0, 4000)),
     };
@@ -437,6 +474,42 @@ function evaluateTells(raw, viewport, theme, isDesktop) {
   if (mute.length >= 3) for (const sec of new Set(mute.map((e) => e.sec))) add("IC3", sec, `텍스트·aria 없는 아이콘 ${mute.filter((e) => e.sec === sec).length}개`);
   const blobs = els.filter((e) => e.pos === "absolute" && e.textLen === 0 && Math.min(e.w, e.h) >= 80 && e.br >= Math.min(e.w, e.h) / 2 && (e.hasOwnBg || e.bgImage.includes("gradient")));
   for (const sec of new Set(blobs.map((e) => e.sec))) add("IC4", sec, `장식 블롭(absolute 원형) ${blobs.filter((e) => e.sec === sec).length}개`);
+
+  // 4b. 사이드 액센트 보더 — 한 변만 2px+ 유채색(가장 알아보기 쉬운 AI 티 중 하나)
+  const sideAccent = els.filter((e) => {
+    if (!e.bw || !e.bwc) return false;
+    const mx = Math.max(...e.bw);
+    const rest = e.bw.filter((v) => v !== mx);
+    if (mx < 2 || mx < 2 * Math.max(...rest, 0.01)) return false;
+    const c = parseColor(e.bwc);
+    return c && c.a > 0.2 && rgbToHsl(c).s > 0.3 && e.w * e.h > 2000;
+  });
+  for (const sec of new Set(sideAccent.map((e) => e.sec)))
+    add("BD1", sec, `유채색 사이드 액센트 보더 ${sideAccent.filter((x) => x.sec === sec).length}곳`);
+
+  // 2b. 그라데이션 텍스트
+  const gradText = els.filter((e) => e.clipText && e.bgImage.includes("gradient"));
+  for (const sec of new Set(gradText.map((e) => e.sec))) add("CO5", sec, "그라데이션 텍스트(background-clip)");
+
+  // 3b. 중첩 카드
+  for (const sec of new Set(raw.nestedCards ?? [])) add("LA4", sec, "카드 안의 카드(중첩 라운드 서피스)");
+
+  // 9. 품질 바닥 (QF) — 미학 이전의 하한선
+  if (raw.hOverflow) add("QF1", null, `가로 오버플로 발생 (${viewport})`);
+  if ((raw.hiddenText ?? []).length)
+    add("QF2", null, `정지 상태에서 안 보이는 텍스트 ${raw.hiddenText.length}건 (예: "${raw.hiddenText[0]}") — 스크롤 리빌 미발화 의심`);
+  if (isDesktop) {
+    const longLines = textEls.filter((e) => e.textLen >= 80 && (e.korean ? e.w / e.fs > 42 : e.w / (e.fs * 0.52) > 95));
+    if (longLines.length >= 2) add("QF3", null, `본문 행폭 과대 ${longLines.length}곳 (가독 한계 초과)`);
+  }
+  const floorMiss = textEls.filter((e) => !e.korean && e.textLen >= 40 && (e.fs < 12 || (e.lh && e.lh / e.fs < 1.3)));
+  if (floorMiss.length >= 3) add("QF4", null, `본문 타이포 하한 미달 ${floorMiss.length}곳 (12px 미만 또는 행간 1.3 미만)`);
+  if (raw.viewport.w <= 480) {
+    const smallTap = els.filter((e) => (["button", "input", "select"].includes(e.tag) || (e.tag === "a" && e.hasOwnBg)) && (e.w < 44 || e.h < 44) && e.w > 2 && e.h > 2);
+    if (smallTap.length >= 3) add("QF5", null, `44px 미만 탭 타깃 ${smallTap.length}개 (모바일)`);
+  }
+  const unsized = els.filter((e) => e.tag === "img" && e.sized === false);
+  if (unsized.length >= 2) add("QF6", null, `width/height 미지정 이미지 ${unsized.length}개 (CLS 위험)`);
 
   // 6b. 자산 빈곤 — 같은 이미지를 돌려쓰는 것은 "채울 자산이 없다"는 신호
   const assetKey = (src) => {
