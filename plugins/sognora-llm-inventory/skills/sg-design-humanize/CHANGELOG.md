@@ -1,5 +1,13 @@
 # sg-design-humanize — CHANGELOG
 
+## 0.2.1 — 2026-08-15 (avoid-ai-design 정밀 분석 반영)
+
+- 심각도를 "누가 알아보는가" 기준으로 재정의(🔴 일반인/🟡 디자이너/⚪ 마감 격차) + 맥락 이동·접근성 예외
+- 성공 판정 3테스트(Justified/Coherent/Not-a-re-run) — 게이트는 나쁜 변경을 막고 3테스트는 좋은 변경인지 판정. 개편 모드 A등급 조건에 포함
+- 탐지 +3룰(총 38): TS4 세리프 이탤릭 시그니처[혐의] · IC5 화살표 글리프 · AS2 플레이스홀더 자산. 정적 모드에 shadcn --radius 기본값 추가
+- 오탐 억제 확장: 예시·픽스처 경로 면제(열거 신호 한정), "깨끗한 감사도 유효한 결과", 2차 기본값 함정(Space Grotesk 클러스터) 명시
+- 정적 저하 모드에 [코드확실]/[추정] 인식론 태그 의무화
+
 ## 0.2.0 — 2026-08-15 (생태계 리서치 통합 — 지식층 재구축)
 
 기존 스킬 3종(avoid-ai-design·impeccable 59룰·Anthropic frontend-design)과 MIT 자산 2종(interface-design design-deslop, ui-ux-pro-max design-audit)을 정밀 분석해 흡수. 코어(시그니처 린트·불변 게이트·벤치마크)는 생태계에 없는 유일 자산이라 유지, 지식층을 재구축.

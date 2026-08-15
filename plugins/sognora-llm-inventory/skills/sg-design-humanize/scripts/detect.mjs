@@ -529,6 +529,10 @@ function evaluateTells(raw, viewport, theme, isDesktop) {
   }
   const reused = Object.entries(srcCount).filter(([, n]) => n >= 3);
   if (reused.length) add("AS1", null, `동일 이미지 재사용: ${reused.map(([k, n]) => `${k}×${n}`).slice(0, 3).join(", ")}`);
+  const placeholders = raw.images.filter((im) => /dicebear|pravatar|boringavatars|placehold|placekitten|via\.placeholder/i.test(String(im.src)));
+  if (placeholders.length) add("AS2", null, `플레이스홀더 자산 ${placeholders.length}개 — "진짜가 아직 없다"는 신호`);
+  const arrows = els.filter((e) => ["a", "button", "h1", "h2", "h3"].includes(e.tag) && /[→←↑↓➔➜]/.test(e.text));
+  if (arrows.length >= 2) add("IC5", null, `텍스트에 박은 화살표 글리프 ${arrows.length}곳 (예: "${arrows[0].text.slice(0, 24)}")`);
 
   // 7. 모션
   const loops = els.filter((e) => e.animIter?.includes("infinite") && e.animName && e.animName !== "none");
@@ -595,6 +599,9 @@ async function staticScan() {
     if (/rounded-(?:2xl|3xl)[^"']*shadow-(?:lg|xl)|shadow-(?:lg|xl)[^"']*rounded-(?:2xl|3xl)/.test(src)) (hits.LA3 ??= []).push(rel);
     const emojiLine = src.split("\n").find((l) => hasEmoji(l) && !/^\s*(\/\/|\/\*|\*|#|<!--)/.test(l));
     if (emojiLine) (hits.IC2 ??= []).push(rel);
+    if (/[→➔➜]/.test(src) && /button|href|<a\s/i.test(src)) (hits.IC5 ??= []).push(rel);
+    if (/dicebear|pravatar|boringavatars|placehold|placekitten/i.test(src)) (hits.AS2 ??= []).push(rel);
+    if (/--radius:\s*0\.5rem/.test(src)) (hits.LA3 ??= []).push(rel);
   }
   for (const [rule, fs] of Object.entries(hits)) add(rule, `${fs.length}개 파일: ${fs.slice(0, 4).join(", ")}${fs.length > 4 ? " …" : ""}`);
 
