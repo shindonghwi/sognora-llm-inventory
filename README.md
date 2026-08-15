@@ -39,6 +39,7 @@ git clone https://github.com/shindonghwi/sognora-llm-inventory.git && cd sognora
 | `sg-web-replicate` | 레퍼런스 사이트의 화면을 측정값으로 복제. 라우트 탐색 → 캡처·측정 → 원본 자산 수집 → 구현 → pixel/box diff 게이트 수렴. 화면 전용 |
 | `sg-biz-validate` | 사업 아이디어 검증. 인터뷰(질문 수 예고) → 경쟁사 3곳+ 실물 분석 → 진입/조건부/철회 판정 → PRD |
 | `sg-growth-expose` | 검색·스토어·AI 답변 노출 최적화. 웹/앱을 자동 판별해 — 웹은 SEO+GEO(AI 크롤러 가시성) 감사 후 적용, 앱은 로케일별 스토어 리스팅 생성. 역효과 전술은 거부 |
+| `sg-design-humanize` | AI 티 나는 웹 UI를 감지하고 섹션 구조부터 재설계. 토큰만 바꾸는 "조정"은 시그니처 린트가 차단, 텍스트·기능 불변은 스크립트 게이트가 집행. 방향은 프로젝트 입력에서 유도 — 고정 스킨 없음 |
 
 ## 구조
 
@@ -61,7 +62,7 @@ git clone https://github.com/shindonghwi/sognora-llm-inventory.git && cd sognora
 
 ```bash
 ./new-skill.sh sg-<도메인>-<동작>    # 예: sg-ko-proofread
-# 도메인 어휘: ko(한국어 글) · web · biz · growth(노출·유입) · code · doc · git · test
+# 도메인 어휘: ko(한국어 글) · web · biz · growth(노출·유입) · design(화면 미감·재설계) · code · doc · git · test
 ```
 
 1. `SKILL.md`의 **description**부터 — 자동 발동을 결정합니다. 트리거 문구와 비대상을 명시.
