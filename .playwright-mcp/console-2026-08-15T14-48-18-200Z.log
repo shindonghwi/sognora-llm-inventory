@@ -1,0 +1,9 @@
+[     437ms] [LOG] Performance: Web Vital {name: Next.js-hydration, value: 45.40000009536743, id: 1786805298636-9747139450932, label: custom, startTime: 384.7999999523163} @ https://www.mayoclinic.org/_next/static/chunks/pages/_app-b38feb3a1b090b5c.js:0
+[     450ms] [INFO] [consent-provider] mount {host: www.mayoclinic.org, transcend: object, airgap: object, transcendHasReady: true, airgapHasReady: true} @ https://www.mayoclinic.org/_next/static/chunks/pages/_app-b38feb3a1b090b5c.js:0
+[     450ms] [INFO] [consent-provider] APIs already resolved, committing immediately @ https://www.mayoclinic.org/_next/static/chunks/pages/_app-b38feb3a1b090b5c.js:0
+[     454ms] [LOG] Performance: Web Vital {name: FCP, value: 304, id: v3-1786805298654-7397364171650, label: web-vital, startTime: 304} @ https://www.mayoclinic.org/_next/static/chunks/pages/_app-b38feb3a1b090b5c.js:0
+[     606ms] [INFO] [LaunchDarkly] LaunchDarkly client initialized @ https://www.mayoclinic.org/_next/static/chunks/pages/_app-b38feb3a1b090b5c.js:0
+[     607ms] [INFO] [LaunchDarkly] Opening stream connection to https://clientstream.launchdarkly.com/eval/65801b740c1ee60f44aadf37/eyJraW5kIjoidXNlciIsImtleSI6ImFub24tdXNlciJ9 @ https://www.mayoclinic.org/_next/static/chunks/pages/_app-b38feb3a1b090b5c.js:0
+[     639ms] [LOG] Performance: Web Vital {name: TTFB, value: 146.70000004768372, id: v3-1786805298654-8797898926520, label: web-vital, startTime: 0} @ https://www.mayoclinic.org/_next/static/chunks/pages/_app-b38feb3a1b090b5c.js:0
+[    2578ms] [INFO] [LaunchDarkly] Closing stream connection @ https://www.mayoclinic.org/_next/static/chunks/pages/_app-b38feb3a1b090b5c.js:0
+[    2578ms] [INFO] [LaunchDarkly] Opening stream connection to https://clientstream.launchdarkly.com/eval/65801b740c1ee60f44aadf37/eyJraW5kIjoidXNlciIsImtleSI6ImFub24tdXNlciIsImFub255bW91cyI6dHJ1ZX0 @ https://www.mayoclinic.org/_next/static/chunks/pages/_app-b38feb3a1b090b5c.js:0

@@ -1,0 +1,512 @@
+- generic [ref=f24e1]:
+  - iframe [ref=f24e2]:
+    
+  - generic [ref=f24e5]:
+    - generic:
+      - generic:
+        - generic:
+          - generic:
+            - list
+    - banner [ref=f24e9]:
+      - link "Skip to content" [ref=f24e10] [cursor=pointer]:
+        - /url: "#main-content"
+      - navigation "Primary" [ref=f24e13]:
+        - generic [ref=f24e14]:
+          - link [ref=f24e20] [cursor=pointer]:
+            - /url: /
+            - img "Mayo Clinic Home Page" [ref=f24e21]
+          - generic [ref=f24e27]:
+            - list [ref=f24e29]:
+              - listitem [ref=f24e30]:
+                - button "Care at Mayo Clinic" [ref=f24e33] [cursor=pointer]
+              - listitem [ref=f24e39]:
+                - button "Health Library" [ref=f24e42] [cursor=pointer]
+              - listitem [ref=f24e48]:
+                - button "For Medical Professionals" [ref=f24e51] [cursor=pointer]
+              - listitem [ref=f24e57]:
+                - button "Research & Education at Mayo Clinic" [ref=f24e60] [cursor=pointer]
+              - listitem [ref=f24e66]:
+                - button "Giving to Mayo Clinic" [ref=f24e69] [cursor=pointer]
+            - list [ref=f24e78]:
+              - listitem [ref=f24e79]:
+                - link "Request appointment" [ref=f24e81] [cursor=pointer]:
+                  - /url: /appointments
+              - listitem [ref=f24e87]:
+                - link "Register/Log in" [ref=f24e90] [cursor=pointer]:
+                  - /url: /account
+              - listitem [ref=f24e100]:
+                - button "Search" [ref=f24e102] [cursor=pointer]
+    - main [ref=f24e110]:
+      - generic [ref=f24e111]:
+        - generic [ref=f24e113]:
+          - generic [ref=f24e115]:
+            - button "Play video" [ref=f24e120] [cursor=pointer]
+            - generic [ref=f24e126]:
+              - heading "Transforming your care" [level=1] [ref=f24e129]
+              - generic [ref=f24e130]:
+                - link "Learn how we drive innovation" [ref=f24e132] [cursor=pointer]:
+                  - /url: https://www.mayoclinic.org/possible
+                - link "Request appointment" [ref=f24e141] [cursor=pointer]:
+                  - /url: /appointments
+          - region "message" [ref=f24e147]:
+            - list [ref=f24e148]:
+              - listitem [ref=f24e149]:
+                - 'link "Notice: Limited disclosure of patient information" [ref=f24e161] [cursor=pointer]':
+                  - /url: https://www.mayoclinic.org/limited-disclosure-patient-information
+          - generic [ref=f24e168]:
+            - generic [ref=f24e170]:
+              - link "Skip this Section" [ref=f24e171] [cursor=pointer]:
+                - /url: "#cmp-skip-alphabet-facet"
+              - heading "Find diseases & conditions by first letter" [level=2] [ref=f24e173]
+              - list [ref=f24e174]:
+                - listitem [ref=f24e175]:
+                  - link "A. Find a disease or condition that starts with the letter A" [ref=f24e177] [cursor=pointer]:
+                    - /url: /diseases-conditions/index?letter=A
+                    - generic [ref=f24e178]: A
+                - listitem [ref=f24e182]:
+                  - link "B. Find a disease or condition that starts with the letter B" [ref=f24e184] [cursor=pointer]:
+                    - /url: /diseases-conditions/index?letter=B
+                    - generic [ref=f24e185]: B
+                - listitem [ref=f24e189]:
+                  - link "C. Find a disease or condition that starts with the letter C" [ref=f24e191] [cursor=pointer]:
+                    - /url: /diseases-conditions/index?letter=C
+                    - generic [ref=f24e192]: C
+                - listitem [ref=f24e196]:
+                  - link "D. Find a disease or condition that starts with the letter D" [ref=f24e198] [cursor=pointer]:
+                    - /url: /diseases-conditions/index?letter=D
+                    - generic [ref=f24e199]: D
+                - listitem [ref=f24e203]:
+                  - link "E. Find a disease or condition that starts with the letter E" [ref=f24e205] [cursor=pointer]:
+                    - /url: /diseases-conditions/index?letter=E
+                    - generic [ref=f24e206]: E
+                - listitem [ref=f24e210]:
+                  - link "F. Find a disease or condition that starts with the letter F" [ref=f24e212] [cursor=pointer]:
+                    - /url: /diseases-conditions/index?letter=F
+                    - generic [ref=f24e213]: F
+                - listitem [ref=f24e217]:
+                  - link "G. Find a disease or condition that starts with the letter G" [ref=f24e219] [cursor=pointer]:
+                    - /url: /diseases-conditions/index?letter=G
+                    - generic [ref=f24e220]: G
+                - listitem [ref=f24e224]:
+                  - link "H. Find a disease or condition that starts with the letter H" [ref=f24e226] [cursor=pointer]:
+                    - /url: /diseases-conditions/index?letter=H
+                    - generic [ref=f24e227]: H
+                - listitem [ref=f24e231]:
+                  - link "I. Find a disease or condition that starts with the letter I" [ref=f24e233] [cursor=pointer]:
+                    - /url: /diseases-conditions/index?letter=I
+                    - generic [ref=f24e234]: I
+                - listitem [ref=f24e238]:
+                  - link "J. Find a disease or condition that starts with the letter J" [ref=f24e240] [cursor=pointer]:
+                    - /url: /diseases-conditions/index?letter=J
+                    - generic [ref=f24e241]: J
+                - listitem [ref=f24e245]:
+                  - link "K. Find a disease or condition that starts with the letter K" [ref=f24e247] [cursor=pointer]:
+                    - /url: /diseases-conditions/index?letter=K
+                    - generic [ref=f24e248]: K
+                - listitem [ref=f24e252]:
+                  - link "L. Find a disease or condition that starts with the letter L" [ref=f24e254] [cursor=pointer]:
+                    - /url: /diseases-conditions/index?letter=L
+                    - generic [ref=f24e255]: L
+                - listitem [ref=f24e259]:
+                  - link "M. Find a disease or condition that starts with the letter M" [ref=f24e261] [cursor=pointer]:
+                    - /url: /diseases-conditions/index?letter=M
+                    - generic [ref=f24e262]: M
+                - listitem [ref=f24e266]:
+                  - link "N. Find a disease or condition that starts with the letter N" [ref=f24e268] [cursor=pointer]:
+                    - /url: /diseases-conditions/index?letter=N
+                    - generic [ref=f24e269]: "N"
+                - listitem [ref=f24e273]:
+                  - link "O. Find a disease or condition that starts with the letter O" [ref=f24e275] [cursor=pointer]:
+                    - /url: /diseases-conditions/index?letter=O
+                    - generic [ref=f24e276]: O
+                - listitem [ref=f24e280]:
+                  - link "P. Find a disease or condition that starts with the letter P" [ref=f24e282] [cursor=pointer]:
+                    - /url: /diseases-conditions/index?letter=P
+                    - generic [ref=f24e283]: P
+                - listitem [ref=f24e287]:
+                  - link "R. Find a disease or condition that starts with the letter R" [ref=f24e289] [cursor=pointer]:
+                    - /url: /diseases-conditions/index?letter=R
+                    - generic [ref=f24e290]: R
+                - listitem [ref=f24e294]:
+                  - link "S. Find a disease or condition that starts with the letter S" [ref=f24e296] [cursor=pointer]:
+                    - /url: /diseases-conditions/index?letter=S
+                    - generic [ref=f24e297]: S
+                - listitem [ref=f24e301]:
+                  - link "T. Find a disease or condition that starts with the letter T" [ref=f24e303] [cursor=pointer]:
+                    - /url: /diseases-conditions/index?letter=T
+                    - generic [ref=f24e304]: T
+                - listitem [ref=f24e308]:
+                  - link "U. Find a disease or condition that starts with the letter U" [ref=f24e310] [cursor=pointer]:
+                    - /url: /diseases-conditions/index?letter=U
+                    - generic [ref=f24e311]: U
+                - listitem [ref=f24e315]:
+                  - link "V. Find a disease or condition that starts with the letter V" [ref=f24e317] [cursor=pointer]:
+                    - /url: /diseases-conditions/index?letter=V
+                    - generic [ref=f24e318]: V
+                - listitem [ref=f24e322]:
+                  - link "W. Find a disease or condition that starts with the letter W" [ref=f24e324] [cursor=pointer]:
+                    - /url: /diseases-conditions/index?letter=W
+                    - generic [ref=f24e325]: W
+                - listitem [ref=f24e329]:
+                  - link "X. Find a disease or condition that starts with the letter X" [ref=f24e331] [cursor=pointer]:
+                    - /url: /diseases-conditions/index?letter=X
+                    - generic [ref=f24e332]: X
+                - listitem [ref=f24e336]:
+                  - link "Y. Find a disease or condition that starts with the letter Y" [ref=f24e338] [cursor=pointer]:
+                    - /url: /diseases-conditions/index?letter=Y
+                    - generic [ref=f24e339]: "Y"
+                - listitem [ref=f24e343]:
+                  - link "Z. Find a disease or condition that starts with the letter Z" [ref=f24e345] [cursor=pointer]:
+                    - /url: /diseases-conditions/index?letter=Z
+                    - generic [ref=f24e346]: Z
+                - listitem [ref=f24e350]:
+                  - 'link "#. Find a disease or condition that starts with the letter #" [ref=f24e352] [cursor=pointer]':
+                    - /url: /diseases-conditions/index?letter=%23
+                    - generic [ref=f24e353]: "#"
+            - generic [ref=f24e360]:
+              - generic [ref=f24e362]:
+                - text: Search diseases & conditions
+                - generic [ref=f24e363]: . Type 3 or more letters to display suggested search options.
+              - generic [ref=f24e364]:
+                - generic [ref=f24e365] [cursor=pointer]
+                - generic [ref=f24e370]:
+                  - status
+                  - status
+                - combobox "Search diseases & conditions . Type 3 or more letters to display suggested search options." [ref=f24e371]
+                - generic: Search
+          - separator [ref=f24e378]
+          - generic [ref=f24e389]:
+            - heading "Healing starts here" [level=2] [ref=f24e391]
+            - generic [ref=f24e392]:
+              - paragraph [ref=f24e393]: The right answers the first time
+              - paragraph [ref=f24e394]: Effective treatment depends on getting the right diagnosis. Our experts diagnose and treat the toughest medical challenges.
+              - paragraph [ref=f24e395]: The world's best hospital
+              - paragraph [ref=f24e396]:
+                - text: Mayo Clinic is the No. 1 hospital in the world according to Newsweek.
+                - link "Learn more about our top-ranked specialties." [ref=f24e397] [cursor=pointer]:
+                  - /url: /about-mayo-clinic/quality/top-ranked
+            - link "Why choose Mayo Clinic" [ref=f24e400] [cursor=pointer]:
+              - /url: /patient-centered-care
+          - generic [ref=f24e426]:
+            - heading "World-class care for global patients" [level=2] [ref=f24e428]
+            - paragraph [ref=f24e430]: We make it easy for patients around the world to get care from Mayo Clinic.
+            - link "International services" [ref=f24e433] [cursor=pointer]:
+              - /url: /international
+          - generic [ref=f24e442]:
+            - generic [ref=f24e444]:
+              - heading "Locations" [level=2] [ref=f24e446]
+              - paragraph [ref=f24e448]: Learn more about Mayo Clinic locations or choose a specific location.
+              - link "Explore all locations" [ref=f24e451] [cursor=pointer]:
+                - /url: /locations
+            - generic [ref=f24e458]:
+              - img "Buildings on the Mayo Clinic campus in Phoenix, Arizona." [ref=f24e462]
+              - generic [ref=f24e464]:
+                - heading [level=3] [ref=f24e466]:
+                  - link [ref=f24e468] [cursor=pointer]:
+                    - /url: /patient-visitor-guide/arizona
+                    - generic [ref=f24e469]:
+                      - text: Mayo Clinic in
+                      - generic [ref=f24e470]: Arizona
+                - generic [ref=f24e474]: Phoenix & Scottsdale
+            - generic [ref=f24e477]:
+              - img "Buildings on the Mayo Clinic campus in Jacksonville, Florida." [ref=f24e481]
+              - generic [ref=f24e483]:
+                - heading [level=3] [ref=f24e485]:
+                  - link [ref=f24e487] [cursor=pointer]:
+                    - /url: /patient-visitor-guide/florida
+                    - generic [ref=f24e488]:
+                      - text: Mayo Clinic in
+                      - generic [ref=f24e489]: Florida
+                - generic [ref=f24e493]: Jacksonville
+            - generic [ref=f24e496]:
+              - img "Buildings on the Mayo Clinic campus in Rochester, Minnesota." [ref=f24e500]
+              - generic [ref=f24e502]:
+                - heading [level=3] [ref=f24e504]:
+                  - link [ref=f24e506] [cursor=pointer]:
+                    - /url: /patient-visitor-guide/minnesota
+                    - generic [ref=f24e507]:
+                      - text: Mayo Clinic in
+                      - generic [ref=f24e508]: Minnesota
+                - generic [ref=f24e512]: Rochester
+            - generic [ref=f24e515]:
+              - img "A Mayo Clinic Health System building." [ref=f24e519]
+              - generic [ref=f24e521]:
+                - heading [level=3] [ref=f24e523]:
+                  - link [ref=f24e525] [cursor=pointer]:
+                    - /url: https://www.mayoclinichealthsystem.org
+                    - generic [ref=f24e526]:
+                      - text: Mayo Clinic Health
+                      - generic [ref=f24e527]: System
+                - generic [ref=f24e531]: Iowa, Minnesota, Wisconsin
+            - generic [ref=f24e534]:
+              - img "A building in London, United Kingdom." [ref=f24e538]
+              - generic [ref=f24e540]:
+                - heading [level=3] [ref=f24e542]:
+                  - link [ref=f24e544] [cursor=pointer]:
+                    - /url: /uk
+                    - generic [ref=f24e545]:
+                      - text: Mayo Clinic
+                      - generic [ref=f24e546]: Healthcare
+                - generic [ref=f24e550]: London, United Kingdom
+          - generic [ref=f24e554]:
+            - generic [ref=f24e556]:
+              - heading "Featured care areas" [level=2] [ref=f24e558]
+              - paragraph [ref=f24e560]: We solve the world's most serious and complex medical challenges.
+            - list [ref=f24e565]:
+              - listitem [ref=f24e566]:
+                - link "Bone marrow transplant" [ref=f24e568] [cursor=pointer]:
+                  - /url: https://www.mayoclinic.org/tests-procedures/bone-marrow-transplant/care-at-mayo-clinic/pcc-20384858
+              - listitem [ref=f24e574]:
+                - link "Brain aneurysm" [ref=f24e576] [cursor=pointer]:
+                  - /url: https://www.mayoclinic.org/diseases-conditions/brain-aneurysm/care-at-mayo-clinic/mac-20361689
+              - listitem [ref=f24e582]:
+                - link "Brain tumor" [ref=f24e584] [cursor=pointer]:
+                  - /url: https://www.mayoclinic.org/diseases-conditions/brain-tumor/care-at-mayo-clinic/mac-20350092
+              - listitem [ref=f24e590]:
+                - link "Breast cancer" [ref=f24e592] [cursor=pointer]:
+                  - /url: https://www.mayoclinic.org/diseases-conditions/breast-cancer/care-at-mayo-clinic/mac-20352479
+              - listitem [ref=f24e598]:
+                - link "Colon cancer" [ref=f24e600] [cursor=pointer]:
+                  - /url: https://www.mayoclinic.org/diseases-conditions/colon-cancer/care-at-mayo-clinic/mac-20353678
+              - listitem [ref=f24e606]:
+                - link "Congenital heart disease" [ref=f24e608] [cursor=pointer]:
+                  - /url: https://www.mayoclinic.org/diseases-conditions/adult-congenital-heart-disease/care-at-mayo-clinic/mac-20355464
+              - listitem [ref=f24e614]:
+                - link "Glioma" [ref=f24e616] [cursor=pointer]:
+                  - /url: https://www.mayoclinic.org/diseases-conditions/glioma/care-at-mayo-clinic/mac-20350259
+              - listitem [ref=f24e622]:
+                - link "Heart arrhythmia" [ref=f24e624] [cursor=pointer]:
+                  - /url: https://www.mayoclinic.org/diseases-conditions/heart-arrhythmia/care-at-mayo-clinic/mac-20350678
+              - listitem [ref=f24e630]:
+                - link "Heart valve disease" [ref=f24e632] [cursor=pointer]:
+                  - /url: https://www.mayoclinic.org/diseases-conditions/heart-valve-disease/care-at-mayo-clinic/mac-20353736
+              - listitem [ref=f24e638]:
+                - link "Living-donor transplant" [ref=f24e640] [cursor=pointer]:
+                  - /url: https://www.mayoclinic.org/tests-procedures/living-donor-transplant/care-at-mayo-clinic/pcc-20384790
+              - listitem [ref=f24e646]:
+                - link "Lung transplant" [ref=f24e648] [cursor=pointer]:
+                  - /url: https://www.mayoclinic.org/tests-procedures/lung-transplant/care-at-mayo-clinic/pcc-20384757
+              - listitem [ref=f24e654]:
+                - link "Sarcoma" [ref=f24e656] [cursor=pointer]:
+                  - /url: https://www.mayoclinic.org/diseases-conditions/sarcoma/care-at-mayo-clinic/mac-20351051
+              - listitem [ref=f24e662]:
+                - link "Testicular cancer" [ref=f24e664] [cursor=pointer]:
+                  - /url: https://www.mayoclinic.org/diseases-conditions/testicular-cancer-care/care-at-mayo-clinic/mac-20352994
+        - generic [ref=f24e675]:
+          - heading "Fuel groundbreaking medical research!" [level=2] [ref=f24e680]
+          - paragraph [ref=f24e684]: Your donation powers the future of medicine and helps save lives.
+          - link "Give Today" [ref=f24e687] [cursor=pointer]:
+            - /url: https://give.mayoclinic.org/give/616729?utm_source=devorgtilead&utm_medium=devweb&utm_campaign=devevergreen/#!/donation/checkout?&preset1=50&preset2=100&preset3=250&preset4=1000?currency=USD&amount=100&c_src=25R001WG1MWV90Z24B
+    - navigation "Secondary" [ref=f24e695]:
+      - generic [ref=f24e698]:
+        - generic [ref=f24e700]:
+          - list [ref=f24e704]:
+            - listitem [ref=f24e705]:
+              - link "Find a doctor" [ref=f24e707] [cursor=pointer]:
+                - /url: https://www.mayoclinic.org/appointments/find-a-doctor
+            - listitem [ref=f24e717]:
+              - link "Explore careers" [ref=f24e719] [cursor=pointer]:
+                - /url: https://jobs.mayoclinic.org
+            - listitem [ref=f24e729]:
+              - link "Sign up for free e-newsletters" [ref=f24e731] [cursor=pointer]:
+                - /url: https://links.e.response.mayoclinic.org/preferencecenter
+          - generic [ref=f24e742]:
+            - heading [level=2] [ref=f24e745]:
+              - link "About Mayo Clinic" [ref=f24e747] [cursor=pointer]:
+                - /url: /about-mayo-clinic
+            - list [ref=f24e754]:
+              - listitem [ref=f24e755]:
+                - link "About this Site" [ref=f24e757] [cursor=pointer]:
+                  - /url: /about-this-site
+              - listitem [ref=f24e762]:
+                - link "Contact Us" [ref=f24e764] [cursor=pointer]:
+                  - /url: /about-mayo-clinic/contact
+              - listitem [ref=f24e769]:
+                - link "Locations" [ref=f24e771] [cursor=pointer]:
+                  - /url: /locations
+              - listitem [ref=f24e776]:
+                - link "Health Information Policy" [ref=f24e778] [cursor=pointer]:
+                  - /url: /about-this-site/health-information-policy
+              - listitem [ref=f24e783]:
+                - link "Medicare Accountable Care Organization (ACO)" [ref=f24e785] [cursor=pointer]:
+                  - /url: /about-mayo-clinic/aco
+              - listitem [ref=f24e790]:
+                - link "Media Requests" [ref=f24e792] [cursor=pointer]:
+                  - /url: https://newsnetwork.mayoclinic.org/newsroom/
+              - listitem [ref=f24e797]:
+                - link "News Network" [ref=f24e799] [cursor=pointer]:
+                  - /url: https://newsnetwork.mayoclinic.org/
+              - listitem [ref=f24e804]:
+                - link "Price Transparency" [ref=f24e806] [cursor=pointer]:
+                  - /url: /billing-insurance/price-estimates/chargemaster
+        - generic [ref=f24e812]:
+          - generic [ref=f24e814]:
+            - heading [level=2] [ref=f24e817]:
+              - link [ref=f24e819] [cursor=pointer]:
+                - /url: https://www.mayoclinic.org/medical-professionals
+                - generic [ref=f24e820]:
+                  - text: Medical
+                  - generic [ref=f24e821]: Professionals
+            - list [ref=f24e826]:
+              - listitem [ref=f24e827]:
+                - link "AskMayoExpert" [ref=f24e829] [cursor=pointer]:
+                  - /url: https://askmayoexpert.mayoclinic.org/
+              - listitem [ref=f24e834]:
+                - link "Clinical Trials" [ref=f24e836] [cursor=pointer]:
+                  - /url: https://www.mayo.edu/research/clinical-trials
+              - listitem [ref=f24e841]:
+                - link "Mayo Clinic Alumni Association" [ref=f24e843] [cursor=pointer]:
+                  - /url: https://alumniassociation.mayo.edu
+              - listitem [ref=f24e848]:
+                - link "Refer a Patient" [ref=f24e850] [cursor=pointer]:
+                  - /url: https://www.mayoclinic.org/medical-professionals/provider-relations/refer-patient
+          - generic [ref=f24e856]:
+            - heading [level=2] [ref=f24e859]:
+              - link "Businesses" [ref=f24e861] [cursor=pointer]:
+                - /url: https://businessdevelopment.mayoclinic.org
+            - list [ref=f24e868]:
+              - listitem [ref=f24e869]:
+                - link "Executive Health Program" [ref=f24e871] [cursor=pointer]:
+                  - /url: /executive-health
+              - listitem [ref=f24e876]:
+                - link "International Business Collaborations" [ref=f24e878] [cursor=pointer]:
+                  - /url: /about-mayo-clinic/international-business-collaborations
+              - listitem [ref=f24e883]:
+                - link "Facilities & Real Estate" [ref=f24e885] [cursor=pointer]:
+                  - /url: /about-mayo-clinic/facilities-and-real-estate
+              - listitem [ref=f24e890]:
+                - link "Supplier Information" [ref=f24e892] [cursor=pointer]:
+                  - /url: /about-mayo-clinic/supplier-information
+          - generic [ref=f24e898]:
+            - heading [level=2] [ref=f24e901]:
+              - link "Students" [ref=f24e903] [cursor=pointer]:
+                - /url: https://college.mayo.edu
+            - list [ref=f24e910]:
+              - listitem [ref=f24e911]:
+                - link "Admissions Requirements" [ref=f24e913] [cursor=pointer]:
+                  - /url: https://college.mayo.edu/admissions-and-tuition/
+              - listitem [ref=f24e918]:
+                - link "Degree Programs" [ref=f24e920] [cursor=pointer]:
+                  - /url: https://college.mayo.edu/academics/
+              - listitem [ref=f24e925]:
+                - link "Student & Faculty Portal" [ref=f24e927] [cursor=pointer]:
+                  - /url: https://edlinkplus.mayo.edu/
+        - generic [ref=f24e933]:
+          - generic [ref=f24e935]:
+            - heading [level=2] [ref=f24e938]:
+              - link "Researchers" [ref=f24e940] [cursor=pointer]:
+                - /url: https://www.mayo.edu/research
+            - list [ref=f24e947]:
+              - listitem [ref=f24e948]:
+                - link "Research Faculty" [ref=f24e950] [cursor=pointer]:
+                  - /url: https://www.mayo.edu/research/faculty
+              - listitem [ref=f24e955]:
+                - link "Laboratories" [ref=f24e957] [cursor=pointer]:
+                  - /url: https://www.mayo.edu/research/labs
+          - generic [ref=f24e963]:
+            - heading [level=2] [ref=f24e966]:
+              - link [ref=f24e968] [cursor=pointer]:
+                - /url: /international
+                - generic [ref=f24e969]:
+                  - text: International
+                  - generic [ref=f24e970]: Patients
+            - list [ref=f24e975]:
+              - listitem [ref=f24e976]:
+                - link "Appointments" [ref=f24e978] [cursor=pointer]:
+                  - /url: /international/contact
+              - listitem [ref=f24e983]:
+                - link "Financial Services" [ref=f24e985] [cursor=pointer]:
+                  - /url: /international/costs-and-insurance
+              - listitem [ref=f24e990]:
+                - link "Representative Offices" [ref=f24e992] [cursor=pointer]:
+                  - /url: /international/support/representative-offices
+          - generic [ref=f24e998]:
+            - heading [level=2] [ref=f24e1001]:
+              - link [ref=f24e1003] [cursor=pointer]:
+                - /url: /billing-insurance/financial-assistance
+                - generic [ref=f24e1004]:
+                  - text: Charitable Care & Financial
+                  - generic [ref=f24e1005]: Assistance
+            - link "Community Health Needs Assessment" [ref=f24e1011] [cursor=pointer]:
+              - /url: https://www.communityengagement.mayoclinic.org/community-health-needs-assessment
+            - list [ref=f24e1017]:
+              - listitem [ref=f24e1018]:
+                - link "Financial Assistance Documents – Arizona" [ref=f24e1020] [cursor=pointer]:
+                  - /url: /billing-insurance/financial-assistance/arizona-documents
+              - listitem [ref=f24e1025]:
+                - link "Financial Assistance Documents – Florida" [ref=f24e1027] [cursor=pointer]:
+                  - /url: /billing-insurance/financial-assistance/florida-documents
+              - listitem [ref=f24e1032]:
+                - link "Financial Assistance Documents – Minnesota" [ref=f24e1034] [cursor=pointer]:
+                  - /url: /billing-insurance/financial-assistance/minnesota-documents
+        - separator [ref=f24e1041]
+        - generic [ref=f24e1045]:
+          - heading "Follow Mayo Clinic" [level=2] [ref=f24e1048]
+          - list [ref=f24e1050]:
+            - listitem [ref=f24e1051]:
+              - link "X" [ref=f24e1053] [cursor=pointer]:
+                - /url: https://x.com/mayoclinic
+            - listitem [ref=f24e1061]:
+              - link "YouTube" [ref=f24e1063] [cursor=pointer]:
+                - /url: https://www.youtube.com/user/mayoclinic
+            - listitem [ref=f24e1071]:
+              - link "Facebook" [ref=f24e1073] [cursor=pointer]:
+                - /url: https://www.facebook.com/MayoClinic
+            - listitem [ref=f24e1081]:
+              - link "LinkedIn" [ref=f24e1083] [cursor=pointer]:
+                - /url: https://www.linkedin.com/company/mayo-clinic
+            - listitem [ref=f24e1091]:
+              - link "Instagram" [ref=f24e1093] [cursor=pointer]:
+                - /url: https://www.instagram.com/mayoclinic/
+        - generic [ref=f24e1106]:
+          - heading "Get the Mayo Clinic app" [level=2] [ref=f24e1109]
+          - list [ref=f24e1111]:
+            - listitem:
+              - generic:
+                - generic:
+                  - link "Android App on Google Play":
+                    - /url: https://play.google.com/store/apps/details?id=com.mayoclinic.patient&hl=en%27
+                    - img "Android App on Google Play"
+            - listitem:
+              - generic:
+                - generic:
+                  - link "Apple Download on the App Store":
+                    - /url: https://apps.apple.com/us/app/mayo-clinic/id523220194
+                    - img "Apple Download on the App Store"
+    - contentinfo [ref=f24e1115]:
+      - generic [ref=f24e1118]:
+        - navigation "legal" [ref=f24e1120]:
+          - list [ref=f24e1123]:
+            - listitem [ref=f24e1124]:
+              - link "Terms & Conditions" [ref=f24e1126] [cursor=pointer]:
+                - /url: /about-this-site/terms-conditions-use-policy
+            - listitem [ref=f24e1131]:
+              - link "Privacy Policy" [ref=f24e1133] [cursor=pointer]:
+                - /url: /about-this-site/privacy-policy
+            - listitem [ref=f24e1138]:
+              - link "Notice of Privacy Practices" [ref=f24e1140] [cursor=pointer]:
+                - /url: https://mcforms.mayo.edu/mc5200-mc5299/mc5256-01.pdf
+            - listitem [ref=f24e1145]:
+              - link "Notice of Nondiscrimination" [ref=f24e1147] [cursor=pointer]:
+                - /url: https://mcforms.mayo.edu/mc2500-mc2599/mc2570-61.pdf
+            - listitem [ref=f24e1152]:
+              - link "Digital Accessibility Statement" [ref=f24e1154] [cursor=pointer]:
+                - /url: /about-this-site/accessibility-statement
+            - listitem [ref=f24e1159]:
+              - link "Advertising & Sponsorship Policy" [ref=f24e1161] [cursor=pointer]:
+                - /url: /about-this-site/advertising-sponsorship-policy
+            - listitem [ref=f24e1166]:
+              - link "Site Map" [ref=f24e1168] [cursor=pointer]:
+                - /url: /site-help/site-map
+            - listitem [ref=f24e1173]:
+              - link "Manage Cookies" [ref=f24e1175] [cursor=pointer]:
+                - /url: https://www.mayoclinic.org/#
+        - separator [ref=f24e1184]
+        - generic [ref=f24e1186]:
+          - paragraph [ref=f24e1190]: © 1998-2026 Mayo Foundation for Medical Education and Research (MFMER). All rights reserved.
+          - navigation "language selector" [ref=f24e1192]:
+            - generic [ref=f24e1193]:
+              - generic [ref=f24e1194]: "Language:"
+              - 'button "Language: English" [ref=f24e1195] [cursor=pointer]':
+                - generic [ref=f24e1196]: English
+  - alert [ref=f24e1198]

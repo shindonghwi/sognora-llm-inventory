@@ -1,0 +1,8 @@
+[     441ms] [LOG] [BlockTrigger] pageName: index @ :0
+[     441ms] [LOG] [BlockTrigger] resolvedPath: /kr/ko/e @ :0
+[     441ms] [LOG] [BlockTrigger] oldUrl:  @ :0
+[     441ms] [LOG] [BlockTrigger] 🟢 차단 없음 → 정상 실행 @ :3
+[  116004ms] [LOG] [BlockTrigger] pageName: all-vehicles @ :0
+[  116004ms] [LOG] [BlockTrigger] resolvedPath: /kr/ko/e/all-vehicles @ :0
+[  116005ms] [LOG] [BlockTrigger] oldUrl: https://www.hyundai.com/kr/ko/e/all-vehicles @ :0
+[  116005ms] [LOG] [BlockTrigger] 🟢 차단 없음 → 정상 실행 @ :3

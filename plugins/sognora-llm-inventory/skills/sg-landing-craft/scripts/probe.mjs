@@ -87,9 +87,11 @@ const motion = await page.evaluate(() => {
     if (++i > 600) break;
     const cs = getComputedStyle(el);
     if (cs.transitionDuration && cs.transitionDuration !== "0s") {
-      for (const d of cs.transitionDuration.split(",").map((s) => s.trim())) durations[d] = (durations[d] ?? 0) + 1;
-      for (const e of cs.transitionTimingFunction.split(",").map((s) => s.trim())) easings[e.slice(0, 40)] = (easings[e.slice(0, 40)] ?? 0) + 1;
-      for (const p of cs.transitionProperty.split(",").map((s) => s.trim())) props[p] = (props[p] ?? 0) + 1;
+      // 쉼표 분리 시 괄호 안(cubic-bezier 인자)은 건너뛴다 — 파편 카운트 방지
+      const splitTop = (s) => s.split(/,(?![^(]*\))/).map((x) => x.trim());
+      for (const d of splitTop(cs.transitionDuration)) durations[d] = (durations[d] ?? 0) + 1;
+      for (const e of splitTop(cs.transitionTimingFunction)) easings[e.slice(0, 48)] = (easings[e.slice(0, 48)] ?? 0) + 1;
+      for (const p of splitTop(cs.transitionProperty)) props[p] = (props[p] ?? 0) + 1;
     }
   }
   const top = (o, n = 5) => Object.entries(o).sort((a, b) => b[1] - a[1]).slice(0, n);
