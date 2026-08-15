@@ -204,20 +204,23 @@ async function extract(p) {
         };
       };
       const containers = [];
+      const pushContainer = (el, depth) => {
+        const kids = [...el.children].filter(vis);
+        if (kids.length < 3) return;
+        const r = el.getBoundingClientRect();
+        containers.push({ w: r.width, h: r.height, depth, children: kids.map(childInfo) });
+      };
       const walk = (el, depth) => {
         if (depth > 5 || containers.length >= 15) return;
         for (const k of [...el.children].filter(vis)) {
-          const kids = [...k.children].filter(vis);
-          if (kids.length >= 3) {
-            const r = k.getBoundingClientRect();
-            containers.push({ w: r.width, depth, children: kids.map(childInfo) });
-          }
+          pushContainer(k, depth);
           walk(k, depth + 1);
         }
       };
-      m.members.forEach((el) => walk(el, 0));
-      // 시그니처용 레이아웃 컨테이너: 섹션 폭 50% 이상 중 자식이 가장 많은 것 (동률은 얕은 쪽), 없으면 섹션 루트
-      const wide = containers.filter((c) => c.w >= 0.5 * secW).sort((a, b) => b.children.length - a.children.length || a.depth - b.depth);
+      m.members.forEach((el) => { pushContainer(el, 0); walk(el, 0); }); // 멤버 루트 자체도 후보 (병합 섹션의 칩 행 등)
+      // 시그니처용 레이아웃 컨테이너: 섹션 폭 50% 이상 중 자식 최다 → 동률이면 "면적이 큰 쪽"
+      // (텍스트 헤더 3줄이 실제 레이아웃 그리드를 이기던 오판의 수정)
+      const wide = containers.filter((c) => c.w >= 0.5 * secW).sort((a, b) => b.children.length - a.children.length || b.w * b.h - a.w * a.h);
       const children = wide.length ? wide[0].children : m.members.flatMap((el) => [...el.children].filter(vis).map(childInfo));
       const textEls = [], mediaEls = [], textBlocks = [];
       let contentArea = 0;
