@@ -57,7 +57,7 @@ toss·linear·jobber가 좋은 이유는 세 가지다: **성숙한 시스템**(
 
 ## 자산 생성 파이프라인 (I클래스 전용)
 
-- Codex `$imagen` / Claude Code는 `codex` CLI imagen 호출 / 불가 시 인라인 SVG·CSS 또는 "미달성" 보고.
+- Codex `$imagen` / Claude Code는 `codex` CLI imagen 호출 / 둘 다 불가 시 "미달성" 보고(SVG 즉석 작도로 때우지 않는다 — §SVG 정책. CSS·마이크로 SVG는 정책 허용 범위에서만).
 - 아이콘: 투명 배경 생성(세트 공통 프롬프트) → 잔여 제거 → `magick -trim +repage`(또는 PIL getbbox) → 캔버스 정규화.
 - **E클래스(얼굴·후기·현장 실적)에는 생성 절대 금지. P클래스(제품 화면)는 실캡처만.**
 
