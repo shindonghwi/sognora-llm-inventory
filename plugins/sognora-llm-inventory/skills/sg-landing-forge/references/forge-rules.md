@@ -71,10 +71,7 @@
 
 레퍼런스의 절반은 코드다: framer는 CSS 모션 2개 뒤에 **JS 스프링 175건(전부 임계감쇠)**, toss는 `opacity = 1 − translateY/50`로 결합된 IO 리빌 시스템, meshy는 `backdrop-filter: blur(20px) saturate(2.2)` 유리 + 고정 앰비언트 글로우 + CTA 그라데이션 스윕, jobber는 `mask-image` 밴드 전환 + 호버 손그림 밑줄. **이 지식을 읽고도 정적 섹션만 쌓는 것은 공정 위반이다.**
 
-- **하한**: 엔지니어드 모먼트 3개 이상 — ① 히어로 인터랙티브(슬라이더·라이브 데모·캔버스·비교 위젯 등 조작 가능한 것) ② 스크롤 연출(리빌 시스템·sticky 연출 — reduced-motion 안전 설계) ③ 시그니처 마이크로 인터랙션(브랜드가 남는 호버·전환 — jobber 밑줄급)
-- 각 항목은 `engineering.md`에 상태 전이표·트리거·duration/easing·구현 방식·수용 기준으로 명세되고, 검수에서 **동작 증거**(probe 수치 또는 조작 전후 캡처 쌍)를 첨부해야 완성이다
-- 개폐·전환류 0ms 금지(120~150ms 페이드 하한), 어휘는 토큰(duration 1~2·easing 1) 안에서
-- 구현은 프로젝트 실제 스택의 컴포넌트 코드 — 일회용 정적 HTML은 산출물로 인정하지 않는다
+**집행: `behavior.mjs`** — 하한 3(히어로 인터랙티브·스크롤 연출·시그니처 마이크로, 역할 커버 필수)은 `_forge/engineering.json`(스키마 §8a)에 AD가 선언하고, 기계가 선언된 트리거를 실행해 선언된 computed-diff가 실제 발생하는지 검증한다. 선언(AD)과 통과 의무(빌더)의 분리가 "억지 인터랙션"을 구조로 차단한다. no-JS·reduced-motion에서 텍스트 비가시 = 실패(리빌의 opacity:0 잔류 사고). 개폐·전환류 0ms 금지(120~150ms 하한), 어휘는 토큰 안에서. 구현은 프로젝트 실제 스택 코드만 — 일회용 정적 HTML 불인정. 질(키치인가, 이해에 복무하는가)은 패널 몫.
 
 ## 3. Squint 5축 — 캡처를 실제로 보고 판정 (제작 중 + 완료 후 2회)
 
@@ -100,9 +97,11 @@
 
 `_forge/history.json`의 마지막 실행과 **베이스 팔레트 계열 상이**(rules-lib `samePaletteFamily` — detect 산출물 `page.bodyBg`로 대조) + **7축 중 3축 이상 상이**(directions.md). 완료 시 이번 실행 append.
 
+**리드 회전(v1)**: history에 `lead` 필드 기록. 동일 리드는 최근 3회 내 재사용 금지(사용자가 지명한 경우만 예외). 변환 아키텍처에서 리드는 다양성의 제1축이다 — "매번 같은 형태"의 병은 생성 모드의 LLM 사전분포 수렴이었고, 변환에서는 리드 선택 × 자기 팔레트 × 콘텐츠로 분산이 구조화된다.
+
 ## 6b. 자기 diff 게이트 (공정 §5 — 스펙이 원본이다)
 
-섹션 스펙(`_forge/sections/<n>-spec.md`)은 수치로 쓴다: 그리드 열 구성·컨테이너 폭·패딩·타입 크기/행간/무게·자산 슬롯 치수·모션 값 — 각 수치에 출처(라이브러리 문서 또는 DESIGN.md 토큰). 빌드 직후 `capture.mjs`로 해당 섹션을 측정해 대조한다.
+v1의 원본은 손 스펙이 아니라 **ir.json + 브리프**다: 골격 수치(그리드·컨테이너·패딩·높이)는 리드 IR에서, 치환 수치(타입·색)는 tokens.json에서 온다. 빌드 직후 `capture.mjs`로 해당 섹션을 측정해 브리프의 수치와 대조한다. 생성 섹션(리드 아날로그 없음)만 손 스펙이 원본이다.
 
 **허용 오차 밴드**: 치수·패딩 ±8px · 폰트 크기 정확 일치(토큰이므로) · 행간 ±2px · 색 정확 일치(hex 토큰) · 모션 duration 정확 일치. 밴드 밖 = 해당 섹션 재작업. 스펙에 없는 값이 측정되면 그 자체가 위반이다.
 
@@ -129,9 +128,41 @@
 - 🔴 반영 → 재평가. 2회 재평가에도 ②가 틀리면 서사(plan.md)로 회귀
 - 자기 평가로 대체한 경우 보고서에 "자기 평가"임을 명시(신뢰도 구분)
 
+## 8a. 기계 계약 스키마 (v1)
+
+**`_forge/tokens.json`** — conform.mjs의 법전. AD가 쓰고, 승인 시점 sha256을 provenance에 기록(`--expect-hash` 대조 — 빌더가 색을 추가해 합법화하는 최후 수단 차단):
+```json
+{ "colors": { "base": [{"hex":"#…","role":"neutral|brand|semantic"}],
+    "derived": [{"name":"glass","formula":"#FFFFFF @ .7 blur(20px)","resolved":"rgba(255,255,255,0.7)"}],
+    "alphaPolicy": "rgb-in-set-alpha-free", "budget": {"neutral":6,"brand":2,"semantic":2} },
+  "type": { "viewports":[1440,390], "steps":[{"name":"body","px":{"1440":16,"390":15}}] },
+  "radius": [0,8,16], "motion": {"durationsMs":[160],"easings":["cubic-bezier(.2,0,0,1)"]},
+  "skipSelectors": [], "tokenFiles": ["src/styles/tokens.css"] }
+```
+alpha 정책: computed 색의 (r,g,b)가 base∪derived∪{흰·검}에 있으면 alpha 자유 — 유리·스크림·글로우는 토큰의 alpha 변형으로 합법. derived는 AD 선언만. skipSelectors는 AD 소유(빌더 자기 면제 금지). radius 미선언=미관할, 빈 배열=0·full 외 금지.
+
+**`_forge/engineering.json`** — behavior.mjs의 법전. 번들 record/probe에서 자동 시드 후 AD가 가감:
+```json
+{ "minCount": 3, "roles": ["hero-interactive","scroll","micro"],
+  "items": [{ "id":"hero-demo", "section":"01", "role":"hero-interactive",
+    "selector":".hero [data-demo]", "trigger":"hover|click|scroll",
+    "expect": {"props":["transform","boxShadow"], "to":{"opacity":"1"}},
+    "durationMs":160, "jsRequired":true, "reducedMotionSafe":true, "source":"ir.json §hover[2]" }] }
+```
+
+## 8b. 재현 시험 체크리스트 (Tier-R 번들 완전성 — P1 통과 조건)
+
+번들이 리드 자격을 얻으려면: ① tree 1440/390 양쪽 존재, scrollHeight 실제 페이지와 일치 ② 섹션 분할이 눈으로 본 섹션 수와 ±1 ③ @keyframes 수확(0개면 CSS 수확 실패 의심) ④ 자산 매니페스트에 표시 rect 결합률 ≥50% ⑤ record에 호버 또는 리빌 타임라인 ≥1 ⑥ 재현 불가 목록 명시(WebGL·로그인 뒤 화면·서버 데이터). **완전성의 최종 기준은 재현 시험이다: IR만으로 원본을 오차 밴드 내 재건축→capture 대조 통과 시 `ir.json.reproduction.stamp`에 기록.** 스탬프 실패는 계기 결함 신호 — 문서가 아니라 계기를 고쳐라.
+
+## 8c. 잔존·divergence 게이트 (신종 사고 "덜 치환된 클론"의 방어선 — 격하 금지)
+
+- **기계부(P6)**: ⓐ 리드 팔레트 잔존 — 리드 색은 tokens.json에 없으므로 conform 위반으로 자동 검출 ⓑ verbatim 잔존 — 출하 코드에서 리드 CSS 리터럴(고유 클래스명·시그니처 값 조합) grep = 0 ⓒ 자산 해시 — 번들 자산과 출하 자산의 해시 교집합 = 0
+- **사람부(P7)**: 신선한 패널에게 최종 캡처만 주고 "이 페이지가 참고한 원본 레퍼런스를 특정할 수 있는가" — 특정되면 실패. 구조 차용은 업계 보편이나 **정체는 남으면 안 된다.**
+- provenance.md는 transform ledger로: 유지한 구조 요소·제거한 시그니처를 전수 기록(감사 가능성).
+
 ## 등급 (자산 캡이 상한을 정한다)
 
-- **A**: 🔴 0 · QF 0 · 자기 diff 전 섹션 통과 · **패리티 통과** · **엔지니어드 모먼트 3+ 동작 증거 완비** · 페르소나 ② 정답+🔴 피드백 0 · 자산 게이트키퍼 A · 성능 예산 준수
-- **B**: 🔴 0 · 패리티 1축 -2 이내 · 또는 **E클래스 부재 캡**(그 외 전부 통과여도 B — 숙제 발행으로 상향 경로 제시)
+- **A**: 🔴 0 · QF 0 · **conform 위반 0(소스+렌더)** · **behavior 전 항목 통과(선언 3+·no-JS/reduced-motion 무결)** · 자기 diff 전 섹션 통과 · **잔존 0 + divergence 통과** · 패리티 통과 · 페르소나 ② 정답+🔴 피드백 0 · 자산 게이트키퍼 A · 성능 예산 준수
+- **B**: 🔴 0 · 패리티 1축 -2 이내 · 또는 **E클래스 부재 캡** · 또는 **생성 폴백 캡**(번들 확보 불가로 변환 경로를 못 탄 런은 전부 통과여도 B — 5전 5패 전적의 정직한 반영)
 - **C**: 🔴 1+ 또는 자기 diff 실패 섹션 잔존 또는 패리티 2축+ 미달 — 재작업
 - **D**: 가짜 증거(생성 얼굴·후기) 또는 사실 무근 카피 — 채택 금지
