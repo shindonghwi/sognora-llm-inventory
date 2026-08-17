@@ -6,7 +6,7 @@ description: 랜딩을 레퍼런스급 품질로 단조한다 — v1 변환 아�
 # sg-landing-forge v1 — 변환 단조
 
 > 이 파일 하나가 Claude Code와 Codex 양쪽에서 동작한다. 각 페이즈는 **읽는 파일 → 쓰는 파일** 계약으로 정의되며, 서브에이전트는 실행 최적화일 뿐이다(폴백은 "런타임 중립" 절).
-> 검수·채점·스키마는 `references/forge-rules.md` · Tier-S 요약 라이브러리 `references/library/` · Tier-R 번들 캐시 `references/bundles/`(**로컬 전용, 커밋 금지**) · 방향 추첨 `references/directions.md`.
+> 검수·채점·스키마는 `references/forge-rules.md` · 패널 브리프 `references/panel-prompts.md` · Tier-S 요약 라이브러리 `references/library/` · Tier-R 번들 캐시 `references/bundles/`(**로컬 전용, 커밋 금지**) · 방향 추첨 `references/directions.md`.
 
 ## 세계관 — 왜 변환인가
 
@@ -58,8 +58,8 @@ description: 랜딩을 레퍼런스급 품질로 단조한다 — v1 변환 아�
 - **P3 병렬: 자산 ∥ 카피** — 자산 스프린트: **아이콘 세트 포함**(라벨·카테고리에 시각 앵커가 필요하면 imagen 투명 생성→trim→캔버스 정규화→토큰 색→인슬롯 확인 — forge-rules §2d, 의미 결합 없는 장식은 여전히 금지), 슬롯 명세는 **ir.json의 실측 슬롯에서 자동 도출**(치수·종횡비·object-fit — 슬롯 우선 철칙·인슬롯 핏 검증·3회 실패 시 슬롯 재설계 콜백 유지), E/P/I 클래스 규칙·시장 정합·성능 예산(히어로 ≤200KB webp)·og:image/파비콘, 완료 시 게이트키퍼(인슬롯 렌더 캡처 판정). ∥ 카피: facts 1:1, sg-ko-humanize 금지 목록, 소리 내어 읽기 테스트, 가격은 숫자로.
 - **P4 브리프 컴파일** — 섹션별 `_forge/briefs/<n>.md` = **verbatim 병합**(요약 금지): IR 슬라이스(해당 섹션 수치 원문) + 토큰 치환표(리드값→자기 토큰) + engineering 항목 + 금지 목록(면제 반영) + 수용 기준(어느 게이트가 무엇을 재는가) + 자산 파일 경로. **완전성 린트**: IR 슬라이스의 모든 수치가 브리프에 등장하는지 기계 대조.
 - **P5 변환 빌드** — 빌더는 **브리프 하나만 읽는다.** IR 골격→프로젝트 실제 스택 코드로 1:1 전사(**창조 금지, 전사+치환만**), 동작은 engineering.json대로 구현. 섹션 완료 즉시 `conform.mjs --lint`(raw 색·font-size 리터럴 0).
-- **P6 기계 배터리** — 단일 브라우저 세션에서 일괄(재실행 저렴): `detect.mjs`(🔴 0·QF 0) + `conform.mjs --url`(토큰 준수·리드 색 잔존 자동 검출·해시 대조) + `behavior.mjs`(engineering.json 전 항목 실측 + no-JS/reduced-motion 가시성) + 자기 diff(capture ↔ ir.json, 밴드 §6b) + **잔존 verbatim 0**(리드 CSS 리터럴·자산 해시 grep) + **깊이 대조**(스크롤 길이·섹션 수 vs 리드 ir.json — -40% 초과 축소는 mapping.md 삭제 사유 전수 기재 필수, §2d) + **장면 예산**(동일 배경·시그니처 연속 3섹션 = 위반, §2d) + 성능 예산 + 프로젝트 표준(type-check). 결과 `_forge/qa/`.
-- **P7 패널** — 신선한 컨텍스트: ① 패리티(같은 골격이므로 공정한 비교 — 번들 캡처와 5축 절대 채점, §7a) ② 페르소나 5문항(§7b) ③ **divergence 판정**("원본 레퍼런스를 특정할 수 있는가" — 특정되면 실패, 신종 사고 '덜 치환된 클론'의 방어선) ④ **AI-티 시각 채점(§7c)** — 블라인드 판정자가 섹션별 스크린샷만 보고 AI-스러움 역척도 1~5점, `_forge/qa/ai-score.md` ⑤ **매력 채점(§7d)** — 블라인드 디자이너 2인, 절대 /100 + 경쟁 2종 대비. **≥70·경쟁 −20 이내 미달이면 P8이 아니라 P2(중심 장면·방향 재설계)로 회귀.**
+- **P6 기계 배터리** — **한 명령으로 일괄**: `node scripts/audit.mjs --url <URL> --out _forge/qa --tokens _forge/tokens.json --engineering _forge/engineering.json --ir <리드 IR> --lint src` → 판정표 `_forge/qa/audit.md`(**미제공 게이트는 통과가 아니라 '판정되지 않음'으로 표기되고 보고서에 그대로 고지된다**) + 패널 입력 캡처. 내부 구성: `detect.mjs`(🔴 0·QF 0) + `conform.mjs --url`(토큰 준수·리드 색 잔존 자동 검출·해시 대조) + `behavior.mjs`(engineering.json 전 항목 실측 + no-JS/reduced-motion 가시성) + 자기 diff(capture ↔ ir.json, 밴드 §6b) + **잔존 verbatim 0**(리드 CSS 리터럴·자산 해시 grep) + **깊이 대조**(스크롤 길이·섹션 수 vs 리드 ir.json — -40% 초과 축소는 mapping.md 삭제 사유 전수 기재 필수, §2d) + **장면 예산**(동일 배경·열구성 연속 3밴드 = 위반, §2d) + 성능 예산 + 프로젝트 표준(type-check). 결과 `_forge/qa/`.
+- **P7 패널** — **브리프는 `references/panel-prompts.md`의 §A~§D를 문면 그대로 사용**(매 실행 프롬프트를 새로 짓지 않는다 — 기준 흔들림 방지). 신선한 컨텍스트 4인 동시 실행: ① 패리티(같은 골격이므로 공정한 비교 — 번들 캡처와 5축 절대 채점, §7a) ② 페르소나 5문항(§7b) ③ **divergence 판정**("원본 레퍼런스를 특정할 수 있는가" — 특정되면 실패, 신종 사고 '덜 치환된 클론'의 방어선) ④ **AI-티 시각 채점(§7c)** — 블라인드 판정자가 섹션별 스크린샷만 보고 AI-스러움 역척도 1~5점, `_forge/qa/ai-score.md` ⑤ **매력 채점(§7d)** — 블라인드 디자이너 2인, 절대 /100 + 경쟁 2종 대비. **≥70·경쟁 −20 이내 미달이면 P8이 아니라 P2(중심 장면·방향 재설계)로 회귀.**
 - **P8 라운드 2 (기본 포함)** — 두 갈래: **철거 재단조**(AI-티 채점 ≤3점 섹션 — 완전 삭제 후 치환 전략을 최소 1축 바꿔 재단조, 수리 금지, 2연속 철거면 AD 콜백으로 생략/재설계 — §7c) + **정밀 수리**(그 외 패널 지적) → P6·P7④ 재실행.
 - **P9 배포·보고·기록** — og/파비콘/성능/리다이렉트 → 보고서(섹션 캡처, facts→카피 대응, transform ledger, 게이트·패널 수치, 숙제·캡 사유) → history.json append(**리드 사용 기록 포함**).
 
@@ -74,6 +74,7 @@ description: 랜딩을 레퍼런스급 품질로 단조한다 — v1 변환 아�
 | `behavior.mjs` | engineering.json 선언 실측 검증 + no-JS/reduced-motion 가시성 |
 | `detect.mjs` / `probe.mjs` | AI 티 37룰 / 호버·리빌·모션 실측 (구세대에서 계승) |
 | `capture.mjs` (sg-web-replicate) | 자기 diff 측정 |
+| `audit.mjs` | **P6 배터리 러너** — 캡처+detect+conform+behavior+장면 예산+깊이 대조를 한 명령으로, 판정표와 패널 입력까지 생성. 누락 게이트를 '미제공'으로 명시 |
 
 ## 라이브러리 — 2단
 
