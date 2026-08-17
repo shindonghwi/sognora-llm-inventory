@@ -25,7 +25,7 @@ description: 랜딩을 레퍼런스급 품질로 단조한다 — v1 변환 아�
 | 토큰 어휘 예산(중립≤6·브랜드≤2·시맨틱≤2·duration≤2·easing≤1)·변조 방지(해시) | `conform.mjs` 자체 린트 + `--expect-hash` | P2·P6 |
 | 엔지니어드 모먼트 실재(하한 3: 히어로 인터랙티브+스크롤 연출+시그니처 마이크로) | `behavior.mjs` — engineering.json 선언을 실행·검증(선언은 AD, 검증은 기계 — 억지 인터랙션 인센티브 차단) | P6 |
 | no-JS·reduced-motion에서 콘텐츠 가시 | `behavior.mjs` 가시성 배터리 | P6 |
-| AI 티·품질 결함·한글 조판 | `detect.mjs`(면제 반영, 🔴 0·QF 0) | P6 |
+| AI 티·품질 결함·한글 조판 | `detect.mjs`(면제 반영, 🔴 0·QF 0) — 번호 텍스트 목록(IC6)·서술형 스탯 밴드(DE3) 포함 | P6 |
 | 골격 수치가 IR 오차 밴드 내 | 자기 diff(`capture.mjs` ↔ ir.json) | P6 |
 | 리드 표현 잔존 0(팔레트·CSS 리터럴·자산 해시) | 잔존 검사 — conform(리드 색은 토큰에 없으므로 자동 위반) + verbatim grep + 해시 대조 | P6 |
 | 리드로 오인되지 않을 것 | 패널 divergence 판정("이 페이지의 원본 레퍼런스를 특정할 수 있는가" — 특정되면 실패) | P7 |
@@ -50,7 +50,7 @@ description: 랜딩을 레퍼런스급 품질로 단조한다 — v1 변환 아�
 - **P0 인터뷰·계약** — 위 5문항 → `_forge/contract.md`. PRD·실제 제품에서 사실 전수 추출 → `_forge/facts.md` + 없는 증거는 `_forge/homework.md`(샷리스트 브리프)와 등급 캡 사유.
 - **P1 리드 번들 확보** — 캐시(`references/bundles/<리드>/`) 있으면 스킵. 없으면 `bundle.mjs`(DOM+computed 트리·CSS·@keyframes·자산 매니페스트) + `record.mjs`(호버·리빌 타임라인·리스너 인벤토리·실행 애니메이션) + `probe.mjs` → `ir.mjs`로 `ir.json` 증류(섹션 기하·리듬·타입 롤·자산 슬롯·모션 어휘). **재현 시험 체크리스트**(forge-rules §8b) 통과 확인 — 스탬프 없는 IR은 리드 자격 없음. 번들 확보 불가(로그인 벽 등) 시 생성 폴백 선언+**등급 캡 B 고지**. WebGL·복합 위젯은 "재현 불가 목록"에 정직하게 기록하고 분석 에이전트가 조작하며 파라미터를 기술로 남긴다.
 - **P2 아트디렉터 = 치환 설계자** — 읽기: contract·facts·ir.json·history. "무엇을 지을까"가 아니라 **"무엇을 바꿀까"의 결정자.** 쓰기: ① `DESIGN.md`+`_forge/tokens.json`(스키마 forge-rules §8a — 자기 팔레트·타입, **리드와 팔레트 계열 상이 의무**, 어휘 예산 린트 `conform.mjs --tokens`로 즉석 확인, 승인 해시를 provenance에 기록) ② `_forge/engineering.json`(번들 record/probe에서 **자동 시드** 후 유지/교체/추가 선언 — 하한 3, 역할 커버) ③ `_forge/mapping.md`(리드 섹션→우리 섹션: 유지/삭제/삽입/graft, 아날로그 없는 섹션은 생성 지정+스펙) ④ **시그니처 인벤토리→치환 계획**(번들에서 리드 고유 표현 전수 목록화 — 각각 무엇으로 대체하는가) ⑤ `_forge/provenance.md`(transform ledger: 차용 구조·제거 시그니처 전수) ⑥ `_forge/exemptions.md`(§0 — QF·KO 면제 불가) ⑦ history 대조(리드 회전 포함).
-- **P3 병렬: 자산 ∥ 카피** — 자산 스프린트: 슬롯 명세는 **ir.json의 실측 슬롯에서 자동 도출**(치수·종횡비·object-fit — 슬롯 우선 철칙·인슬롯 핏 검증·3회 실패 시 슬롯 재설계 콜백 유지), E/P/I 클래스 규칙·시장 정합·성능 예산(히어로 ≤200KB webp)·og:image/파비콘, 완료 시 게이트키퍼(인슬롯 렌더 캡처 판정). ∥ 카피: facts 1:1, sg-ko-humanize 금지 목록, 소리 내어 읽기 테스트, 가격은 숫자로.
+- **P3 병렬: 자산 ∥ 카피** — 자산 스프린트: **아이콘 세트 포함**(라벨·카테고리에 시각 앵커가 필요하면 imagen 투명 생성→trim→캔버스 정규화→토큰 색→인슬롯 확인 — forge-rules §2d, 의미 결합 없는 장식은 여전히 금지), 슬롯 명세는 **ir.json의 실측 슬롯에서 자동 도출**(치수·종횡비·object-fit — 슬롯 우선 철칙·인슬롯 핏 검증·3회 실패 시 슬롯 재설계 콜백 유지), E/P/I 클래스 규칙·시장 정합·성능 예산(히어로 ≤200KB webp)·og:image/파비콘, 완료 시 게이트키퍼(인슬롯 렌더 캡처 판정). ∥ 카피: facts 1:1, sg-ko-humanize 금지 목록, 소리 내어 읽기 테스트, 가격은 숫자로.
 - **P4 브리프 컴파일** — 섹션별 `_forge/briefs/<n>.md` = **verbatim 병합**(요약 금지): IR 슬라이스(해당 섹션 수치 원문) + 토큰 치환표(리드값→자기 토큰) + engineering 항목 + 금지 목록(면제 반영) + 수용 기준(어느 게이트가 무엇을 재는가) + 자산 파일 경로. **완전성 린트**: IR 슬라이스의 모든 수치가 브리프에 등장하는지 기계 대조.
 - **P5 변환 빌드** — 빌더는 **브리프 하나만 읽는다.** IR 골격→프로젝트 실제 스택 코드로 1:1 전사(**창조 금지, 전사+치환만**), 동작은 engineering.json대로 구현. 섹션 완료 즉시 `conform.mjs --lint`(raw 색·font-size 리터럴 0).
 - **P6 기계 배터리** — 단일 브라우저 세션에서 일괄(재실행 저렴): `detect.mjs`(🔴 0·QF 0) + `conform.mjs --url`(토큰 준수·리드 색 잔존 자동 검출·해시 대조) + `behavior.mjs`(engineering.json 전 항목 실측 + no-JS/reduced-motion 가시성) + 자기 diff(capture ↔ ir.json, 밴드 §6b) + **잔존 verbatim 0**(리드 CSS 리터럴·자산 해시 grep) + 성능 예산 + 프로젝트 표준(type-check). 결과 `_forge/qa/`.

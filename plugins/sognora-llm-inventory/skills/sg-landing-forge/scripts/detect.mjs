@@ -442,6 +442,10 @@ function evaluateTells(raw, viewport, theme, isDesktop) {
       }
       const nums = pool.filter((c) => c.numText && c.textLen <= 40);
       if (nums.length >= 3 && nums.length <= 4 && sideBySide(nums)) add("LA2", s.index, `숫자 지배 형제 ${nums.length}개 가로 나열(통계 배너)`);
+      // 서술형 스탯 밴드 — 수치도 미디어도 없는 라벨+상태문 나열("검토 중"류). 증거 없는 빈 띠
+      const proseStats = pool.filter((c) => !c.numText && c.textLen >= 6 && c.textLen <= 48 && c.h >= 40 && c.h <= 260 && !c.hasMedia);
+      if (proseStats.length >= 3 && proseStats.length <= 4 && sideBySide(proseStats) && s.mediaEls.length === 0 && s.height <= 520)
+        add("DE3", s.index, `서술형 스탯 밴드 ${proseStats.length}열 — 수치·증거·미디어 없음(측정값 없으면 밴드를 생략하라)`);
     }
     const r = s.contentArea / Math.max(1, s.width * s.height);
     if (isDesktop && medRatio > 0 && r < 0.5 * medRatio && s.height > 0.6 * vh && s.mediaEls.length === 0)
@@ -489,6 +493,20 @@ function evaluateTells(raw, viewport, theme, isDesktop) {
   if (mute.length >= 3) for (const sec of new Set(mute.map((e) => e.sec))) add("IC3", sec, `텍스트·aria 없는 아이콘 ${mute.filter((e) => e.sec === sec).length}개`);
   const blobs = els.filter((e) => e.pos === "absolute" && e.textLen === 0 && Math.min(e.w, e.h) >= 80 && e.br >= Math.min(e.w, e.h) / 2 && (e.hasOwnBg || e.bgImage.includes("gradient")));
   for (const sec of new Set(blobs.map((e) => e.sec))) add("IC4", sec, `장식 블롭(absolute 원형) ${blobs.filter((e) => e.sec === sec).length}개`);
+  // 번호 텍스트 목록 카드 — 시각 실체(건물·제품·공간)를 "01/02/03" 텍스트로 대체. 주변에 실미디어가 있으면 정당
+  {
+    const ords = els.filter((e) => /^0?\d{1,2}$/.test(e.text) && e.w <= 80 && e.h <= 60);
+    const byCol = {};
+    for (const o of ords) { const k = `${o.sec}|${Math.round(o.x / 32)}`; (byCol[k] = byCol[k] ?? []).push(o); }
+    for (const g of Object.values(byCol)) {
+      if (g.length < 3) continue;
+      g.sort((a, b) => a.y - b.y);
+      const y0 = g[0].y, y1 = g[g.length - 1].y + g[g.length - 1].h;
+      if (y1 - y0 > 900 || !g.every((o, i) => i === 0 || o.y - g[i - 1].y < 260)) continue;
+      const media = els.some((e) => ["img", "video"].includes(e.tag) && e.sec === g[0].sec && e.w >= 80 && e.y > y0 - 500 && e.y < y1 + 500);
+      if (!media) add("IC6", g[0].sec, `번호 텍스트 목록(${g.slice(0, 4).map((o) => `"${o.text}"`).join(",")}) — 시각 앵커 0인 목록 카드(대상이 실체면 주석 이미지로)`);
+    }
+  }
 
   // 4b. 사이드 액센트 보더 — 한 변만 2px+ 유채색(가장 알아보기 쉬운 AI 티 중 하나)
   const sideAccent = els.filter((e) => {

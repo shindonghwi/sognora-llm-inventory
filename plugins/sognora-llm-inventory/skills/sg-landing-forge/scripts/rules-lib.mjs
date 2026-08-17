@@ -35,6 +35,8 @@ export const RULES = {
   QF6: { sev: "yellow", layer: "surface", judge: "det", scope: "page" },
   TS4: { sev: "yellow", layer: "surface", judge: "suspect", scope: "section" },
   IC5: { sev: "yellow", layer: "surface", judge: "det", scope: "page" },
+  IC6: { sev: "red", layer: "structural", judge: "det", scope: "section" },
+  DE3: { sev: "red", layer: "structural", judge: "suspect", scope: "section" },
   AS2: { sev: "yellow", layer: "surface", judge: "det", scope: "page" },
   MO1: { sev: "yellow", layer: "surface", judge: "det", scope: "page" },
   KO1: { sev: "yellow", layer: "surface", judge: "det", scope: "page" },
