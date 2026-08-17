@@ -4,6 +4,4 @@ _workspace/
 .playwright-mcp/
 eval-*.png
 # Tier-R 재현급 번들: 원본 CSS·자산 사본 — 재배포 금지, 로컬 캐시 전용
-plugins/**/skills/*/references/bundles/**
-!plugins/**/skills/*/references/bundles/*/
-!plugins/**/skills/*/references/bundles/*/ir.json
+plugins/**/skills/*/references/bundles/

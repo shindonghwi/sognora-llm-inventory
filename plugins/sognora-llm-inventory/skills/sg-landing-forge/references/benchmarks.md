@@ -19,10 +19,10 @@
 ```
 node scripts/bundle.mjs --url <URL> --out references/bundles/<이름>   # 정적: 트리·CSS·@keyframes·자산
 node scripts/record.mjs --url <URL> --out references/bundles/<이름>   # 동적: 타임라인·리스너·애니메이션
-node scripts/ir.mjs --bundle references/bundles/<이름> --out references/bundles/<이름>/ir.json
+node scripts/ir.mjs --bundle references/bundles/<이름> --out references/ir/<이름>.json
 ```
 
-완전성은 forge-rules §8b 체크리스트로 판정. **번들 원본은 로컬 캐시 전용(gitignore) — 커밋되는 것은 ir.json(측정 사실)뿐.** INDEX.md에 `[R]` 표기로 승격 상태를 기록한다.
+완전성은 forge-rules §8b 체크리스트로 판정. **번들 원본은 로컬 캐시 전용(gitignore) — 커밋되는 것은 `references/ir/<이름>.json`(측정 사실)뿐.** INDEX.md에 `[R]` 표기로 승격 상태를 기록한다.
 
 ## 1. 레퍼런스 선정 (대상 단위별, 2~3개)
 
