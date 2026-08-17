@@ -1,0 +1,1310 @@
+{
+  "irVersion": 1,
+  "source": {
+    "url": "https://www.plai.io",
+    "collectedAt": "2026-08-16T17:24:39.697Z"
+  },
+  "page": {
+    "scrollHeight1440": 13293,
+    "scrollHeight390": 12962,
+    "sectionCount": 15
+  },
+  "rhythm": {
+    "bgSequence": [
+      "rgba(15, 31, 61, 0)",
+      "rgb(20, 90, 255)",
+      "rgb(255, 255, 255)",
+      "rgb(255, 255, 255)",
+      "rgb(255, 255, 255)",
+      "rgb(255, 255, 255)",
+      "rgb(15, 31, 61)",
+      "rgb(255, 255, 255)",
+      "rgb(255, 255, 255)",
+      "rgb(255, 255, 255)",
+      "rgb(255, 255, 255)",
+      "rgb(255, 255, 255)",
+      "rgb(255, 255, 255)",
+      "rgb(255, 255, 255)",
+      "rgb(15, 31, 61)"
+    ],
+    "heights": [
+      736,
+      494,
+      1047,
+      997,
+      1027,
+      997,
+      1096,
+      1347,
+      1013,
+      1216,
+      233,
+      939,
+      676,
+      228,
+      752
+    ],
+    "containers": [
+      1224
+    ]
+  },
+  "typeScale": [
+    {
+      "px": 115.2,
+      "weight": "700",
+      "count": 3
+    },
+    {
+      "px": 60,
+      "weight": "700",
+      "count": 3
+    },
+    {
+      "px": 48,
+      "weight": "700",
+      "count": 13
+    },
+    {
+      "px": 27,
+      "weight": "700",
+      "count": 1
+    },
+    {
+      "px": 24,
+      "weight": "700",
+      "count": 12
+    },
+    {
+      "px": 22,
+      "weight": "400",
+      "count": 20
+    },
+    {
+      "px": 22,
+      "weight": "500",
+      "count": 4
+    },
+    {
+      "px": 18,
+      "weight": "700",
+      "count": 44
+    },
+    {
+      "px": 18,
+      "weight": "400",
+      "count": 24
+    },
+    {
+      "px": 18,
+      "weight": "600",
+      "count": 2
+    },
+    {
+      "px": 18,
+      "weight": "500",
+      "count": 5
+    },
+    {
+      "px": 16,
+      "weight": "400",
+      "count": 89
+    },
+    {
+      "px": 16,
+      "weight": "600",
+      "count": 2
+    },
+    {
+      "px": 16,
+      "weight": "700",
+      "count": 6
+    }
+  ],
+  "motion": {
+    "durationsMs": [
+      {
+        "ms": 200,
+        "count": 39
+      },
+      {
+        "ms": 100,
+        "count": 38
+      },
+      {
+        "ms": 800,
+        "count": 19
+      }
+    ],
+    "keyframesCount": 7,
+    "keyframesNamed": [
+      "feedback-slide-in-hs-feedback-left",
+      "feedback-slide-out-hs-feedback-left",
+      "feedback-slide-in-hs-feedback-right",
+      "feedback-slide-out-hs-feedback-right",
+      "feedback-slide-in-hs-feedback-top",
+      "feedback-slide-out-hs-feedback-top",
+      "spin"
+    ],
+    "runningAnimations": [],
+    "hoverTimelines": [
+      {
+        "selector": "a.nav-link.login",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "a.navbar-brand.w-nav-brand",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "a.button.dark-blue",
+        "frames": 25,
+        "overshoot": false
+      },
+      {
+        "selector": "div.testimonial-left",
+        "frames": 28,
+        "overshoot": false
+      },
+      {
+        "selector": "a.features-learn-more-link",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "a.features-learn-more-link-2.blue",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "a.integration-card.w-inline-block",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "div.integration-card-link",
+        "frames": 2,
+        "overshoot": false
+      }
+    ],
+    "revealTimelines": [
+      {
+        "selector": "div.footer-logo-and-subscribe",
+        "startY": 12651,
+        "frames": 116
+      }
+    ],
+    "listenerProfile": {
+      "mousedown": 108,
+      "click": 16,
+      "pagehide": 7,
+      "keydown": 7,
+      "load": 5,
+      "resize": 5,
+      "scroll": 5,
+      "message": 5,
+      "mouseover": 5,
+      "orientationchange": 4,
+      "hashchange": 4,
+      "popstate": 4
+    }
+  },
+  "assetStats": {
+    "count": 76,
+    "images": 72,
+    "withRect": 55,
+    "totalBytes": 6439215
+  },
+  "layers": [],
+  "sections": [
+    {
+      "y": 108,
+      "h": 736,
+      "bg": "rgba(15, 31, 61, 0)",
+      "tag": "div",
+      "cls": "wrapper",
+      "container": 1224,
+      "columns": 2,
+      "type": [
+        {
+          "fontSize": 115.2,
+          "weight": "700",
+          "lineHeight": "120.96px",
+          "count": 3,
+          "sample": "Grow your"
+        },
+        {
+          "fontSize": 22,
+          "weight": "400",
+          "lineHeight": "30.8px",
+          "count": 1,
+          "sample": "Run ads, generate leads, publish to soci"
+        },
+        {
+          "fontSize": 18,
+          "weight": "700",
+          "lineHeight": "21.6px",
+          "count": 1,
+          "sample": "Start Free"
+        }
+      ],
+      "headline": {
+        "fontSize": 115.2,
+        "weight": "700",
+        "lineHeight": "120.96px",
+        "count": 3,
+        "sample": "Grow your"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "background-color 0.2s"
+      ],
+      "padding": {
+        "top": "80px",
+        "bottom": "80px"
+      }
+    },
+    {
+      "y": 844,
+      "h": 494,
+      "bg": "rgb(20, 90, 255)",
+      "tag": "div",
+      "cls": "overview-stats-section",
+      "container": 1224,
+      "columns": 3,
+      "type": [
+        {
+          "fontSize": 60,
+          "weight": "700",
+          "lineHeight": "63.6px",
+          "count": 3,
+          "sample": "25K+"
+        },
+        {
+          "fontSize": 18,
+          "weight": "400",
+          "lineHeight": "27.9px",
+          "count": 3,
+          "sample": "Businesses"
+        }
+      ],
+      "headline": {
+        "fontSize": 60,
+        "weight": "700",
+        "lineHeight": "63.6px",
+        "count": 3,
+        "sample": "25K+"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 154,
+          "h": 40,
+          "aspect": 3.85,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 154,
+          "h": 40,
+          "aspect": 3.85,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 154,
+          "h": 40,
+          "aspect": 3.85,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 154,
+          "h": 40,
+          "aspect": 3.85,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 221,
+          "h": 57,
+          "aspect": 3.88,
+          "radius": null,
+          "objectFit": "fill"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all"
+      ],
+      "padding": {
+        "top": "48px",
+        "bottom": "48px"
+      }
+    },
+    {
+      "y": 1338,
+      "h": 1047,
+      "bg": "rgb(255, 255, 255)",
+      "tag": "div",
+      "cls": "wrapper",
+      "container": 1224,
+      "columns": 1,
+      "type": [
+        {
+          "fontSize": 48,
+          "weight": "700",
+          "lineHeight": "51.84px",
+          "count": 1,
+          "sample": "0. Set Up Your Brand"
+        },
+        {
+          "fontSize": 18,
+          "weight": "400",
+          "lineHeight": "27.9px",
+          "count": 1,
+          "sample": "Connect your website, products, and ad a"
+        },
+        {
+          "fontSize": 18,
+          "weight": "700",
+          "lineHeight": "27.9px",
+          "count": 1,
+          "sample": "learns your business"
+        }
+      ],
+      "headline": {
+        "fontSize": 48,
+        "weight": "700",
+        "lineHeight": "51.84px",
+        "count": 1,
+        "sample": "0. Set Up Your Brand"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 1224,
+          "h": 724,
+          "aspect": 1.69,
+          "radius": "8px",
+          "objectFit": "fill"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all"
+      ],
+      "padding": {
+        "top": "80px",
+        "bottom": "80px"
+      }
+    },
+    {
+      "y": 2385,
+      "h": 997,
+      "bg": "rgb(255, 255, 255)",
+      "tag": "div",
+      "cls": "wrapper",
+      "container": 1224,
+      "columns": 1,
+      "type": [
+        {
+          "fontSize": 48,
+          "weight": "700",
+          "lineHeight": "51.84px",
+          "count": 1,
+          "sample": "1. Create Content That Converts"
+        },
+        {
+          "fontSize": 18,
+          "weight": "400",
+          "lineHeight": "27.9px",
+          "count": 1,
+          "sample": "Generate ad creatives, videos, AI avatar"
+        },
+        {
+          "fontSize": 18,
+          "weight": "700",
+          "lineHeight": "27.9px",
+          "count": 1,
+          "sample": "Creative Hub"
+        }
+      ],
+      "headline": {
+        "fontSize": 48,
+        "weight": "700",
+        "lineHeight": "51.84px",
+        "count": 1,
+        "sample": "1. Create Content That Converts"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 1224,
+          "h": 689,
+          "aspect": 1.78,
+          "radius": "8px",
+          "objectFit": "fill"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all"
+      ],
+      "padding": {
+        "top": "80px",
+        "bottom": "80px"
+      }
+    },
+    {
+      "y": 3382,
+      "h": 1027,
+      "bg": "rgb(255, 255, 255)",
+      "tag": "div",
+      "cls": "wrapper",
+      "container": 1224,
+      "columns": 1,
+      "type": [
+        {
+          "fontSize": 48,
+          "weight": "700",
+          "lineHeight": "51.84px",
+          "count": 1,
+          "sample": "2. Launch Everywhere"
+        },
+        {
+          "fontSize": 18,
+          "weight": "400",
+          "lineHeight": "27.9px",
+          "count": 1,
+          "sample": "Launch ads and social posts across and m"
+        },
+        {
+          "fontSize": 18,
+          "weight": "700",
+          "lineHeight": "27.9px",
+          "count": 1,
+          "sample": "Meta, Google, TikTok, LinkedIn,"
+        },
+        {
+          "fontSize": 18,
+          "weight": "600",
+          "lineHeight": "27.9px",
+          "count": 1,
+          "sample": "Explore Ad & Social Launching"
+        }
+      ],
+      "headline": {
+        "fontSize": 48,
+        "weight": "700",
+        "lineHeight": "51.84px",
+        "count": 1,
+        "sample": "2. Launch Everywhere"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 1224,
+          "h": 689,
+          "aspect": 1.78,
+          "radius": "8px",
+          "objectFit": "fill"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all"
+      ],
+      "padding": {
+        "top": "80px",
+        "bottom": "80px"
+      }
+    },
+    {
+      "y": 4408,
+      "h": 997,
+      "bg": "rgb(255, 255, 255)",
+      "tag": "div",
+      "cls": "wrapper",
+      "container": 1224,
+      "columns": 1,
+      "type": [
+        {
+          "fontSize": 48,
+          "weight": "700",
+          "lineHeight": "51.84px",
+          "count": 1,
+          "sample": "3. Optimize Automatically"
+        },
+        {
+          "fontSize": 18,
+          "weight": "400",
+          "lineHeight": "27.9px",
+          "count": 1,
+          "sample": "Turn on to automatically improve creativ"
+        },
+        {
+          "fontSize": 18,
+          "weight": "700",
+          "lineHeight": "27.9px",
+          "count": 1,
+          "sample": "Optimize for Me"
+        }
+      ],
+      "headline": {
+        "fontSize": 48,
+        "weight": "700",
+        "lineHeight": "51.84px",
+        "count": 1,
+        "sample": "3. Optimize Automatically"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 1224,
+          "h": 689,
+          "aspect": 1.78,
+          "radius": "8px",
+          "objectFit": "fill"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all"
+      ],
+      "padding": {
+        "top": "80px",
+        "bottom": "80px"
+      }
+    },
+    {
+      "y": 5405,
+      "h": 1096,
+      "bg": "rgb(15, 31, 61)",
+      "tag": "div",
+      "cls": "wrapper",
+      "container": 1224,
+      "columns": 6,
+      "type": [
+        {
+          "fontSize": 48,
+          "weight": "700",
+          "lineHeight": "51.84px",
+          "count": 1,
+          "sample": "Trusted by Agencies and Brands"
+        },
+        {
+          "fontSize": 22,
+          "weight": "400",
+          "lineHeight": "27.9px",
+          "count": 19,
+          "sample": "\"So easy my 71 year old client sold 278 "
+        },
+        {
+          "fontSize": 18,
+          "weight": "400",
+          "lineHeight": "27.9px",
+          "count": 2,
+          "sample": "Launching and optimizing campaigns acros"
+        },
+        {
+          "fontSize": 18,
+          "weight": "700",
+          "lineHeight": "27.9px",
+          "count": 2,
+          "sample": "100,000+"
+        },
+        {
+          "fontSize": 18,
+          "weight": "700",
+          "lineHeight": "25.92px",
+          "count": 19,
+          "sample": "Trevor Otts"
+        }
+      ],
+      "headline": {
+        "fontSize": 48,
+        "weight": "700",
+        "lineHeight": "51.84px",
+        "count": 1,
+        "sample": "Trusted by Agencies and Brands"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 60,
+          "h": 60,
+          "aspect": 1,
+          "radius": "100%",
+          "objectFit": "contain"
+        },
+        {
+          "kind": "img",
+          "w": 60,
+          "h": 61,
+          "aspect": 0.98,
+          "radius": "100%",
+          "objectFit": "contain"
+        },
+        {
+          "kind": "img",
+          "w": 60,
+          "h": 60,
+          "aspect": 1,
+          "radius": "100%",
+          "objectFit": "contain"
+        },
+        {
+          "kind": "img",
+          "w": 60,
+          "h": 60,
+          "aspect": 1,
+          "radius": "100%",
+          "objectFit": "contain"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "all, transform 0.8s",
+        "0.2s",
+        "background-color 0.1s, color 0.1s"
+      ],
+      "padding": {
+        "top": "145px",
+        "bottom": "145px"
+      }
+    },
+    {
+      "y": 6501,
+      "h": 1347,
+      "bg": "rgb(255, 255, 255)",
+      "tag": "div",
+      "cls": "wrapper",
+      "container": 1224,
+      "columns": 6,
+      "type": [
+        {
+          "fontSize": 48,
+          "weight": "700",
+          "lineHeight": "51.84px",
+          "count": 1,
+          "sample": "Multi-Brand Workspaces"
+        },
+        {
+          "fontSize": 27,
+          "weight": "700",
+          "lineHeight": "31px",
+          "count": 1,
+          "sample": "As featured in"
+        },
+        {
+          "fontSize": 18,
+          "weight": "400",
+          "lineHeight": "27.9px",
+          "count": 1,
+          "sample": "Give every brand its own dedicated works"
+        },
+        {
+          "fontSize": 18,
+          "weight": "600",
+          "lineHeight": "27.9px",
+          "count": 1,
+          "sample": "Explore Agency & Whitelabel Features"
+        }
+      ],
+      "headline": {
+        "fontSize": 48,
+        "weight": "700",
+        "lineHeight": "51.84px",
+        "count": 1,
+        "sample": "Multi-Brand Workspaces"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 120,
+          "h": 67,
+          "aspect": 1.79,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 120,
+          "h": 67,
+          "aspect": 1.79,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 120,
+          "h": 67,
+          "aspect": 1.79,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 120,
+          "h": 67,
+          "aspect": 1.79,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 120,
+          "h": 67,
+          "aspect": 1.79,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 120,
+          "h": 67,
+          "aspect": 1.79,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 120,
+          "h": 67,
+          "aspect": 1.79,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 120,
+          "h": 67,
+          "aspect": 1.79,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 1224,
+          "h": 689,
+          "aspect": 1.78,
+          "radius": "8px",
+          "objectFit": "fill"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all"
+      ],
+      "padding": {
+        "top": "80px",
+        "bottom": "80px"
+      }
+    },
+    {
+      "y": 7848,
+      "h": 1013,
+      "bg": "rgb(255, 255, 255)",
+      "tag": "div",
+      "cls": "wrapper",
+      "container": 1224,
+      "columns": 1,
+      "type": [
+        {
+          "fontSize": 48,
+          "weight": "700",
+          "lineHeight": "51.84px",
+          "count": 1,
+          "sample": "For Marketing Agencies"
+        },
+        {
+          "fontSize": 18,
+          "weight": "400",
+          "lineHeight": "27.9px",
+          "count": 1,
+          "sample": "Automatically , monthly retainers, or cu"
+        },
+        {
+          "fontSize": 18,
+          "weight": "700",
+          "lineHeight": "27.9px",
+          "count": 1,
+          "sample": "bill clients by ad spend"
+        }
+      ],
+      "headline": {
+        "fontSize": 48,
+        "weight": "700",
+        "lineHeight": "51.84px",
+        "count": 1,
+        "sample": "For Marketing Agencies"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 1224,
+          "h": 689,
+          "aspect": 1.78,
+          "radius": "8px",
+          "objectFit": "fill"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all"
+      ],
+      "padding": {
+        "top": "80px",
+        "bottom": "80px"
+      }
+    },
+    {
+      "y": 8861,
+      "h": 1216,
+      "bg": "rgb(255, 255, 255)",
+      "tag": "div",
+      "cls": "wrapper",
+      "container": 1224,
+      "columns": 2,
+      "type": [
+        {
+          "fontSize": 48,
+          "weight": "700",
+          "lineHeight": "51.84px",
+          "count": 1,
+          "sample": "Your Workflow. Your Rules."
+        },
+        {
+          "fontSize": 18,
+          "weight": "400",
+          "lineHeight": "27.9px",
+          "count": 1,
+          "sample": "From agencies to enterprise teams and CR"
+        },
+        {
+          "fontSize": 18,
+          "weight": "500",
+          "lineHeight": "27.9px",
+          "count": 5,
+          "sample": "Full name"
+        },
+        {
+          "fontSize": 18,
+          "weight": "700",
+          "lineHeight": "27.9px",
+          "count": 2,
+          "sample": "Tell us about your setup"
+        }
+      ],
+      "headline": {
+        "fontSize": 48,
+        "weight": "700",
+        "lineHeight": "51.84px",
+        "count": 1,
+        "sample": "Your Workflow. Your Rules."
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "background-color 0.2s"
+      ],
+      "padding": {
+        "top": "80px",
+        "bottom": "80px"
+      }
+    },
+    {
+      "y": 10227,
+      "h": 233,
+      "bg": "rgb(255, 255, 255)",
+      "tag": "div",
+      "cls": "most-popular-integrations-up",
+      "container": 1224,
+      "columns": 1,
+      "type": [
+        {
+          "fontSize": 48,
+          "weight": "700",
+          "lineHeight": "51.84px",
+          "count": 1,
+          "sample": "Explore what Plai can do ‍"
+        },
+        {
+          "fontSize": 18,
+          "weight": "400",
+          "lineHeight": "27.9px",
+          "count": 1,
+          "sample": "From AI-powered ad creation to social me"
+        },
+        {
+          "fontSize": 18,
+          "weight": "700",
+          "lineHeight": "27.9px",
+          "count": 1,
+          "sample": "Explore all"
+        },
+        {
+          "fontSize": 16,
+          "weight": "700",
+          "lineHeight": "24px",
+          "count": 1,
+          "sample": "one platform, every tool"
+        }
+      ],
+      "headline": {
+        "fontSize": 48,
+        "weight": "700",
+        "lineHeight": "51.84px",
+        "count": 1,
+        "sample": "Explore what Plai can do ‍"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 10541,
+      "h": 939,
+      "bg": "rgb(255, 255, 255)",
+      "tag": "div",
+      "cls": "w-dyn-items",
+      "container": 1224,
+      "columns": 2,
+      "type": [
+        {
+          "fontSize": 24,
+          "weight": "700",
+          "lineHeight": "30px",
+          "count": 6,
+          "sample": "Meta Ads"
+        },
+        {
+          "fontSize": 18,
+          "weight": "400",
+          "lineHeight": "27.9px",
+          "count": 6,
+          "sample": "Launch Facebook, Instagram, Catalog, Cal"
+        },
+        {
+          "fontSize": 16,
+          "weight": "500",
+          "lineHeight": "27.9px",
+          "count": 6,
+          "sample": "Explore"
+        }
+      ],
+      "headline": {
+        "fontSize": 24,
+        "weight": "700",
+        "lineHeight": "30px",
+        "count": 6,
+        "sample": "Meta Ads"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 40,
+          "h": 40,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 40,
+          "h": 40,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 40,
+          "h": 40,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 40,
+          "h": 40,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 40,
+          "h": 40,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "fill"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 11637,
+      "h": 676,
+      "bg": "rgb(255, 255, 255)",
+      "tag": "div",
+      "cls": "wrapper-1200px",
+      "container": 1224,
+      "columns": 2,
+      "type": [
+        {
+          "fontSize": 48,
+          "weight": "700",
+          "lineHeight": "51.84px",
+          "count": 1,
+          "sample": "We’ve got you covered."
+        },
+        {
+          "fontSize": 22,
+          "weight": "500",
+          "lineHeight": "34px",
+          "count": 4,
+          "sample": "How does Plai use AI for marketing to op"
+        },
+        {
+          "fontSize": 18,
+          "weight": "400",
+          "lineHeight": "27.9px",
+          "count": 5,
+          "sample": "Here are the answers to our most common "
+        },
+        {
+          "fontSize": 16,
+          "weight": "700",
+          "lineHeight": "24px",
+          "count": 1,
+          "sample": "Faq"
+        }
+      ],
+      "headline": {
+        "fontSize": 48,
+        "weight": "700",
+        "lineHeight": "51.84px",
+        "count": 1,
+        "sample": "We’ve got you covered."
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all"
+      ],
+      "padding": {
+        "top": "100px",
+        "bottom": "100px"
+      }
+    },
+    {
+      "y": 12313,
+      "h": 228,
+      "bg": "rgb(255, 255, 255)",
+      "tag": "div",
+      "cls": "wrapper",
+      "container": 1224,
+      "columns": 1,
+      "type": [
+        {
+          "fontSize": 48,
+          "weight": "700",
+          "lineHeight": "51.84px",
+          "count": 1,
+          "sample": "⚡Trusted by 200K+ campaigns"
+        },
+        {
+          "fontSize": 18,
+          "weight": "700",
+          "lineHeight": "27.9px",
+          "count": 1,
+          "sample": "Start for free"
+        }
+      ],
+      "headline": {
+        "fontSize": 48,
+        "weight": "700",
+        "lineHeight": "51.84px",
+        "count": 1,
+        "sample": "⚡Trusted by 200K+ campaigns"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "color 0.2s, background-color 0.2s"
+      ],
+      "padding": {
+        "top": "80px",
+        "bottom": "80px"
+      }
+    },
+    {
+      "y": 12541,
+      "h": 752,
+      "bg": "rgb(15, 31, 61)",
+      "tag": "div",
+      "cls": "wrapper",
+      "container": 1224,
+      "columns": 3,
+      "type": [
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": "24px",
+          "count": 1,
+          "sample": "Run ads and social posts with AI."
+        },
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": "27.9px",
+          "count": 18,
+          "sample": "Home"
+        }
+      ],
+      "headline": {
+        "fontSize": 16,
+        "weight": "400",
+        "lineHeight": "24px",
+        "count": 1,
+        "sample": "Run ads and social posts with AI."
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 500,
+          "h": 500,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "fill"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "opacity 0.2s",
+        "transform 0.2s"
+      ],
+      "padding": {
+        "top": "80px",
+        "bottom": null
+      }
+    }
+  ],
+  "sectionsMobile": [
+    {
+      "y": 87,
+      "h": 691,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 778,
+      "h": 834,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 1612,
+      "h": 532,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 2145,
+      "h": 541,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 2685,
+      "h": 561,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 3246,
+      "h": 541,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 3787,
+      "h": 976,
+      "container": null,
+      "columns": 6
+    },
+    {
+      "y": 4764,
+      "h": 1149,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 5913,
+      "h": 522,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 6435,
+      "h": 1366,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 7801,
+      "h": 2535,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 10336,
+      "h": 800,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 11136,
+      "h": 348,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 11484,
+      "h": 1477,
+      "container": null,
+      "columns": 1
+    }
+  ],
+  "reproduction": {
+    "stamp": null,
+    "note": "IR만으로 원본을 오차 밴드 내 재건축→capture 대조 통과 시 스탬프. 스탬프 없는 IR은 리드 자격 없음."
+  }
+}

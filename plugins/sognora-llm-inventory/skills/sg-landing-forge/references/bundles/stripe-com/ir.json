@@ -1,0 +1,1588 @@
+{
+  "irVersion": 1,
+  "source": {
+    "url": "https://stripe.com",
+    "collectedAt": "2026-08-16T16:59:30.668Z"
+  },
+  "page": {
+    "scrollHeight1440": 14656,
+    "scrollHeight390": 20459,
+    "sectionCount": 16
+  },
+  "rhythm": {
+    "bgSequence": [
+      "rgb(255, 255, 255)",
+      "rgb(255, 255, 255)",
+      "rgb(255, 255, 255)",
+      "rgb(13, 23, 56)",
+      "rgb(255, 255, 255)",
+      "rgb(255, 255, 255)",
+      "rgb(255, 255, 255)",
+      "rgb(255, 255, 255)",
+      "rgb(255, 255, 255)",
+      "rgb(13, 23, 56)",
+      "rgb(13, 23, 56)",
+      "rgb(13, 23, 56)",
+      "rgb(255, 255, 255)",
+      "rgb(255, 255, 255)",
+      "rgb(248, 250, 253)",
+      "rgb(248, 250, 253)"
+    ],
+    "heights": [
+      612,
+      2196,
+      560,
+      977,
+      1388,
+      531,
+      1026,
+      532,
+      307,
+      537,
+      511,
+      566,
+      701,
+      731,
+      380,
+      967
+    ],
+    "containers": [
+      1266,
+      1264,
+      1248,
+      1232
+    ]
+  },
+  "typeScale": [
+    {
+      "px": 56,
+      "weight": "300",
+      "count": 1
+    },
+    {
+      "px": 48,
+      "weight": "300",
+      "count": 16
+    },
+    {
+      "px": 32,
+      "weight": "300",
+      "count": 12
+    },
+    {
+      "px": 26,
+      "weight": "300",
+      "count": 38
+    },
+    {
+      "px": 22,
+      "weight": "300",
+      "count": 20
+    },
+    {
+      "px": 21,
+      "weight": "500",
+      "count": 1
+    },
+    {
+      "px": 20,
+      "weight": "300",
+      "count": 1
+    },
+    {
+      "px": 18,
+      "weight": "300",
+      "count": 7
+    },
+    {
+      "px": 18,
+      "weight": "400",
+      "count": 4
+    },
+    {
+      "px": 16,
+      "weight": "400",
+      "count": 100
+    },
+    {
+      "px": 16,
+      "weight": "300",
+      "count": 133
+    },
+    {
+      "px": 14,
+      "weight": "400",
+      "count": 28
+    },
+    {
+      "px": 14,
+      "weight": "300",
+      "count": 25
+    },
+    {
+      "px": 14,
+      "weight": "500",
+      "count": 2
+    }
+  ],
+  "motion": {
+    "durationsMs": [
+      {
+        "ms": 300,
+        "count": 372
+      },
+      {
+        "ms": 800,
+        "count": 58
+      },
+      {
+        "ms": 150,
+        "count": 42
+      },
+      {
+        "ms": 500,
+        "count": 35
+      },
+      {
+        "ms": 400,
+        "count": 32
+      },
+      {
+        "ms": 240,
+        "count": 28
+      }
+    ],
+    "keyframesCount": 10,
+    "keyframesNamed": [
+      "nav-hover-arrow-in",
+      "nav-hover-arrow-out",
+      "detect-scroll",
+      "navigation-menu-delay-reset",
+      "bento-overlay-gradient-opacity-animation",
+      "bento-dialog-reveal-fade-in-up",
+      "agentic-commerce-graphic-border-spin",
+      "book-of-the-week-fade-in",
+      "opacityAnimation",
+      "opacityAnimation"
+    ],
+    "runningAnimations": [
+      {
+        "name": "detect-scroll",
+        "duration": "auto",
+        "easing": "linear",
+        "iterations": 1,
+        "state": "running"
+      },
+      {
+        "name": "Animation",
+        "duration": 1420,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "paused"
+      },
+      {
+        "name": "Animation",
+        "duration": 1420,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "paused"
+      },
+      {
+        "name": "Animation",
+        "duration": 1420,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "paused"
+      },
+      {
+        "name": "Animation",
+        "duration": 1420,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "paused"
+      },
+      {
+        "name": "Animation",
+        "duration": 1420,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "paused"
+      },
+      {
+        "name": "Animation",
+        "duration": 1420,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "paused"
+      },
+      {
+        "name": "Animation",
+        "duration": 1420,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "paused"
+      },
+      {
+        "name": "Animation",
+        "duration": 1420,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "paused"
+      },
+      {
+        "name": "Animation",
+        "duration": 1420,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "paused"
+      },
+      {
+        "name": "Animation",
+        "duration": 1420,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "paused"
+      },
+      {
+        "name": "Animation",
+        "duration": 1420,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "paused"
+      },
+      {
+        "name": "Animation",
+        "duration": 1420,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "paused"
+      },
+      {
+        "name": "Animation",
+        "duration": 1420,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "paused"
+      },
+      {
+        "name": "Animation",
+        "duration": 1420,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "paused"
+      },
+      {
+        "name": "Animation",
+        "duration": 1420,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "paused"
+      },
+      {
+        "name": "Animation",
+        "duration": 1420,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "paused"
+      },
+      {
+        "name": "Animation",
+        "duration": 1420,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "paused"
+      },
+      {
+        "name": "Animation",
+        "duration": 1420,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "paused"
+      },
+      {
+        "name": "Animation",
+        "duration": 1420,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "paused"
+      }
+    ],
+    "hoverTimelines": [
+      {
+        "selector": "a.hds-link.navigation-menu-home-link",
+        "frames": 8,
+        "overshoot": false
+      },
+      {
+        "selector": "button.hds-button.hds-navigation-menu__trigger",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "a.hds-button.hds-navigation-menu__trigger",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "a.hds-button.navigation-cta-button",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "a.hds-button.navigation-cta-button",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "a.hds-button.hero-section__button--google",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "a.hds-link",
+        "frames": 10,
+        "overshoot": false
+      },
+      {
+        "selector": "button.modular-solutions-bento-card.modular-solutions-bento__card-payments",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "div.modular-solutions-bento-card__text",
+        "frames": 2,
+        "overshoot": false
+      }
+    ],
+    "revealTimelines": [
+      {
+        "selector": "svg.startups__atlas-graphic-background",
+        "startY": 7056,
+        "frames": 2
+      }
+    ],
+    "listenerProfile": {
+      "click": 66,
+      "pageshow": 10,
+      "mousemove": 8,
+      "visibilitychange": 6,
+      "pagehide": 5,
+      "load": 4,
+      "webglcontextlost": 4,
+      "webglcontextrestored": 4,
+      "webglcontextcreationerror": 4,
+      "popstate": 2,
+      "message": 2,
+      "resize": 2
+    }
+  },
+  "assetStats": {
+    "count": 70,
+    "images": 59,
+    "withRect": 23,
+    "totalBytes": 1250749
+  },
+  "layers": [],
+  "sections": [
+    {
+      "y": 76,
+      "h": 612,
+      "bg": "rgb(255, 255, 255)",
+      "tag": "div",
+      "cls": "section-container",
+      "container": 1266,
+      "columns": 2,
+      "type": [
+        {
+          "fontSize": 48,
+          "weight": "300",
+          "lineHeight": "55.2px",
+          "count": 4,
+          "sample": "Financial infrastructure to grow your re"
+        },
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": "16px",
+          "count": 2,
+          "sample": "Get started"
+        },
+        {
+          "fontSize": 14,
+          "weight": "400",
+          "lineHeight": null,
+          "count": 1,
+          "sample": "Global GDP running on Stripe:"
+        },
+        {
+          "fontSize": 14,
+          "weight": "300",
+          "lineHeight": null,
+          "count": 22,
+          "sample": "1"
+        }
+      ],
+      "headline": {
+        "fontSize": 48,
+        "weight": "300",
+        "lineHeight": "55.2px",
+        "count": 4,
+        "sample": "Financial infrastructure to grow your re"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "background-color 0.3s cubic-bezier(0.25, 1, 0.5, 1), color 0.3s cubic-bezier(0.2",
+        "stroke 0.3s cubic-bezier(0.25, 1, 0.5, 1)"
+      ],
+      "padding": {
+        "top": "36px",
+        "bottom": "36px"
+      }
+    },
+    {
+      "y": 761,
+      "h": 2196,
+      "bg": "rgb(255, 255, 255)",
+      "tag": "div",
+      "cls": "section-container",
+      "container": 1266,
+      "columns": 3,
+      "type": [
+        {
+          "fontSize": 32,
+          "weight": "300",
+          "lineHeight": "35.2px",
+          "count": 3,
+          "sample": "Flexible solutions for every business mo"
+        },
+        {
+          "fontSize": 26,
+          "weight": "300",
+          "lineHeight": "29.12px",
+          "count": 6,
+          "sample": "Accept and optimize payments globally—on"
+        },
+        {
+          "fontSize": 14,
+          "weight": "300",
+          "lineHeight": "19.6px",
+          "count": 1,
+          "sample": "We use cookies to improve your experienc",
+          "floating": true
+        },
+        {
+          "fontSize": 14,
+          "weight": "500",
+          "lineHeight": "19.6px",
+          "count": 1,
+          "sample": "Accept all",
+          "floating": true
+        }
+      ],
+      "headline": {
+        "fontSize": 32,
+        "weight": "300",
+        "lineHeight": "35.2px",
+        "count": 3,
+        "sample": "Flexible solutions for every business mo"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 860,
+          "h": 712,
+          "aspect": 1.21,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 1243,
+          "h": 454,
+          "aspect": 2.74,
+          "radius": null,
+          "objectFit": "cover"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "z-index 0.1s steps(1)",
+        "transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1)",
+        "clip-path 0.8s cubic-bezier(0.165, 0.84, 0.44, 1)",
+        "opacity 0.25s linear",
+        "transform 1s cubic-bezier(0.16, 1, 0.3, 1)",
+        "opacity 0.5s cubic-bezier(0.33, 1, 0.68, 1)",
+        "--hover-progress 0.6s cubic-bezier(0.65, 0, 0.35, 1)"
+      ],
+      "padding": {
+        "top": "96px",
+        "bottom": "96px"
+      }
+    },
+    {
+      "y": 2957,
+      "h": 560,
+      "bg": "rgb(255, 255, 255)",
+      "tag": "div",
+      "cls": "section-container",
+      "container": 1266,
+      "columns": 2,
+      "type": [
+        {
+          "fontSize": 48,
+          "weight": "300",
+          "lineHeight": "49.44px",
+          "count": 1,
+          "sample": "Building the economic infrastructure for"
+        },
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": "16px",
+          "count": 1,
+          "sample": "Watch now"
+        }
+      ],
+      "headline": {
+        "fontSize": 48,
+        "weight": "300",
+        "lineHeight": "49.44px",
+        "count": 1,
+        "sample": "Building the economic infrastructure for"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 1232,
+          "h": 400,
+          "aspect": 3.08,
+          "radius": "6px",
+          "objectFit": "cover"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "background-color 0.3s cubic-bezier(0.25, 1, 0.5, 1), color 0.3s cubic-bezier(0.2",
+        "stroke 0.3s cubic-bezier(0.25, 1, 0.5, 1)"
+      ],
+      "padding": {
+        "top": "80px",
+        "bottom": "80px"
+      }
+    },
+    {
+      "y": 3517,
+      "h": 977,
+      "bg": "rgb(13, 23, 56)",
+      "tag": "div",
+      "cls": "section-container",
+      "container": 1266,
+      "columns": 4,
+      "type": [
+        {
+          "fontSize": 56,
+          "weight": "300",
+          "lineHeight": "57.68px",
+          "count": 1,
+          "sample": "The backbone of global commerce"
+        },
+        {
+          "fontSize": 48,
+          "weight": "300",
+          "lineHeight": "48px",
+          "count": 8,
+          "sample": "135+"
+        },
+        {
+          "fontSize": 16,
+          "weight": "300",
+          "lineHeight": "22.4px",
+          "count": 9,
+          "sample": "currencies and payment methods supported"
+        }
+      ],
+      "headline": {
+        "fontSize": 56,
+        "weight": "300",
+        "lineHeight": "57.68px",
+        "count": 1,
+        "sample": "The backbone of global commerce"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "color 1.2s cubic-bezier(0.65, 0, 0.35, 1)",
+        "border-color 1.2s cubic-bezier(0.65, 0, 0.35, 1)",
+        "color 0.3s cubic-bezier(0.25, 1, 0.5, 1)"
+      ],
+      "padding": {
+        "top": "80px",
+        "bottom": null
+      }
+    },
+    {
+      "y": 4789,
+      "h": 1388,
+      "bg": "rgb(255, 255, 255)",
+      "tag": "section",
+      "cls": "section-row",
+      "container": 1232,
+      "columns": 3,
+      "type": [
+        {
+          "fontSize": 26,
+          "weight": "300",
+          "lineHeight": "29.12px",
+          "count": 2,
+          "sample": "Transform your enterprise with agile fin"
+        },
+        {
+          "fontSize": 22,
+          "weight": "300",
+          "lineHeight": "24.2px",
+          "count": 4,
+          "sample": "Hertz unifies commerce with Stripe."
+        },
+        {
+          "fontSize": 18,
+          "weight": "300",
+          "lineHeight": "25.2px",
+          "count": 1,
+          "sample": "50% of Fortune 100 companies have used S"
+        },
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": "16px",
+          "count": 9,
+          "sample": "Stripe for enterprises"
+        },
+        {
+          "fontSize": 16,
+          "weight": "300",
+          "lineHeight": "22.4px",
+          "count": 15,
+          "sample": "countries"
+        },
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": "22.4px",
+          "count": 15,
+          "sample": "160"
+        },
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": null,
+          "count": 3,
+          "sample": "View services"
+        }
+      ],
+      "headline": {
+        "fontSize": 26,
+        "weight": "300",
+        "lineHeight": "29.12px",
+        "count": 2,
+        "sample": "Transform your enterprise with agile fin"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 1232,
+          "h": 531,
+          "aspect": 2.32,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 1232,
+          "h": 531,
+          "aspect": 2.32,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 1232,
+          "h": 531,
+          "aspect": 2.32,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 1232,
+          "h": 531,
+          "aspect": 2.32,
+          "radius": null,
+          "objectFit": "fill"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "background-color 0.3s cubic-bezier(0.25, 1, 0.5, 1), color 0.3s cubic-bezier(0.2",
+        "stroke 0.3s cubic-bezier(0.25, 1, 0.5, 1)",
+        "background 0.4s cubic-bezier(0.3, 0, 0.2, 1), color 0.4s cubic-bezier(0.3, 0, 0.",
+        "width 0.4s cubic-bezier(0.3, 0, 0.2, 1)",
+        "opacity 0.4s cubic-bezier(0.3, 0, 0.2, 1)",
+        "max-height 0.5s cubic-bezier(0.65, 0, 0.35, 1), visibility steps(1)",
+        "max-height 0.5s cubic-bezier(0.65, 0, 0.35, 1), visibility 0s steps(1) 0.5s",
+        "color 0.3s cubic-bezier(0.25, 1, 0.5, 1)"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 5811,
+      "h": 531,
+      "bg": "rgb(255, 255, 255)",
+      "tag": "div",
+      "cls": "customer-stories__customer-image",
+      "container": 1232,
+      "columns": 1,
+      "type": [
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": "16px",
+          "count": 1,
+          "sample": "Read the story",
+          "floating": true
+        }
+      ],
+      "headline": {
+        "fontSize": 16,
+        "weight": "400",
+        "lineHeight": "16px",
+        "count": 1,
+        "sample": "Read the story",
+        "floating": true
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 1232,
+          "h": 531,
+          "aspect": 2.32,
+          "radius": null,
+          "objectFit": "fill"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 6337,
+      "h": 1026,
+      "bg": "rgb(255, 255, 255)",
+      "tag": "section",
+      "cls": "section-row",
+      "container": 1264,
+      "columns": 6,
+      "type": [
+        {
+          "fontSize": 26,
+          "weight": "300",
+          "lineHeight": "29.12px",
+          "count": 1,
+          "sample": "Build a foundation for your startup that"
+        },
+        {
+          "fontSize": 18,
+          "weight": "300",
+          "lineHeight": "25.2px",
+          "count": 1,
+          "sample": "From stablecoin pioneers to 88% of the F"
+        },
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": "16px",
+          "count": 1,
+          "sample": "Stripe for startups"
+        },
+        {
+          "fontSize": 16,
+          "weight": "300",
+          "lineHeight": "22.4px",
+          "count": 10,
+          "sample": "Lovable grows into a vibe-coding juggern"
+        },
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": null,
+          "count": 10,
+          "sample": "Read Lovable’s story"
+        },
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": "22.4px",
+          "count": 2,
+          "sample": "Stripe Startups program."
+        }
+      ],
+      "headline": {
+        "fontSize": 26,
+        "weight": "300",
+        "lineHeight": "29.12px",
+        "count": 1,
+        "sample": "Build a foundation for your startup that"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 344,
+          "h": 448,
+          "aspect": 0.77,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 344,
+          "h": 448,
+          "aspect": 0.77,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 344,
+          "h": 448,
+          "aspect": 0.77,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 344,
+          "h": 448,
+          "aspect": 0.77,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 344,
+          "h": 448,
+          "aspect": 0.77,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 344,
+          "h": 448,
+          "aspect": 0.77,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 344,
+          "h": 448,
+          "aspect": 0.77,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 344,
+          "h": 448,
+          "aspect": 0.77,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 585,
+          "h": 236,
+          "aspect": 2.48,
+          "radius": null,
+          "objectFit": "fill"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "background-color 0.3s cubic-bezier(0.25, 1, 0.5, 1), color 0.3s cubic-bezier(0.2",
+        "stroke 0.3s cubic-bezier(0.25, 1, 0.5, 1)",
+        "background-color 0.3s cubic-bezier(0.25, 1, 0.5, 1), outline-color 0.3s cubic-be",
+        "fill 0.3s cubic-bezier(0.25, 1, 0.5, 1)",
+        "transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1)",
+        "color 0.3s cubic-bezier(0.25, 1, 0.5, 1)",
+        "opacity 0.25s linear",
+        "transform 1s cubic-bezier(0.16, 1, 0.3, 1)"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 7749,
+      "h": 532,
+      "bg": "rgb(255, 255, 255)",
+      "tag": "div",
+      "cls": "platform-graphic",
+      "container": 1232,
+      "columns": 2,
+      "type": [],
+      "headline": null,
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 1232,
+          "h": 532,
+          "aspect": 2.32,
+          "radius": null,
+          "objectFit": "cover"
+        }
+      ],
+      "glassNodes": 1,
+      "motionDecls": [
+        "all",
+        "background-color 0.3s cubic-bezier(0.25, 1, 0.5, 1), color 0.3s cubic-bezier(0.2"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 8577,
+      "h": 307,
+      "bg": "rgb(255, 255, 255)",
+      "tag": "div",
+      "cls": "testimonial-card",
+      "container": 1264,
+      "columns": 1,
+      "type": [
+        {
+          "fontSize": 26,
+          "weight": "300",
+          "lineHeight": "29.12px",
+          "count": 1,
+          "sample": "With Stripe, we have a global technology"
+        },
+        {
+          "fontSize": 18,
+          "weight": "400",
+          "lineHeight": "25.2px",
+          "count": 1,
+          "sample": "Kurtis Moyer,"
+        },
+        {
+          "fontSize": 18,
+          "weight": "300",
+          "lineHeight": "25.2px",
+          "count": 1,
+          "sample": "Lead Product Manager of Payments, Mindbo"
+        },
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": null,
+          "count": 1,
+          "sample": "Read the story"
+        }
+      ],
+      "headline": {
+        "fontSize": 26,
+        "weight": "300",
+        "lineHeight": "29.12px",
+        "count": 1,
+        "sample": "With Stripe, we have a global technology"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 48,
+          "h": 48,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "fill"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "color 0.3s cubic-bezier(0.25, 1, 0.5, 1)",
+        "stroke 0.3s cubic-bezier(0.25, 1, 0.5, 1)"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 9479,
+      "h": 537,
+      "bg": "rgb(13, 23, 56)",
+      "tag": "div",
+      "cls": "section-row",
+      "container": 1248,
+      "columns": 4,
+      "type": [
+        {
+          "fontSize": 26,
+          "weight": "300",
+          "lineHeight": "29.12px",
+          "count": 2,
+          "sample": "Connect to existing systems."
+        },
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": null,
+          "count": 1,
+          "sample": "Interactive diagram showing how Stripe c"
+        },
+        {
+          "fontSize": 14,
+          "weight": "400",
+          "lineHeight": null,
+          "count": 16,
+          "sample": "ERP"
+        },
+        {
+          "fontSize": 14,
+          "weight": "400",
+          "lineHeight": "14px",
+          "count": 1,
+          "sample": "App Marketplace"
+        }
+      ],
+      "headline": {
+        "fontSize": 26,
+        "weight": "300",
+        "lineHeight": "29.12px",
+        "count": 2,
+        "sample": "Connect to existing systems."
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "opacity 0.5s cubic-bezier(0.33, 1, 0.68, 1)",
+        "border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
+        "transform 2s cubic-bezier(0.9, 0, 0.1, 1)",
+        "opacity cubic-bezier(0.4, 0, 0.2, 1), scale cubic-bezier(0.4, 0, 0.2, 1)",
+        "background-color 0.3s cubic-bezier(0.25, 1, 0.5, 1), color 0.3s cubic-bezier(0.2",
+        "border-color 0.5s linear",
+        "opacity cubic-bezier(0.4, 0, 0.2, 1), transform cubic-bezier(0.4, 0, 0.2, 1)",
+        "border-color 0.5s linear 2.5s",
+        "opacity 0s cubic-bezier(0.4, 0, 0.2, 1) 2.5s, transform 0s cubic-bezier(0.4, 0, "
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 10145,
+      "h": 511,
+      "bg": "rgb(13, 23, 56)",
+      "tag": "div",
+      "cls": "developers-scale-subsection",
+      "container": 1232,
+      "columns": 3,
+      "type": [
+        {
+          "fontSize": 48,
+          "weight": "300",
+          "lineHeight": "49.44px",
+          "count": 3,
+          "sample": "500M+"
+        },
+        {
+          "fontSize": 26,
+          "weight": "300",
+          "lineHeight": "29.12px",
+          "count": 2,
+          "sample": "Scale with confidence."
+        },
+        {
+          "fontSize": 16,
+          "weight": "300",
+          "lineHeight": "22.4px",
+          "count": 3,
+          "sample": "API requests per day"
+        }
+      ],
+      "headline": {
+        "fontSize": 48,
+        "weight": "300",
+        "lineHeight": "49.44px",
+        "count": 3,
+        "sample": "500M+"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "opacity 0.5s cubic-bezier(0.33, 1, 0.68, 1)"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 10784,
+      "h": 566,
+      "bg": "rgb(13, 23, 56)",
+      "tag": "div",
+      "cls": "section-row",
+      "container": 1232,
+      "columns": 3,
+      "type": [
+        {
+          "fontSize": 26,
+          "weight": "300",
+          "lineHeight": "29.12px",
+          "count": 2,
+          "sample": "Choose an integration path."
+        },
+        {
+          "fontSize": 21,
+          "weight": "500",
+          "lineHeight": "27.3px",
+          "count": 1,
+          "sample": "$19.99"
+        },
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": "22.4px",
+          "count": 3,
+          "sample": "Don’t code?"
+        },
+        {
+          "fontSize": 16,
+          "weight": "300",
+          "lineHeight": "22.4px",
+          "count": 3,
+          "sample": "Set up billing, take in-person payments,"
+        },
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": null,
+          "count": 3,
+          "sample": "Explore no-code"
+        },
+        {
+          "fontSize": 11,
+          "weight": "400",
+          "lineHeight": "12.65px",
+          "count": 1,
+          "sample": "Pure glow cream"
+        }
+      ],
+      "headline": {
+        "fontSize": 26,
+        "weight": "300",
+        "lineHeight": "29.12px",
+        "count": 2,
+        "sample": "Choose an integration path."
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "opacity 0.5s cubic-bezier(0.33, 1, 0.68, 1)",
+        "color 0.3s cubic-bezier(0.25, 1, 0.5, 1)",
+        "stroke 0.3s cubic-bezier(0.25, 1, 0.5, 1)"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 11541,
+      "h": 701,
+      "bg": "rgb(255, 255, 255)",
+      "tag": "section",
+      "cls": "section-row",
+      "container": 1232,
+      "columns": 6,
+      "type": [
+        {
+          "fontSize": 32,
+          "weight": "300",
+          "lineHeight": "35.2px",
+          "count": 2,
+          "sample": "What’s happening"
+        },
+        {
+          "fontSize": 26,
+          "weight": "300",
+          "lineHeight": "29.12px",
+          "count": 16,
+          "sample": "Businesses on Stripe generated $1.9T in "
+        },
+        {
+          "fontSize": 22,
+          "weight": "300",
+          "lineHeight": "24.2px",
+          "count": 16,
+          "sample": "Businesses on Stripe generated $1.9T in "
+        },
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": "16px",
+          "count": 16,
+          "sample": "Read the letter"
+        },
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": null,
+          "count": 1,
+          "sample": "Item 1 of 8: Businesses on Stripe genera"
+        }
+      ],
+      "headline": {
+        "fontSize": 32,
+        "weight": "300",
+        "lineHeight": "35.2px",
+        "count": 2,
+        "sample": "What’s happening"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "background-color 0.3s cubic-bezier(0.25, 1, 0.5, 1), outline-color 0.3s cubic-be",
+        "fill 0.3s cubic-bezier(0.25, 1, 0.5, 1)",
+        "opacity 0.12s",
+        "background-color 0.3s cubic-bezier(0.25, 1, 0.5, 1), color 0.3s cubic-bezier(0.2",
+        "stroke 0.3s cubic-bezier(0.25, 1, 0.5, 1)"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 12371,
+      "h": 731,
+      "bg": "rgb(255, 255, 255)",
+      "tag": "div",
+      "cls": "section-row",
+      "container": 1232,
+      "columns": 2,
+      "type": [
+        {
+          "fontSize": 32,
+          "weight": "300",
+          "lineHeight": "35.2px",
+          "count": 2,
+          "sample": "Book of the week"
+        },
+        {
+          "fontSize": 26,
+          "weight": "300",
+          "lineHeight": "29.12px",
+          "count": 2,
+          "sample": "The Survival of the Bark Canoe"
+        },
+        {
+          "fontSize": 16,
+          "weight": "300",
+          "lineHeight": "22.4px",
+          "count": 2,
+          "sample": "Henri Vaillancourt builds birch-bark can"
+        },
+        {
+          "fontSize": 14,
+          "weight": "400",
+          "lineHeight": "14px",
+          "count": 2,
+          "sample": "Stripe Press"
+        },
+        {
+          "fontSize": 12,
+          "weight": "300",
+          "lineHeight": "17.4px",
+          "count": 1,
+          "sample": "For more ideas on economic progress and "
+        }
+      ],
+      "headline": {
+        "fontSize": 32,
+        "weight": "300",
+        "lineHeight": "35.2px",
+        "count": 2,
+        "sample": "Book of the week"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 296,
+          "h": 440,
+          "aspect": 0.67,
+          "radius": "6px",
+          "objectFit": "fill"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "anim:0.5s cubic-bezier(0.33, 1, 0.68, 1) book-of-the-week-fade-in",
+        "color 0.3s cubic-bezier(0.25, 1, 0.5, 1)",
+        "border-color 0.2s, background-color 0.2s",
+        "color 0.2s"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 13198,
+      "h": 380,
+      "bg": "rgb(248, 250, 253)",
+      "tag": "div",
+      "cls": "section-container",
+      "container": 1266,
+      "columns": 2,
+      "type": [
+        {
+          "fontSize": 32,
+          "weight": "300",
+          "lineHeight": "35.2px",
+          "count": 1,
+          "sample": "Ready to get started?"
+        },
+        {
+          "fontSize": 20,
+          "weight": "300",
+          "lineHeight": "28px",
+          "count": 1,
+          "sample": "Create an account instantly, or contact "
+        },
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": "16px",
+          "count": 2,
+          "sample": "Start now"
+        },
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": "22.4px",
+          "count": 2,
+          "sample": "See what you’ll pay"
+        },
+        {
+          "fontSize": 16,
+          "weight": "300",
+          "lineHeight": "22.4px",
+          "count": 2,
+          "sample": "Integrated per-transaction pricing with "
+        },
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": null,
+          "count": 2,
+          "sample": "Pricing details"
+        }
+      ],
+      "headline": {
+        "fontSize": 32,
+        "weight": "300",
+        "lineHeight": "35.2px",
+        "count": 1,
+        "sample": "Ready to get started?"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "background-color 0.3s cubic-bezier(0.25, 1, 0.5, 1), color 0.3s cubic-bezier(0.2",
+        "stroke 0.3s cubic-bezier(0.25, 1, 0.5, 1)",
+        "color 0.3s cubic-bezier(0.25, 1, 0.5, 1)"
+      ],
+      "padding": {
+        "top": "96px",
+        "bottom": "96px"
+      }
+    },
+    {
+      "y": 13578,
+      "h": 967,
+      "bg": "rgb(248, 250, 253)",
+      "tag": "div",
+      "cls": "footer-links-section",
+      "container": 1264,
+      "columns": 4,
+      "type": [
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": "19.2px",
+          "count": 7,
+          "sample": "Products and pricing"
+        },
+        {
+          "fontSize": 16,
+          "weight": "300",
+          "lineHeight": "20px",
+          "count": 85,
+          "sample": "Pricing"
+        },
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": null,
+          "count": 1,
+          "sample": "Sign in"
+        }
+      ],
+      "headline": {
+        "fontSize": 16,
+        "weight": "400",
+        "lineHeight": "19.2px",
+        "count": 7,
+        "sample": "Products and pricing"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "color 0.3s cubic-bezier(0.25, 1, 0.5, 1)",
+        "stroke 0.3s cubic-bezier(0.25, 1, 0.5, 1)"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    }
+  ],
+  "sectionsMobile": [
+    {
+      "y": 66,
+      "h": 419,
+      "container": null,
+      "columns": 2
+    },
+    {
+      "y": 550,
+      "h": 3511,
+      "container": null,
+      "columns": 2
+    },
+    {
+      "y": 4061,
+      "h": 688,
+      "container": null,
+      "columns": 2
+    },
+    {
+      "y": 4749,
+      "h": 780,
+      "container": null,
+      "columns": 2
+    },
+    {
+      "y": 5745,
+      "h": 210,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 5980,
+      "h": 1923,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 7927,
+      "h": 639,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 8662,
+      "h": 1058,
+      "container": null,
+      "columns": 6
+    },
+    {
+      "y": 9816,
+      "h": 210,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 10082,
+      "h": 532,
+      "container": null,
+      "columns": 3
+    },
+    {
+      "y": 10646,
+      "h": 551,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 11253,
+      "h": 338,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 11779,
+      "h": 3082,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 14860,
+      "h": 2033,
+      "container": null,
+      "columns": 6
+    },
+    {
+      "y": 16893,
+      "h": 723,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 17616,
+      "h": 2732,
+      "container": null,
+      "columns": 1
+    }
+  ],
+  "reproduction": {
+    "stamp": null,
+    "note": "IR만으로 원본을 오차 밴드 내 재건축→capture 대조 통과 시 스탬프. 스탬프 없는 IR은 리드 자격 없음."
+  }
+}

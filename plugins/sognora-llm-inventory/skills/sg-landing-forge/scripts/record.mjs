@@ -29,7 +29,7 @@ const WIN = +(args.window ?? 1400); // 샘플링 창(ms)
 const MAX = +(args.max ?? 10);
 
 const browser = await pw.chromium.launch({ headless: true });
-const page = await (await browser.newContext({ viewport: { width: 1440, height: 900 } })).newPage();
+const page = await (await browser.newContext({ viewport: { width: 1440, height: 900 }, userAgent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36", locale: "ko-KR" })).newPage();
 await page.goto(args.url, { waitUntil: "networkidle", timeout: 60000 }).catch(() => {});
 
 const SAMPLER = `(el, windowMs) => new Promise((done) => {
@@ -52,9 +52,17 @@ const selectors = args.selectors
   ? args.selectors.split(",").map((s) => s.trim())
   : await page.evaluate((max) => {
       const seen = new Set(); const out = [];
+      const pool = [];
       for (const el of document.querySelectorAll('a,button,[role="button"],[class*="card" i],[class*="btn" i],[class*="tile" i]')) {
+        if (el.closest('header,nav,[class*="banner" i],[class*="cookie" i],[class*="consent" i],[class*="curtain" i]')) continue;
         const r = el.getBoundingClientRect();
         if (r.width < 40 || r.height < 20 || r.width > 900) continue;
+        pool.push([el, r.top + scrollY]);
+      }
+      pool.sort((a, b) => a[1] - b[1]); // 페이지 전역에 y 분산해서 선택
+      const step = Math.max(1, Math.floor(pool.length / (max * 2)));
+      for (let i = 0; i < pool.length; i += step) {
+        const el = pool[i][0]; const r = el.getBoundingClientRect();
         const key = el.tagName + "|" + [...el.classList].sort().join(".");
         if (seen.has(key)) continue; seen.add(key);
         let sel = el.tagName.toLowerCase();

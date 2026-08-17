@@ -324,3 +324,87 @@ probe 결과 `hiddenAtRest: 16 / revealedAfterScroll: 0`. 16건의 정체를 확
 - **`hds-*` 토큰 체계를 통째로 이식하기.** 색 변수만 431개다. 우리 규모에서 필요한 건 이 파일에 정리된 **10개 남짓의 의미 토큰**(text-solid/soft/subdued/quiet, surface-bg-subdued, surface-border-quiet, action-*, 다크 2단)이지 431개가 아니다.
 - **책 소개 섹션(Book of the week) 형식만 베끼기.** 이건 Stripe Press라는 실체가 뒤에 있어서 성립한다. 읽을 것이 없는데 자리만 만들면 AS2(플레이스홀더) 그 자체다.
 - **통계 밴드 6종 시간대 크로스페이드.** 광원 위치·색 6세트·데이터비주얼 4종·활성 인디케이터가 전부 동기화돼야 성립한다. 부분만 가져오면 "그냥 보라 그라데이션 배너"로 착지한다 — detect가 CO1 🔴을 때린 바로 그 모양이 된다.
+
+---
+
+## 재현 노트 (Tier-R, 2026-08-17)
+
+수집: `bundle.mjs` → `record.mjs` → `ir.mjs`. 최종 URL `https://stripe.com/` (200, 리다이렉트 없음).
+응답 헤더에 `accept-ch: Sec-CH-Prefers-Color-Scheme` + `critical-ch`가 있다 — **서버가 색 스킴 힌트를 받아 라이트/다크를 갈라 내려준다.** 섹션 클래스가 전부 `hds-color-mode`인 것과 같은 이야기다. 이번 번들은 라이트 기준이다.
+
+### 체크리스트
+
+- **① tree 1440/390 · scrollHeight — 통과.** 14656 / 20459, 스크린샷과 일치. 그룹 B에서 가장 긴 페이지다.
+- **② 섹션 수 눈 대조 — 실패(Δ11).** 눈 22 vs `ir.sections` 11(1개 허위 → 실질 10).
+- **③ @keyframes — 통과.** 10개. 다만 페이지 모션의 주력은 CSS가 아니라 canvas다(아래).
+- **④ 자산 rect 결합률 — 실패.** 23/70 = **33%** (기준 50% 미달). 이미지만 봐도 23/59 = 39%. 캐러셀 지연 로드와 CSS 배경 이미지가 원인.
+- **⑤ hover/reveal 타임라인 — 통과.** hover 9건 중 실변화 2건(둘 다 opacity: `a.hds-link.navigation-menu-home-link` 8프레임, `a.hds-link` 10프레임). reveal 1건은 frames=2로 무변화.
+- **⑥ 재현 불가 목록 — 작성.** 분량이 이 그룹에서 압도적으로 많다.
+
+### IR 요약
+
+> **2026-08-17 갱신 — 계기 수리 후 ir.json 재생성 기준이다.** 아래 「시각 확인」의 "Δ11의 내역" 단락은 구 IR 기준이라 수치가 맞지 않는다(Stripe 자체 `<section>`이 9개이고 `business-sizes-section`이 h=4610으로 비대하다는 관찰은 유효). 최신 수치는 이 절을 따를 것.
+
+- **섹션 16 / 눈 22 (Δ6).** 구 IR 11에서 개선. 컨테이너 **1266 · 1264 · 1248 · 1232px** — 4단으로 실제 그리드 폭 분포가 드러났다.
+- **허위 섹션 0 · 히어로 복구.** 구 IR이 히어로 자리에 넣었던 배경 아트 레이어 `div.hero-wave-animation__static`(y=−107)이 사라지고, **진짜 히어로 `div.section-container` y=76 h=612 "Financial infrastructure to grow y…"(48/300)** 가 1번 섹션으로 들어왔다. `layers`는 비어 있다.
+- **배경 시퀀스** — 흰색 기본에 **다크(`rgb(13,23,56)`)가 4회**: y=3517(backbone) 그리고 y=9479 / 10145 / 10784(개발자 3연속). 마지막 2밴드가 `rgb(248,250,253)`. 구 IR의 "다크 2회"보다 정밀하다 — 개발자 구간은 한 덩어리가 아니라 **다크 배경 위에 3개 섹션이 이어지는 형태**다.
+- **섹션 높이** 612 / 2196 / 400 / 977 / 916 / 245 / 1026 / 532 / 379 / 537 / 511 / 566 / 701 / 731 / 380 / 967. 벤토(2196)만 크고 나머지는 **245~1026 사이**다. 모바일은 35개.
+- **커버리지 80%**(유니온 기준) — 100px 이상 공백 **9곳**(최대 y=8956~9479의 523px). 아래 Δ6과 같은 원인이다.
+- 유니온 수정으로 섹션 경계 4곳이 밴드 단위로 교정됐다: Hertz 케이스 681→**916**(y=4968), 스타트업 구간이 캐러셀 트랙(552)이 아니라 **"Build a foundation for your startup…" 밴드 1026**(y=6337), 개발자 다이어그램이 alt 텍스트 대신 **"Connect to existing systems." 537**(y=9479), Book of the week 597→**731**(y=12371, 헤드라인도 섹션 제목으로 교정).
+- **잔차 Δ6의 내역**(눈으로 본 22밴드 중 IR에 없는 것): 히어로 아래 로고 행 · "Powering businesses of all sizes." 인트로 · "Transform your enterprise…" 인트로 · URBN/Instacart/Le Monde 아코디언 · Startups/Atlas 2카드 · "Reliable, extensible infrastructure…" 다크 인트로. **전부 텍스트 한두 줄짜리 인트로이거나 낮은 카드 행**이라 h≥200 문턱에 걸린다. 즉 남은 실패는 "섹션 후보 최소 높이" 성격이지 구조 오독이 아니다.
+- **타입 스케일 상위 3**: `56/300`(×1) · `48/300`(×16) · `32/300`(×12). **웨이트가 사실상 300 하나다** — 16/400(×100), 16/300(×133)이 본문 축.
+- **duration 후보**: 300ms(×372) · 800ms(×58) · 150ms(×42) · 500ms(×35) · 400ms(×32) · 240ms(×28).
+- **keyframes 10** — 명명 예시 `bento-overlay-gradient-opacity-animation`, `bento-dialog-reveal-fade-in-up`, `agentic-commerce-graphic-border-spin`, `book-of-the-week-fade-in`, `nav-hover-arrow-in/out`, `detect-scroll`.
+- **실행 중 애니메이션**: 익명 `Animation 1420ms linear` ×19 + `detect-scroll`. 1420ms는 canvas 구동 쪽 값으로 보인다.
+- **리스너 상위 3**: click 66 · pageshow 10 · mousemove 8. 여기에 **`webglcontextlost` / `webglcontextrestored` / `webglcontextcreationerror` 각 4건** — WebGL 컨텍스트가 4개 살아 있다는 직접 증거다.
+- **canvas 12 · video 0 · img 35.** 폰트는 `sohne-var`와 `SourceCodePro` 단 2종.
+
+### 시각 확인 (shot-1440.png 9밴드 · shot-390.png 직접 확인)
+
+정상 렌더. 챌린지 없음. **쿠키 카드가 우측 상단에 떠 있다**(y≈760, "Accept all / Reject all") — 전면 차단은 아니고 콘텐츠를 가리는 정도다.
+
+눈으로 센 밴드 **22개**: ① 히어로 ② 로고 행 ③ Flexible solutions 벤토 ④ Sessions AI 배너 ⑤ backbone 다크 스탯 ⑥ Powering businesses 인트로 ⑦ Transform your enterprise ⑧ Hertz 케이스 ⑨ URBN/Instacart/Le Monde 아코디언 ⑩ Realize value 3열 ⑪ startup 파운데이션 + 로고 캐러셀 ⑫ Startups/Atlas 2카드 ⑬ SaaS platform + 3열 ⑭ 인용 + 로고 로테이터 ⑮ Reliable extensible 다크 ⑯ Connect to existing systems 다이어그램 ⑰ Scale with confidence + 3스탯 ⑱ Choose an integration path 3카드 ⑲ What's happening 캐러셀 ⑳ Book of the week ㉑ Ready to get started ㉒ 푸터.
+
+**Δ11의 내역(tree로 확인):** Stripe 자신의 최상위 `<section>`은 **9개**다. 그 중 `business-sizes-section`(y=4494) 하나가 **h=4610**으로 ⑥~⑭를 통째로 담고 있다. IR은 이걸 `section-row` 3개로 쪼개 오히려 원본보다 잘게 봤고, 대신 **히어로 섹션(y=76 h=685)을 통째로 놓쳤다** — 그 자리에 배경 아트 레이어 `div.hero-wave-animation__static`(y=-107 h=975)이 허위로 들어갔다. 그래서 IR 어디에도 `Financial infrastructure to grow your revenue` 헤드라인이 없다. **리드로 쓰려면 히어로는 수동으로 채워야 한다.**
+
+**시그니처 순간(실제로 본 것만):**
+- 히어로 우측의 **리본 그라디언트**(주황→핑크→보라가 꼬인 띠) — 정지 이미지가 아니라 `canvas.hero-wave-animation__canvas` 1393×761
+- 히어로 상단 **라이브 카운터** `Global GDP running on Stripe: 1.69925567%` — 소수점 8자리가 실시간으로 돈다
+- 헤드라인의 **구절별 색 분리** — 검정 문장 안에서 `your revenue`, `financial services` 같은 조각만 보라·회색으로 빠진다. 페이지 전역 문법이다(각 섹션 인트로도 "굵은 문장. + 흐린 이어문장" 2색 구조)
+- 벤토 카드마다 우상단 **확대(⤢) 버튼** — 다이얼로그로 열린다(`bento-dialog-reveal-fade-in-up`)
+- **다크 밴드 2회**로 페이지를 3막으로 끊고, 각 다크 밴드가 자기 캔버스 그래픽을 하나씩 쥔다(보라 별폭발 `data-viz__canvas`, 개발자 파형 `developers-wave-animation__canvas`)
+- **애니메이션 구분선** — 섹션 사이 1264×20 `divider-canvas`가 5곳. 정적 hairline이 아니다
+- 인용 아래 로고 행에 **진행 막대**가 그려져 자동 로테이션을 알린다(mindbody → JOBBER → substack → lightspeed)
+- `Scale with confidence.` 구간(y≈10145)이 **스크린샷에서 백지**로 나온다 — 콘텐츠 누락이 아니라 `developers-wave-animation__canvas`(1232×460)가 헤드리스에서 아무것도 안 그린 것이다. tree에는 정상 존재한다.
+
+### 복합 위젯 (기계 기록 불가 → 기술로)
+
+- **canvas 12개**가 이 사이트 인상의 핵심이다. 위치·크기까지 실측된 목록:
+  `hero-wave-animation__canvas` 1393×761 @y=0 · `agentic-graphic__background-canvas` / `issuing-graphic__background-canvas` / `globe__canvas` 각 447×728 @y=1693(벤토 3카드 배경) · `data-viz__canvas` 1234×519 @y=3975 · `divider-canvas` 1264×20 ×5 @y=6247/7433/10071/10710/12297 · `developers-wave-animation__canvas` 1232×460 @y=10145 · `squeezy-carousel__canvas` 1232×460 @y=11676.
+- **벤토 확대 다이얼로그**: 카드 ⤢ → 모달. 열림 상태는 수집되지 않았다(닫힌 채 캡처).
+- **케이스 아코디언**(URBN / Instacart / Le Monde): + 버튼 3개. 펼친 내용 미수집.
+- **스타트업 로고 캐러셀**(Lovable / Gamma / runway / supabase)과 **What's happening 캐러셀**: 좌우 화살표 구동. 슬라이드 수·이징 미측정.
+- **다크모드 토글**: backbone 밴드 우상단의 달 아이콘. 서버 `Sec-CH-Prefers-Color-Scheme` 협상과 맞물려 있어 토글 후 상태는 별도 수집이 필요하다.
+
+### 재현 불가 목록
+
+- **WebGL 컨텍스트 4개 + canvas 12개** — 리스너 인벤토리의 `webglcontextlost/restored/creationerror` ×4가 증거. 히어로 리본, 별폭발, 개발자 파형, 구분선 전부 해당. **CSS로는 근사조차 안 된다**
+- **라이브 GDP 카운터** — 서버 데이터
+- `sohne-var` — Klim Type Foundry 유료 라이선스
+- 벤토 다이얼로그·아코디언 **펼친 상태**, 캐러셀 내부 슬라이드
+- 다크모드 화면 전체(색 스킴 협상 뒤 상태)
+- Hertz / URBN / Instacart / Le Monde / Lovable / Gamma / runway / supabase **고객사 저작물**
+- 로그인 뒤 대시보드
+
+### 판정
+
+**보류 유지.** — 2026-08-17 재평가. 단, **사유가 계기에서 사이트 특성으로 완전히 옮겨갔다.**
+
+계기 수리로 해소된 것: 허위 섹션 0, **히어로 복구**(y=76 h=612), 섹션 11→16, 컨테이너 5단 검출, 다크 구간 해상도 상승. 구 판정의 핵심 사유였던 "IR에 히어로가 없다"는 **더 이상 유효하지 않다.**
+
+**그럼에도 보류인 이유 — 셋 다 계기로 못 고친다:**
+- **canvas 12개 + WebGL 컨텍스트 4개가 시그니처의 중심이다.** 히어로 리본, 별폭발, 개발자 파형, 애니메이션 구분선 5곳이 전부 캔버스다. "IR만으로 원본을 오차 밴드 내 재건축"이라는 재현 시험의 정의상 통과가 구조적으로 불가능하다.
+- **④ 자산 rect 결합률 33%** — IR 재생성과 무관한 번들 지표라 그대로다. 캐러셀 지연 로드가 원인이라 재수집해도 크게 오르기 어렵다.
+- **② Δ6 잔존** — 6개 밴드 전부 h<200인 인트로·낮은 카드 행이다. 문턱 조정 없이는 안 잡힌다.
+
+골격 참조로서의 값은 오히려 올라갔다 — 다크 4구간 배치, 245~701px에 몰린 섹션 높이 분포, 벤토 1834px의 단독 비대함, 컨테이너 5단이 전부 수치로 남았다. 다만 **리드로 지목하면 캔버스 자리를 무엇으로 채울지가 통째로 숙제로 남는다는 결론은 그대로다.** 그 답 없이 리드로 쓰지 말 것.

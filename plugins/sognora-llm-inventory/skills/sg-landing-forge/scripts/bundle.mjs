@@ -27,12 +27,13 @@ if (!pw) { console.error("playwright 미설치"); exit(2); }
 const viewports = (args.viewports ?? "1440,390").split(",").map(Number);
 await mkdir(join(args.out, "css"), { recursive: true });
 
+const UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36";
 const browser = await pw.chromium.launch({ headless: true });
 const assets = new Map();
 const cssTexts = [];
 
 for (const [vi, w] of viewports.entries()) {
-  const ctx = await browser.newContext({ viewport: { width: w, height: w > 800 ? 900 : 844 } });
+  const ctx = await browser.newContext({ viewport: { width: w, height: w > 800 ? 900 : 844 }, userAgent: UA, locale: "ko-KR" });
   const page = await ctx.newPage();
   if (vi === 0) {
     page.on("response", async (res) => {
@@ -60,7 +61,7 @@ for (const [vi, w] of viewports.entries()) {
       "border", "transition", "animation", "backdropFilter", "maskImage", "zIndex", "overflow", "objectFit", "aspectRatio", "textAlign", "maxWidth", "opacity", "transform", "mixBlendMode", "filter"];
     const SKIP = new Set(["SCRIPT", "STYLE", "NOSCRIPT", "TEMPLATE", "LINK", "META"]);
     const dump = (el, depth) => {
-      if (SKIP.has(el.tagName) || depth > 16) return null;
+      if (SKIP.has(el.tagName) || depth > 22) return null;
       const r = el.getBoundingClientRect();
       const cs = getComputedStyle(el);
       const isSvg = el.tagName.toLowerCase() === "svg";
@@ -77,15 +78,31 @@ for (const [vi, w] of viewports.entries()) {
       if (el.tagName === "IMG") node.media = { src: el.currentSrc || el.src, natural: [el.naturalWidth, el.naturalHeight], alt: el.alt?.slice(0, 60) };
       if (el.tagName === "VIDEO") node.media = { src: el.currentSrc || el.src, poster: el.poster };
       if (isSvg) { node.svg = { paths: el.querySelectorAll("path").length, viewBox: el.getAttribute("viewBox") }; return node; } // 내부 미탐색
-      let kids = [...el.children];
-      if (kids.length > 48) { node.childrenTruncated = kids.length; kids = kids.slice(0, 48); }
+      let kids = [...el.children].filter((c) => !SKIP.has(c.tagName));
+      if (kids.length > 64) { // script류 제거 후에도 넘치면 가시 요소 우선(문서 순서 유지)
+        node.childrenTruncated = kids.length;
+        const vis = kids.filter((c) => { const r = c.getBoundingClientRect(); return r.width > 0 && r.height > 0; });
+        kids = (vis.length ? vis : kids).slice(0, 64);
+      }
       for (const c of kids) { const d = dump(c, depth + 1); if (d) node.children.push(d); }
       return node;
     };
     return { scrollHeight: document.body.scrollHeight, tree: dump(document.body, 0) };
   });
   await writeFile(join(args.out, `tree-${w}.json`), JSON.stringify(tree));
-  console.log(`tree-${w}.json: scrollHeight=${tree.scrollHeight}`);
+  await page.screenshot({ fullPage: true, path: join(args.out, `shot-${w}.png`) }).catch(() => {});
+  { // fullPage는 아주 긴 페이지에서 하단이 백지가 되는 결손 사례가 있다(vercel) — 밴드 샷 병행
+    const vh = w > 800 ? 900 : 844;
+    const dir = join(args.out, `shots-${w}`);
+    await mkdir(dir, { recursive: true });
+    for (let y = 0, i = 0; y < tree.scrollHeight && i < 24; y += vh, i++) {
+      await page.evaluate((ty) => scrollTo(0, ty), y);
+      await page.waitForTimeout(220);
+      await page.screenshot({ path: join(dir, `y${String(y).padStart(5, "0")}.png`) }).catch(() => {});
+    }
+    await page.evaluate(() => scrollTo(0, 0));
+  }
+  console.log(`tree-${w}.json: scrollHeight=${tree.scrollHeight} (+shot-${w}.png, 밴드 샷)`);
 
   if (vi === 0) {
     // CSS 수확: inline <style> + 외부 시트 fetch

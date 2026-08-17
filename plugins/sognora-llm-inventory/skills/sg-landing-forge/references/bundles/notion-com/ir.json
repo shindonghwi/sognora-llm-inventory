@@ -1,0 +1,927 @@
+{
+  "irVersion": 1,
+  "source": {
+    "url": "https://www.notion.com",
+    "collectedAt": "2026-08-16T17:01:36.603Z"
+  },
+  "page": {
+    "scrollHeight1440": 4509,
+    "scrollHeight390": 4066,
+    "sectionCount": 5
+  },
+  "rhythm": {
+    "bgSequence": [
+      "rgb(255, 255, 255)",
+      "rgb(255, 255, 255)",
+      "rgb(255, 255, 255)",
+      "rgb(255, 255, 255)",
+      "rgb(255, 255, 255)"
+    ],
+    "heights": [
+      1153,
+      1424,
+      772,
+      486,
+      418
+    ],
+    "containers": [
+      1252,
+      1229
+    ]
+  },
+  "typeScale": [
+    {
+      "px": 96,
+      "weight": "600",
+      "count": 1
+    },
+    {
+      "px": 72,
+      "weight": "500",
+      "count": 1
+    },
+    {
+      "px": 54,
+      "weight": "700",
+      "count": 2
+    },
+    {
+      "px": 42,
+      "weight": "700",
+      "count": 1
+    },
+    {
+      "px": 22,
+      "weight": "700",
+      "count": 3
+    },
+    {
+      "px": 20,
+      "weight": "400",
+      "count": 1
+    },
+    {
+      "px": 20,
+      "weight": "600",
+      "count": 3
+    },
+    {
+      "px": 18,
+      "weight": "400",
+      "count": 3
+    },
+    {
+      "px": 16,
+      "weight": "500",
+      "count": 4
+    },
+    {
+      "px": 16,
+      "weight": "400",
+      "count": 1
+    },
+    {
+      "px": 16,
+      "weight": "700",
+      "count": 10
+    },
+    {
+      "px": 14,
+      "weight": "500",
+      "count": 46
+    },
+    {
+      "px": 14,
+      "weight": "400",
+      "count": 13
+    },
+    {
+      "px": 14,
+      "weight": "600",
+      "count": 2
+    }
+  ],
+  "motion": {
+    "durationsMs": [
+      {
+        "ms": 200,
+        "count": 146
+      },
+      {
+        "ms": 300,
+        "count": 11
+      },
+      {
+        "ms": 150,
+        "count": 9
+      },
+      {
+        "ms": 100,
+        "count": 1
+      }
+    ],
+    "keyframesCount": 34,
+    "keyframesNamed": [
+      "fadeIn",
+      "fadeOut",
+      "scaleIn",
+      "scaleOut",
+      "popIn",
+      "rotate",
+      "loadingDots_pulse__d8LYi",
+      "popover_popoverFadeIn__WkJed",
+      "popover_popoverSlideDown__bflEZ",
+      "popover_popoverSlideUp__U5eiA",
+      "globalNavigation_navShadowScrolled__pZKcg",
+      "globalNavigation_fadeIn__BTvkx",
+      "globalNavigation_fadeOut__UET7A",
+      "globalNavigation_slideDown__fiX_y",
+      "globalNavigation_thinkTogetherNavTokensHeroExit__P9vdt",
+      "globalNavigation_thinkTogetherNavBgHeroExit__vSKro",
+      "globalNavigation_thinkTogetherLogoFillHeroExit__33UgN",
+      "globalNavigation_thinkTogetherNavBgScrolled__HeD6_",
+      "globalNavigation_devPlatformNavTokensHeroExit__wdo2n",
+      "globalNavigation_devPlatformNavBgHeroExit__Pir6F"
+    ],
+    "runningAnimations": [
+      {
+        "name": "globalNavigation_navShadowScrolled__pZKcg",
+        "duration": "auto",
+        "easing": "linear",
+        "iterations": 1,
+        "state": "running"
+      },
+      {
+        "name": "Agent_agentMarkEnter__54wKq",
+        "duration": 600,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "finished"
+      },
+      {
+        "name": "Agent_agentMarkScroll__8jDZS",
+        "duration": 1000,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "running"
+      },
+      {
+        "name": "Agent_agentTaskEnter__ZpDY1",
+        "duration": 600,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "finished"
+      },
+      {
+        "name": "Agent_agentTaskScroll__bimxl",
+        "duration": 1000,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "running"
+      },
+      {
+        "name": "Agent_agentEnter__D6zdB",
+        "duration": 600,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "finished"
+      },
+      {
+        "name": "Agent_agentScroll__R_Ymn",
+        "duration": 1000,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "running"
+      },
+      {
+        "name": "Agent_agentTaskEnter__ZpDY1",
+        "duration": 600,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "finished"
+      },
+      {
+        "name": "Agent_agentTaskScroll__bimxl",
+        "duration": 1000,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "running"
+      },
+      {
+        "name": "Agent_notifCountScroll__2TpV_",
+        "duration": 1000,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "running"
+      },
+      {
+        "name": "Agent_agentEnter__D6zdB",
+        "duration": 600,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "finished"
+      },
+      {
+        "name": "Agent_agentScroll__R_Ymn",
+        "duration": 1000,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "running"
+      },
+      {
+        "name": "Agent_agentMarkEnter__54wKq",
+        "duration": 600,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "finished"
+      },
+      {
+        "name": "Agent_agentMarkScroll__8jDZS",
+        "duration": 1000,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "running"
+      },
+      {
+        "name": "Agent_agentTaskEnter__ZpDY1",
+        "duration": 600,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "finished"
+      },
+      {
+        "name": "Agent_agentTaskScroll__bimxl",
+        "duration": 1000,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "running"
+      },
+      {
+        "name": "Agent_agentEnter__D6zdB",
+        "duration": 600,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "finished"
+      },
+      {
+        "name": "Agent_agentScroll__R_Ymn",
+        "duration": 1000,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "running"
+      },
+      {
+        "name": "Agent_agentMarkEnter__54wKq",
+        "duration": 600,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "finished"
+      },
+      {
+        "name": "Agent_agentMarkScroll__8jDZS",
+        "duration": 1000,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "running"
+      }
+    ],
+    "hoverTimelines": [
+      {
+        "selector": "button.globalNavigation_link__ofzIw.globalNavigation_dropdownTrigger__Vd0Te",
+        "frames": 10,
+        "overshoot": false
+      },
+      {
+        "selector": "a.inline-full.menuList_menuListItemAnchor__dEwSU",
+        "frames": 15,
+        "overshoot": false
+      },
+      {
+        "selector": "a.inline-full.menuList_menuListItemAnchor__dEwSU",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "a.globalNavigation_link__ofzIw",
+        "frames": 12,
+        "overshoot": false
+      },
+      {
+        "selector": "a.button_button__atjat",
+        "frames": 3,
+        "overshoot": false
+      },
+      {
+        "selector": "a.semanticTypography_semanticTypography__mWJkv.semanticTypography_variantInteractionButtonMedium__HCJEu",
+        "frames": 20,
+        "overshoot": false
+      },
+      {
+        "selector": "a.semanticTypography_semanticTypography__mWJkv.semanticTypography_variantInteractionButtonMedium__HCJEu",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "a.semanticTypography_semanticTypography__mWJkv.semanticTypography_variantInteractionButtonMedium__HCJEu",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "a.bento_bentoAnchor__Z2SBx",
+        "frames": 2,
+        "overshoot": false
+      }
+    ],
+    "revealTimelines": [
+      {
+        "selector": "div.snackBar_snackBar__IYfOp",
+        "startY": 1000,
+        "frames": 2
+      }
+    ],
+    "listenerProfile": {
+      "click": 358,
+      "visibilitychange": 14,
+      "pagehide": 11,
+      "pageshow": 11,
+      "message": 9,
+      "popstate": 7,
+      "load": 7,
+      "mousedown": 7,
+      "keydown": 5,
+      "error": 5,
+      "focus": 3,
+      "blur": 3
+    }
+  },
+  "assetStats": {
+    "count": 103,
+    "images": 79,
+    "withRect": 60,
+    "totalBytes": 1237442
+  },
+  "layers": [],
+  "sections": [
+    {
+      "y": 64,
+      "h": 1153,
+      "bg": "rgb(255, 255, 255)",
+      "tag": "div",
+      "cls": "heroGrid_heroGrid__v65U8",
+      "container": 1252,
+      "columns": 2,
+      "type": [
+        {
+          "fontSize": 96,
+          "weight": "600",
+          "lineHeight": "100px",
+          "count": 1,
+          "sample": "팀과 에이전트가 함께 하는 곳"
+        },
+        {
+          "fontSize": 72,
+          "weight": "500",
+          "lineHeight": "87.12px",
+          "count": 1,
+          "sample": "생각"
+        },
+        {
+          "fontSize": 20,
+          "weight": "400",
+          "lineHeight": "28px",
+          "count": 1,
+          "sample": "팀을 위해 구축된 AI로 맥락을 파악하고, 답을 찾고, 작업을 자동화하세"
+        },
+        {
+          "fontSize": 16,
+          "weight": "500",
+          "lineHeight": "24px",
+          "count": 2,
+          "sample": "Notion 무료로 사용하기"
+        },
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": "24px",
+          "count": 1,
+          "sample": "일시 정지"
+        },
+        {
+          "fontSize": 12,
+          "weight": "500",
+          "lineHeight": "16px",
+          "count": 1,
+          "sample": "Notion 앱",
+          "floating": true
+        }
+      ],
+      "headline": {
+        "fontSize": 96,
+        "weight": "600",
+        "lineHeight": "100px",
+        "count": 1,
+        "sample": "팀과 에이전트가 함께 하는 곳"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 48,
+          "h": 48,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 59,
+          "h": 59,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 48,
+          "h": 48,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 56,
+          "h": 56,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 40,
+          "h": 40,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 51,
+          "h": 51,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 43,
+          "h": 43,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 48,
+          "h": 48,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 42,
+          "h": 42,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 59,
+          "h": 59,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 45,
+          "h": 45,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 59,
+          "h": 59,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "fill"
+        }
+      ],
+      "glassNodes": 1,
+      "motionDecls": [
+        "all",
+        "anim:0.6s ease-in-out forwards Agent_agentMarkEnter__54wKq",
+        "anim:0.6s ease-in-out forwards Agent_agentTaskEnter__ZpDY1",
+        "anim:0.6s ease-in-out forwards Agent_agentEnter__D6zdB",
+        "background-color 0.2s cubic-bezier(0.42, 0, 1, 1)",
+        "rotate 0.3s cubic-bezier(0.86, 0, 0.07, 1)",
+        "inline-size 0.3s cubic-bezier(0.86, 0, 0.07, 1)",
+        "background-color 0.2s cubic-bezier(0.42, 0, 1, 1), color 0.2s cubic-bezier(0.42,",
+        "opacity 0.3s",
+        "0.2s"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 1397,
+      "h": 1424,
+      "bg": "rgb(255, 255, 255)",
+      "tag": "div",
+      "cls": "homepage_main__sRG4_",
+      "container": 1229,
+      "columns": 5,
+      "type": [
+        {
+          "fontSize": 54,
+          "weight": "700",
+          "lineHeight": "56px",
+          "count": 1,
+          "sample": "팀 업무 공간에서 바로 쓰는 AI"
+        },
+        {
+          "fontSize": 22,
+          "weight": "700",
+          "lineHeight": "28px",
+          "count": 3,
+          "sample": "모든 것을 하나의 기록 시스템으로 통합하세요."
+        },
+        {
+          "fontSize": 20,
+          "weight": "600",
+          "lineHeight": "28px",
+          "count": 3,
+          "sample": "→"
+        },
+        {
+          "fontSize": 16,
+          "weight": "700",
+          "lineHeight": "24px",
+          "count": 10,
+          "sample": "제품 피드백 분류"
+        },
+        {
+          "fontSize": 14,
+          "weight": "400",
+          "lineHeight": "20px",
+          "count": 4,
+          "sample": "지식 수집"
+        }
+      ],
+      "headline": {
+        "fontSize": 54,
+        "weight": "700",
+        "lineHeight": "56px",
+        "count": 1,
+        "sample": "팀 업무 공간에서 바로 쓰는 AI"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 554,
+          "h": 554,
+          "aspect": 1,
+          "radius": "12px 12px 0px 0px",
+          "objectFit": "contain"
+        },
+        {
+          "kind": "img",
+          "w": 554,
+          "h": 136,
+          "aspect": 4.07,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 452,
+          "h": 56,
+          "aspect": 8.07,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 554,
+          "h": 554,
+          "aspect": 1,
+          "radius": "12px 12px 0px 0px",
+          "objectFit": "contain"
+        },
+        {
+          "kind": "img",
+          "w": 602,
+          "h": 313,
+          "aspect": 1.92,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 452,
+          "h": 56,
+          "aspect": 8.07,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 401,
+          "h": 340,
+          "aspect": 1.18,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 401,
+          "h": 268,
+          "aspect": 1.5,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 40,
+          "h": 40,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 40,
+          "h": 40,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 40,
+          "h": 40,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 40,
+          "h": 40,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "fill"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "outline-color 0.2s cubic-bezier(0.42, 0, 1, 1)",
+        "background-color 0.2s cubic-bezier(0.42, 0, 1, 1)"
+      ],
+      "padding": {
+        "top": "96px",
+        "bottom": "96px"
+      }
+    },
+    {
+      "y": 2821,
+      "h": 772,
+      "bg": "rgb(255, 255, 255)",
+      "tag": "div",
+      "cls": "homepage_main__sRG4_",
+      "container": 1229,
+      "columns": 5,
+      "type": [
+        {
+          "fontSize": 54,
+          "weight": "700",
+          "lineHeight": "56px",
+          "count": 1,
+          "sample": "결과로 말하는 팀이 믿고 쓰는 Notion"
+        },
+        {
+          "fontSize": 18,
+          "weight": "400",
+          "lineHeight": "28px",
+          "count": 3,
+          "sample": "Notion 같은 AI 네이티브 툴은 중요한 경쟁력이 되어 줍니다. 작은"
+        },
+        {
+          "fontSize": 14,
+          "weight": "400",
+          "lineHeight": "20px",
+          "count": 6,
+          "sample": "Michael Truell"
+        }
+      ],
+      "headline": {
+        "fontSize": 54,
+        "weight": "700",
+        "lineHeight": "56px",
+        "count": 1,
+        "sample": "결과로 말하는 팀이 믿고 쓰는 Notion"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 394,
+          "h": 492,
+          "aspect": 0.8,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 394,
+          "h": 492,
+          "aspect": 0.8,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 394,
+          "h": 492,
+          "aspect": 0.8,
+          "radius": null,
+          "objectFit": "cover"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "box-shadow 0.2s cubic-bezier(0.645, 0.045, 0.355, 1)",
+        "transform 0.2s cubic-bezier(0.645, 0.045, 0.355, 1)"
+      ],
+      "padding": {
+        "top": "96px",
+        "bottom": "96px"
+      }
+    },
+    {
+      "y": 3605,
+      "h": 486,
+      "bg": "rgb(255, 255, 255)",
+      "tag": "section",
+      "cls": null,
+      "container": null,
+      "columns": 1,
+      "type": [
+        {
+          "fontSize": 42,
+          "weight": "700",
+          "lineHeight": "48px",
+          "count": 1,
+          "sample": "지금 시작하세요."
+        },
+        {
+          "fontSize": 16,
+          "weight": "500",
+          "lineHeight": "24px",
+          "count": 2,
+          "sample": "Notion 무료로 사용"
+        },
+        {
+          "fontSize": 14,
+          "weight": "500",
+          "lineHeight": "20px",
+          "count": 15,
+          "sample": "G2의 지식 베이스 부문에서 3년 연속 1위 달성"
+        }
+      ],
+      "headline": {
+        "fontSize": 42,
+        "weight": "700",
+        "lineHeight": "48px",
+        "count": 1,
+        "sample": "지금 시작하세요."
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "anim:60s linear infinite Marquee_marqueeFrames__WsEH6",
+        "background-color 0.2s cubic-bezier(0.42, 0, 1, 1), color 0.2s cubic-bezier(0.42,"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 4091,
+      "h": 418,
+      "bg": "rgb(255, 255, 255)",
+      "tag": "nav",
+      "cls": "footerLegacy_footerInner__434Bs",
+      "container": null,
+      "columns": 4,
+      "type": [
+        {
+          "fontSize": 14,
+          "weight": "500",
+          "lineHeight": "20px",
+          "count": 22,
+          "sample": "한국어"
+        },
+        {
+          "fontSize": 14,
+          "weight": "400",
+          "lineHeight": "20px",
+          "count": 2,
+          "sample": "쿠키 설정"
+        },
+        {
+          "fontSize": 14,
+          "weight": "600",
+          "lineHeight": "20px",
+          "count": 2,
+          "sample": "더 살펴보기"
+        },
+        {
+          "fontSize": 12,
+          "weight": "500",
+          "lineHeight": "16px",
+          "count": 4,
+          "sample": "회사 소개"
+        }
+      ],
+      "headline": {
+        "fontSize": 14,
+        "weight": "500",
+        "lineHeight": "20px",
+        "count": 22,
+        "sample": "한국어"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "transform 0.2s cubic-bezier(0.42, 0, 1, 1)",
+        "background-color 0.2s cubic-bezier(0.42, 0, 1, 1), border-color 0.2s cubic-bezie",
+        "transform 0.3s cubic-bezier(0.86, 0, 0.07, 1)",
+        "anim:0.15s cubic-bezier(0, 0, 0.58, 1) both popover_popoverFadeIn__WkJed",
+        "anim:0.15s cubic-bezier(0, 0, 0.58, 1) both popover_popoverSlideUp__U5eiA",
+        "background-color 0.15s cubic-bezier(0, 0, 0.58, 1)",
+        "background-color 0.2s cubic-bezier(0.42, 0, 1, 1)",
+        "text-decoration-color 0.2s cubic-bezier(0.42, 0, 1, 1)"
+      ],
+      "padding": {
+        "top": "80px",
+        "bottom": "80px"
+      }
+    }
+  ],
+  "sectionsMobile": [
+    {
+      "y": 64,
+      "h": 413,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 613,
+      "h": 1762,
+      "container": null,
+      "columns": 2
+    },
+    {
+      "y": 2375,
+      "h": 559,
+      "container": null,
+      "columns": 5
+    },
+    {
+      "y": 2946,
+      "h": 316,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 3262,
+      "h": 804,
+      "container": null,
+      "columns": 2
+    }
+  ],
+  "reproduction": {
+    "stamp": null,
+    "note": "IR만으로 원본을 오차 밴드 내 재건축→capture 대조 통과 시 스탬프. 스탬프 없는 IR은 리드 자격 없음."
+  }
+}

@@ -1,0 +1,1047 @@
+{
+  "irVersion": 1,
+  "source": {
+    "url": "https://www.apple.com",
+    "collectedAt": "2026-08-16T16:58:59.387Z"
+  },
+  "page": {
+    "scrollHeight1440": 6003,
+    "scrollHeight390": 7280,
+    "sectionCount": 6
+  },
+  "rhythm": {
+    "bgSequence": [
+      "rgb(245, 245, 247)",
+      "rgb(245, 245, 247)",
+      "rgb(245, 245, 247)",
+      "rgb(255, 255, 255)",
+      "rgb(245, 245, 247)",
+      "rgb(245, 245, 247)"
+    ],
+    "heights": [
+      692,
+      692,
+      692,
+      1764,
+      957,
+      1044
+    ],
+    "containers": [
+      1222,
+      1024,
+      943
+    ]
+  },
+  "typeScale": [
+    {
+      "px": 56,
+      "weight": "600",
+      "count": 4
+    },
+    {
+      "px": 40,
+      "weight": "600",
+      "count": 6
+    },
+    {
+      "px": 34,
+      "weight": "600",
+      "count": 1
+    },
+    {
+      "px": 28,
+      "weight": "400",
+      "count": 4
+    },
+    {
+      "px": 24,
+      "weight": "600",
+      "count": 72
+    },
+    {
+      "px": 21,
+      "weight": "400",
+      "count": 16
+    },
+    {
+      "px": 21,
+      "weight": "700",
+      "count": 6
+    },
+    {
+      "px": 17,
+      "weight": "400",
+      "count": 27
+    },
+    {
+      "px": 17,
+      "weight": "600",
+      "count": 1
+    },
+    {
+      "px": 14,
+      "weight": "400",
+      "count": 21
+    },
+    {
+      "px": 14,
+      "weight": "600",
+      "count": 12
+    },
+    {
+      "px": 12,
+      "weight": "400",
+      "count": 134
+    },
+    {
+      "px": 12,
+      "weight": "600",
+      "count": 169
+    },
+    {
+      "px": 10,
+      "weight": "400",
+      "count": 2
+    }
+  ],
+  "motion": {
+    "durationsMs": [
+      {
+        "ms": 320,
+        "count": 301
+      },
+      {
+        "ms": 240,
+        "count": 251
+      },
+      {
+        "ms": 200,
+        "count": 64
+      },
+      {
+        "ms": 160,
+        "count": 62
+      },
+      {
+        "ms": 220,
+        "count": 50
+      },
+      {
+        "ms": 180,
+        "count": 50
+      }
+    ],
+    "keyframesCount": 31,
+    "keyframesNamed": [
+      "globalnav-chevron-slide-in-hover",
+      "globalnav-chevron-hover-off",
+      "globalnav-flyout-slide-forward-next",
+      "globalnav-flyout-slide-forward-previous",
+      "globalnav-flyout-slide-back-previous",
+      "globalnav-flyout-slide-back-next",
+      "globalnav-scrim-height-change",
+      "globalnav-fade-in",
+      "globalnav-search-fade",
+      "globalnav-search-fade-and-slide",
+      "globalnav-search-fade-and-slide-to-close",
+      "globalnav-search-slide-top-to-bottom",
+      "globalnav-search-slide-bottom-to-top",
+      "globalnav-search-input-intro",
+      "globalnav-search-input-outro",
+      "segment-out",
+      "progress-indicator-animating",
+      "dotnav-shift-start-1",
+      "dotnav-shift-end-1",
+      "dotnav-shift-start-2"
+    ],
+    "runningAnimations": [
+      {
+        "name": "CSSTransition",
+        "duration": 1000,
+        "easing": "ease-in-out",
+        "iterations": 1,
+        "state": "running"
+      },
+      {
+        "name": "CSSTransition",
+        "duration": 1000,
+        "easing": "ease-in-out",
+        "iterations": 1,
+        "state": "running"
+      },
+      {
+        "name": "CSSTransition",
+        "duration": 1000,
+        "easing": "ease-in-out",
+        "iterations": 1,
+        "state": "running"
+      },
+      {
+        "name": "CSSTransition",
+        "duration": 1000,
+        "easing": "ease-in-out",
+        "iterations": 1,
+        "state": "running"
+      },
+      {
+        "name": "CSSTransition",
+        "duration": 1000,
+        "easing": "ease-in-out",
+        "iterations": 1,
+        "state": "running"
+      },
+      {
+        "name": "CSSTransition",
+        "duration": 1000,
+        "easing": "ease-in-out",
+        "iterations": 1,
+        "state": "running"
+      },
+      {
+        "name": "CSSTransition",
+        "duration": 1000,
+        "easing": "ease-in-out",
+        "iterations": 1,
+        "state": "running"
+      },
+      {
+        "name": "CSSTransition",
+        "duration": 1000,
+        "easing": "ease-in-out",
+        "iterations": 1,
+        "state": "running"
+      },
+      {
+        "name": "CSSTransition",
+        "duration": 1000,
+        "easing": "ease-in-out",
+        "iterations": 1,
+        "state": "running"
+      },
+      {
+        "name": "CSSTransition",
+        "duration": 1000,
+        "easing": "ease-in-out",
+        "iterations": 1,
+        "state": "running"
+      },
+      {
+        "name": "CSSTransition",
+        "duration": 1000,
+        "easing": "ease-in-out",
+        "iterations": 1,
+        "state": "running"
+      },
+      {
+        "name": "CSSTransition",
+        "duration": 1000,
+        "easing": "ease-in-out",
+        "iterations": 1,
+        "state": "running"
+      },
+      {
+        "name": "CSSTransition",
+        "duration": 1000,
+        "easing": "ease-in-out",
+        "iterations": 1,
+        "state": "running"
+      },
+      {
+        "name": "CSSTransition",
+        "duration": 1000,
+        "easing": "ease-in-out",
+        "iterations": 1,
+        "state": "running"
+      },
+      {
+        "name": "CSSTransition",
+        "duration": 1000,
+        "easing": "ease-in-out",
+        "iterations": 1,
+        "state": "running"
+      },
+      {
+        "name": "CSSTransition",
+        "duration": 1000,
+        "easing": "ease-in-out",
+        "iterations": 1,
+        "state": "running"
+      },
+      {
+        "name": "CSSTransition",
+        "duration": 1000,
+        "easing": "ease-in-out",
+        "iterations": 1,
+        "state": "running"
+      },
+      {
+        "name": "CSSTransition",
+        "duration": 1000,
+        "easing": "ease-in-out",
+        "iterations": 1,
+        "state": "running"
+      },
+      {
+        "name": "CSSTransition",
+        "duration": 1000,
+        "easing": "ease-in-out",
+        "iterations": 1,
+        "state": "running"
+      },
+      {
+        "name": "CSSTransition",
+        "duration": 1000,
+        "easing": "ease-in-out",
+        "iterations": 1,
+        "state": "running"
+      }
+    ],
+    "hoverTimelines": [
+      {
+        "selector": "div.ac-ls-dropdown-select",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "a.ac-ls-button",
+        "frames": 3,
+        "overshoot": false
+      },
+      {
+        "selector": "a.globalnav-link.globalnav-submenu-trigger-link",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "a.globalnav-submenu-link",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "a.globalnav-link.globalnav-submenu-trigger-link",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "a.globalnav-link.globalnav-submenu-trigger-link",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "a.globalnav-link.globalnav-submenu-trigger-link",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "a.globalnav-link.globalnav-submenu-trigger-link",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "a.globalnav-link.globalnav-submenu-trigger-link",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "a.globalnav-link.globalnav-submenu-trigger-link",
+        "frames": 2,
+        "overshoot": false
+      }
+    ],
+    "revealTimelines": [],
+    "listenerProfile": {
+      "click": 14,
+      "blur": 4,
+      "scroll": 4,
+      "resize": 4,
+      "focusin": 3,
+      "keydown": 3,
+      "storage": 2,
+      "pagehide": 2,
+      "beforeunload": 2,
+      "segmentExit": 2,
+      "focus": 2,
+      "orientationchange": 2
+    }
+  },
+  "assetStats": {
+    "count": 68,
+    "images": 45,
+    "withRect": 43,
+    "totalBytes": 6662799
+  },
+  "layers": [
+    {
+      "y": 0,
+      "h": 900,
+      "position": "fixed",
+      "cls": "globalnav-curtain",
+      "bg": "rgba(232, 232, 237, 0.4)",
+      "bgImage": null,
+      "blend": null
+    },
+    {
+      "y": 346,
+      "h": 460,
+      "position": "absolute",
+      "cls": "video",
+      "bg": null,
+      "bgImage": null,
+      "blend": null
+    }
+  ],
+  "sections": [
+    {
+      "y": 114,
+      "h": 692,
+      "bg": "rgb(245, 245, 247)",
+      "tag": "div",
+      "cls": "tile-wrapper",
+      "container": 1222,
+      "columns": 3,
+      "type": [
+        {
+          "fontSize": 56,
+          "weight": "600",
+          "lineHeight": "60px",
+          "count": 1,
+          "sample": "College, sorted."
+        },
+        {
+          "fontSize": 28,
+          "weight": "400",
+          "lineHeight": "32px",
+          "count": 2,
+          "sample": "Get a gift card from $100 to $150 when y"
+        },
+        {
+          "fontSize": 24,
+          "weight": "600",
+          "lineHeight": "28px",
+          "count": 1,
+          "sample": "Shop the Latest",
+          "floating": true
+        },
+        {
+          "fontSize": 17,
+          "weight": "400",
+          "lineHeight": "20.0002px",
+          "count": 1,
+          "sample": "Shop"
+        },
+        {
+          "fontSize": 12,
+          "weight": "400",
+          "lineHeight": "16.0005px",
+          "count": 1,
+          "sample": "Shop",
+          "floating": true
+        },
+        {
+          "fontSize": 12,
+          "weight": "600",
+          "lineHeight": "16.0005px",
+          "count": 1,
+          "sample": "Find a Store",
+          "floating": true
+        }
+      ],
+      "headline": {
+        "fontSize": 56,
+        "weight": "600",
+        "lineHeight": "60px",
+        "count": 1,
+        "sample": "College, sorted."
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 1222,
+          "h": 460,
+          "aspect": 2.66,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "video",
+          "w": 1222,
+          "h": 460,
+          "aspect": 2.66,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "video",
+          "w": 484,
+          "h": 460,
+          "aspect": 1.05,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "video",
+          "w": 500,
+          "h": 460,
+          "aspect": 1.09,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "video",
+          "w": 482,
+          "h": 460,
+          "aspect": 1.05,
+          "radius": null,
+          "objectFit": "cover"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all"
+      ],
+      "padding": {
+        "top": "56px",
+        "bottom": "63px"
+      }
+    },
+    {
+      "y": 818,
+      "h": 692,
+      "bg": "rgb(245, 245, 247)",
+      "tag": "div",
+      "cls": "tile-wrapper",
+      "container": null,
+      "columns": 2,
+      "type": [
+        {
+          "fontSize": 56,
+          "weight": "600",
+          "lineHeight": "60px",
+          "count": 1,
+          "sample": "iPhone"
+        },
+        {
+          "fontSize": 28,
+          "weight": "400",
+          "lineHeight": "32px",
+          "count": 1,
+          "sample": "Meet the latest iPhone lineup."
+        },
+        {
+          "fontSize": 17,
+          "weight": "400",
+          "lineHeight": "20.0002px",
+          "count": 2,
+          "sample": "Learn more"
+        }
+      ],
+      "headline": {
+        "fontSize": 56,
+        "weight": "600",
+        "lineHeight": "60px",
+        "count": 1,
+        "sample": "iPhone"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 3008,
+          "h": 692,
+          "aspect": 4.35,
+          "radius": null,
+          "objectFit": "fill"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all"
+      ],
+      "padding": {
+        "top": "56px",
+        "bottom": "63px"
+      }
+    },
+    {
+      "y": 1522,
+      "h": 692,
+      "bg": "rgb(245, 245, 247)",
+      "tag": "div",
+      "cls": "tile-wrapper",
+      "container": null,
+      "columns": 2,
+      "type": [
+        {
+          "fontSize": 56,
+          "weight": "600",
+          "lineHeight": "60px",
+          "count": 1,
+          "sample": "MacBook Air"
+        },
+        {
+          "fontSize": 28,
+          "weight": "400",
+          "lineHeight": "32px",
+          "count": 1,
+          "sample": "Now supercharged by M5."
+        },
+        {
+          "fontSize": 17,
+          "weight": "400",
+          "lineHeight": "20.0002px",
+          "count": 2,
+          "sample": "Learn more"
+        }
+      ],
+      "headline": {
+        "fontSize": 56,
+        "weight": "600",
+        "lineHeight": "60px",
+        "count": 1,
+        "sample": "MacBook Air"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 3008,
+          "h": 692,
+          "aspect": 4.35,
+          "radius": null,
+          "objectFit": "fill"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all"
+      ],
+      "padding": {
+        "top": "56px",
+        "bottom": "63px"
+      }
+    },
+    {
+      "y": 2226,
+      "h": 1764,
+      "bg": "rgb(255, 255, 255)",
+      "tag": "section",
+      "cls": "section",
+      "container": null,
+      "columns": 2,
+      "type": [
+        {
+          "fontSize": 40,
+          "weight": "600",
+          "lineHeight": "44px",
+          "count": 6,
+          "sample": "iPad Air"
+        },
+        {
+          "fontSize": 21,
+          "weight": "400",
+          "lineHeight": "25px",
+          "count": 7,
+          "sample": "Now supercharged by M4."
+        },
+        {
+          "fontSize": 14,
+          "weight": "400",
+          "lineHeight": "18.0008px",
+          "count": 11,
+          "sample": "Learn more"
+        }
+      ],
+      "headline": {
+        "fontSize": 40,
+        "weight": "600",
+        "lineHeight": "44px",
+        "count": 6,
+        "sample": "iPad Air"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 144,
+          "h": 49,
+          "aspect": 2.94,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 1262,
+          "h": 580,
+          "aspect": 2.18,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 1262,
+          "h": 580,
+          "aspect": 2.18,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 296,
+          "h": 49,
+          "aspect": 6.04,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 1262,
+          "h": 580,
+          "aspect": 2.18,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 1262,
+          "h": 580,
+          "aspect": 2.18,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 156,
+          "h": 49,
+          "aspect": 3.18,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 1262,
+          "h": 580,
+          "aspect": 2.18,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 108,
+          "h": 49,
+          "aspect": 2.2,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 1262,
+          "h": 580,
+          "aspect": 2.18,
+          "radius": null,
+          "objectFit": "fill"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 4002,
+      "h": 957,
+      "bg": "rgb(245, 245, 247)",
+      "tag": "div",
+      "cls": "endless-entertainment",
+      "container": 943,
+      "columns": 6,
+      "type": [
+        {
+          "fontSize": 56,
+          "weight": "600",
+          "lineHeight": "60px",
+          "count": 1,
+          "sample": "Endless entertainment."
+        },
+        {
+          "fontSize": 21,
+          "weight": "400",
+          "lineHeight": "25px",
+          "count": 9,
+          "sample": "New season."
+        },
+        {
+          "fontSize": 21,
+          "weight": "700",
+          "lineHeight": "25px",
+          "count": 6,
+          "sample": "Comedy"
+        },
+        {
+          "fontSize": 17,
+          "weight": "400",
+          "lineHeight": "25px",
+          "count": 9,
+          "sample": "Item 1"
+        },
+        {
+          "fontSize": 17,
+          "weight": "400",
+          "lineHeight": "20.0002px",
+          "count": 9,
+          "sample": "Stream now"
+        },
+        {
+          "fontSize": 14,
+          "weight": "600",
+          "lineHeight": "18.0008px",
+          "count": 12,
+          "sample": "Sabrina Carpenter: The Zane Lowe Intervi"
+        },
+        {
+          "fontSize": 14,
+          "weight": "400",
+          "lineHeight": "18.0008px",
+          "count": 9,
+          "sample": "Listen now"
+        }
+      ],
+      "headline": {
+        "fontSize": 56,
+        "weight": "600",
+        "lineHeight": "60px",
+        "count": 1,
+        "sample": "Endless entertainment."
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 930,
+          "h": 523,
+          "aspect": 1.78,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 930,
+          "h": 523,
+          "aspect": 1.78,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 930,
+          "h": 523,
+          "aspect": 1.78,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 930,
+          "h": 523,
+          "aspect": 1.78,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 930,
+          "h": 523,
+          "aspect": 1.78,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 930,
+          "h": 523,
+          "aspect": 1.78,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 930,
+          "h": 523,
+          "aspect": 1.78,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 930,
+          "h": 523,
+          "aspect": 1.78,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 930,
+          "h": 523,
+          "aspect": 1.78,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 196,
+          "h": 196,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 417,
+          "h": 235,
+          "aspect": 1.77,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 417,
+          "h": 235,
+          "aspect": 1.77,
+          "radius": null,
+          "objectFit": "cover"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "width 0.25s linear",
+        "width 1s ease-in-out, height 1s ease-in-out, padding-block 1s ease-in-out, paddi",
+        "background-color 0.1s linear",
+        "opacity 0.4s"
+      ],
+      "padding": {
+        "top": "53px",
+        "bottom": null
+      }
+    },
+    {
+      "y": 4959,
+      "h": 1044,
+      "bg": "rgb(245, 245, 247)",
+      "tag": "footer",
+      "cls": "js",
+      "container": 1024,
+      "columns": 5,
+      "type": [
+        {
+          "fontSize": 12,
+          "weight": "400",
+          "lineHeight": "16.0005px",
+          "count": 89,
+          "sample": "Apple Footer"
+        },
+        {
+          "fontSize": 12,
+          "weight": "600",
+          "lineHeight": "16.0005px",
+          "count": 22,
+          "sample": "Shop and Learn"
+        }
+      ],
+      "headline": {
+        "fontSize": 12,
+        "weight": "400",
+        "lineHeight": "16.0005px",
+        "count": 89,
+        "sample": "Apple Footer"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    }
+  ],
+  "sectionsMobile": [
+    {
+      "y": 183,
+      "h": 500,
+      "container": null,
+      "columns": 2
+    },
+    {
+      "y": 695,
+      "h": 500,
+      "container": null,
+      "columns": 2
+    },
+    {
+      "y": 1207,
+      "h": 500,
+      "container": null,
+      "columns": 2
+    },
+    {
+      "y": 1719,
+      "h": 500,
+      "container": null,
+      "columns": 2
+    },
+    {
+      "y": 2231,
+      "h": 500,
+      "container": null,
+      "columns": 2
+    },
+    {
+      "y": 2743,
+      "h": 500,
+      "container": null,
+      "columns": 2
+    },
+    {
+      "y": 3255,
+      "h": 500,
+      "container": null,
+      "columns": 2
+    },
+    {
+      "y": 3767,
+      "h": 500,
+      "container": null,
+      "columns": 2
+    },
+    {
+      "y": 4279,
+      "h": 500,
+      "container": null,
+      "columns": 2
+    },
+    {
+      "y": 4791,
+      "h": 896,
+      "container": null,
+      "columns": 6
+    },
+    {
+      "y": 5687,
+      "h": 986,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 6673,
+      "h": 427,
+      "container": null,
+      "columns": 1
+    }
+  ],
+  "reproduction": {
+    "stamp": null,
+    "note": "IR만으로 원본을 오차 밴드 내 재건축→capture 대조 통과 시 스탬프. 스탬프 없는 IR은 리드 자격 없음."
+  }
+}

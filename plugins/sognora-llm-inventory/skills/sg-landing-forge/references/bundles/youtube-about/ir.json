@@ -1,0 +1,323 @@
+{
+  "irVersion": 1,
+  "source": {
+    "url": "https://www.youtube.com/about/",
+    "collectedAt": "2026-08-16T17:04:36.733Z"
+  },
+  "page": {
+    "scrollHeight1440": 2238,
+    "scrollHeight390": 1623,
+    "sectionCount": 3
+  },
+  "rhythm": {
+    "bgSequence": [
+      "rgb(255, 255, 255)",
+      "rgb(255, 255, 255)",
+      "rgb(242, 242, 242)"
+    ],
+    "heights": [
+      659,
+      618,
+      697
+    ],
+    "containers": [
+      1296
+    ]
+  },
+  "typeScale": [
+    {
+      "px": 140,
+      "weight": "700",
+      "count": 1
+    },
+    {
+      "px": 40,
+      "weight": "400",
+      "count": 1
+    },
+    {
+      "px": 18,
+      "weight": "400",
+      "count": 2
+    },
+    {
+      "px": 18,
+      "weight": "300",
+      "count": 1
+    },
+    {
+      "px": 16,
+      "weight": "500",
+      "count": 43
+    },
+    {
+      "px": 16,
+      "weight": "400",
+      "count": 1
+    },
+    {
+      "px": 12,
+      "weight": "400",
+      "count": 3
+    }
+  ],
+  "motion": {
+    "durationsMs": [
+      {
+        "ms": 200,
+        "count": 93
+      },
+      {
+        "ms": 300,
+        "count": 12
+      },
+      {
+        "ms": 350,
+        "count": 3
+      },
+      {
+        "ms": 600,
+        "count": 3
+      },
+      {
+        "ms": 3000,
+        "count": 1
+      }
+    ],
+    "keyframesCount": 14,
+    "keyframesNamed": [
+      "circular-dash",
+      "bsp-ticker-tape",
+      "fadeIn",
+      "ripple-animation",
+      "carousel-dot-spin",
+      "carousel-dot-fill",
+      "carousel-dot-mask",
+      "bsp-initial-rotation",
+      "bsp-all-rotation",
+      "vertProgress",
+      "lb-marquee-scroll",
+      "lb-marquee-scroll-rtl",
+      "link-press-effect",
+      "glue-spin"
+    ],
+    "runningAnimations": [
+      {
+        "name": "CSSTransition",
+        "duration": 350,
+        "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "iterations": 1,
+        "state": "running"
+      },
+      {
+        "name": "CSSTransition",
+        "duration": 350,
+        "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "iterations": 1,
+        "state": "running"
+      },
+      {
+        "name": "CSSTransition",
+        "duration": 350,
+        "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "iterations": 1,
+        "state": "running"
+      }
+    ],
+    "hoverTimelines": [
+      {
+        "selector": "a.glue-social__link.glue-social__tooltip-trigger",
+        "frames": 3,
+        "overshoot": false
+      },
+      {
+        "selector": "a",
+        "frames": 13,
+        "overshoot": false
+      },
+      {
+        "selector": "a.glue-footer__link",
+        "frames": 2,
+        "overshoot": false
+      }
+    ],
+    "revealTimelines": [],
+    "listenerProfile": {
+      "click": 47,
+      "resize": 7,
+      "keyup": 4,
+      "pagehide": 3,
+      "DOMContentReady": 2,
+      "orientationchange": 2,
+      "load": 2,
+      "scroll": 1,
+      "focus": 1,
+      "blur": 1,
+      "pageshow": 1,
+      "scrollend": 1
+    }
+  },
+  "assetStats": {
+    "count": 10,
+    "images": 3,
+    "withRect": 3,
+    "totalBytes": 616718
+  },
+  "layers": [],
+  "sections": [
+    {
+      "y": 64,
+      "h": 659,
+      "bg": "rgb(255, 255, 255)",
+      "tag": "figure",
+      "cls": null,
+      "container": null,
+      "columns": 1,
+      "type": [],
+      "headline": null,
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 1440,
+          "h": 659,
+          "aspect": 2.19,
+          "radius": null,
+          "objectFit": "cover"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 783,
+      "h": 618,
+      "bg": "rgb(255, 255, 255)",
+      "tag": "div",
+      "cls": "glue-page",
+      "container": 1296,
+      "columns": 3,
+      "type": [
+        {
+          "fontSize": 140,
+          "weight": "700",
+          "lineHeight": "126px",
+          "count": 1,
+          "sample": "About YouTube"
+        },
+        {
+          "fontSize": 40,
+          "weight": "400",
+          "lineHeight": "56px",
+          "count": 1,
+          "sample": "Our mission is to give everyone a voice "
+        },
+        {
+          "fontSize": 18,
+          "weight": "400",
+          "lineHeight": "25.2px",
+          "count": 1,
+          "sample": "about.youtube uses cookies from Google t",
+          "floating": true
+        },
+        {
+          "fontSize": 16,
+          "weight": "500",
+          "lineHeight": "24px",
+          "count": 1,
+          "sample": "OK, got it",
+          "floating": true
+        }
+      ],
+      "headline": {
+        "fontSize": 140,
+        "weight": "700",
+        "lineHeight": "126px",
+        "count": 1,
+        "sample": "About YouTube"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 1541,
+      "h": 697,
+      "bg": "rgb(242, 242, 242)",
+      "tag": "footer",
+      "cls": "glue-footer",
+      "container": 1296,
+      "columns": 5,
+      "type": [
+        {
+          "fontSize": 18,
+          "weight": "300",
+          "lineHeight": "27px",
+          "count": 1,
+          "sample": "Footer links"
+        },
+        {
+          "fontSize": 16,
+          "weight": "500",
+          "lineHeight": "24px",
+          "count": 37,
+          "sample": "Connect"
+        },
+        {
+          "fontSize": 12,
+          "weight": "400",
+          "lineHeight": "16.8px",
+          "count": 3,
+          "sample": "Follow us on X"
+        }
+      ],
+      "headline": {
+        "fontSize": 18,
+        "weight": "300",
+        "lineHeight": "27px",
+        "count": 1,
+        "sample": "Footer links"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1) 0.6s",
+        "background-color 0.2s, color 0.2s"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    }
+  ],
+  "sectionsMobile": [
+    {
+      "y": 64,
+      "h": 642,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 754,
+      "h": 868,
+      "container": null,
+      "columns": 1
+    }
+  ],
+  "reproduction": {
+    "stamp": null,
+    "note": "IR만으로 원본을 오차 밴드 내 재건축→capture 대조 통과 시 스탬프. 스탬프 없는 IR은 리드 자격 없음."
+  }
+}

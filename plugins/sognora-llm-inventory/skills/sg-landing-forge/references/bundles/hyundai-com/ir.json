@@ -1,0 +1,1025 @@
+{
+  "irVersion": 1,
+  "source": {
+    "url": "https://www.hyundai.com/kr/ko/e",
+    "collectedAt": "2026-08-16T17:09:53.975Z"
+  },
+  "page": {
+    "scrollHeight1440": 7329,
+    "scrollHeight390": 6933,
+    "sectionCount": 10
+  },
+  "rhythm": {
+    "bgSequence": [
+      "rgb(246, 243, 242)",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      "rgb(246, 243, 242)",
+      "rgb(28, 27, 27)"
+    ],
+    "heights": [
+      950,
+      745,
+      877,
+      767,
+      856,
+      722,
+      835,
+      616,
+      266,
+      475
+    ],
+    "containers": [
+      1380,
+      1180,
+      1120
+    ]
+  },
+  "typeScale": [
+    {
+      "px": 44,
+      "weight": "400",
+      "count": 7
+    },
+    {
+      "px": 30,
+      "weight": "400",
+      "count": 3
+    },
+    {
+      "px": 24,
+      "weight": "400",
+      "count": 2
+    },
+    {
+      "px": 20,
+      "weight": "400",
+      "count": 8
+    },
+    {
+      "px": 18,
+      "weight": "400",
+      "count": 11
+    },
+    {
+      "px": 17,
+      "weight": "400",
+      "count": 1
+    },
+    {
+      "px": 16,
+      "weight": "400",
+      "count": 41
+    },
+    {
+      "px": 16,
+      "weight": "500",
+      "count": 5
+    },
+    {
+      "px": 15,
+      "weight": "400",
+      "count": 6
+    },
+    {
+      "px": 15,
+      "weight": "500",
+      "count": 14
+    },
+    {
+      "px": 14,
+      "weight": "400",
+      "count": 21
+    },
+    {
+      "px": 14,
+      "weight": "500",
+      "count": 19
+    },
+    {
+      "px": 13.3333,
+      "weight": "400",
+      "count": 13
+    },
+    {
+      "px": 13,
+      "weight": "400",
+      "count": 17
+    }
+  ],
+  "motion": {
+    "durationsMs": [
+      {
+        "ms": 300,
+        "count": 50
+      },
+      {
+        "ms": 400,
+        "count": 17
+      },
+      {
+        "ms": 200,
+        "count": 12
+      },
+      {
+        "ms": 500,
+        "count": 1
+      }
+    ],
+    "keyframesCount": 68,
+    "keyframesNamed": [
+      "rotating",
+      "rotating",
+      "v-modal-in",
+      "v-modal-out",
+      "dialog-fade-in",
+      "dialog-fade-in",
+      "dialog-fade-out",
+      "dialog-fade-out",
+      "v-modal-in",
+      "v-modal-out",
+      "msgbox-fade-in",
+      "msgbox-fade-in",
+      "msgbox-fade-out",
+      "msgbox-fade-out",
+      "slideInRight-enter",
+      "slideInRight-enter",
+      "slideInRight-leave",
+      "slideInRight-leave",
+      "slideInLeft-enter",
+      "slideInLeft-enter"
+    ],
+    "runningAnimations": [],
+    "hoverTimelines": [],
+    "revealTimelines": [],
+    "listenerProfile": {
+      "click": 227,
+      "focus": 54,
+      "keydown": 42,
+      "resize": 32,
+      "mouseenter": 26,
+      "mouseleave": 16,
+      "mousedown": 12,
+      "load": 11,
+      "pageshow": 9,
+      "pagehide": 6,
+      "popstate": 5,
+      "visibilitychange": 5
+    }
+  },
+  "assetStats": {
+    "count": 191,
+    "images": 186,
+    "withRect": 113,
+    "totalBytes": 3650695
+  },
+  "layers": [
+    {
+      "y": 0,
+      "h": 900,
+      "position": "fixed",
+      "cls": "v-modal",
+      "bg": "rgb(0, 0, 0)",
+      "bgImage": null,
+      "blend": null
+    }
+  ],
+  "sections": [
+    {
+      "y": 0,
+      "h": 950,
+      "bg": "rgb(246, 243, 242)",
+      "tag": "div",
+      "cls": "el-carousel__layer",
+      "container": null,
+      "columns": 6,
+      "type": [
+        {
+          "fontSize": 18,
+          "weight": "400",
+          "lineHeight": "18px",
+          "count": 2,
+          "sample": "이전 슬라이드 이동"
+        },
+        {
+          "fontSize": 17,
+          "weight": "400",
+          "lineHeight": null,
+          "count": 1,
+          "sample": "Bluelink Store",
+          "floating": true
+        },
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": "30px",
+          "count": 1,
+          "sample": "모델",
+          "floating": true
+        },
+        {
+          "fontSize": 16,
+          "weight": "500",
+          "lineHeight": null,
+          "count": 1,
+          "sample": "챗봇 새창 열림",
+          "floating": true
+        },
+        {
+          "fontSize": 15,
+          "weight": "400",
+          "lineHeight": "17.25px",
+          "count": 1,
+          "sample": "EN",
+          "floating": true
+        },
+        {
+          "fontSize": 15,
+          "weight": "500",
+          "lineHeight": "15px",
+          "count": 1,
+          "sample": "견적내기",
+          "floating": true
+        },
+        {
+          "fontSize": 14,
+          "weight": "400",
+          "lineHeight": "14px",
+          "count": 1,
+          "sample": "1번째 배너",
+          "floating": true
+        },
+        {
+          "fontSize": 13.3333,
+          "weight": "400",
+          "lineHeight": null,
+          "count": 1,
+          "sample": "검색",
+          "floating": true
+        }
+      ],
+      "headline": {
+        "fontSize": 18,
+        "weight": "400",
+        "lineHeight": "18px",
+        "count": 2,
+        "sample": "이전 슬라이드 이동"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 1360,
+          "h": 380,
+          "aspect": 3.58,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 1360,
+          "h": 380,
+          "aspect": 3.58,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 1360,
+          "h": 380,
+          "aspect": 3.58,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 1360,
+          "h": 380,
+          "aspect": 3.58,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 1360,
+          "h": 380,
+          "aspect": 3.58,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 1360,
+          "h": 380,
+          "aspect": 3.58,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 1360,
+          "h": 380,
+          "aspect": 3.58,
+          "radius": null,
+          "objectFit": "cover"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "transform 0.4s ease-in-out, -webkit-transform 0.4s ease-in-out",
+        "anim:1.5s alternate car_animation-data-v-510629bf",
+        "0.3s"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 950,
+      "h": 745,
+      "bg": null,
+      "tag": "section",
+      "cls": "section-wrap",
+      "container": null,
+      "columns": 1,
+      "type": [
+        {
+          "fontSize": 44,
+          "weight": "400",
+          "lineHeight": "58px",
+          "count": 1,
+          "sample": "Model"
+        },
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": "34px",
+          "count": 1,
+          "sample": "최근 한 달 동안 고객님들이 가장 많이 구매하신 모델입니다."
+        },
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": "30px",
+          "count": 4,
+          "sample": "전체"
+        }
+      ],
+      "headline": {
+        "fontSize": 44,
+        "weight": "400",
+        "lineHeight": "58px",
+        "count": 1,
+        "sample": "Model"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "0.3s",
+        "transform 0.4s ease-in-out, -webkit-transform 0.4s ease-in-out"
+      ],
+      "padding": {
+        "top": "140px",
+        "bottom": null
+      }
+    },
+    {
+      "y": 1695,
+      "h": 877,
+      "bg": null,
+      "tag": "section",
+      "cls": "section-wrap",
+      "container": 1180,
+      "columns": 2,
+      "type": [
+        {
+          "fontSize": 44,
+          "weight": "400",
+          "lineHeight": "58px",
+          "count": 1,
+          "sample": "전기차"
+        },
+        {
+          "fontSize": 30,
+          "weight": "400",
+          "lineHeight": "44px",
+          "count": 1,
+          "sample": "Hi, EV"
+        },
+        {
+          "fontSize": 24,
+          "weight": "400",
+          "lineHeight": "34px",
+          "count": 1,
+          "sample": "충전소&서비스 네트워크"
+        },
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": "34px",
+          "count": 1,
+          "sample": "지구 환경을 품은 현대자동차의 미래형 모빌리티를 경험해보세요."
+        },
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": "30px",
+          "count": 2,
+          "sample": "현대자동차의 전기차를 처음 만나는 순간"
+        },
+        {
+          "fontSize": 16,
+          "weight": "500",
+          "lineHeight": "18.4px",
+          "count": 3,
+          "sample": "자세히 보기"
+        }
+      ],
+      "headline": {
+        "fontSize": 44,
+        "weight": "400",
+        "lineHeight": "58px",
+        "count": 1,
+        "sample": "전기차"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 736,
+          "h": 360,
+          "aspect": 2.04,
+          "radius": null,
+          "objectFit": "cover"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "0.3s",
+        "transform 0.4s ease-in-out, -webkit-transform 0.4s ease-in-out"
+      ],
+      "padding": {
+        "top": "140px",
+        "bottom": null
+      }
+    },
+    {
+      "y": 2572,
+      "h": 767,
+      "bg": null,
+      "tag": "section",
+      "cls": "section-wrap",
+      "container": 1180,
+      "columns": 2,
+      "type": [
+        {
+          "fontSize": 44,
+          "weight": "400",
+          "lineHeight": "58px",
+          "count": 1,
+          "sample": "Trendy Hyundai"
+        },
+        {
+          "fontSize": 30,
+          "weight": "400",
+          "lineHeight": "44px",
+          "count": 2,
+          "sample": "Trendy"
+        },
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": "34px",
+          "count": 1,
+          "sample": "현대자동차와 현대닷컴 소식을 이제 트렌드 리포트로 만나보세요."
+        },
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": "30px",
+          "count": 1,
+          "sample": "모델 트렌드부터 추천 액세서리까지 분기별 달라지는 소식을 기대해 주세요."
+        },
+        {
+          "fontSize": 15,
+          "weight": "500",
+          "lineHeight": "17.25px",
+          "count": 1,
+          "sample": "자세히 보기"
+        }
+      ],
+      "headline": {
+        "fontSize": 44,
+        "weight": "400",
+        "lineHeight": "58px",
+        "count": 1,
+        "sample": "Trendy Hyundai"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 738,
+          "h": 445,
+          "aspect": 1.66,
+          "radius": null,
+          "objectFit": "fill"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all"
+      ],
+      "padding": {
+        "top": "140px",
+        "bottom": null
+      }
+    },
+    {
+      "y": 3339,
+      "h": 856,
+      "bg": null,
+      "tag": "section",
+      "cls": "section-wrap",
+      "container": 1180,
+      "columns": 4,
+      "type": [
+        {
+          "fontSize": 44,
+          "weight": "400",
+          "lineHeight": "58px",
+          "count": 1,
+          "sample": "HyundaiShop"
+        },
+        {
+          "fontSize": 24,
+          "weight": "400",
+          "lineHeight": "26px",
+          "count": 1,
+          "sample": "HyundaiShop Best"
+        },
+        {
+          "fontSize": 20,
+          "weight": "400",
+          "lineHeight": "34px",
+          "count": 8,
+          "sample": "1"
+        },
+        {
+          "fontSize": 18,
+          "weight": "400",
+          "lineHeight": "30px",
+          "count": 3,
+          "sample": "현대자동차 순정 액세서리, 찾고 있다면?"
+        },
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": "34px",
+          "count": 1,
+          "sample": "현대자동차 공식 온라인몰에서 다양한 상품을 확인해보세요."
+        },
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": "30px",
+          "count": 2,
+          "sample": "더보기"
+        },
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": "26px",
+          "count": 8,
+          "sample": "[H Genuine Acc] 충전케이블 (가정용)"
+        }
+      ],
+      "headline": {
+        "fontSize": 44,
+        "weight": "400",
+        "lineHeight": "58px",
+        "count": 1,
+        "sample": "HyundaiShop"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 352,
+          "h": 206,
+          "aspect": 1.71,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 352,
+          "h": 206,
+          "aspect": 1.71,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 352,
+          "h": 206,
+          "aspect": 1.71,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 190,
+          "h": 190,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 190,
+          "h": 190,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 190,
+          "h": 190,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 190,
+          "h": 190,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "fill"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all"
+      ],
+      "padding": {
+        "top": "140px",
+        "bottom": null
+      }
+    },
+    {
+      "y": 4195,
+      "h": 722,
+      "bg": null,
+      "tag": "section",
+      "cls": "section-wrap",
+      "container": 1180,
+      "columns": 1,
+      "type": [
+        {
+          "fontSize": 44,
+          "weight": "400",
+          "lineHeight": "58px",
+          "count": 1,
+          "sample": "Brand"
+        },
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": "34px",
+          "count": 1,
+          "sample": "지속가능한 미래로의 연결을 추구하는 현대자동차의 브랜드 캠페인을 만나보세"
+        }
+      ],
+      "headline": {
+        "fontSize": 44,
+        "weight": "400",
+        "lineHeight": "58px",
+        "count": 1,
+        "sample": "Brand"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "0.3s",
+        "transform 0.4s ease-in-out, -webkit-transform 0.4s ease-in-out"
+      ],
+      "padding": {
+        "top": "140px",
+        "bottom": null
+      }
+    },
+    {
+      "y": 4917,
+      "h": 835,
+      "bg": null,
+      "tag": "section",
+      "cls": "section-wrap",
+      "container": 1380,
+      "columns": 2,
+      "type": [
+        {
+          "fontSize": 44,
+          "weight": "400",
+          "lineHeight": "58px",
+          "count": 1,
+          "sample": "Events"
+        },
+        {
+          "fontSize": 18,
+          "weight": "400",
+          "lineHeight": "18px",
+          "count": 2,
+          "sample": "이전 슬라이드 이동"
+        },
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": "34px",
+          "count": 1,
+          "sample": "고객님을 위한 스페셜한 이벤트를 통해 즐거운 행운과 경품을 만나보세요."
+        }
+      ],
+      "headline": {
+        "fontSize": 44,
+        "weight": "400",
+        "lineHeight": "58px",
+        "count": 1,
+        "sample": "Events"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "0.3s",
+        "transform 0.4s ease-in-out, -webkit-transform 0.4s ease-in-out"
+      ],
+      "padding": {
+        "top": "140px",
+        "bottom": null
+      }
+    },
+    {
+      "y": 5752,
+      "h": 616,
+      "bg": null,
+      "tag": "section",
+      "cls": "section-wrap",
+      "container": 1180,
+      "columns": 4,
+      "type": [
+        {
+          "fontSize": 44,
+          "weight": "400",
+          "lineHeight": "58px",
+          "count": 1,
+          "sample": "현대자동차 소식"
+        },
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": "24px",
+          "count": 4,
+          "sample": "FOR ME, AVANTE l Pleos Connect편 (15s)"
+        },
+        {
+          "fontSize": 14,
+          "weight": "500",
+          "lineHeight": "14px",
+          "count": 10,
+          "sample": "#All"
+        },
+        {
+          "fontSize": 14,
+          "weight": "400",
+          "lineHeight": "14px",
+          "count": 4,
+          "sample": "SNS"
+        }
+      ],
+      "headline": {
+        "fontSize": 44,
+        "weight": "400",
+        "lineHeight": "58px",
+        "count": 1,
+        "sample": "현대자동차 소식"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "0.2s"
+      ],
+      "padding": {
+        "top": "140px",
+        "bottom": null
+      }
+    },
+    {
+      "y": 6588,
+      "h": 266,
+      "bg": "rgb(246, 243, 242)",
+      "tag": "div",
+      "cls": "area-menu-toggle",
+      "container": 1120,
+      "columns": 3,
+      "type": [
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": "24px",
+          "count": 1,
+          "sample": "기업정보 · IR정보 · 지속가능경영"
+        },
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": "16px",
+          "count": 3,
+          "sample": "기업정보"
+        },
+        {
+          "fontSize": 14,
+          "weight": "400",
+          "lineHeight": "14px",
+          "count": 8,
+          "sample": "기업이념"
+        },
+        {
+          "fontSize": 14,
+          "weight": "500",
+          "lineHeight": "14px",
+          "count": 3,
+          "sample": "인재채용"
+        }
+      ],
+      "headline": {
+        "fontSize": 16,
+        "weight": "400",
+        "lineHeight": "24px",
+        "count": 1,
+        "sample": "기업정보 · IR정보 · 지속가능경영"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all"
+      ],
+      "padding": {
+        "top": "30px",
+        "bottom": null
+      }
+    },
+    {
+      "y": 6854,
+      "h": 475,
+      "bg": "rgb(28, 27, 27)",
+      "tag": "div",
+      "cls": "footer",
+      "container": 1120,
+      "columns": 3,
+      "type": [
+        {
+          "fontSize": 14,
+          "weight": "500",
+          "lineHeight": "14px",
+          "count": 6,
+          "sample": "모바일 App"
+        },
+        {
+          "fontSize": 14,
+          "weight": "400",
+          "lineHeight": "14px",
+          "count": 1,
+          "sample": "개인정보 처리방침"
+        },
+        {
+          "fontSize": 14,
+          "weight": "400",
+          "lineHeight": "16.1px",
+          "count": 1,
+          "sample": "고객센터 : 080-600-6000"
+        },
+        {
+          "fontSize": 13.3333,
+          "weight": "400",
+          "lineHeight": null,
+          "count": 2,
+          "sample": "열기"
+        },
+        {
+          "fontSize": 13,
+          "weight": "400",
+          "lineHeight": "14.95px",
+          "count": 5,
+          "sample": "youtube 새창 열기"
+        },
+        {
+          "fontSize": 13,
+          "weight": "400",
+          "lineHeight": "30px",
+          "count": 12,
+          "sample": "현대자동차그룹"
+        },
+        {
+          "fontSize": 12,
+          "weight": "400",
+          "lineHeight": "13.8px",
+          "count": 1,
+          "sample": "COPYRIGHT ⓒ HYUNDAI MOTOR COMPANY. ALL R"
+        },
+        {
+          "fontSize": 12,
+          "weight": "400",
+          "lineHeight": "18px",
+          "count": 7,
+          "sample": "웹 접근성 품질인증"
+        }
+      ],
+      "headline": {
+        "fontSize": 14,
+        "weight": "500",
+        "lineHeight": "14px",
+        "count": 6,
+        "sample": "모바일 App"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all"
+      ],
+      "padding": {
+        "top": "60px",
+        "bottom": "60px"
+      }
+    }
+  ],
+  "sectionsMobile": [
+    {
+      "y": 0,
+      "h": 634,
+      "container": null,
+      "columns": 6
+    },
+    {
+      "y": 634,
+      "h": 586,
+      "container": null,
+      "columns": 3
+    },
+    {
+      "y": 1220,
+      "h": 1266,
+      "container": null,
+      "columns": 6
+    },
+    {
+      "y": 2486,
+      "h": 636,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 3122,
+      "h": 1020,
+      "container": null,
+      "columns": 3
+    },
+    {
+      "y": 4141,
+      "h": 888,
+      "container": null,
+      "columns": 4
+    },
+    {
+      "y": 5029,
+      "h": 664,
+      "container": null,
+      "columns": 6
+    },
+    {
+      "y": 5693,
+      "h": 675,
+      "container": null,
+      "columns": 2
+    },
+    {
+      "y": 6418,
+      "h": 476,
+      "container": null,
+      "columns": 1
+    }
+  ],
+  "reproduction": {
+    "stamp": null,
+    "note": "IR만으로 원본을 오차 밴드 내 재건축→capture 대조 통과 시 스탬프. 스탬프 없는 IR은 리드 자격 없음."
+  }
+}

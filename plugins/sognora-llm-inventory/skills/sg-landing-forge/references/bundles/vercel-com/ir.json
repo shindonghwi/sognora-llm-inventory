@@ -1,0 +1,770 @@
+{
+  "irVersion": 1,
+  "source": {
+    "url": "https://vercel.com",
+    "collectedAt": "2026-08-16T16:59:49.938Z"
+  },
+  "page": {
+    "scrollHeight1440": 5930,
+    "scrollHeight390": 6671,
+    "sectionCount": 7
+  },
+  "rhythm": {
+    "bgSequence": [
+      "rgb(250, 250, 250)",
+      "rgb(250, 250, 250)",
+      "rgb(250, 250, 250)",
+      "rgb(250, 250, 250)",
+      "rgb(250, 250, 250)",
+      "rgb(250, 250, 250)",
+      "rgb(250, 250, 250)"
+    ],
+    "heights": [
+      728,
+      617,
+      617,
+      617,
+      926,
+      688,
+      846
+    ],
+    "containers": [
+      1392
+    ]
+  },
+  "typeScale": [
+    {
+      "px": 64,
+      "weight": "400",
+      "count": 1
+    },
+    {
+      "px": 56,
+      "weight": "450",
+      "count": 5
+    },
+    {
+      "px": 24,
+      "weight": "450",
+      "count": 10
+    },
+    {
+      "px": 22,
+      "weight": "400",
+      "count": 4
+    },
+    {
+      "px": 20,
+      "weight": "400",
+      "count": 35
+    },
+    {
+      "px": 18,
+      "weight": "400",
+      "count": 32
+    },
+    {
+      "px": 16,
+      "weight": "400",
+      "count": 7
+    },
+    {
+      "px": 16,
+      "weight": "500",
+      "count": 7
+    },
+    {
+      "px": 16,
+      "weight": "450",
+      "count": 3
+    },
+    {
+      "px": 14,
+      "weight": "400",
+      "count": 106
+    },
+    {
+      "px": 14,
+      "weight": "500",
+      "count": 36
+    },
+    {
+      "px": 12,
+      "weight": "400",
+      "count": 11
+    },
+    {
+      "px": 12,
+      "weight": "500",
+      "count": 1
+    },
+    {
+      "px": 11,
+      "weight": "400",
+      "count": 1
+    }
+  ],
+  "motion": {
+    "durationsMs": [
+      {
+        "ms": 100,
+        "count": 316
+      },
+      {
+        "ms": 150,
+        "count": 123
+      },
+      {
+        "ms": 300,
+        "count": 15
+      },
+      {
+        "ms": 200,
+        "count": 15
+      },
+      {
+        "ms": 500,
+        "count": 12
+      },
+      {
+        "ms": 700,
+        "count": 1
+      }
+    ],
+    "keyframesCount": 85,
+    "keyframesNamed": [
+      "passport-glow-ellipse-x",
+      "soft-fade-in",
+      "show",
+      "hide",
+      "fade-in",
+      "fade-out",
+      "spinner-opacity",
+      "slide-in",
+      "fade-slide-in",
+      "blue-glow",
+      "thinking-loader",
+      "bar-pulse",
+      "logo-carousel",
+      "sandbox-left",
+      "sandbox-right",
+      "sandbox-left-reverse",
+      "sandbox-right-reverse",
+      "blink",
+      "flip-front",
+      "flip-back"
+    ],
+    "runningAnimations": [
+      {
+        "name": "CSSTransition",
+        "duration": 1200,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "running"
+      }
+    ],
+    "hoverTimelines": [
+      {
+        "selector": "button.group.flex",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "a.cursor-pointer.focus-visible\\:outline-2",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "a.cursor-pointer.focus-visible\\:outline-2",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "a.outline-none.m-0",
+        "frames": 12,
+        "overshoot": false
+      },
+      {
+        "selector": "a.outline-none.m-0",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "a.outline-none.m-0",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "a.outline-none.m-0",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "a.outline-none.m-0",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "a.cursor-pointer.focus-visible\\:outline-2",
+        "frames": 2,
+        "overshoot": false
+      }
+    ],
+    "revealTimelines": [],
+    "listenerProfile": {
+      "click": 146,
+      "keydown": 8,
+      "pointerdown": 7,
+      "pointerup": 7,
+      "visibilitychange": 6,
+      "scroll": 6,
+      "pointermove": 6,
+      "transitionend": 6,
+      "pageshow": 5,
+      "storage": 5,
+      "dragenter": 5,
+      "dragleave": 5
+    }
+  },
+  "assetStats": {
+    "count": 22,
+    "images": 10,
+    "withRect": 9,
+    "totalBytes": 387796
+  },
+  "layers": [
+    {
+      "y": 64,
+      "h": 836,
+      "position": "fixed",
+      "cls": "invisible",
+      "bg": "rgb(255, 255, 255)",
+      "bgImage": null,
+      "blend": null
+    },
+    {
+      "y": 64,
+      "h": 836,
+      "position": "fixed",
+      "cls": "pointer-events-none",
+      "bg": "oklab(0.984799 0.0000446141 0.0000197291 / 0.5)",
+      "bgImage": null,
+      "blend": null
+    }
+  ],
+  "sections": [
+    {
+      "y": 64,
+      "h": 728,
+      "bg": "rgb(250, 250, 250)",
+      "tag": "div",
+      "cls": "group/hero",
+      "container": 1392,
+      "columns": 2,
+      "type": [
+        {
+          "fontSize": 64,
+          "weight": "400",
+          "lineHeight": "64px",
+          "count": 1,
+          "sample": "Agentic Infrastructure"
+        },
+        {
+          "fontSize": 24,
+          "weight": "450",
+          "lineHeight": "32px",
+          "count": 2,
+          "sample": "Drop to deploy"
+        },
+        {
+          "fontSize": 22,
+          "weight": "400",
+          "lineHeight": "33px",
+          "count": 1,
+          "sample": "Products",
+          "floating": true
+        },
+        {
+          "fontSize": 20,
+          "weight": "400",
+          "lineHeight": "32px",
+          "count": 1,
+          "sample": "AI SDK",
+          "floating": true
+        },
+        {
+          "fontSize": 18,
+          "weight": "400",
+          "lineHeight": "28px",
+          "count": 1,
+          "sample": "AI SDK",
+          "floating": true
+        },
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": "24px",
+          "count": 6,
+          "sample": "To ship apps and agents"
+        },
+        {
+          "fontSize": 16,
+          "weight": "500",
+          "lineHeight": "24px",
+          "count": 2,
+          "sample": "Deploy now"
+        },
+        {
+          "fontSize": 16,
+          "weight": "450",
+          "lineHeight": "24px",
+          "count": 3,
+          "sample": "For coding agents"
+        }
+      ],
+      "headline": {
+        "fontSize": 64,
+        "weight": "400",
+        "lineHeight": "64px",
+        "count": 1,
+        "sample": "Agentic Infrastructure"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "opacity 0.7s linear",
+        "opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+        "opacity 1.2s linear",
+        "0.15s cubic-bezier(0.4, 0, 0.2, 1)",
+        "height 0.2s cubic-bezier(0, 0, 0.2, 1)",
+        "color 0.5s cubic-bezier(0, 0, 0.2, 1), background-color 0.5s cubic-bezier(0, 0, ",
+        "opacity 0.3s cubic-bezier(0, 0, 0.2, 1)"
+      ],
+      "padding": {
+        "top": "40px",
+        "bottom": "40px"
+      }
+    },
+    {
+      "y": 1108,
+      "h": 617,
+      "bg": "rgb(250, 250, 250)",
+      "tag": "div",
+      "cls": "flex",
+      "container": 1392,
+      "columns": 2,
+      "type": [
+        {
+          "fontSize": 56,
+          "weight": "450",
+          "lineHeight": "56px",
+          "count": 1,
+          "sample": "Build agents on infrastructure that thin"
+        },
+        {
+          "fontSize": 24,
+          "weight": "450",
+          "lineHeight": "32px",
+          "count": 2,
+          "sample": "of agent conversations daily on Vercel."
+        },
+        {
+          "fontSize": 14,
+          "weight": "400",
+          "lineHeight": "20px",
+          "count": 1,
+          "sample": "Features"
+        },
+        {
+          "fontSize": 14,
+          "weight": "500",
+          "lineHeight": "20px",
+          "count": 4,
+          "sample": "Durable Orchestration"
+        }
+      ],
+      "headline": {
+        "fontSize": 56,
+        "weight": "450",
+        "lineHeight": "56px",
+        "count": 1,
+        "sample": "Build agents on infrastructure that thin"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 921,
+          "h": 486,
+          "aspect": 1.9,
+          "radius": null,
+          "objectFit": "fill"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 1981,
+      "h": 617,
+      "bg": "rgb(250, 250, 250)",
+      "tag": "div",
+      "cls": "flex",
+      "container": 1392,
+      "columns": 2,
+      "type": [
+        {
+          "fontSize": 56,
+          "weight": "450",
+          "lineHeight": "56px",
+          "count": 1,
+          "sample": "Ship apps that scale from zero to millio"
+        },
+        {
+          "fontSize": 24,
+          "weight": "450",
+          "lineHeight": "32px",
+          "count": 2,
+          "sample": "monthly website visits on Vercel."
+        },
+        {
+          "fontSize": 14,
+          "weight": "400",
+          "lineHeight": "20px",
+          "count": 1,
+          "sample": "Features"
+        },
+        {
+          "fontSize": 14,
+          "weight": "500",
+          "lineHeight": "20px",
+          "count": 4,
+          "sample": "Global Delivery"
+        }
+      ],
+      "headline": {
+        "fontSize": 56,
+        "weight": "450",
+        "lineHeight": "56px",
+        "count": 1,
+        "sample": "Ship apps that scale from zero to millio"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 921,
+          "h": 516,
+          "aspect": 1.78,
+          "radius": null,
+          "objectFit": "fill"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 2853,
+      "h": 617,
+      "bg": "rgb(250, 250, 250)",
+      "tag": "div",
+      "cls": "flex",
+      "container": 1392,
+      "columns": 2,
+      "type": [
+        {
+          "fontSize": 56,
+          "weight": "450",
+          "lineHeight": "56px",
+          "count": 1,
+          "sample": "Host platforms that serve every customer"
+        },
+        {
+          "fontSize": 24,
+          "weight": "450",
+          "lineHeight": "32px",
+          "count": 2,
+          "sample": "companies on Vercel."
+        },
+        {
+          "fontSize": 14,
+          "weight": "400",
+          "lineHeight": "20px",
+          "count": 1,
+          "sample": "Features"
+        },
+        {
+          "fontSize": 14,
+          "weight": "500",
+          "lineHeight": "20px",
+          "count": 4,
+          "sample": "Tenant Isolation"
+        }
+      ],
+      "headline": {
+        "fontSize": 56,
+        "weight": "450",
+        "lineHeight": "56px",
+        "count": 1,
+        "sample": "Host platforms that serve every customer"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 921,
+          "h": 516,
+          "aspect": 1.78,
+          "radius": null,
+          "objectFit": "fill"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 3470,
+      "h": 926,
+      "bg": "rgb(250, 250, 250)",
+      "tag": "div",
+      "cls": null,
+      "container": 1392,
+      "columns": 2,
+      "type": [
+        {
+          "fontSize": 56,
+          "weight": "450",
+          "lineHeight": "56px",
+          "count": 1,
+          "sample": "Recently shipped"
+        },
+        {
+          "fontSize": 24,
+          "weight": "450",
+          "lineHeight": "26.4px",
+          "count": 2,
+          "sample": "Passport"
+        },
+        {
+          "fontSize": 14,
+          "weight": "400",
+          "lineHeight": "20px",
+          "count": 4,
+          "sample": "A framework for building durable agents."
+        },
+        {
+          "fontSize": 12,
+          "weight": "400",
+          "lineHeight": "16px",
+          "count": 11,
+          "sample": "vercel deploy"
+        },
+        {
+          "fontSize": 11,
+          "weight": "400",
+          "lineHeight": "16.5px",
+          "count": 1,
+          "sample": "Iss 2026"
+        }
+      ],
+      "headline": {
+        "fontSize": 56,
+        "weight": "450",
+        "lineHeight": "56px",
+        "count": 1,
+        "sample": "Recently shipped"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "opacity 0.3s cubic-bezier(0, 0, 0.2, 1)",
+        "opacity 0.2s cubic-bezier(0, 0, 0.2, 1)",
+        "transform 0.3s cubic-bezier(0, 0, 0.2, 1), translate 0.3s cubic-bezier(0, 0, 0.2"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 4396,
+      "h": 688,
+      "bg": "rgb(250, 250, 250)",
+      "tag": "div",
+      "cls": "px-px",
+      "container": 1392,
+      "columns": 1,
+      "type": [
+        {
+          "fontSize": 56,
+          "weight": "450",
+          "lineHeight": "56px",
+          "count": 1,
+          "sample": "Built by you, or your agents"
+        },
+        {
+          "fontSize": 16,
+          "weight": "500",
+          "lineHeight": "24px",
+          "count": 2,
+          "sample": "Deploy now"
+        }
+      ],
+      "headline": {
+        "fontSize": 56,
+        "weight": "450",
+        "lineHeight": "56px",
+        "count": 1,
+        "sample": "Built by you, or your agents"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "0.15s cubic-bezier(0.4, 0, 0.2, 1)",
+        "background 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, ",
+        "opacity 0.2s cubic-bezier(0.23, 1, 0.32, 1), scale 0.2s cubic-bezier(0.23, 1, 0."
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 5084,
+      "h": 846,
+      "bg": "rgb(250, 250, 250)",
+      "tag": "footer",
+      "cls": "max-w-[var(--ds-page-width-with-margin)]",
+      "container": 1392,
+      "columns": 6,
+      "type": [
+        {
+          "fontSize": 14,
+          "weight": "500",
+          "lineHeight": "20px",
+          "count": 12,
+          "sample": "Agent Stack"
+        },
+        {
+          "fontSize": 14,
+          "weight": "400",
+          "lineHeight": "20px",
+          "count": 80,
+          "sample": "AI SDK"
+        },
+        {
+          "fontSize": 14,
+          "weight": "400",
+          "lineHeight": "21px",
+          "count": 4,
+          "sample": "Select a display theme:"
+        },
+        {
+          "fontSize": 12,
+          "weight": "500",
+          "lineHeight": "20px",
+          "count": 1,
+          "sample": "All systems normal."
+        },
+        {
+          "fontSize": 11,
+          "weight": "500",
+          "lineHeight": "20px",
+          "count": 9,
+          "sample": "New"
+        }
+      ],
+      "headline": {
+        "fontSize": 14,
+        "weight": "500",
+        "lineHeight": "20px",
+        "count": 12,
+        "sample": "Agent Stack"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "color 0.1s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.1s cubic-bezier(0.4,",
+        "opacity 1s",
+        "0.2s"
+      ],
+      "padding": {
+        "top": "40px",
+        "bottom": "40px"
+      }
+    }
+  ],
+  "sectionsMobile": [
+    {
+      "y": 64,
+      "h": 380,
+      "container": null,
+      "columns": 2
+    },
+    {
+      "y": 444,
+      "h": 272,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 1004,
+      "h": 689,
+      "container": null,
+      "columns": 2
+    },
+    {
+      "y": 1773,
+      "h": 649,
+      "container": null,
+      "columns": 2
+    },
+    {
+      "y": 2501,
+      "h": 681,
+      "container": null,
+      "columns": 2
+    },
+    {
+      "y": 3182,
+      "h": 896,
+      "container": null,
+      "columns": 2
+    },
+    {
+      "y": 4077,
+      "h": 636,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 4713,
+      "h": 1958,
+      "container": null,
+      "columns": 2
+    }
+  ],
+  "reproduction": {
+    "stamp": null,
+    "note": "IR만으로 원본을 오차 밴드 내 재건축→capture 대조 통과 시 스탬프. 스탬프 없는 IR은 리드 자격 없음."
+  }
+}

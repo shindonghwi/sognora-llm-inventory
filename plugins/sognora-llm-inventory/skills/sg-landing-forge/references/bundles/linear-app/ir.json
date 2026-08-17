@@ -1,0 +1,1231 @@
+{
+  "irVersion": 1,
+  "source": {
+    "url": "https://linear.app",
+    "collectedAt": "2026-08-16T16:56:42.014Z"
+  },
+  "page": {
+    "scrollHeight1440": 10898,
+    "scrollHeight390": 6382,
+    "sectionCount": 11
+  },
+  "rhythm": {
+    "bgSequence": [
+      "rgb(8, 9, 10)",
+      "rgb(8, 9, 10)",
+      "rgb(8, 9, 10)",
+      "rgb(8, 9, 10)",
+      "rgb(8, 9, 10)",
+      "rgb(8, 9, 10)",
+      "rgb(8, 9, 10)",
+      "rgb(8, 9, 10)",
+      "rgb(8, 9, 10)",
+      "rgb(8, 9, 10)",
+      "rgb(8, 9, 10)"
+    ],
+    "heights": [
+      1024,
+      468,
+      1224,
+      1216,
+      1172,
+      1090,
+      1196,
+      422,
+      492,
+      228,
+      494
+    ],
+    "containers": [
+      1346,
+      1344
+    ]
+  },
+  "typeScale": [
+    {
+      "px": 72,
+      "weight": "510",
+      "count": 1
+    },
+    {
+      "px": 64,
+      "weight": "510",
+      "count": 7
+    },
+    {
+      "px": 48,
+      "weight": "510",
+      "count": 8
+    },
+    {
+      "px": 32,
+      "weight": "400",
+      "count": 2
+    },
+    {
+      "px": 24,
+      "weight": "400",
+      "count": 8
+    },
+    {
+      "px": 20,
+      "weight": "590",
+      "count": 1
+    },
+    {
+      "px": 18,
+      "weight": "400",
+      "count": 16
+    },
+    {
+      "px": 17,
+      "weight": "590",
+      "count": 1
+    },
+    {
+      "px": 16,
+      "weight": "590",
+      "count": 1
+    },
+    {
+      "px": 16,
+      "weight": "400",
+      "count": 2
+    },
+    {
+      "px": 16,
+      "weight": "510",
+      "count": 10
+    },
+    {
+      "px": 15,
+      "weight": "400",
+      "count": 73
+    },
+    {
+      "px": 15,
+      "weight": "510",
+      "count": 15
+    },
+    {
+      "px": 15,
+      "weight": "590",
+      "count": 4
+    }
+  ],
+  "motion": {
+    "durationsMs": [
+      {
+        "ms": 160,
+        "count": 123
+      },
+      {
+        "ms": 100,
+        "count": 61
+      },
+      {
+        "ms": 400,
+        "count": 9
+      },
+      {
+        "ms": 200,
+        "count": 1
+      }
+    ],
+    "keyframesCount": 88,
+    "keyframesNamed": [
+      "swipe-out-left",
+      "swipe-out-right",
+      "swipe-out-up",
+      "swipe-out-down",
+      "sonner-fade-in",
+      "sonner-fade-out",
+      "sonner-spin",
+      "fadeIn",
+      "fadeOut",
+      "slideFromBottom",
+      "slideToBottom",
+      "slideFromTop",
+      "slideToTop",
+      "slideFromLeft",
+      "slideToLeft",
+      "slideFromRight",
+      "slideToRight",
+      "_5pslva_fadeIn",
+      "WinFxq_contextMenuIn",
+      "WinFxq_contextMenuOut"
+    ],
+    "runningAnimations": [
+      {
+        "name": "w9ZFkq_shine",
+        "duration": 2200,
+        "easing": "linear",
+        "iterations": null,
+        "state": "running"
+      },
+      {
+        "name": "grid-dot-0-0-upDown",
+        "duration": 2800,
+        "easing": "linear",
+        "iterations": null,
+        "state": "running"
+      },
+      {
+        "name": "grid-dot-0-1-upDown",
+        "duration": 2800,
+        "easing": "linear",
+        "iterations": null,
+        "state": "running"
+      },
+      {
+        "name": "grid-dot-0-2-upDown",
+        "duration": 2800,
+        "easing": "linear",
+        "iterations": null,
+        "state": "running"
+      },
+      {
+        "name": "grid-dot-0-3-upDown",
+        "duration": 2800,
+        "easing": "linear",
+        "iterations": null,
+        "state": "running"
+      },
+      {
+        "name": "grid-dot-0-4-upDown",
+        "duration": 2800,
+        "easing": "linear",
+        "iterations": null,
+        "state": "running"
+      },
+      {
+        "name": "grid-dot-1-0-upDown",
+        "duration": 2800,
+        "easing": "linear",
+        "iterations": null,
+        "state": "running"
+      },
+      {
+        "name": "grid-dot-1-1-upDown",
+        "duration": 2800,
+        "easing": "linear",
+        "iterations": null,
+        "state": "running"
+      },
+      {
+        "name": "grid-dot-1-2-upDown",
+        "duration": 2800,
+        "easing": "linear",
+        "iterations": null,
+        "state": "running"
+      },
+      {
+        "name": "grid-dot-1-3-upDown",
+        "duration": 2800,
+        "easing": "linear",
+        "iterations": null,
+        "state": "running"
+      },
+      {
+        "name": "grid-dot-1-4-upDown",
+        "duration": 2800,
+        "easing": "linear",
+        "iterations": null,
+        "state": "running"
+      },
+      {
+        "name": "grid-dot-2-0-upDown",
+        "duration": 2800,
+        "easing": "linear",
+        "iterations": null,
+        "state": "running"
+      },
+      {
+        "name": "grid-dot-2-1-upDown",
+        "duration": 2800,
+        "easing": "linear",
+        "iterations": null,
+        "state": "running"
+      },
+      {
+        "name": "grid-dot-2-2-upDown",
+        "duration": 2800,
+        "easing": "linear",
+        "iterations": null,
+        "state": "running"
+      },
+      {
+        "name": "grid-dot-2-3-upDown",
+        "duration": 2800,
+        "easing": "linear",
+        "iterations": null,
+        "state": "running"
+      },
+      {
+        "name": "grid-dot-2-4-upDown",
+        "duration": 2800,
+        "easing": "linear",
+        "iterations": null,
+        "state": "running"
+      },
+      {
+        "name": "grid-dot-3-0-upDown",
+        "duration": 2800,
+        "easing": "linear",
+        "iterations": null,
+        "state": "running"
+      },
+      {
+        "name": "grid-dot-3-1-upDown",
+        "duration": 2800,
+        "easing": "linear",
+        "iterations": null,
+        "state": "running"
+      },
+      {
+        "name": "grid-dot-3-2-upDown",
+        "duration": 2800,
+        "easing": "linear",
+        "iterations": null,
+        "state": "running"
+      },
+      {
+        "name": "grid-dot-3-3-upDown",
+        "duration": 2800,
+        "easing": "linear",
+        "iterations": null,
+        "state": "running"
+      }
+    ],
+    "hoverTimelines": [
+      {
+        "selector": "a.hide-tablet",
+        "frames": 20,
+        "overshoot": false
+      },
+      {
+        "selector": "a.I_mUeq_root",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "button.M31rWW_ingredientButton",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "button._9Zs8oG_primaryItem",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "a.fjOtda_link.I_mUeq_root",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "a.Dc5tqa_customerCard.Dc5tqa_secondary",
+        "frames": 23,
+        "overshoot": false
+      },
+      {
+        "selector": "a.S36ykG_root.S36ykG_variant-secondary",
+        "frames": 17,
+        "overshoot": false
+      },
+      {
+        "selector": "a.Jmh1Wq_sectionLink.I_mUeq_root",
+        "frames": 2,
+        "overshoot": false
+      }
+    ],
+    "revealTimelines": [],
+    "listenerProfile": {
+      "click": 121,
+      "blur": 17,
+      "scroll": 9,
+      "resize": 9,
+      "keydown": 9,
+      "keyup": 5,
+      "popstate": 4,
+      "vinext:dev-error-recovery": 4,
+      "auxclick": 4,
+      "contextmenu": 4,
+      "copy": 4,
+      "cut": 4
+    }
+  },
+  "assetStats": {
+    "count": 201,
+    "images": 24,
+    "withRect": 20,
+    "totalBytes": 2723346
+  },
+  "layers": [],
+  "sections": [
+    {
+      "y": 271,
+      "h": 1024,
+      "bg": "rgb(8, 9, 10)",
+      "tag": "div",
+      "cls": null,
+      "container": 1344,
+      "columns": 4,
+      "type": [
+        {
+          "fontSize": 64,
+          "weight": "510",
+          "lineHeight": "64px",
+          "count": 7,
+          "sample": "The product"
+        },
+        {
+          "fontSize": 20,
+          "weight": "590",
+          "lineHeight": "26.6px",
+          "count": 1,
+          "sample": "Faster app launch"
+        },
+        {
+          "fontSize": 16,
+          "weight": "590",
+          "lineHeight": "24px",
+          "count": 1,
+          "sample": "Activity"
+        },
+        {
+          "fontSize": 15,
+          "weight": "400",
+          "lineHeight": "24px",
+          "count": 3,
+          "sample": "Purpose-built for planning and building "
+        },
+        {
+          "fontSize": 15,
+          "weight": "510",
+          "lineHeight": "24px",
+          "count": 2,
+          "sample": "New"
+        },
+        {
+          "fontSize": 14,
+          "weight": "590",
+          "lineHeight": "21px",
+          "count": 1,
+          "sample": "Linear"
+        },
+        {
+          "fontSize": 14,
+          "weight": "400",
+          "lineHeight": "21px",
+          "count": 2,
+          "sample": "Render UI before sync when minimum requi"
+        },
+        {
+          "fontSize": 13,
+          "weight": "510",
+          "lineHeight": null,
+          "count": 13,
+          "sample": "Inbox"
+        }
+      ],
+      "headline": {
+        "fontSize": 64,
+        "weight": "510",
+        "lineHeight": "64px",
+        "count": 7,
+        "sample": "The product"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 1416,
+          "h": 768,
+          "aspect": 1.84,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 1440,
+          "h": 804,
+          "aspect": 1.79,
+          "radius": null,
+          "objectFit": "fill"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "filter 0.16s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+        "background 0.16s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+        "fill",
+        "color",
+        "transform 0.16s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+        "filter 0.16s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.16s cubic-bezier("
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 1811,
+      "h": 468,
+      "bg": "rgb(8, 9, 10)",
+      "tag": "div",
+      "cls": "GJ9TEa_benefits",
+      "container": 1344,
+      "columns": 3,
+      "type": [
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": "24px",
+          "count": 1,
+          "sample": "Designed for workflows shared by humans "
+        },
+        {
+          "fontSize": 15,
+          "weight": "510",
+          "lineHeight": "24px",
+          "count": 3,
+          "sample": "Purpose-built"
+        },
+        {
+          "fontSize": 15,
+          "weight": "400",
+          "lineHeight": "24px",
+          "count": 3,
+          "sample": "Linear is shaped by the practices and pr"
+        },
+        {
+          "fontSize": 12,
+          "weight": "400",
+          "lineHeight": "16.8px",
+          "count": 3,
+          "sample": "FIG 0.2"
+        }
+      ],
+      "headline": {
+        "fontSize": 16,
+        "weight": "400",
+        "lineHeight": "24px",
+        "count": 1,
+        "sample": "Designed for workflows shared by humans "
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 2481,
+      "h": 1224,
+      "bg": "rgb(8, 9, 10)",
+      "tag": "section",
+      "cls": "b-30Va_root",
+      "container": 1344,
+      "columns": 4,
+      "type": [
+        {
+          "fontSize": 48,
+          "weight": "510",
+          "lineHeight": "48px",
+          "count": 1,
+          "sample": "Make product \noperations self-driving"
+        },
+        {
+          "fontSize": 24,
+          "weight": "400",
+          "lineHeight": "31.92px",
+          "count": 1,
+          "sample": "Turn conversations and customer feedback"
+        },
+        {
+          "fontSize": 18,
+          "weight": "400",
+          "lineHeight": "28.8px",
+          "count": 4,
+          "sample": "+"
+        },
+        {
+          "fontSize": 15,
+          "weight": "400",
+          "lineHeight": "24px",
+          "count": 15,
+          "sample": "1.0"
+        },
+        {
+          "fontSize": 15,
+          "weight": "590",
+          "lineHeight": "24px",
+          "count": 4,
+          "sample": "didier"
+        },
+        {
+          "fontSize": 15,
+          "weight": "300",
+          "lineHeight": "22px",
+          "count": 4,
+          "sample": "Has anyone been looking into the iOS sta"
+        },
+        {
+          "fontSize": 14,
+          "weight": "400",
+          "lineHeight": "21px",
+          "count": 1,
+          "sample": "Thread in"
+        },
+        {
+          "fontSize": 14,
+          "weight": "590",
+          "lineHeight": "21px",
+          "count": 1,
+          "sample": "#feedback"
+        }
+      ],
+      "headline": {
+        "fontSize": 48,
+        "weight": "510",
+        "lineHeight": "48px",
+        "count": 1,
+        "sample": "Make product \noperations self-driving"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "filter 0.16s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.16s cubic-bezier(",
+        "fill",
+        "border 0.16s cubic-bezier(0.25, 0.46, 0.45, 0.94), background-color 0.16s cubic-",
+        "anim:1.25s infinite qM9FAa_cursorBlink",
+        "filter 0.16s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+        "opacity 0.16s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.16s cubic-bezier"
+      ],
+      "padding": {
+        "top": "128px",
+        "bottom": "128px"
+      }
+    },
+    {
+      "y": 3715,
+      "h": 1216,
+      "bg": "rgb(8, 9, 10)",
+      "tag": "section",
+      "cls": "b-30Va_root",
+      "container": 1344,
+      "columns": 2,
+      "type": [
+        {
+          "fontSize": 48,
+          "weight": "510",
+          "lineHeight": "48px",
+          "count": 1,
+          "sample": "Define the \nproduct direction"
+        },
+        {
+          "fontSize": 24,
+          "weight": "400",
+          "lineHeight": "31.92px",
+          "count": 1,
+          "sample": "Plan and navigate from idea to launch. A"
+        },
+        {
+          "fontSize": 18,
+          "weight": "400",
+          "lineHeight": "28.8px",
+          "count": 4,
+          "sample": "+"
+        },
+        {
+          "fontSize": 15,
+          "weight": "400",
+          "lineHeight": "24px",
+          "count": 11,
+          "sample": "2.0"
+        },
+        {
+          "fontSize": 14,
+          "weight": "510",
+          "lineHeight": "21px",
+          "count": 1,
+          "sample": "Initiatives"
+        },
+        {
+          "fontSize": 13,
+          "weight": "400",
+          "lineHeight": "19.5px",
+          "count": 17,
+          "sample": "UI Refresh"
+        },
+        {
+          "fontSize": 12,
+          "weight": "510",
+          "lineHeight": "16.8px",
+          "count": 8,
+          "sample": "FEB"
+        },
+        {
+          "fontSize": 12,
+          "weight": "400",
+          "lineHeight": "16.8px",
+          "count": 35,
+          "sample": "2"
+        }
+      ],
+      "headline": {
+        "fontSize": 48,
+        "weight": "510",
+        "lineHeight": "48px",
+        "count": 1,
+        "sample": "Define the \nproduct direction"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "filter 0.16s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.16s cubic-bezier(",
+        "fill",
+        "opacity 0.16s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.16s cubic-bezier"
+      ],
+      "padding": {
+        "top": "128px",
+        "bottom": "128px"
+      }
+    },
+    {
+      "y": 4942,
+      "h": 1172,
+      "bg": "rgb(8, 9, 10)",
+      "tag": "section",
+      "cls": "b-30Va_root",
+      "container": 1344,
+      "columns": 2,
+      "type": [
+        {
+          "fontSize": 48,
+          "weight": "510",
+          "lineHeight": "48px",
+          "count": 1,
+          "sample": "Move work forward \nacross teams and agen"
+        },
+        {
+          "fontSize": 24,
+          "weight": "400",
+          "lineHeight": "31.92px",
+          "count": 1,
+          "sample": "Build and deploy AI agents that work alo"
+        },
+        {
+          "fontSize": 18,
+          "weight": "400",
+          "lineHeight": "28.8px",
+          "count": 5,
+          "sample": "+"
+        },
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": "24px",
+          "count": 1,
+          "sample": "Agents Command Menu"
+        },
+        {
+          "fontSize": 16,
+          "weight": "510",
+          "lineHeight": "24px",
+          "count": 6,
+          "sample": "Codex"
+        },
+        {
+          "fontSize": 15,
+          "weight": "400",
+          "lineHeight": "24px",
+          "count": 13,
+          "sample": "3.0"
+        },
+        {
+          "fontSize": 14,
+          "weight": "510",
+          "lineHeight": "21px",
+          "count": 2,
+          "sample": "Codex"
+        },
+        {
+          "fontSize": 14,
+          "weight": "400",
+          "lineHeight": "21px",
+          "count": 7,
+          "sample": "On it! I've received your request."
+        }
+      ],
+      "headline": {
+        "fontSize": 48,
+        "weight": "510",
+        "lineHeight": "48px",
+        "count": 1,
+        "sample": "Move work forward \nacross teams and agen"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "filter 0.16s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.16s cubic-bezier(",
+        "fill",
+        "anim:1.2s steps(1) infinite PPSGPG_blink",
+        "opacity 0.16s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.16s cubic-bezier"
+      ],
+      "padding": {
+        "top": "128px",
+        "bottom": "128px"
+      }
+    },
+    {
+      "y": 6124,
+      "h": 1090,
+      "bg": "rgb(8, 9, 10)",
+      "tag": "section",
+      "cls": "b-30Va_root",
+      "container": 1344,
+      "columns": 2,
+      "type": [
+        {
+          "fontSize": 48,
+          "weight": "510",
+          "lineHeight": "48px",
+          "count": 1,
+          "sample": "Review PRs and agent output"
+        },
+        {
+          "fontSize": 24,
+          "weight": "400",
+          "lineHeight": "31.92px",
+          "count": 1,
+          "sample": "Understand code changes at a glance with"
+        },
+        {
+          "fontSize": 15,
+          "weight": "400",
+          "lineHeight": "24px",
+          "count": 3,
+          "sample": "4.0"
+        },
+        {
+          "fontSize": 14,
+          "weight": "400",
+          "lineHeight": "21px",
+          "count": 2,
+          "sample": "kinetic-ios/src/screens/Home/HomeScreen."
+        },
+        {
+          "fontSize": 14,
+          "weight": "400",
+          "lineHeight": "24px",
+          "count": 113,
+          "sample": "import"
+        },
+        {
+          "fontSize": 13,
+          "weight": "510",
+          "lineHeight": "32px",
+          "count": 1,
+          "sample": "Linear"
+        }
+      ],
+      "headline": {
+        "fontSize": 48,
+        "weight": "510",
+        "lineHeight": "48px",
+        "count": 1,
+        "sample": "Review PRs and agent output"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "filter 0.16s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.16s cubic-bezier(",
+        "border 0.16s cubic-bezier(0.25, 0.46, 0.45, 0.94), background-color 0.16s cubic-",
+        "fill",
+        "background 0.4s ease-out"
+      ],
+      "padding": {
+        "top": "128px",
+        "bottom": "128px"
+      }
+    },
+    {
+      "y": 7224,
+      "h": 1196,
+      "bg": "rgb(8, 9, 10)",
+      "tag": "section",
+      "cls": "b-30Va_root",
+      "container": 1344,
+      "columns": 2,
+      "type": [
+        {
+          "fontSize": 48,
+          "weight": "510",
+          "lineHeight": "48px",
+          "count": 1,
+          "sample": "Understand \nprogress at scale"
+        },
+        {
+          "fontSize": 24,
+          "weight": "400",
+          "lineHeight": "31.92px",
+          "count": 1,
+          "sample": "Take the guesswork out of product develo"
+        },
+        {
+          "fontSize": 18,
+          "weight": "400",
+          "lineHeight": "28.8px",
+          "count": 3,
+          "sample": "+"
+        },
+        {
+          "fontSize": 17,
+          "weight": "590",
+          "lineHeight": "27.2px",
+          "count": 1,
+          "sample": "Weekly Pulse for Aug 17"
+        },
+        {
+          "fontSize": 15,
+          "weight": "400",
+          "lineHeight": "24px",
+          "count": 13,
+          "sample": "5.0"
+        },
+        {
+          "fontSize": 15,
+          "weight": "510",
+          "lineHeight": "24px",
+          "count": 2,
+          "sample": "UI refresh"
+        },
+        {
+          "fontSize": 14,
+          "weight": "510",
+          "lineHeight": "21px",
+          "count": 2,
+          "sample": "Issue count by created date"
+        },
+        {
+          "fontSize": 13,
+          "weight": "510",
+          "lineHeight": "32px",
+          "count": 1,
+          "sample": "Listen"
+        }
+      ],
+      "headline": {
+        "fontSize": 48,
+        "weight": "510",
+        "lineHeight": "48px",
+        "count": 1,
+        "sample": "Understand \nprogress at scale"
+      },
+      "assetSlots": [],
+      "glassNodes": 1,
+      "motionDecls": [
+        "all",
+        "filter 0.16s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.16s cubic-bezier(",
+        "border 0.16s cubic-bezier(0.25, 0.46, 0.45, 0.94), background-color 0.16s cubic-",
+        "fill",
+        "opacity 0.16s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.16s cubic-bezier"
+      ],
+      "padding": {
+        "top": "128px",
+        "bottom": "128px"
+      }
+    },
+    {
+      "y": 8582,
+      "h": 422,
+      "bg": "rgb(8, 9, 10)",
+      "tag": "div",
+      "cls": "hide-mobile",
+      "container": 1346,
+      "columns": 4,
+      "type": [
+        {
+          "fontSize": 48,
+          "weight": "510",
+          "lineHeight": "48px",
+          "count": 1,
+          "sample": "Changelog"
+        },
+        {
+          "fontSize": 15,
+          "weight": "510",
+          "lineHeight": "24px",
+          "count": 4,
+          "sample": "Team initiatives"
+        },
+        {
+          "fontSize": 15,
+          "weight": "400",
+          "lineHeight": "24px",
+          "count": 6,
+          "sample": "Initiatives are Linear's way to manage p"
+        },
+        {
+          "fontSize": 12,
+          "weight": "400",
+          "lineHeight": "16.8px",
+          "count": 4,
+          "sample": "Aug 13, 2026"
+        }
+      ],
+      "headline": {
+        "fontSize": 48,
+        "weight": "510",
+        "lineHeight": "48px",
+        "count": 1,
+        "sample": "Changelog"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "filter 0.1s",
+        "filter 0.16s cubic-bezier(0.25, 0.46, 0.45, 0.94)"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 9164,
+      "h": 492,
+      "bg": "rgb(8, 9, 10)",
+      "tag": "div",
+      "cls": "Dc5tqa_customerCards",
+      "container": 1344,
+      "columns": 2,
+      "type": [
+        {
+          "fontSize": 32,
+          "weight": "400",
+          "lineHeight": "36px",
+          "count": 2,
+          "sample": "You’ll probably build a better product, "
+        },
+        {
+          "fontSize": 14,
+          "weight": "510",
+          "lineHeight": "21px",
+          "count": 2,
+          "sample": "Gabriel Peal"
+        },
+        {
+          "fontSize": 14,
+          "weight": "400",
+          "lineHeight": "21px",
+          "count": 2,
+          "sample": "Staff Software Engineer, OpenAI"
+        }
+      ],
+      "headline": {
+        "fontSize": 32,
+        "weight": "400",
+        "lineHeight": "36px",
+        "count": 2,
+        "sample": "You’ll probably build a better product, "
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "filter 0.16s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+        "fill"
+      ],
+      "padding": {
+        "top": "12px",
+        "bottom": null
+      }
+    },
+    {
+      "y": 9952,
+      "h": 228,
+      "bg": "rgb(8, 9, 10)",
+      "tag": "section",
+      "cls": "dYXc1G_homepagePrefooter",
+      "container": 1344,
+      "columns": 1,
+      "type": [
+        {
+          "fontSize": 72,
+          "weight": "510",
+          "lineHeight": "72px",
+          "count": 1,
+          "sample": "Built for the future. Available today."
+        },
+        {
+          "fontSize": 16,
+          "weight": "510",
+          "lineHeight": "44px",
+          "count": 4,
+          "sample": "Get started"
+        }
+      ],
+      "headline": {
+        "fontSize": 72,
+        "weight": "510",
+        "lineHeight": "72px",
+        "count": 1,
+        "sample": "Built for the future. Available today."
+      },
+      "assetSlots": [],
+      "glassNodes": 2,
+      "motionDecls": [
+        "all",
+        "border 0.16s cubic-bezier(0.25, 0.46, 0.45, 0.94), background-color 0.16s cubic-"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 10404,
+      "h": 494,
+      "bg": "rgb(8, 9, 10)",
+      "tag": "footer",
+      "cls": "Jmh1Wq_footer",
+      "container": null,
+      "columns": 5,
+      "type": [
+        {
+          "fontSize": 13,
+          "weight": "510",
+          "lineHeight": "19.5px",
+          "count": 6,
+          "sample": "Product"
+        },
+        {
+          "fontSize": 13,
+          "weight": "400",
+          "lineHeight": "19.5px",
+          "count": 43,
+          "sample": "Intake"
+        }
+      ],
+      "headline": {
+        "fontSize": 13,
+        "weight": "510",
+        "lineHeight": "19.5px",
+        "count": 6,
+        "sample": "Product"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "color 0.1s"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    }
+  ],
+  "sectionsMobile": [
+    {
+      "y": 195,
+      "h": 716,
+      "container": null,
+      "columns": 3
+    },
+    {
+      "y": 1253,
+      "h": 446,
+      "container": null,
+      "columns": 3
+    },
+    {
+      "y": 1594,
+      "h": 527,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 1821,
+      "h": 581,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 2412,
+      "h": 306,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 2718,
+      "h": 269,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 2997,
+      "h": 302,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 3299,
+      "h": 269,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 3578,
+      "h": 306,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 3884,
+      "h": 269,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 4164,
+      "h": 306,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 4470,
+      "h": 269,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 4782,
+      "h": 360,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 5505,
+      "h": 878,
+      "container": null,
+      "columns": 2
+    }
+  ],
+  "reproduction": {
+    "stamp": null,
+    "note": "IR만으로 원본을 오차 밴드 내 재건축→capture 대조 통과 시 스탬프. 스탬프 없는 IR은 리드 자격 없음."
+  }
+}

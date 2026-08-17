@@ -180,3 +180,91 @@
 - `prefers-reduced-motion: reduce`에서도 전이가 살아 있다 — 색 전이라 위해는 낮지만 존중 선언은 아니다
 - 갤러리 카드 호버 무반응 — 클릭 가능한 943×523 면인데 커서 외에 단서가 없다
 - **배율만 흉내 내는 것**: 56px는 여백·사진 프레이밍과 같이 와야 성립한다. 폰트만 키우면 그냥 큰 글씨다
+
+---
+
+## 재현 노트 (Tier-R, 2026-08-17)
+
+수집: `bundle.mjs` → `record.mjs` → `ir.mjs`. 최종 URL `https://www.apple.com/` (200, 리다이렉트 없음).
+응답이 `set-cookie: geo=KR`를 내려 **한국 지역 배너가 열린 채로 수집**됐다. 위 Tier-S 실측(배너 닫은 상태)과 달리 배너가 요소로 포함되고 상단이 그만큼 내려가 있다 — 두 문서의 y좌표를 직접 비교하면 안 된다.
+
+### 체크리스트
+
+- **① tree 1440/390 · scrollHeight — 통과.** 6003 / 7280, 스크린샷 6004 / 7281로 일치.
+- **② 섹션 수 눈 대조 — 실패(Δ4).** 눈 9 vs `ir.sections` 5. 5개 중 1개가 허위(아래)이므로 실질 4.
+- **③ @keyframes — 통과.** 31개 수확. `globalnav-*` 15종(flyout-slide-forward/back, scrim-height-change, search-fade-and-slide, chevron-slide-in-hover), `dotnav-shift-start/end-1..2`, `progress-indicator-animating`, `segment-out`.
+- **④ 자산 rect 결합률 — 통과.** 43/68 = **63%**. 이미지만 보면 42/45 = 93%.
+- **⑤ hover/reveal 타임라인 — 통과하되 빈약.** hover 10건이 기록됐지만 **실제로 값이 변한 것은 1건뿐**(`a.ac-ls-button`, backgroundColor `rgb(29,29,31)` → `rgb(39,39,41)`). 나머지 9건은 frames=2 무변화. reveal 0건.
+- **⑥ 재현 불가 목록 — 작성.** 아래.
+
+### IR 요약
+
+> **2026-08-17 갱신 — 계기 수리 후 ir.json 재생성 기준이다.** 아래 「시각 확인」의 "IR이 5로 세는 이유" 단락은 구 IR 기준이라 수치가 맞지 않는다(구조 설명 자체는 유효). 최신 수치는 이 절을 따를 것.
+
+- **섹션 7 / 눈 9 (Δ2).** 컨테이너 1222 · 1024 · 943px.
+- **허위 섹션 0 · 히어로 복구.** 구 IR의 1번 항목이던 `div.globalnav-curtain`(투명 오버레이)이 섹션 후보에서 빠져 **`layers` 필드로 분리**됐다 — layers 2건은 `globalnav-curtain`(fixed, y=0 h=900, `rgba(232,232,237,0.4)`)과 히어로 인라인 비디오(absolute, y=346 h=460). 동시에 래퍼가 쪼개져 **히어로 타일 3장이 각각 독립 섹션으로 복구**됐다.
+- **섹션 구성**: `div.tile-wrapper` y=114 h=692 "College, sorted."(56/600) · 동 y=818 h=692 "iPhone" · 동 y=1522 h=692 "MacBook Air" · `section.section` y=2226 h=1764 "iPad Air"(프로모 6타일) · `div.media-gallery` y=4141 h=523 "New season." · 동 y=4664 h=247 "Sabrina Carpenter…" · `footer.js` y=4959 h=1044.
+- **배경 시퀀스** — `rgb(245,245,247)` ×3 → **`rgb(255,255,255)`(프로모 그리드)** → `rgb(245,245,247)` ×3. 구 IR에서는 흰색으로 뭉개져 보이지 않던 **회색-흰색-회색 3막 리듬**이 드러났다.
+- **섹션 높이** 692 / 692 / 692 / 1764 / 523 / 247 / 1044. **692가 3연속**인 것이 히어로 타일 규격이다. 모바일은 14개로 늘었고 `500` ×9가 이어진다 — 모바일에서 타일이 전부 500px 규격으로 스택된다는 뜻.
+- **커버리지 94%**(유니온 기준). 섹션 사이 100px 이상 공백은 **1곳뿐** — y=3990~4141(151px, “Endless entertainment.” 제목 줄이 어느 섹션에도 안 잡힘). 그 앞의 y=0~114는 내비·지역 배너 구간이라 섹션이 아닌 게 맞다.
+- **잔차 Δ2의 내역**(전부 설명됨, 허위·누락 아님): 프로모 3행을 IR이 1섹션으로 묶고(−2), 갤러리 1밴드를 IR이 2섹션으로 쪼개고(+1), 법률 각주를 푸터에 포함(−1).
+- **타입 스케일 상위 3**: `56/600`(×4) · `40/600`(×6) · `34/600`(×1). 본문 축은 `12/600`(×169) · `12/400`(×134) · `24/600`(×72).
+- **duration 후보**: 320ms(×301) · 240ms(×251) · 200ms(×64) · 160ms(×62) · 220ms(×50) · 180ms(×50).
+- **keyframes 31** — 명명 예시 `globalnav-flyout-slide-forward-next`, `globalnav-scrim-height-change`, `dotnav-shift-start-1`, `progress-indicator-animating`.
+- **실행 중 애니메이션**: `CSSTransition 1000ms ease-in-out` ×20, `globalnav-search-fade-and-slide 320ms linear` ×6, **`dotnav-timed-animation 3000ms linear` ×1** — 갤러리 자동 넘김 주기가 3초라는 뜻이다.
+- **리스너 상위 3**: click 14 · blur 4 · scroll 4 (이어서 resize 4 · focusin 3 · keydown 3). canvas 0 · video 4 · img 50.
+- 폰트 패밀리 14종이 잡히나 대부분 `Apple Icons 100~700` 아이콘 페이스다.
+
+### 시각 확인 (shot-1440.png · shot-390.png 직접 확인)
+
+정상 렌더. 챌린지·쿠키월 없음. 1440과 390 모두 끝까지 그려졌다.
+
+눈으로 센 밴드 **9개**: ① College, sorted. 히어로 ② iPhone ③ MacBook Air ④ iPad air | MacBook Pro ⑤ Watch Series 11 | iPad Pro ⑥ Trade In | Apple Card ⑦ Endless entertainment. 갤러리 ⑧ 법률 각주 ⑨ 푸터.
+
+**IR이 5로 세는 이유(tree로 확인한 실제 구조):**
+
+```
+div.globalnav-curtain      y=0    h=900   ← 보이지 않는 오버레이. 허위 섹션
+section.section-hero       y=114  h=2100  ← div.tile-wrapper ×3 (각 h=692, y=114/818/1522)
+section.section-promo      y=2226 h=1764  ← img ×6, 3행 2열 (각 h=580, y=2226/2818/3410)
+section...gallery          y=4002 h=957
+footer.js                  y=4959 h=1044  ← 법률 각주를 포함한다
+```
+
+`ir.mjs`의 "바깥쪽 우선 · y중복 70%↑는 동일 섹션" 규칙이 래퍼를 남기고 타일을 버린다. **타일 기하 자체는 tree에 온전히 있다**(692 / 580). 즉 측정 실패가 아니라 증류 단계의 입도 문제이고, 브리프에서 타일 레벨로 내려가면 복구된다. 위 Tier-S 문서의 "타일 10개(히어로 3 + 프로모 6 + 갤러리 1) + 푸터"와 정확히 일치한다.
+
+**시그니처 순간(실제로 본 것만):**
+- 히어로 첫 타일 안의 **인라인 자동재생 비디오**(`inline-media-wrapper.playing.loaded`, y=346 h=460) — 나머지 타일은 정지 이미지
+- **컷아웃 인물 합성** — 배경을 지운 학생 3인이 상자를 든 채 회색 판 위에 떠 있다
+- 프로모 그리드의 **명암 교대** — iPad air(연하늘) ↔ MacBook Pro(검정), Watch(연회색) ↔ iPad Pro(검정)를 좌우로 엇갈리게 배치
+- **Endless entertainment. 가로 갤러리** — 카드가 뷰포트 밖으로 흘러나가고 하단에 도트 7개 + 다음 화살표. 3초 자동 넘김(`dotnav-timed-animation 3000ms`)
+- 알약 버튼 2종(파랑 채움 / 파랑 외곽선)이 전 페이지에서 반복
+- 스크롤 리빌은 **정말로 없다** — record의 reveal 0건이 위 Tier-S의 "스크롤 리빌 0건"과 교차 일치한다. 계기 결함이 아니라 사이트의 성질이다.
+
+### 복합 위젯 (기계 기록 불가 → 기술로)
+
+- **Endless entertainment. 갤러리**: 가로 스크롤 트랙 + 도트 내비 + 다음 버튼. 도트를 누르면 해당 세그먼트로 점프하고, 무조작 시 3초마다 진행한다(`progress-indicator-animating` / `segment-out` / `dotnav-shift-start|end`가 그 어휘). 카드 폭이 뷰포트보다 넓어 좌우가 잘린 채 노출되는 것이 의도된 상태다.
+- **글로벌 내비 메가메뉴**: `globalnav-curtain`(backdrop-filter 보유, glassNodes=1)이 열릴 때 높이를 애니메이션(`globalnav-scrim-height-change`)하고, 메뉴 간 이동은 `flyout-slide-forward/back-next/previous` 4종으로 방향을 구분한다. 검색은 별도 5종(`search-fade`, `search-fade-and-slide`, `search-input-intro/outro`, `search-slide-top-to-bottom`).
+- **지역 리디렉트 배너**: 국가 셀렉트 + 계속/닫기. 이번 수집에서 유일하게 실측된 hover(배경 2단계)가 여기 있다.
+
+### 재현 불가 목록
+
+- 히어로 인라인 **비디오 4건**(자산 원본은 재배포 금지 — 슬롯 치수만 승계)
+- **SF Pro Display / SF Pro Text** — Apple 라이선스 폰트. 대체 시 56/600 디스플레이 인상이 그대로 무너진다
+- `Apple Icons 100~700` 아이콘 폰트 7종
+- 메가메뉴 **내부 콘텐츠**(열림 상태의 서브메뉴 DOM은 닫힌 채 수집돼 rect가 0)
+- 갤러리 카드의 **Apple TV+ / Music / Arcade 저작물 이미지**
+- 로그인 뒤 화면·장바구니 — 수집 범위 밖
+
+### 판정
+
+**리드 자격 있음(조건부).** — 2026-08-17 재평가.
+
+계기 수리로 **보류 사유 두 건 중 큰 쪽이 해소됐다**: 허위 섹션 0, 히어로 타일 3장 복구, 배경 3막 리듬 노출, 커버리지 94%. `ir.sections` 7개를 그대로 골격으로 쓸 수 있고 타일 규격(692 ×3 / 프로모 1764 / 갤러리 523+247)이 수치로 잡혀 있다. **canvas·WebGL 0** — 구조 재현 난도는 이 그룹에서 여전히 가장 낮다.
+
+**남는 단서 셋(전부 사이트 특성 또는 경미):**
+- **② Δ2로 형식 기준(±1) 미달.** 다만 잔차가 전부 설명되는 그룹핑 선택이고 허위·누락은 0이다. 프로모 그리드를 3행으로 나눠 지을지 1그리드로 볼지는 브리프에서 정하면 된다 — 데이터는 양쪽 다 지원한다.
+- **지역 배너.** `set-cookie: geo=KR`로 한국 배너가 열린 채 수집됐다. 계기가 아니라 수집 조건이므로 남는다. 브리프에서 배너를 골격에서 빼고 y를 −69px 보정할 것.
+- **⑤ hover 실변화 1건.** `record.mjs --selectors "a.tile-link, .tile-button"`로 보강 가능(선택).
+
+리드로 지목해도 좋되, **위 세 건을 브리프 단계에서 명시적으로 처리하는 조건**을 단다.

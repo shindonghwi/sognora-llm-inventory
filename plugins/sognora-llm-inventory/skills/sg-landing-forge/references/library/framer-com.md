@@ -338,3 +338,26 @@ Framer로 만든 Framer 사이트라 산출물이 컴파일러 결과다. **토�
 - **GT Walsheim은 유료 라이선스**(Grilli Type). 디스플레이 전용으로만 쓰이는데, 이 둥근 기하학 산세리프가 검정 배경에서 만드는 친근함이 페이지 인상의 절반이다. Inter로 대체하면 남는 건 그냥 또 하나의 다크 개발자 툴 랜딩이다. 폰트를 못 맞출 거면 **디스플레이를 다른 방향으로 다시 잡는 편이 낫다.**
 - **`Input Mono`가 .ttf로 서빙된다**(woff2 아님). 실측에서 확인된 순수한 낭비고, 따라 할 이유가 없다.
 - **전송 7.1MB / 198 요청.** FCP 148ms는 SSR과 지연 재생 덕이지 가벼워서가 아니다. networkidle까지 9.2초다. 이 자산량은 "제품 화면을 다 보여준다"는 선택의 비용이고, 보여줄 화면이 없으면 지불할 이유도 없다.
+
+
+## 재현 노트 (Tier-R, 2026-08-17 · 계기 최종본 기준 재심사)
+
+- **체크리스트**
+  - ① 통과 — tree-1440/tree-390 존재. scrollHeight 10,878 / 10,988px. 백지 밴드 400px(4%)뿐.
+  - ② **조건부 통과** — IR 섹션 **10** vs 눈 9(차 1). 중간 판본의 과분할이 대부분 걷혔다: 3,017px 스크롤 핀 밴드가 다시 하나(`#3` y=1,381 h=3,017, 44px 헤드라인, 자산 슬롯 9), "Shipped with Framer"도 다시 하나(`#5` y=6,215 **h=1,238**, 44px 헤드라인, 슬롯 12)로 복구됐고 컨테이너 잡음(1,400·700)도 사라졌다. **남은 차이 1은 히어로 분할**이다 — `#0`(y=64, **h=308**, 54px 헤드라인, `assetSlots=0`)과 `#1`(y=372, **h=673**, **헤드라인 없음**, 슬롯 1)로 갈려 있고, 원본에서는 텍스트와 캔버스 제품샷이 한 히어로 밴드(y=64, h=981)다. toss의 `#0`과 같은 계열의 증상 — **텍스트를 가진 조각과 비주얼을 가진 조각이 서로 다른 섹션이 된다.** 팬텀은 0개(`layers` 0).
+  - ③ 🟡 **0에 가까움 → 교차 확인 완료** — @keyframes 4개뿐(`__framer-blink-input`, `shimmer-R3aprjal5dp`, `__framer-loading-spin`, `betterGrainWebpFramesV22`). 전부 유틸/그레인이고 랜딩 모션은 하나도 없다. record.animations 34건(`ghostFlow`, `Animation`; 750·400ms)이 교차 확인해준다 — **이 사이트의 모션은 CSS가 아니라 JS(Framer Motion) 런타임 구동**이다. transition 선언도 300ms 단 1건.
+  - ④ 통과 — 자산 96건, **이미지 rect 결합률 80%(66/82)**.
+  - ⑤ **크게 개선됨** — 내비 제외 + y 분산 덕에 hover 첫 건이 **47프레임**을 기록했다(초기에는 4건 전부 2~3프레임으로 사실상 무변화였다). 나머지 3건은 여전히 2프레임. **reveal 0건**은 그대로.
+  - ⑥ 재현 불가 목록 아래 별항.
+- **IR 요약(계기 최종본)** — 섹션 **10**(데스크톱)/**9**(모바일 — 중간 판본의 25에서 정상화됐다). 컨테이너 **1,240 · 1,200 · 600px**(실제 그리드는 1,200). 타입 스케일 상위 3: 54px/500(4회, 히어로·통계·최종 CTA) · 44px/500(5회, 섹션 헤드라인) · 22px/400(1회). 본문은 18px/400이 28회로 지배적. duration 후보 **300ms 단 1건**. @keyframes 4개. 리스너 상위 3: mousedown 154 · click 149 · pointerdown 128(포인터 계열 압도 — 캔버스형 인터랙션의 흔적). 폰트 8종 로드(EB Garamond, Geist, Inter Tight, Mona Sans, Space Grotesk, JetBrains Mono, VT323, Geist Variable). **bgSequence 전 칸 `rgb(0,0,0)` 순검정 단일.** ambient layers 0건.
+- **시각 확인** — 눈으로 센 섹션 9개(히어로 / 고객 로고 / "Agents that work alongside you" 3,017px 밴드 / "Not just vibes, a full platform" 벤토 / "Shipped with Framer" / "Trusted by teams" / "Built on a community" / "Your next idea starts here" / 푸터).
+  - **쿠키 배너가 히어로 좌하단에 겹쳐 찍혔다**(“We use cookies… Reject / Accept”). 콘텐츠를 가리지는 않지만 히어로 좌하단 시각 대조에는 감안해야 한다.
+  - **y=1,600~4,400 구간이 통째로 저휘도로 고정**됐다. 3,017px 스크롤 핀 밴드의 하위 4개 블록(Design with an agent / Run your CMS with an agent / Code with an agent / Connect to any AI)이 **스크롤 진행도에 연동된 opacity**로 등장하는데 정지 캡처라 초기 상태로 남았다. 우측 에이전트 채팅 패널만 밝다 — "현재 활성 블록만 밝고 나머지는 흐림"이라는 문법을 정지 프레임이 오히려 증명한다.
+  - 시그니처 순간(실제로 본 것): 순검정 위 투명 헤더 / 히어로의 캔버스 제품샷 — 좌측 디자인 캔버스(파랑·보라 그라데이션 아트보드)와 우측 **에이전트 사이드 패널**(Rebuild Page Layout 드롭다운, `Thought 4s`, `Added 9 layers, edited 1 · 16.4s`, GPT 5.5 모델 선택기)이 한 프레임에 / 히어로 우측 상단 `#7 on OpenRouter: 791.4B tokens this week` 실시간 수치 / 로고 8종 2행(Dribbble·LEGORA·zapier·perplexity·Cal.com·mixpanel·miro·DOORDASH) / **벤토 타일 그리드** 9칸(Performance·CMS·Collaboration·Hosting·SEO·Localization·Security·Analytics·A/B Testing)에 각 타일이 실제 UI 조각을 담고 좌하단에 `이름 →` 라벨 / `99.99% uptime` 타일의 흑백 렌즈플레어 / "Shipped with Framer" 고객 사이트 쇼케이스 모자이크 / `framer-agent` 터미널 창(claude·cursor·codex 탭 + `Copy install prompt` / `Install`) / 커뮤니티 앱 스크린샷(피드·마켓플레이스·멤버 3열) / 최종 CTA가 **버튼이 아니라 프롬프트 입력창 + 제안 칩 4개**(Create personal portfolio / Build startup site / Launch landing page / Start company blog) / 푸터 7열 + `791B tokens processed this week` + `All services online` 상태 점.
+  - shot-390: 단일 열, 햄버거 네비, 쿠키 배너 동일 노출. 벤토 타일이 세로 스택으로 풀린다.
+- **복합 위젯(기계 기록 불가 → 기술로)**
+  - **3,017px 스크롤 핀 밴드**: 4개 블록이 스크롤 진행도에 연동돼 opacity/활성 상태를 주고받는다. rAF 샘플러는 호버·순간 리빌만 잡으므로 이 궤적은 기록되지 않았다. 정지 캡처의 휘도 차이로 존재만 확인.
+  - **히어로 제품 데모 비디오** mp4 2개(`4RV4Erj59YHt6T06Ry7ab5tVI.mp4` 외 1), 1,200×673 자동재생.
+  - `ghostFlow` 등 JS 구동 애니메이션 34건 — 이름과 duration(750·400ms)만 남고 궤적은 없다.
+- **재현 불가 목록** — mp4 2개, 고객 사이트 쇼케이스 이미지 전량(타사 실제 사이트), 커뮤니티 피드 스크린샷(서버 데이터), `#7 on OpenRouter: 791.4B tokens` / `791B tokens processed this week` 같은 실시간 수치, iframe 1개, GT Walsheim(유료 라이선스), Framer 컴파일러가 뽑은 클래스·폰트 구조.
+- **판정: 리드 자격 있음(조건부).** 팬텀 0 · 백지 4% · 자산 결합률 80% · 모바일 9로 정상화돼 골격 재료는 건전하고, hover 47프레임 실측도 확보했다. 두 조건이 붙는다. **(1) `#0`+`#1`을 히어로 한 밴드로 병합할 것**(현재 헤드라인과 제품샷이 갈라져 있다). **(2) 모션은 이 IR에서 가져올 수 없다** — keyframes 4개·transition 1건·reveal 0건이라 기계가 남긴 모션 정보가 사실상 비어 있으므로, 스크롤 핀 밴드와 스프링 모션은 본문 분석의 결정값(스프링 형태·duration 4단·blur 2값·opacity 0.6)에 의존해야 한다. **골격은 IR(병합 후), 모션은 문서** — 이렇게 갈라 쓰는 조건에서만 리드로 쓴다.

@@ -1,0 +1,1531 @@
+{
+  "irVersion": 1,
+  "source": {
+    "url": "https://www.meshy.ai",
+    "collectedAt": "2026-08-16T17:20:56.920Z"
+  },
+  "page": {
+    "scrollHeight1440": 9576,
+    "scrollHeight390": 11706,
+    "sectionCount": 10
+  },
+  "rhythm": {
+    "bgSequence": [
+      "rgb(14, 14, 14)",
+      "rgb(14, 14, 14)",
+      "rgb(14, 14, 14)",
+      "rgb(14, 14, 14)",
+      "rgb(14, 14, 14)",
+      "rgb(14, 14, 14)",
+      "rgb(14, 14, 14)",
+      "rgb(14, 14, 14)",
+      "rgb(14, 14, 14)",
+      "rgb(197, 249, 85)"
+    ],
+    "heights": [
+      802,
+      206,
+      750,
+      958,
+      2542,
+      569,
+      364,
+      1817,
+      560,
+      861
+    ],
+    "containers": [
+      1200,
+      1043
+    ]
+  },
+  "typeScale": [
+    {
+      "px": 100,
+      "weight": "400",
+      "count": 1
+    },
+    {
+      "px": 68,
+      "weight": "500",
+      "count": 1
+    },
+    {
+      "px": 60,
+      "weight": "500",
+      "count": 4
+    },
+    {
+      "px": 58,
+      "weight": "500",
+      "count": 3
+    },
+    {
+      "px": 48,
+      "weight": "500",
+      "count": 1
+    },
+    {
+      "px": 40,
+      "weight": "500",
+      "count": 7
+    },
+    {
+      "px": 40,
+      "weight": "600",
+      "count": 3
+    },
+    {
+      "px": 28,
+      "weight": "500",
+      "count": 1
+    },
+    {
+      "px": 27,
+      "weight": "400",
+      "count": 1
+    },
+    {
+      "px": 24,
+      "weight": "600",
+      "count": 6
+    },
+    {
+      "px": 20,
+      "weight": "400",
+      "count": 2
+    },
+    {
+      "px": 20,
+      "weight": "500",
+      "count": 4
+    },
+    {
+      "px": 20,
+      "weight": "600",
+      "count": 2
+    },
+    {
+      "px": 18,
+      "weight": "700",
+      "count": 4
+    }
+  ],
+  "motion": {
+    "durationsMs": [
+      {
+        "ms": 150,
+        "count": 744
+      },
+      {
+        "ms": 100,
+        "count": 456
+      },
+      {
+        "ms": 300,
+        "count": 429
+      },
+      {
+        "ms": 500,
+        "count": 72
+      },
+      {
+        "ms": 200,
+        "count": 71
+      },
+      {
+        "ms": 700,
+        "count": 7
+      }
+    ],
+    "keyframesCount": 99,
+    "keyframesNamed": [
+      "anniversary-sale-badge-shimmer",
+      "style-module__ue6t8G__showcaseMarquee",
+      "style-module__qc0mrG__trustStatsGradientFlow",
+      "style-module__yx0ibW__flowBorderSpinAngle",
+      "caret-module__jT_jea__caretBlink",
+      "cardGlow-module__uKCZHq__featureCardGlowSpin",
+      "cardGlow-module__uKCZHq__featureCursorNudge",
+      "caret-module__fBA-9G__caretBlink",
+      "promptGlow-module__DbZmya__promptGlowSpin",
+      "style-module__AhruEa__featureCardGlowSpin",
+      "style-module__AhruEa__featureCursorNudge",
+      "style-module__AhruEa__featureCursorNudgeRight",
+      "Hero-module__3JH5UW__driftGreen",
+      "Hero-module__3JH5UW__driftCyan",
+      "Hero-module__3JH5UW__driftPurple",
+      "Hero-module__3JH5UW__marqueeY",
+      "Hero-module__3JH5UW__marqueeX",
+      "promptGlow-module__zVp62G__promptGlowSpin",
+      "style-module__GyNkIW__gradientFlow",
+      "style-module__GyNkIW__floatUpDown"
+    ],
+    "runningAnimations": [
+      {
+        "name": "cta-flow",
+        "duration": 5000,
+        "easing": "linear",
+        "iterations": null,
+        "state": "running"
+      },
+      {
+        "name": "banner-sweep",
+        "duration": 6000,
+        "easing": "linear",
+        "iterations": null,
+        "state": "running"
+      },
+      {
+        "name": "arrow-nudge",
+        "duration": 1200,
+        "easing": "linear",
+        "iterations": null,
+        "state": "running"
+      },
+      {
+        "name": "cta-flow",
+        "duration": 5000,
+        "easing": "linear",
+        "iterations": null,
+        "state": "running"
+      },
+      {
+        "name": "style-module__yx0ibW__flowBorderSpinAngle",
+        "duration": 7000,
+        "easing": "linear",
+        "iterations": null,
+        "state": "running"
+      },
+      {
+        "name": "style-module__AhruEa__featureCardGlowSpin",
+        "duration": 16000,
+        "easing": "linear",
+        "iterations": null,
+        "state": "paused"
+      },
+      {
+        "name": "design4-upload-flow-x",
+        "duration": 2500,
+        "easing": "linear",
+        "iterations": null,
+        "state": "running"
+      },
+      {
+        "name": "cta-flow",
+        "duration": 5000,
+        "easing": "linear",
+        "iterations": null,
+        "state": "running"
+      },
+      {
+        "name": "style-module__yx0ibW__flowBorderSpinAngle",
+        "duration": 7000,
+        "easing": "linear",
+        "iterations": null,
+        "state": "running"
+      },
+      {
+        "name": "style-module__AhruEa__featureCursorNudge",
+        "duration": 1800,
+        "easing": "linear",
+        "iterations": null,
+        "state": "running"
+      },
+      {
+        "name": "caret-module__fBA-9G__caretBlink",
+        "duration": 1100,
+        "easing": "linear",
+        "iterations": null,
+        "state": "running"
+      },
+      {
+        "name": "style-module__AhruEa__featureCardGlowSpin",
+        "duration": 16000,
+        "easing": "linear",
+        "iterations": null,
+        "state": "paused"
+      },
+      {
+        "name": "caret-module__fBA-9G__caretBlink",
+        "duration": 1100,
+        "easing": "linear",
+        "iterations": null,
+        "state": "running"
+      },
+      {
+        "name": "style-module__XfzE0W__ctaSurfaceFlow",
+        "duration": 11000,
+        "easing": "linear",
+        "iterations": null,
+        "state": "running"
+      },
+      {
+        "name": "style-module__XfzE0W__creativeLabBorderSpin",
+        "duration": 7000,
+        "easing": "linear",
+        "iterations": null,
+        "state": "running"
+      },
+      {
+        "name": "style-module__XfzE0W__creativeLabBorderSpin",
+        "duration": 8000,
+        "easing": "linear",
+        "iterations": null,
+        "state": "running"
+      },
+      {
+        "name": "style-module__XfzE0W__creativeLabBorderSpin",
+        "duration": 8000,
+        "easing": "linear",
+        "iterations": null,
+        "state": "running"
+      },
+      {
+        "name": "style-module__XfzE0W__creativeLabBorderSpin",
+        "duration": 8000,
+        "easing": "linear",
+        "iterations": null,
+        "state": "running"
+      },
+      {
+        "name": "style-module__XfzE0W__creativeLabBorderSpin",
+        "duration": 6000,
+        "easing": "linear",
+        "iterations": null,
+        "state": "running"
+      },
+      {
+        "name": "style-module__XfzE0W__ctaSurfaceFlow",
+        "duration": 11000,
+        "easing": "linear",
+        "iterations": null,
+        "state": "running"
+      }
+    ],
+    "hoverTimelines": [
+      {
+        "selector": "button.absolute.top-1\\/2",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "a.text-inherit",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "div.base\\:rounded-\\[30px\\].flex",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "a.font-barlow.mt-5",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "button.flex.items-center",
+        "frames": 13,
+        "overshoot": false
+      },
+      {
+        "selector": "button.flex.items-center",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "button.border.disabled\\:hover\\:bg-bg-base-hover",
+        "frames": 3,
+        "overshoot": false
+      }
+    ],
+    "revealTimelines": [],
+    "listenerProfile": {
+      "click": 485,
+      "fullscreenchange": 240,
+      "visibilitychange": 88,
+      "keydown": 64,
+      "pagehide": 27,
+      "pageshow": 24,
+      "resize": 13,
+      "beforeunload": 12,
+      "scroll": 12,
+      "popstate": 8,
+      "submit": 8,
+      "error": 6
+    }
+  },
+  "assetStats": {
+    "count": 213,
+    "images": 193,
+    "withRect": 124,
+    "totalBytes": 5855649
+  },
+  "layers": [
+    {
+      "y": -16,
+      "h": 902,
+      "position": "absolute",
+      "cls": "absolute",
+      "bg": null,
+      "bgImage": null,
+      "blend": null
+    },
+    {
+      "y": 1026,
+      "h": 680,
+      "position": "absolute",
+      "cls": "absolute",
+      "bg": "rgb(14, 14, 14)",
+      "bgImage": null,
+      "blend": null
+    },
+    {
+      "y": 1993,
+      "h": 630,
+      "position": "absolute",
+      "cls": "absolute",
+      "bg": "rgb(14, 14, 14)",
+      "bgImage": null,
+      "blend": null
+    },
+    {
+      "y": 7434,
+      "h": 1280,
+      "position": "absolute",
+      "cls": "pointer-events-none",
+      "bg": null,
+      "bgImage": null,
+      "blend": null
+    },
+    {
+      "y": 9326,
+      "h": 1440,
+      "position": "absolute",
+      "cls": "pointer-events-none",
+      "bg": "rgb(149, 244, 255)",
+      "bgImage": null,
+      "blend": null
+    }
+  ],
+  "sections": [
+    {
+      "y": -16,
+      "h": 802,
+      "bg": "rgb(14, 14, 14)",
+      "tag": "div",
+      "cls": "base:pt-[calc(30px+var(--hero-header-overlap))]",
+      "container": 1200,
+      "columns": 2,
+      "type": [
+        {
+          "fontSize": 60,
+          "weight": "500",
+          "lineHeight": "66px",
+          "count": 2,
+          "sample": "우리의 로 즉시 3D 모델을 생성하세요"
+        },
+        {
+          "fontSize": 20,
+          "weight": "400",
+          "lineHeight": "28px",
+          "count": 1,
+          "sample": "Meshy는 무료 AI 3D 모델 생성기로 텍스트 또는 이미지를 게임과 "
+        },
+        {
+          "fontSize": 18,
+          "weight": "700",
+          "lineHeight": "19.8px",
+          "count": 1,
+          "sample": "생성 시작"
+        },
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": "24px",
+          "count": 1,
+          "sample": "3D Agent아이디어, 사진 또는 스케치에서 3D 모델까지 채팅하세요.",
+          "floating": true
+        },
+        {
+          "fontSize": 14,
+          "weight": "500",
+          "lineHeight": "20px",
+          "count": 1,
+          "sample": "Meshy 7이 시작되었습니다. Frontier 3D 정합성. 생성 시작"
+        },
+        {
+          "fontSize": 14,
+          "weight": "700",
+          "lineHeight": "20px",
+          "count": 1,
+          "sample": "무료 가입하기",
+          "floating": true
+        },
+        {
+          "fontSize": 13,
+          "weight": "400",
+          "lineHeight": "24px",
+          "count": 1,
+          "sample": "형식",
+          "floating": true
+        },
+        {
+          "fontSize": 13,
+          "weight": "600",
+          "lineHeight": "24px",
+          "count": 1,
+          "sample": "3MF · STL · OBJ",
+          "floating": true
+        }
+      ],
+      "headline": {
+        "fontSize": 60,
+        "weight": "500",
+        "lineHeight": "66px",
+        "count": 2,
+        "sample": "우리의 로 즉시 3D 모델을 생성하세요"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 252,
+          "h": 252,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "contain"
+        },
+        {
+          "kind": "img",
+          "w": 608,
+          "h": 608,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "contain"
+        },
+        {
+          "kind": "img",
+          "w": 252,
+          "h": 252,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "contain"
+        }
+      ],
+      "glassNodes": 4,
+      "motionDecls": [
+        "all",
+        "color 0.3s cubic-bezier(0, 0, 0.2, 1), background-color 0.3s cubic-bezier(0, 0, ",
+        "anim:6s linear infinite banner-sweep",
+        "color 0.1s cubic-bezier(0, 0, 0.2, 1), background-color 0.1s cubic-bezier(0, 0, ",
+        "anim:2s ease-in-out infinite gradientFlow",
+        "anim:1.2s ease-in-out infinite arrow-nudge",
+        "anim:5s ease-in-out infinite cta-flow",
+        "anim:7s linear infinite style-module__yx0ibW__flowBorderSpinAngle",
+        "transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), translate 0.3s cubic-bezier(0.4, 0,",
+        "width 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s cubic-bezier(0.4,"
+      ],
+      "padding": {
+        "top": "102px",
+        "bottom": null
+      }
+    },
+    {
+      "y": 770,
+      "h": 206,
+      "bg": "rgb(14, 14, 14)",
+      "tag": "div",
+      "cls": "relative",
+      "container": 1200,
+      "columns": 1,
+      "type": [
+        {
+          "fontSize": 16,
+          "weight": "600",
+          "lineHeight": "24px",
+          "count": 2,
+          "sample": "G2 평점: 4.8"
+        }
+      ],
+      "headline": {
+        "fontSize": 16,
+        "weight": "600",
+        "lineHeight": "24px",
+        "count": 2,
+        "sample": "G2 평점: 4.8"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "color 0.1s cubic-bezier(0, 0, 0.2, 1), background-color 0.1s cubic-bezier(0, 0, "
+      ],
+      "padding": {
+        "top": null,
+        "bottom": "112px"
+      }
+    },
+    {
+      "y": 956,
+      "h": 750,
+      "bg": "rgb(14, 14, 14)",
+      "tag": "div",
+      "cls": "mx-auto",
+      "container": 1200,
+      "columns": 1,
+      "type": [
+        {
+          "fontSize": 40,
+          "weight": "500",
+          "lineHeight": "48px",
+          "count": 1,
+          "sample": "고충실도 이미지-투-3D"
+        },
+        {
+          "fontSize": 18,
+          "weight": "500",
+          "lineHeight": "24px",
+          "count": 2,
+          "sample": "이미지로 3D"
+        },
+        {
+          "fontSize": 18,
+          "weight": "400",
+          "lineHeight": "25.2px",
+          "count": 1,
+          "sample": "사진, 스케치, 또는 컨셉 아트를 업로드하면 Meshy가 이를 인쇄할 수"
+        },
+        {
+          "fontSize": 18,
+          "weight": "700",
+          "lineHeight": "19.8px",
+          "count": 1,
+          "sample": "생성 시작"
+        },
+        {
+          "fontSize": 16,
+          "weight": "500",
+          "lineHeight": "24px",
+          "count": 1,
+          "sample": "더 알아보기"
+        },
+        {
+          "fontSize": 15,
+          "weight": "500",
+          "lineHeight": "21px",
+          "count": 1,
+          "sample": "이미지 업로드"
+        }
+      ],
+      "headline": {
+        "fontSize": 40,
+        "weight": "500",
+        "lineHeight": "48px",
+        "count": 1,
+        "sample": "고충실도 이미지-투-3D"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 1280,
+          "h": 916,
+          "aspect": 1.4,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 186,
+          "h": 186,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 40,
+          "h": 42,
+          "aspect": 0.95,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 432,
+          "h": 600,
+          "aspect": 0.72,
+          "radius": null,
+          "objectFit": "contain"
+        },
+        {
+          "kind": "img",
+          "w": 324,
+          "h": 450,
+          "aspect": 0.72,
+          "radius": null,
+          "objectFit": "contain"
+        }
+      ],
+      "glassNodes": 1,
+      "motionDecls": [
+        "all",
+        "transform 0.12s cubic-bezier(0.65, 0, 0.35, 1), width 0.12s cubic-bezier(0.65, 0",
+        "color 0.2s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.2s cubic-bezier(0.4,",
+        "anim:2.5s linear infinite design4-upload-flow-x",
+        "color 0.2s cubic-bezier(0, 0, 0.2, 1), background-color 0.2s cubic-bezier(0, 0, ",
+        "color 0.3s cubic-bezier(0, 0, 0.2, 1), background-color 0.3s cubic-bezier(0, 0, ",
+        "anim:5s ease-in-out infinite cta-flow",
+        "anim:7s linear infinite style-module__yx0ibW__flowBorderSpinAngle",
+        "anim:1.8s ease-in-out infinite style-module__AhruEa__featureCursorNudge",
+        "opacity 0.3s cubic-bezier(0, 0, 0.2, 1)"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 1746,
+      "h": 958,
+      "bg": "rgb(14, 14, 14)",
+      "tag": "section",
+      "cls": "base:pb-[56px]",
+      "container": 1200,
+      "columns": 6,
+      "type": [
+        {
+          "fontSize": 40,
+          "weight": "600",
+          "lineHeight": "44px",
+          "count": 2,
+          "sample": "Meshy가 제작을 도와줍니다"
+        },
+        {
+          "fontSize": 20,
+          "weight": "400",
+          "lineHeight": "24px",
+          "count": 1,
+          "sample": "어디서 시작해야 할지 모르겠나요? 그냥 채팅하세요. 3D 에이전트가 여러"
+        },
+        {
+          "fontSize": 18,
+          "weight": "600",
+          "lineHeight": "21.6px",
+          "count": 1,
+          "sample": "AI 에이전트"
+        },
+        {
+          "fontSize": 15,
+          "weight": "600",
+          "lineHeight": "15px",
+          "count": 1,
+          "sample": "생성 시작"
+        },
+        {
+          "fontSize": 14,
+          "weight": "400",
+          "lineHeight": "16.8px",
+          "count": 3,
+          "sample": "이미지에 포함된 이미지 에셋을 단일 모델 에셋 이미지로 변환하고, 배경은"
+        },
+        {
+          "fontSize": 12,
+          "weight": "500",
+          "lineHeight": "12px",
+          "count": 6,
+          "sample": "3D 모델"
+        }
+      ],
+      "headline": {
+        "fontSize": 40,
+        "weight": "600",
+        "lineHeight": "44px",
+        "count": 2,
+        "sample": "Meshy가 제작을 도와줍니다"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 286,
+          "h": 161,
+          "aspect": 1.78,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 280,
+          "h": 280,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 133,
+          "h": 133,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 133,
+          "h": 133,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 133,
+          "h": 133,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 133,
+          "h": 133,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 133,
+          "h": 133,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "cover"
+        }
+      ],
+      "glassNodes": 7,
+      "motionDecls": [
+        "all",
+        "opacity 0.7s cubic-bezier(0, 0, 0.2, 1)",
+        "anim:1.1s linear infinite caret-module__fBA-9G__caretBlink",
+        "filter 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
+      ],
+      "padding": {
+        "top": "70px",
+        "bottom": "56px"
+      }
+    },
+    {
+      "y": 2704,
+      "h": 2542,
+      "bg": "rgb(14, 14, 14)",
+      "tag": "div",
+      "cls": "pt-[80px]",
+      "container": 1200,
+      "columns": 3,
+      "type": [
+        {
+          "fontSize": 60,
+          "weight": "500",
+          "lineHeight": "66px",
+          "count": 2,
+          "sample": "출력을 위해 학습된 유일한 3D AI"
+        },
+        {
+          "fontSize": 48,
+          "weight": "500",
+          "lineHeight": "57.6px",
+          "count": 1,
+          "sample": "프린터가 없나요?"
+        },
+        {
+          "fontSize": 28,
+          "weight": "500",
+          "lineHeight": "33.6px",
+          "count": 1,
+          "sample": "기타 사용 사례"
+        },
+        {
+          "fontSize": 24,
+          "weight": "600",
+          "lineHeight": "26.4px",
+          "count": 6,
+          "sample": "처음부터 출력 가능하게, 임시방편이 아니라"
+        },
+        {
+          "fontSize": 20,
+          "weight": "500",
+          "lineHeight": "26px",
+          "count": 2,
+          "sample": "Meshy 3D 모델은 출력 성공 가능성이 가장 높습니다 — 워터타이트,"
+        },
+        {
+          "fontSize": 20,
+          "weight": "600",
+          "lineHeight": "24px",
+          "count": 2,
+          "sample": "생성 시작"
+        },
+        {
+          "fontSize": 20,
+          "weight": "500",
+          "lineHeight": "28px",
+          "count": 1,
+          "sample": "실물을 3D 프린팅해 집 앞까지 배송해 드립니다"
+        },
+        {
+          "fontSize": 20,
+          "weight": "500",
+          "lineHeight": "24px",
+          "count": 1,
+          "sample": "Meshy Creative Labs"
+        }
+      ],
+      "headline": {
+        "fontSize": 60,
+        "weight": "500",
+        "lineHeight": "66px",
+        "count": 2,
+        "sample": "출력을 위해 학습된 유일한 3D AI"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 474,
+          "h": 342,
+          "aspect": 1.39,
+          "radius": null,
+          "objectFit": "contain"
+        },
+        {
+          "kind": "img",
+          "w": 474,
+          "h": 342,
+          "aspect": 1.39,
+          "radius": null,
+          "objectFit": "contain"
+        },
+        {
+          "kind": "img",
+          "w": 593,
+          "h": 300,
+          "aspect": 1.98,
+          "radius": null,
+          "objectFit": "contain"
+        },
+        {
+          "kind": "img",
+          "w": 160,
+          "h": 170,
+          "aspect": 0.94,
+          "radius": null,
+          "objectFit": "contain"
+        },
+        {
+          "kind": "img",
+          "w": 300,
+          "h": 248,
+          "aspect": 1.21,
+          "radius": null,
+          "objectFit": "contain"
+        },
+        {
+          "kind": "img",
+          "w": 380,
+          "h": 316,
+          "aspect": 1.2,
+          "radius": null,
+          "objectFit": "contain"
+        },
+        {
+          "kind": "img",
+          "w": 413,
+          "h": 297,
+          "aspect": 1.39,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 413,
+          "h": 297,
+          "aspect": 1.39,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 413,
+          "h": 297,
+          "aspect": 1.39,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 413,
+          "h": 297,
+          "aspect": 1.39,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 413,
+          "h": 297,
+          "aspect": 1.39,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 468,
+          "h": 336,
+          "aspect": 1.39,
+          "radius": null,
+          "objectFit": "contain"
+        }
+      ],
+      "glassNodes": 14,
+      "motionDecls": [
+        "all",
+        "width 0.7s cubic-bezier(0.65, 0, 0.35, 1), border-radius 0.7s cubic-bezier(0.65,",
+        "opacity 0.7s cubic-bezier(0.65, 0, 0.35, 1)",
+        "transform 0.12s cubic-bezier(0.65, 0, 0.35, 1), width 0.12s cubic-bezier(0.65, 0",
+        "color 0.2s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.2s cubic-bezier(0.4,",
+        "box-shadow 0.3s cubic-bezier(0, 0, 0.2, 1), transform 0.3s cubic-bezier(0, 0, 0.",
+        "anim:11s linear infinite style-module__XfzE0W__ctaSurfaceFlow",
+        "anim:7s linear infinite style-module__XfzE0W__creativeLabBorderSpin",
+        "opacity 0.5s cubic-bezier(0, 0, 0.2, 1)",
+        "opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1)"
+      ],
+      "padding": {
+        "top": "80px",
+        "bottom": null
+      }
+    },
+    {
+      "y": 5246,
+      "h": 569,
+      "bg": "rgb(14, 14, 14)",
+      "tag": "div",
+      "cls": "base:pt-[240px]",
+      "container": 1200,
+      "columns": 3,
+      "type": [
+        {
+          "fontSize": 58,
+          "weight": "500",
+          "lineHeight": "69.6px",
+          "count": 3,
+          "sample": "1억+"
+        },
+        {
+          "fontSize": 40,
+          "weight": "600",
+          "lineHeight": "44px",
+          "count": 1,
+          "sample": "수백만 명의 크리에이터가 신뢰합니다"
+        },
+        {
+          "fontSize": 18,
+          "weight": "500",
+          "lineHeight": "21.6px",
+          "count": 3,
+          "sample": "생성된 모델"
+        }
+      ],
+      "headline": {
+        "fontSize": 58,
+        "weight": "500",
+        "lineHeight": "69.6px",
+        "count": 3,
+        "sample": "1억+"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "anim:2.86s linear infinite style-module__qc0mrG__trustStatsGradientFlow"
+      ],
+      "padding": {
+        "top": "240px",
+        "bottom": "42px"
+      }
+    },
+    {
+      "y": 5857,
+      "h": 364,
+      "bg": "rgb(14, 14, 14)",
+      "tag": "article",
+      "cls": "relative",
+      "container": 1200,
+      "columns": 1,
+      "type": [
+        {
+          "fontSize": 40,
+          "weight": "500",
+          "lineHeight": "48px",
+          "count": 1,
+          "sample": "“어린아이가 병원 침대에 자신의 영웅을 낙서하고, Meshy가 그것을 그"
+        },
+        {
+          "fontSize": 18,
+          "weight": "600",
+          "lineHeight": "24px",
+          "count": 1,
+          "sample": "Liga Superbohaterów"
+        },
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": "24px",
+          "count": 1,
+          "sample": "비영리 재단 · 폴란드"
+        },
+        {
+          "fontSize": 14,
+          "weight": "500",
+          "lineHeight": "24px",
+          "count": 1,
+          "sample": "전체 이야기 읽기"
+        }
+      ],
+      "headline": {
+        "fontSize": 40,
+        "weight": "500",
+        "lineHeight": "48px",
+        "count": 1,
+        "sample": "“어린아이가 병원 침대에 자신의 영웅을 낙서하고, Meshy가 그것을 그"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "color 0.15s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.15s cubic-bezier(0."
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 6338,
+      "h": 1817,
+      "bg": "rgb(14, 14, 14)",
+      "tag": "section",
+      "cls": "w-full",
+      "container": 1043,
+      "columns": 6,
+      "type": [
+        {
+          "fontSize": 68,
+          "weight": "500",
+          "lineHeight": "74.8px",
+          "count": 1,
+          "sample": "커뮤니티가 무엇을 만들고 있는지 확인하세요"
+        },
+        {
+          "fontSize": 18,
+          "weight": "700",
+          "lineHeight": "19.8px",
+          "count": 1,
+          "sample": "커뮤니티 둘러보기"
+        },
+        {
+          "fontSize": 12,
+          "weight": "400",
+          "lineHeight": "16px",
+          "count": 240,
+          "sample": "138"
+        }
+      ],
+      "headline": {
+        "fontSize": 68,
+        "weight": "500",
+        "lineHeight": "74.8px",
+        "count": 1,
+        "sample": "커뮤니티가 무엇을 만들고 있는지 확인하세요"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 248,
+          "h": 341,
+          "aspect": 0.73,
+          "radius": null,
+          "objectFit": "contain"
+        },
+        {
+          "kind": "img",
+          "w": 248,
+          "h": 341,
+          "aspect": 0.73,
+          "radius": null,
+          "objectFit": "contain"
+        },
+        {
+          "kind": "img",
+          "w": 248,
+          "h": 341,
+          "aspect": 0.73,
+          "radius": null,
+          "objectFit": "contain"
+        },
+        {
+          "kind": "img",
+          "w": 248,
+          "h": 341,
+          "aspect": 0.73,
+          "radius": null,
+          "objectFit": "contain"
+        },
+        {
+          "kind": "img",
+          "w": 248,
+          "h": 341,
+          "aspect": 0.73,
+          "radius": null,
+          "objectFit": "contain"
+        },
+        {
+          "kind": "img",
+          "w": 248,
+          "h": 341,
+          "aspect": 0.73,
+          "radius": null,
+          "objectFit": "contain"
+        },
+        {
+          "kind": "img",
+          "w": 248,
+          "h": 341,
+          "aspect": 0.73,
+          "radius": null,
+          "objectFit": "contain"
+        },
+        {
+          "kind": "img",
+          "w": 248,
+          "h": 341,
+          "aspect": 0.73,
+          "radius": null,
+          "objectFit": "contain"
+        },
+        {
+          "kind": "img",
+          "w": 248,
+          "h": 341,
+          "aspect": 0.73,
+          "radius": null,
+          "objectFit": "contain"
+        },
+        {
+          "kind": "img",
+          "w": 248,
+          "h": 341,
+          "aspect": 0.73,
+          "radius": null,
+          "objectFit": "contain"
+        },
+        {
+          "kind": "img",
+          "w": 248,
+          "h": 341,
+          "aspect": 0.73,
+          "radius": null,
+          "objectFit": "contain"
+        },
+        {
+          "kind": "img",
+          "w": 248,
+          "h": 341,
+          "aspect": 0.73,
+          "radius": null,
+          "objectFit": "contain"
+        }
+      ],
+      "glassNodes": 58,
+      "motionDecls": [
+        "all",
+        "color 0.3s cubic-bezier(0, 0, 0.2, 1), background-color 0.3s cubic-bezier(0, 0, ",
+        "anim:5s ease-in-out infinite cta-flow",
+        "anim:7s linear infinite style-module__yx0ibW__flowBorderSpinAngle",
+        "anim:96.6667s linear infinite style-module__ue6t8G__showcaseMarquee",
+        "opacity 0.3s cubic-bezier(0, 0, 0.2, 1)",
+        "opacity cubic-bezier(0.4, 0, 0.2, 1)",
+        "opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
+        "height 0.1s cubic-bezier(0, 0, 0.2, 1), opacity 0.1s cubic-bezier(0, 0, 0.2, 1),",
+        "color 0.1s cubic-bezier(0, 0, 0.2, 1), background-color 0.1s cubic-bezier(0, 0, "
+      ],
+      "padding": {
+        "top": "120px",
+        "bottom": "120px"
+      }
+    },
+    {
+      "y": 8154,
+      "h": 560,
+      "bg": "rgb(14, 14, 14)",
+      "tag": "div",
+      "cls": "relative",
+      "container": 1200,
+      "columns": 1,
+      "type": [
+        {
+          "fontSize": 100,
+          "weight": "400",
+          "lineHeight": "110px",
+          "count": 1,
+          "sample": "3D로 시작하기"
+        },
+        {
+          "fontSize": 27,
+          "weight": "400",
+          "lineHeight": "35.1px",
+          "count": 1,
+          "sample": "신용카드가 필요하지 않습니다. 1분 이내에 첫 3D 모델을 생성해 보세요"
+        },
+        {
+          "fontSize": 18,
+          "weight": "700",
+          "lineHeight": "19.8px",
+          "count": 1,
+          "sample": "무료로 만들기 시작하기"
+        }
+      ],
+      "headline": {
+        "fontSize": 100,
+        "weight": "400",
+        "lineHeight": "110px",
+        "count": 1,
+        "sample": "3D로 시작하기"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "color 0.3s cubic-bezier(0, 0, 0.2, 1), background-color 0.3s cubic-bezier(0, 0, ",
+        "anim:5s ease-in-out infinite cta-flow",
+        "anim:7s linear infinite style-module__yx0ibW__flowBorderSpinAngle"
+      ],
+      "padding": {
+        "top": "80px",
+        "bottom": "200px"
+      }
+    },
+    {
+      "y": 8714,
+      "h": 861,
+      "bg": "rgb(197, 249, 85)",
+      "tag": "div",
+      "cls": "relative",
+      "container": 1200,
+      "columns": 3,
+      "type": [
+        {
+          "fontSize": 14,
+          "weight": "500",
+          "lineHeight": "19.6px",
+          "count": 65,
+          "sample": "요금제"
+        },
+        {
+          "fontSize": 14,
+          "weight": "600",
+          "lineHeight": "20px",
+          "count": 2,
+          "sample": "G2 평점: 4.8"
+        },
+        {
+          "fontSize": 14,
+          "weight": "600",
+          "lineHeight": "16.8px",
+          "count": 1,
+          "sample": "메쉬(Meshy)에 대해 AI에게 물어보세요."
+        },
+        {
+          "fontSize": 14,
+          "weight": "500",
+          "lineHeight": "16.8px",
+          "count": 7,
+          "sample": "기능"
+        },
+        {
+          "fontSize": 12,
+          "weight": "500",
+          "lineHeight": "16.8px",
+          "count": 6,
+          "sample": "© 2026 MESHY LLC. 모든 권리 보유."
+        },
+        {
+          "fontSize": 12,
+          "weight": "500",
+          "lineHeight": "24px",
+          "count": 1,
+          "sample": "한국어"
+        }
+      ],
+      "headline": {
+        "fontSize": 14,
+        "weight": "500",
+        "lineHeight": "19.6px",
+        "count": 65,
+        "sample": "요금제"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 40,
+          "h": 40,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 40,
+          "h": 40,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 40,
+          "h": 40,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "fill"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all"
+      ],
+      "padding": {
+        "top": "60px",
+        "bottom": null
+      }
+    }
+  ],
+  "sectionsMobile": [
+    {
+      "y": 0,
+      "h": 690,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 674,
+      "h": 246,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 920,
+      "h": 740,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 1660,
+      "h": 846,
+      "container": null,
+      "columns": 6
+    },
+    {
+      "y": 2914,
+      "h": 300,
+      "container": null,
+      "columns": 2
+    },
+    {
+      "y": 3214,
+      "h": 202,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 3430,
+      "h": 300,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 3926,
+      "h": 426,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 4367,
+      "h": 500,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 5267,
+      "h": 280,
+      "container": null,
+      "columns": 5
+    },
+    {
+      "y": 5714,
+      "h": 280,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 6187,
+      "h": 280,
+      "container": null,
+      "columns": 2
+    },
+    {
+      "y": 6621,
+      "h": 201,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 6870,
+      "h": 235,
+      "container": null,
+      "columns": 5
+    },
+    {
+      "y": 7177,
+      "h": 432,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 7651,
+      "h": 345,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 8113,
+      "h": 1385,
+      "container": null,
+      "columns": 6
+    },
+    {
+      "y": 9499,
+      "h": 506,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 10004,
+      "h": 1702,
+      "container": null,
+      "columns": 2
+    }
+  ],
+  "reproduction": {
+    "stamp": null,
+    "note": "IR만으로 원본을 오차 밴드 내 재건축→capture 대조 통과 시 스탬프. 스탬프 없는 IR은 리드 자격 없음."
+  }
+}

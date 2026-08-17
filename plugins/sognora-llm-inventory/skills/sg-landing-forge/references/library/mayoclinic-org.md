@@ -353,3 +353,55 @@ A–Z 칩에 포커스가 가면 **칩의 실선 테두리(`#8CC5FF`)가 진해�
 - `TS3`("본문 스택이 기본값뿐: system-ui")는 **오탐**. `body`의 계산값은 `system-ui`가 맞지만 실제 텍스트는 전부 컴포넌트 레벨에서 `mayo-sans`/`mayo-display`/`mayo-serif`를 명시한다(요소 590개). toss가 `body { line-height: 16px }`로 상속을 죽인 것과 같은 패턴 — **상속을 안 쓰는 시스템에서는 body 계산값이 아무것도 말해주지 않는다.**
 - `IC1`("동일 SVG 글리프 5·10회 반복")도 **오탐**. 셰브런 아이콘이 링크 리스트 전반에 반복되는 것이고 그리드 장식이 아니다.
 - `LA3`("radius 1000px가 28개 중 27개 지배")는 미러 기준 수치. 라이브 실측은 1000px×58 / 8px×28로 **두 값이 공존**한다 — 필과 카드가 각자 역할을 갖는다.
+
+---
+
+## 재현 노트 (Tier-R, 2026-08-17) — **수집 실패**
+
+`bundle.mjs`(헤드리스 Chromium, 1440/390, `locale=ko-KR`, 실 Chrome UA)로 재수집을 시도했고 **차단당했다.** 우회는 시도하지 않았다.
+
+수집된 것은 페이지가 아니라 Akamai 에지의 거절 문서다:
+
+```
+tree-1440.json  scrollHeight=900  (= 뷰포트 높이 그대로, 스크롤 없음)
+tree-390.json   scrollHeight=844
+body 텍스트     "You don't have permission to access "http://www.mayoclinic.org/" on this server."
+h1              "Access Denied"  (32px/700, 브라우저 기본 스타일)
+p               "Reference #18.45bc4117.1786900147.4d23210b"
+p               "https://errors.edgesuite.net/18.45bc4117.1786900147.4d23210b"
+css 0장 · @keyframes 0개 · 자산 0건 · fonts.json []
+```
+
+`curl -I -A "<동일 Chrome UA>" https://www.mayoclinic.org` 도 **403**. shot-1440.png을 직접 열어 확인했고, 흰 바탕에 Times 계열 기본 서체로 위 네 줄만 있는 에러 문서다. 위 본문 서두의 "측정 메모 — 봇월"과 **같은 차단이며, 상태가 나아지지 않았다.**
+
+### 체크리스트 §8b
+
+| | 항목 | 판정 |
+|---|---|---|
+| ① | tree 1440/390 존재·scrollHeight 그럴듯 | **실패** — 파일은 있으나 내용이 에러 문서. scrollHeight가 뷰포트와 같다(900/844) = 콘텐츠 0 |
+| ② | 섹션 수 눈 대조 | **판정 불가** — ir.mjs 미실행(대조할 페이지가 없다) |
+| ③ | @keyframes 수확 | **실패** — 0개. record.json도 없다(교차 확인 대상 부재) |
+| ④ | assets.json rect 결합률 | **실패** — 자산 0건 |
+| ⑤ | hover/reveal 타임라인 | **미실행** — 에러 문서에 상호작용 요소가 없어 `record.mjs`를 돌릴 의미가 없다 |
+| ⑥ | 재현 불가 목록 | 페이지 전체 |
+
+### 판정
+
+**보류 — 수집 실패.** 위 본문(2026-08-15, headed 크롬 + 자기완결 미러 경로로 얻은 라이브 실측)은 그대로 유효하고 품질도 높지만, **Tier-R 번들이 없다.** 현 파이프라인(`bundle.mjs`는 headless 고정, `waitUntil: "networkidle"` 하드코딩)으로는 이 사이트를 수집할 수 없다. 리드로 세우려면 위 메모가 쓴 것과 같은 우회 경로 — headed 실행 + 스크립트 제거 미러 + 로컬 서빙 — 를 파이프라인이 지원해야 하고, 그건 스크립트 변경 사항이라 이번 수집 범위 밖이다.
+
+번들 디렉터리 `references/bundles/mayoclinic-org/`는 **차단 증거로만 남긴다.** 여기 든 수치를 IR로 증류하거나 재현 입력으로 쓰면 안 된다.
+
+### 경고 — 차단 페이지에서 증류된 ir.json이 존재한다 (2026-08-17 12:05)
+
+일괄 재생성 과정에서 이 번들에도 `ir.json`이 만들어졌다. **내용은 전부 거절 문서에서 나온 값이고, 재현 입력이 아니다:**
+
+```json
+sections: 0        sectionsMobile: 0     keyframes: 0
+assetStats: { count: 0, images: 0, withRect: 0, totalBytes: 0 }
+rhythm: { bgSequence: [], heights: [], containers: [] }
+layers: []
+typeScale: [ {px:32, weight:"700", count:1},      ← "Access Denied" h1 (브라우저 기본 스타일)
+             {px:16, weight:"400", count:3} ]     ← 거절 문구 3줄
+```
+
+`typeScale`의 32px/700과 16px/400은 **Mayo Clinic의 타이포가 아니라 Chrome 기본 스타일시트의 `h1`·`p`**다. 위 본문의 실제 스케일(76/40/24/20/16/13.33)과 아무 관계가 없다. **이 `ir.json`은 삭제하거나 무시할 것.** 섹션 0·keyframes 0은 사이트 특성이 아니라 **403 차단의 결과**다.

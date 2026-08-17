@@ -12,6 +12,18 @@
 3. 프로젝트별 `_forge/bench/`에는 **자기 페이지 측정만** 남긴다. 레퍼런스 지식은 전부 라이브러리로.
 4. 라이브러리 문서에 "인터랙션: 미채움" 표시가 있으면 여유 있을 때 probe 1회로 채운다 — 실행을 막지는 않는다.
 
+## 0b. Tier-R 승격 (v1 변환 아키텍처의 리드 자격)
+
+요약 문서(Tier-S)는 방향 선정·문법 근거용이고, **리드 레퍼런스는 재현급 번들(Tier-R)이 있어야 자격**이 생긴다. 승격 절차(리드로 지목될 때 온디맨드 — 전 종 일괄 재수집 금지):
+
+```
+node scripts/bundle.mjs --url <URL> --out references/bundles/<이름>   # 정적: 트리·CSS·@keyframes·자산
+node scripts/record.mjs --url <URL> --out references/bundles/<이름>   # 동적: 타임라인·리스너·애니메이션
+node scripts/ir.mjs --bundle references/bundles/<이름> --out references/bundles/<이름>/ir.json
+```
+
+완전성은 forge-rules §8b 체크리스트로 판정. **번들 원본은 로컬 캐시 전용(gitignore) — 커밋되는 것은 ir.json(측정 사실)뿐.** INDEX.md에 `[R]` 표기로 승격 상태를 기록한다.
+
 ## 1. 레퍼런스 선정 (대상 단위별, 2~3개)
 
 사용자가 준 레퍼런스가 최우선. 없으면 대상 단위에 맞는 소스에서 같은 장르로 고른다:

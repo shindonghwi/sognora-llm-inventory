@@ -1,0 +1,1587 @@
+{
+  "irVersion": 1,
+  "source": {
+    "url": "https://channel.io",
+    "collectedAt": "2026-08-16T17:25:49.728Z"
+  },
+  "page": {
+    "scrollHeight1440": 10398,
+    "scrollHeight390": 12519,
+    "sectionCount": 15
+  },
+  "rhythm": {
+    "bgSequence": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      "rgb(247, 246, 243)",
+      null,
+      null,
+      "rgb(255, 255, 255)"
+    ],
+    "heights": [
+      906,
+      543,
+      388,
+      520,
+      200,
+      541,
+      1079,
+      303,
+      1042,
+      303,
+      1429,
+      447,
+      860,
+      341,
+      532
+    ],
+    "containers": [
+      1384,
+      1376,
+      1320,
+      1190,
+      1160
+    ]
+  },
+  "typeScale": [
+    {
+      "px": 65,
+      "weight": "500",
+      "count": 6
+    },
+    {
+      "px": 54,
+      "weight": "600",
+      "count": 1
+    },
+    {
+      "px": 44,
+      "weight": "600",
+      "count": 19
+    },
+    {
+      "px": 35,
+      "weight": "500",
+      "count": 6
+    },
+    {
+      "px": 25,
+      "weight": "600",
+      "count": 13
+    },
+    {
+      "px": 22,
+      "weight": "500",
+      "count": 6
+    },
+    {
+      "px": 22,
+      "weight": "600",
+      "count": 1
+    },
+    {
+      "px": 19,
+      "weight": "550",
+      "count": 2
+    },
+    {
+      "px": 18,
+      "weight": "700",
+      "count": 1
+    },
+    {
+      "px": 18,
+      "weight": "400",
+      "count": 36
+    },
+    {
+      "px": 16,
+      "weight": "600",
+      "count": 49
+    },
+    {
+      "px": 16,
+      "weight": "400",
+      "count": 63
+    },
+    {
+      "px": 16,
+      "weight": "500",
+      "count": 9
+    },
+    {
+      "px": 15.5,
+      "weight": "400",
+      "count": 3
+    }
+  ],
+  "motion": {
+    "durationsMs": [
+      {
+        "ms": 150,
+        "count": 38
+      },
+      {
+        "ms": 350,
+        "count": 26
+      },
+      {
+        "ms": 200,
+        "count": 16
+      },
+      {
+        "ms": 300,
+        "count": 15
+      },
+      {
+        "ms": 500,
+        "count": 6
+      },
+      {
+        "ms": 0,
+        "count": 4
+      }
+    ],
+    "keyframesCount": 46,
+    "keyframesNamed": [
+      "styles-module__popupEnter___AuQDN",
+      "styles-module__popupExit___JJKQX",
+      "styles-module__shake___jdbWe",
+      "styles-module__numExitUp___FRQqx",
+      "styles-module__numEnterUp___2Yd-w",
+      "styles-module__numExitDown___xm5by",
+      "styles-module__numEnterDown___hpxBk",
+      "styles-module__badgeSlideIn___typJ7",
+      "styles-module__badgeExtraIn___i4W8F",
+      "styles-module__connectorDraw___8sK5I",
+      "styles-module__connectorDotIn___NwTUq",
+      "styles-module__connectorOut___5QoPl",
+      "styles-module__connectorDotOut___FEq7e",
+      "styles-module__placementEnter___TdRhf",
+      "styles-module__sectionEnter___-8BXT",
+      "styles-module__highlightFadeIn___Lg7KY",
+      "styles-module__overlayFadeIn___aECVy",
+      "styles-module__ghostEnter___EC3Mb",
+      "styles-module__toolbarEnter___u8RRu",
+      "styles-module__toolbarHide___y8kaT"
+    ],
+    "runningAnimations": [
+      {
+        "name": "fPNLHq",
+        "duration": 24000,
+        "easing": "linear",
+        "iterations": null,
+        "state": "running"
+      },
+      {
+        "name": "jwcxVC",
+        "duration": 400,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "finished"
+      },
+      {
+        "name": "jwcxVC",
+        "duration": 400,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "finished"
+      }
+    ],
+    "hoverTimelines": [
+      {
+        "selector": "a.Header-styled__LogoLink-sc-8458131e-5",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "button.DemoInputForm-styled__SubmitButton-sc-f453cb42-9.klZdyD",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "div.CardGrid-styled__Item-sc-85c0b0b6-1.bCnkrD",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "p.ReasonsSection-styled__CardTitle-sc-8bdea3ca-3.cYoPPL",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "button.CustomerCaseSection-styled__Tab-sc-1b7719e9-16.bLPTMz",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "div.CustomerCaseSection-styled__CardContent-sc-1b7719e9-28.ggZGOm",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "a.CustomerCaseSection-styled__DetailLink-sc-1b7719e9-39.grrBiF",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "div.CardsSection-styled__Card-sc-ef65bc7e-1.eVmCzm",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "h3.CardsSection-styled__CardTitle-sc-ef65bc7e-6.gKkyyr",
+        "frames": 2,
+        "overshoot": false
+      }
+    ],
+    "revealTimelines": [
+      {
+        "selector": "a.LogoCollection-styled__HoverCTA-sc-e80f74ca-3",
+        "startY": 1331,
+        "frames": 2
+      },
+      {
+        "selector": "div.SectionIntroBand-styled__ChannelIconTrack-sc-d984caf9-7",
+        "startY": 1890,
+        "frames": 169
+      },
+      {
+        "selector": "div.PhoneMockup-styled__PhoneStage-sc-cce4bdd0-3",
+        "startY": 2009,
+        "frames": 2
+      },
+      {
+        "selector": "div.PhoneMockup-styled__BrandPill-sc-cce4bdd0-7",
+        "startY": 2061,
+        "frames": 2
+      },
+      {
+        "selector": "div.PhoneMockup-styled__PhoneFrame-sc-cce4bdd0-4",
+        "startY": 2127,
+        "frames": 2
+      }
+    ],
+    "listenerProfile": {
+      "click": 115,
+      "focus": 12,
+      "pagehide": 10,
+      "visibilitychange": 8,
+      "submit": 5,
+      "resize": 4,
+      "keydown": 4,
+      "scroll": 4,
+      "blur": 4,
+      "touchmove": 4,
+      "mousedown": 4,
+      "popstate": 3
+    }
+  },
+  "assetStats": {
+    "count": 69,
+    "images": 60,
+    "withRect": 46,
+    "totalBytes": 4827672
+  },
+  "layers": [
+    {
+      "y": 396,
+      "h": 644,
+      "position": "absolute",
+      "cls": "SectionImage-styled__DesktopSlot-sc-ad273c0f-1",
+      "bg": "rgb(247, 246, 243)",
+      "bgImage": null,
+      "blend": null
+    },
+    {
+      "y": 6581,
+      "h": 520,
+      "position": "absolute",
+      "cls": "SectionImage-styled__DesktopSlot-sc-ad273c0f-1",
+      "bg": "rgb(247, 246, 243)",
+      "bgImage": null,
+      "blend": null
+    }
+  ],
+  "sections": [
+    {
+      "y": 135,
+      "h": 906,
+      "bg": null,
+      "tag": "section",
+      "cls": "Hero-styled__Section-sc-f575346f-0",
+      "container": 1320,
+      "columns": 2,
+      "type": [
+        {
+          "fontSize": 54,
+          "weight": "600",
+          "lineHeight": "70px",
+          "count": 1,
+          "sample": "상담은 채널톡, 업무는 채널웍스에서 시작하세요"
+        },
+        {
+          "fontSize": 18,
+          "weight": "400",
+          "lineHeight": "28px",
+          "count": 2,
+          "sample": "고객 상담부터 데이터 분석, 마케팅, 팀 협업까지  비즈니스의 중심에 고"
+        },
+        {
+          "fontSize": 16,
+          "weight": "600",
+          "lineHeight": "25px",
+          "count": 1,
+          "sample": "AI 에이전트 ALF",
+          "floating": true
+        },
+        {
+          "fontSize": 15,
+          "weight": "500",
+          "lineHeight": "22px",
+          "count": 1,
+          "sample": "모든 사례 보기",
+          "floating": true
+        },
+        {
+          "fontSize": 14,
+          "weight": "400",
+          "lineHeight": "22px",
+          "count": 1,
+          "sample": "고객상담의 80%를 자동화하는 AI 에이전트 ALF를 만나보세요",
+          "floating": true
+        },
+        {
+          "fontSize": 12,
+          "weight": "400",
+          "lineHeight": "14px",
+          "count": 1,
+          "sample": "고객 상담에 최적화된 AI 솔루션",
+          "floating": true
+        }
+      ],
+      "headline": {
+        "fontSize": 54,
+        "weight": "600",
+        "lineHeight": "70px",
+        "count": 1,
+        "sample": "상담은 채널톡, 업무는 채널웍스에서 시작하세요"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 1318,
+          "h": 644,
+          "aspect": 2.05,
+          "radius": null,
+          "objectFit": "contain"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "opacity 0.15s"
+      ],
+      "padding": {
+        "top": "70px",
+        "bottom": null
+      }
+    },
+    {
+      "y": 1041,
+      "h": 543,
+      "bg": null,
+      "tag": "section",
+      "cls": "LogoCollection-styled__Section-sc-e80f74ca-1",
+      "container": 1190,
+      "columns": 5,
+      "type": [
+        {
+          "fontSize": 25,
+          "weight": "600",
+          "lineHeight": "32px",
+          "count": 1,
+          "sample": "전 세계 245,074 개 기업이 믿고 사용중"
+        },
+        {
+          "fontSize": 15,
+          "weight": "600",
+          "lineHeight": "26px",
+          "count": 1,
+          "sample": "모든 고객 사례 보기"
+        },
+        {
+          "fontSize": 10,
+          "weight": "400",
+          "lineHeight": null,
+          "count": 1,
+          "sample": "모든 고객 사례 보기"
+        }
+      ],
+      "headline": {
+        "fontSize": 25,
+        "weight": "600",
+        "lineHeight": "32px",
+        "count": 1,
+        "sample": "전 세계 245,074 개 기업이 믿고 사용중"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 238,
+          "h": 72,
+          "aspect": 3.31,
+          "radius": null,
+          "objectFit": "contain"
+        },
+        {
+          "kind": "img",
+          "w": 238,
+          "h": 72,
+          "aspect": 3.31,
+          "radius": null,
+          "objectFit": "contain"
+        },
+        {
+          "kind": "img",
+          "w": 238,
+          "h": 72,
+          "aspect": 3.31,
+          "radius": null,
+          "objectFit": "contain"
+        },
+        {
+          "kind": "img",
+          "w": 238,
+          "h": 72,
+          "aspect": 3.31,
+          "radius": null,
+          "objectFit": "contain"
+        },
+        {
+          "kind": "img",
+          "w": 238,
+          "h": 72,
+          "aspect": 3.31,
+          "radius": null,
+          "objectFit": "contain"
+        },
+        {
+          "kind": "img",
+          "w": 238,
+          "h": 72,
+          "aspect": 3.31,
+          "radius": null,
+          "objectFit": "contain"
+        },
+        {
+          "kind": "img",
+          "w": 238,
+          "h": 72,
+          "aspect": 3.31,
+          "radius": null,
+          "objectFit": "contain"
+        },
+        {
+          "kind": "img",
+          "w": 238,
+          "h": 72,
+          "aspect": 3.31,
+          "radius": null,
+          "objectFit": "contain"
+        },
+        {
+          "kind": "img",
+          "w": 238,
+          "h": 72,
+          "aspect": 3.31,
+          "radius": null,
+          "objectFit": "contain"
+        },
+        {
+          "kind": "img",
+          "w": 238,
+          "h": 72,
+          "aspect": 3.31,
+          "radius": null,
+          "objectFit": "contain"
+        },
+        {
+          "kind": "img",
+          "w": 238,
+          "h": 72,
+          "aspect": 3.31,
+          "radius": null,
+          "objectFit": "contain"
+        },
+        {
+          "kind": "img",
+          "w": 238,
+          "h": 72,
+          "aspect": 3.31,
+          "radius": null,
+          "objectFit": "contain"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "opacity 0.2s",
+        "color 0.15s cubic-bezier(0.3, 0, 0, 1)"
+      ],
+      "padding": {
+        "top": "80px",
+        "bottom": "80px"
+      }
+    },
+    {
+      "y": 1622,
+      "h": 388,
+      "bg": null,
+      "tag": "section",
+      "cls": "SectionIntroBand-styled__Section-sc-d984caf9-0",
+      "container": 1384,
+      "columns": 1,
+      "type": [
+        {
+          "fontSize": 44,
+          "weight": "600",
+          "lineHeight": "62px",
+          "count": 1,
+          "sample": "채널톡, 고객 상담에 최적화된 AI 솔루션"
+        },
+        {
+          "fontSize": 18,
+          "weight": "400",
+          "lineHeight": "28px",
+          "count": 2,
+          "sample": "상담 혁신은 채널톡"
+        }
+      ],
+      "headline": {
+        "fontSize": 44,
+        "weight": "600",
+        "lineHeight": "62px",
+        "count": 1,
+        "sample": "채널톡, 고객 상담에 최적화된 AI 솔루션"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "opacity 0.15s",
+        "anim:24s linear infinite fPNLHq"
+      ],
+      "padding": {
+        "top": "60px",
+        "bottom": "60px"
+      }
+    },
+    {
+      "y": 2009,
+      "h": 520,
+      "bg": null,
+      "tag": "section",
+      "cls": "AiBuilderSection-styled__Section-sc-a7767b97-0",
+      "container": null,
+      "columns": 2,
+      "type": [
+        {
+          "fontSize": 44,
+          "weight": "600",
+          "lineHeight": "62px",
+          "count": 1,
+          "sample": "고객 상담의 80% 해결하는 채널톡 AI를 직접 사용해보세요"
+        },
+        {
+          "fontSize": 19,
+          "weight": "550",
+          "lineHeight": "25px",
+          "count": 2,
+          "sample": "mybrand.com"
+        },
+        {
+          "fontSize": 18,
+          "weight": "400",
+          "lineHeight": "28px",
+          "count": 1,
+          "sample": "써보는게 가장 빠릅니다"
+        },
+        {
+          "fontSize": 15.5,
+          "weight": "400",
+          "lineHeight": "23px",
+          "count": 3,
+          "sample": "안녕하세요! 어떤 브랜드의 AI 에이전트를"
+        },
+        {
+          "fontSize": 15,
+          "weight": "400",
+          "lineHeight": "22px",
+          "count": 1,
+          "sample": "우리 브랜드 AI 상담사 만들어줘"
+        },
+        {
+          "fontSize": 14,
+          "weight": "500",
+          "lineHeight": "20px",
+          "count": 4,
+          "sample": "AI 상담사 사례로 만들기"
+        },
+        {
+          "fontSize": 13,
+          "weight": "500",
+          "lineHeight": "18px",
+          "count": 1,
+          "sample": "AI 에이전트 ALF"
+        }
+      ],
+      "headline": {
+        "fontSize": 44,
+        "weight": "600",
+        "lineHeight": "62px",
+        "count": 1,
+        "sample": "고객 상담의 80% 해결하는 채널톡 AI를 직접 사용해보세요"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 650,
+          "h": 520,
+          "aspect": 1.25,
+          "radius": null,
+          "objectFit": "cover"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "opacity 0.2s, background 0.2s",
+        "color 0.15s cubic-bezier(0.3, 0, 0, 1)",
+        "background 0.15s, color 0.15s",
+        "opacity 0.5s",
+        "opacity 0.5s, transform 0.5s",
+        "opacity 0.3s ease-out",
+        "anim:0.4s ease-out both jwcxVC"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 2609,
+      "h": 200,
+      "bg": null,
+      "tag": "div",
+      "cls": "SectionHeader-styled__Header-sc-5af82035-0",
+      "container": 1320,
+      "columns": 2,
+      "type": [
+        {
+          "fontSize": 44,
+          "weight": "600",
+          "lineHeight": "62px",
+          "count": 1,
+          "sample": "상담 80%를 해결하는  AI가 가능한 이유"
+        },
+        {
+          "fontSize": 18,
+          "weight": "400",
+          "lineHeight": "28px",
+          "count": 3,
+          "sample": "복잡하지 않습니다"
+        }
+      ],
+      "headline": {
+        "fontSize": 44,
+        "weight": "600",
+        "lineHeight": "62px",
+        "count": 1,
+        "sample": "상담 80%를 해결하는  AI가 가능한 이유"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "background 0.15s"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 2869,
+      "h": 541,
+      "bg": null,
+      "tag": "div",
+      "cls": "CardGrid-styled__Grid-sc-85c0b0b6-0",
+      "container": 1320,
+      "columns": 3,
+      "type": [
+        {
+          "fontSize": 25,
+          "weight": "600",
+          "lineHeight": "32px",
+          "count": 3,
+          "sample": "거짓말하는 AI를 방지하는 ‘규칙’"
+        },
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": "25px",
+          "count": 3,
+          "sample": "AI의 거짓말을 방지하고, 기업 규정에 맞춘 정확한 안내로 리스크를 최소"
+        }
+      ],
+      "headline": {
+        "fontSize": 25,
+        "weight": "600",
+        "lineHeight": "32px",
+        "count": 3,
+        "sample": "거짓말하는 AI를 방지하는 ‘규칙’"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 425,
+          "h": 425,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "contain"
+        },
+        {
+          "kind": "img",
+          "w": 425,
+          "h": 425,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "contain"
+        },
+        {
+          "kind": "img",
+          "w": 425,
+          "h": 425,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "contain"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 3490,
+      "h": 1079,
+      "bg": null,
+      "tag": "section",
+      "cls": "CustomerCaseSection-styled__Section-sc-1b7719e9-0",
+      "container": 1320,
+      "columns": 6,
+      "type": [
+        {
+          "fontSize": 65,
+          "weight": "500",
+          "lineHeight": null,
+          "count": 6,
+          "sample": "80.2"
+        },
+        {
+          "fontSize": 44,
+          "weight": "600",
+          "lineHeight": "62px",
+          "count": 7,
+          "sample": "이미 AI로 상담을 줄인  기업들의 진짜 결과가 있습니다"
+        },
+        {
+          "fontSize": 35,
+          "weight": "500",
+          "lineHeight": null,
+          "count": 6,
+          "sample": "%"
+        },
+        {
+          "fontSize": 22,
+          "weight": "500",
+          "lineHeight": "30px",
+          "count": 6,
+          "sample": "AI 상담 해결률"
+        },
+        {
+          "fontSize": 18,
+          "weight": "400",
+          "lineHeight": "28px",
+          "count": 13,
+          "sample": "그럴듯한 데모나 가능성에 대한 이야기가 아닙니다. 현장에서 이미 검증된 "
+        },
+        {
+          "fontSize": 16,
+          "weight": "600",
+          "lineHeight": "25px",
+          "count": 6,
+          "sample": "라이프스타일"
+        },
+        {
+          "fontSize": 16,
+          "weight": "500",
+          "lineHeight": "25.455px",
+          "count": 6,
+          "sample": "자세히 보기"
+        },
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": "25px",
+          "count": 2,
+          "sample": "”고객 정보를 묻고, 카페24에서 조회하고, 주문 상품 되물어보고, 출고"
+        }
+      ],
+      "headline": {
+        "fontSize": 65,
+        "weight": "500",
+        "lineHeight": null,
+        "count": 6,
+        "sample": "80.2"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 1120,
+          "h": 630,
+          "aspect": 1.78,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 160,
+          "h": 48,
+          "aspect": 3.33,
+          "radius": null,
+          "objectFit": "contain"
+        },
+        {
+          "kind": "img",
+          "w": 1120,
+          "h": 630,
+          "aspect": 1.78,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 160,
+          "h": 48,
+          "aspect": 3.33,
+          "radius": null,
+          "objectFit": "contain"
+        },
+        {
+          "kind": "img",
+          "w": 1120,
+          "h": 630,
+          "aspect": 1.78,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 160,
+          "h": 48,
+          "aspect": 3.33,
+          "radius": null,
+          "objectFit": "contain"
+        },
+        {
+          "kind": "img",
+          "w": 1120,
+          "h": 630,
+          "aspect": 1.78,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 160,
+          "h": 48,
+          "aspect": 3.33,
+          "radius": null,
+          "objectFit": "contain"
+        },
+        {
+          "kind": "img",
+          "w": 1120,
+          "h": 630,
+          "aspect": 1.78,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 160,
+          "h": 48,
+          "aspect": 3.33,
+          "radius": null,
+          "objectFit": "contain"
+        },
+        {
+          "kind": "img",
+          "w": 1120,
+          "h": 630,
+          "aspect": 1.78,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 160,
+          "h": 48,
+          "aspect": 3.33,
+          "radius": null,
+          "objectFit": "contain"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "left 0.3s cubic-bezier(0.4, 0, 0.2, 1), top 0.3s cubic-bezier(0.4, 0, 0.2, 1), w",
+        "color 0.3s",
+        "background 0.2s"
+      ],
+      "padding": {
+        "top": "80px",
+        "bottom": "80px"
+      }
+    },
+    {
+      "y": 4607,
+      "h": 303,
+      "bg": null,
+      "tag": "section",
+      "cls": "SectionIntroBand-styled__Section-sc-d984caf9-0",
+      "container": 1384,
+      "columns": 1,
+      "type": [
+        {
+          "fontSize": 44,
+          "weight": "600",
+          "lineHeight": "62px",
+          "count": 1,
+          "sample": "채널웍스, 흩어진 업무가 한 눈에 보이는 곳"
+        },
+        {
+          "fontSize": 18,
+          "weight": "400",
+          "lineHeight": "28px",
+          "count": 2,
+          "sample": "업무 혁신은 채널웍스"
+        }
+      ],
+      "headline": {
+        "fontSize": 44,
+        "weight": "600",
+        "lineHeight": "62px",
+        "count": 1,
+        "sample": "채널웍스, 흩어진 업무가 한 눈에 보이는 곳"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "opacity 0.15s"
+      ],
+      "padding": {
+        "top": "60px",
+        "bottom": "60px"
+      }
+    },
+    {
+      "y": 4910,
+      "h": 1042,
+      "bg": null,
+      "tag": "section",
+      "cls": "WorksSection-styled__Section-sc-e3369409-0",
+      "container": 1320,
+      "columns": 3,
+      "type": [
+        {
+          "fontSize": 44,
+          "weight": "600",
+          "lineHeight": "62px",
+          "count": 1,
+          "sample": "업무 환경의 중심에  고객을 두는 채널웍스"
+        },
+        {
+          "fontSize": 25,
+          "weight": "600",
+          "lineHeight": "32px",
+          "count": 3,
+          "sample": "고객"
+        },
+        {
+          "fontSize": 22,
+          "weight": "600",
+          "lineHeight": "28px",
+          "count": 1,
+          "sample": "고객"
+        },
+        {
+          "fontSize": 18,
+          "weight": "400",
+          "lineHeight": "28px",
+          "count": 3,
+          "sample": "All-as-One 워크스페이스"
+        },
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": "25px",
+          "count": 4,
+          "sample": "채팅, 전화, 외부 상담 채널까지 고객 상담을 하나로 모으고, AI 상담"
+        }
+      ],
+      "headline": {
+        "fontSize": 44,
+        "weight": "600",
+        "lineHeight": "62px",
+        "count": 1,
+        "sample": "업무 환경의 중심에  고객을 두는 채널웍스"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 1320,
+          "h": 520,
+          "aspect": 2.54,
+          "radius": null,
+          "objectFit": "contain"
+        },
+        {
+          "kind": "img",
+          "w": 1320,
+          "h": 520,
+          "aspect": 2.54,
+          "radius": null,
+          "objectFit": "contain"
+        },
+        {
+          "kind": "img",
+          "w": 1320,
+          "h": 520,
+          "aspect": 2.54,
+          "radius": null,
+          "objectFit": "contain"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "background 0.15s",
+        "opacity 0.5s",
+        "opacity 0.3s",
+        "anim:5s linear forwards paused iusTVN",
+        "anim:0.45s both cCxvhG"
+      ],
+      "padding": {
+        "top": "20px",
+        "bottom": "80px"
+      }
+    },
+    {
+      "y": 5990,
+      "h": 303,
+      "bg": null,
+      "tag": "section",
+      "cls": "SectionIntroBand-styled__Section-sc-d984caf9-0",
+      "container": 1384,
+      "columns": 1,
+      "type": [
+        {
+          "fontSize": 44,
+          "weight": "600",
+          "lineHeight": "62px",
+          "count": 1,
+          "sample": "AI CoS, 채널웍스의 AI 브레인"
+        },
+        {
+          "fontSize": 18,
+          "weight": "400",
+          "lineHeight": "28px",
+          "count": 2,
+          "sample": "분석부터 실행까지, CoS"
+        }
+      ],
+      "headline": {
+        "fontSize": 44,
+        "weight": "600",
+        "lineHeight": "62px",
+        "count": 1,
+        "sample": "AI CoS, 채널웍스의 AI 브레인"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "opacity 0.15s"
+      ],
+      "padding": {
+        "top": "60px",
+        "bottom": "60px"
+      }
+    },
+    {
+      "y": 6293,
+      "h": 1429,
+      "bg": null,
+      "tag": "section",
+      "cls": "CosSummarySection-styled__Section-sc-4054b819-0",
+      "container": 1320,
+      "columns": 2,
+      "type": [
+        {
+          "fontSize": 44,
+          "weight": "600",
+          "lineHeight": "62px",
+          "count": 1,
+          "sample": "고객과 데이터를 매출로 연결하는 AI 비서실장 CoS"
+        },
+        {
+          "fontSize": 25,
+          "weight": "600",
+          "lineHeight": "32px",
+          "count": 2,
+          "sample": "흩어진 비즈니스 데이터를 한 곳으로 모으세요"
+        },
+        {
+          "fontSize": 18,
+          "weight": "400",
+          "lineHeight": "28px",
+          "count": 3,
+          "sample": "AI 비서실장 CoS"
+        },
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": "25px",
+          "count": 2,
+          "sample": "상담 데이터부터 외부 어드민에 흩어진 데이터까지,  AI가 비즈니스 데이"
+        }
+      ],
+      "headline": {
+        "fontSize": 44,
+        "weight": "600",
+        "lineHeight": "62px",
+        "count": 1,
+        "sample": "고객과 데이터를 매출로 연결하는 AI 비서실장 CoS"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 1320,
+          "h": 520,
+          "aspect": 2.54,
+          "radius": null,
+          "objectFit": "contain"
+        },
+        {
+          "kind": "img",
+          "w": 648,
+          "h": 425,
+          "aspect": 1.52,
+          "radius": null,
+          "objectFit": "contain"
+        },
+        {
+          "kind": "img",
+          "w": 648,
+          "h": 425,
+          "aspect": 1.52,
+          "radius": null,
+          "objectFit": "contain"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "background 0.15s"
+      ],
+      "padding": {
+        "top": "60px",
+        "bottom": "60px"
+      }
+    },
+    {
+      "y": 7722,
+      "h": 447,
+      "bg": "rgb(247, 246, 243)",
+      "tag": "div",
+      "cls": "TestimonialCard-styled__Card-sc-59bbf96e-0",
+      "container": 1320,
+      "columns": 2,
+      "type": [
+        {
+          "fontSize": 25,
+          "weight": "600",
+          "lineHeight": "32px",
+          "count": 1,
+          "sample": "일주일 넘게 걸리던 분석을 5분만에 해줍니다"
+        },
+        {
+          "fontSize": 18,
+          "weight": "400",
+          "lineHeight": "28px",
+          "count": 3,
+          "sample": "\"CoS가 일주일 넘게 걸리던 매출 데이터 분석, 인사이트 추출을 5분만"
+        }
+      ],
+      "headline": {
+        "fontSize": 25,
+        "weight": "600",
+        "lineHeight": "32px",
+        "count": 1,
+        "sample": "일주일 넘게 걸리던 분석을 5분만에 해줍니다"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 427,
+          "h": 427,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 44,
+          "h": 44,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "cover"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all"
+      ],
+      "padding": {
+        "top": "10px",
+        "bottom": "10px"
+      }
+    },
+    {
+      "y": 8249,
+      "h": 860,
+      "bg": null,
+      "tag": "section",
+      "cls": "TrustSection-styled__Section-sc-9d895853-0",
+      "container": 1376,
+      "columns": 3,
+      "type": [
+        {
+          "fontSize": 44,
+          "weight": "600",
+          "lineHeight": "44px",
+          "count": 3,
+          "sample": "245,074"
+        },
+        {
+          "fontSize": 25,
+          "weight": "600",
+          "lineHeight": "30px",
+          "count": 3,
+          "sample": "글로벌 스탠다드 보안 및 품질"
+        },
+        {
+          "fontSize": 16,
+          "weight": "600",
+          "lineHeight": "25px",
+          "count": 4,
+          "sample": "전 세계 누적 채널"
+        },
+        {
+          "fontSize": 16,
+          "weight": "500",
+          "lineHeight": "25px",
+          "count": 3,
+          "sample": "자세히 보기"
+        }
+      ],
+      "headline": {
+        "fontSize": 44,
+        "weight": "600",
+        "lineHeight": "44px",
+        "count": 3,
+        "sample": "245,074"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 373,
+          "h": 254,
+          "aspect": 1.47,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 799,
+          "h": 252,
+          "aspect": 3.17,
+          "radius": null,
+          "objectFit": "fill"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all"
+      ],
+      "padding": {
+        "top": "87.5px",
+        "bottom": "15px"
+      }
+    },
+    {
+      "y": 9109,
+      "h": 341,
+      "bg": null,
+      "tag": "section",
+      "cls": "CTASection-styled__Section-sc-2bf29bd0-0",
+      "container": 1320,
+      "columns": 2,
+      "type": [
+        {
+          "fontSize": 44,
+          "weight": "600",
+          "lineHeight": "62px",
+          "count": 2,
+          "sample": "3분이면, AI 상담원이"
+        },
+        {
+          "fontSize": 14,
+          "weight": "500",
+          "lineHeight": "20px",
+          "count": 4,
+          "sample": "AI 상담사 사례로 만들기"
+        }
+      ],
+      "headline": {
+        "fontSize": 44,
+        "weight": "600",
+        "lineHeight": "62px",
+        "count": 2,
+        "sample": "3분이면, AI 상담원이"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "opacity 0.2s, background 0.2s",
+        "color 0.15s cubic-bezier(0.3, 0, 0, 1)",
+        "background 0.15s, color 0.15s"
+      ],
+      "padding": {
+        "top": "60px",
+        "bottom": "60px"
+      }
+    },
+    {
+      "y": 9551,
+      "h": 532,
+      "bg": "rgb(255, 255, 255)",
+      "tag": "div",
+      "cls": "styled__MenuWrapper-sc-40001038-0",
+      "container": 1160,
+      "columns": 5,
+      "type": [
+        {
+          "fontSize": 16,
+          "weight": "600",
+          "lineHeight": "22px",
+          "count": 10,
+          "sample": "기능"
+        },
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": "22px",
+          "count": 45,
+          "sample": "ALF"
+        },
+        {
+          "fontSize": 14,
+          "weight": "700",
+          "lineHeight": "18px",
+          "count": 1,
+          "sample": "한국어"
+        },
+        {
+          "fontSize": 12,
+          "weight": "400",
+          "lineHeight": "18px",
+          "count": 2,
+          "sample": "채용중"
+        }
+      ],
+      "headline": {
+        "fontSize": 16,
+        "weight": "600",
+        "lineHeight": "22px",
+        "count": 10,
+        "sample": "기능"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "background-color 0.15s cubic-bezier(0.3, 0, 0, 1), box-shadow 0.15s cubic-bezier",
+        "color 0.15s cubic-bezier(0.3, 0, 0, 1)"
+      ],
+      "padding": {
+        "top": "80px",
+        "bottom": "60px"
+      }
+    }
+  ],
+  "sectionsMobile": [
+    {
+      "y": 160,
+      "h": 702,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 862,
+      "h": 512,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 1412,
+      "h": 331,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 1743,
+      "h": 726,
+      "container": null,
+      "columns": 2
+    },
+    {
+      "y": 2469,
+      "h": 1866,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 4335,
+      "h": 838,
+      "container": null,
+      "columns": 6
+    },
+    {
+      "y": 5211,
+      "h": 252,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 5513,
+      "h": 257,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 5810,
+      "h": 428,
+      "container": null,
+      "columns": 3
+    },
+    {
+      "y": 6495,
+      "h": 252,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 6747,
+      "h": 1911,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 8658,
+      "h": 342,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 9014,
+      "h": 206,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 9280,
+      "h": 354,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 9646,
+      "h": 320,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 9978,
+      "h": 412,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 10403,
+      "h": 303,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 10706,
+      "h": 318,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 11045,
+      "h": 1117,
+      "container": null,
+      "columns": 2
+    },
+    {
+      "y": 12300,
+      "h": 219,
+      "container": null,
+      "columns": 1
+    }
+  ],
+  "reproduction": {
+    "stamp": null,
+    "note": "IR만으로 원본을 오차 밴드 내 재건축→capture 대조 통과 시 스탬프. 스탬프 없는 IR은 리드 자격 없음."
+  }
+}

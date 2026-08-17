@@ -1,0 +1,512 @@
+{
+  "irVersion": 1,
+  "source": {
+    "url": "https://www.netflix.com/kr",
+    "collectedAt": "2026-08-16T17:13:15.047Z"
+  },
+  "page": {
+    "scrollHeight1440": 3276,
+    "scrollHeight390": 3918,
+    "sectionCount": 5
+  },
+  "rhythm": {
+    "bgSequence": [
+      "rgb(0, 0, 0)",
+      "rgb(0, 0, 0)",
+      "rgb(0, 0, 0)",
+      "rgb(0, 0, 0)",
+      "rgb(0, 0, 0)"
+    ],
+    "heights": [
+      720,
+      315,
+      377,
+      615,
+      570
+    ],
+    "containers": [
+      1160,
+      1148,
+      1144,
+      588
+    ]
+  },
+  "typeScale": [
+    {
+      "px": 56,
+      "weight": "700",
+      "count": 1
+    },
+    {
+      "px": 24,
+      "weight": "500",
+      "count": 4
+    },
+    {
+      "px": 24,
+      "weight": "600",
+      "count": 1
+    },
+    {
+      "px": 21.92,
+      "weight": "600",
+      "count": 1
+    },
+    {
+      "px": 20,
+      "weight": "500",
+      "count": 1
+    },
+    {
+      "px": 16,
+      "weight": "400",
+      "count": 10
+    },
+    {
+      "px": 16,
+      "weight": "700",
+      "count": 1
+    },
+    {
+      "px": 14.4,
+      "weight": "700",
+      "count": 3
+    },
+    {
+      "px": 14.4,
+      "weight": "600",
+      "count": 1
+    },
+    {
+      "px": 14,
+      "weight": "400",
+      "count": 1
+    },
+    {
+      "px": 14,
+      "weight": "700",
+      "count": 6
+    },
+    {
+      "px": 14,
+      "weight": "600",
+      "count": 4
+    },
+    {
+      "px": 13.6,
+      "weight": "400",
+      "count": 1
+    },
+    {
+      "px": 13.008,
+      "weight": "400",
+      "count": 11
+    }
+  ],
+  "motion": {
+    "durationsMs": [
+      {
+        "ms": 250,
+        "count": 26
+      },
+      {
+        "ms": 200,
+        "count": 13
+      },
+      {
+        "ms": 400,
+        "count": 2
+      },
+      {
+        "ms": 500,
+        "count": 1
+      },
+      {
+        "ms": 100,
+        "count": 1
+      },
+      {
+        "ms": 300,
+        "count": 1
+      }
+    ],
+    "keyframesCount": 11,
+    "keyframesNamed": [
+      "animation-1o3pzgb-autofillStart",
+      "animation-1o3pzgb-autofillStart",
+      "animation-1o3pzgb-autofillStart",
+      "animation-1o3pzgb-autofillStart",
+      "animation-1o3pzgb-autofillStart",
+      "animation-1o3pzgb-autofillStart",
+      "animation-und0r9-autofillEnd",
+      "animation-und0r9-autofillEnd",
+      "loading",
+      "loading",
+      "onetrust-fade-in"
+    ],
+    "runningAnimations": [
+      {
+        "name": "loading",
+        "duration": 4000,
+        "easing": "linear",
+        "iterations": null,
+        "state": "running"
+      },
+      {
+        "name": "loading",
+        "duration": 4000,
+        "easing": "linear",
+        "iterations": null,
+        "state": "running"
+      },
+      {
+        "name": "loading",
+        "duration": 4000,
+        "easing": "linear",
+        "iterations": null,
+        "state": "running"
+      },
+      {
+        "name": "loading",
+        "duration": 4000,
+        "easing": "linear",
+        "iterations": null,
+        "state": "running"
+      },
+      {
+        "name": "loading",
+        "duration": 4000,
+        "easing": "linear",
+        "iterations": null,
+        "state": "running"
+      },
+      {
+        "name": "loading",
+        "duration": 4000,
+        "easing": "linear",
+        "iterations": null,
+        "state": "running"
+      },
+      {
+        "name": "loading",
+        "duration": 4000,
+        "easing": "linear",
+        "iterations": null,
+        "state": "running"
+      },
+      {
+        "name": "loading",
+        "duration": 4000,
+        "easing": "linear",
+        "iterations": null,
+        "state": "running"
+      },
+      {
+        "name": "loading",
+        "duration": 4000,
+        "easing": "linear",
+        "iterations": null,
+        "state": "running"
+      },
+      {
+        "name": "loading",
+        "duration": 4000,
+        "easing": "linear",
+        "iterations": null,
+        "state": "running"
+      }
+    ],
+    "hoverTimelines": [
+      {
+        "selector": "button.e136yimv2.default-ltr-iqcdef-cache-509wlv",
+        "frames": 22,
+        "overshoot": false
+      },
+      {
+        "selector": "button.e136yimv2.default-ltr-iqcdef-cache-1mmmq0q",
+        "frames": 19,
+        "overshoot": false
+      },
+      {
+        "selector": "button.default-ltr-iqcdef-cache-1it3med.e13lj3hn4",
+        "frames": 27,
+        "overshoot": false
+      },
+      {
+        "selector": "a",
+        "frames": 22,
+        "overshoot": false
+      },
+      {
+        "selector": "a.default-ltr-iqcdef-cache-4g2g0f",
+        "frames": 2,
+        "overshoot": false
+      }
+    ],
+    "revealTimelines": [],
+    "listenerProfile": {
+      "click": 37,
+      "keydown": 8,
+      "pageshow": 8,
+      "resize": 6,
+      "message": 5,
+      "load": 4,
+      "keyup": 4,
+      "paste": 4,
+      "pointerdown": 4,
+      "pointermove": 4,
+      "pointerup": 4,
+      "focusin": 4
+    }
+  },
+  "assetStats": {
+    "count": 27,
+    "images": 19,
+    "withRect": 4,
+    "totalBytes": 1368433
+  },
+  "layers": [],
+  "sections": [
+    {
+      "y": 68,
+      "h": 720,
+      "bg": "rgb(0, 0, 0)",
+      "tag": "div",
+      "cls": "default-ltr-iqcdef-cache-2lmy8v",
+      "container": 588,
+      "columns": 1,
+      "type": [
+        {
+          "fontSize": 56,
+          "weight": "700",
+          "lineHeight": "70px",
+          "count": 1,
+          "sample": "영화, 시리즈 등을 무제한으로"
+        },
+        {
+          "fontSize": 20,
+          "weight": "500",
+          "lineHeight": null,
+          "count": 1,
+          "sample": "7,000원으로 시작하세요. 멤버십은 언제든지 해지 가능합니다."
+        }
+      ],
+      "headline": {
+        "fontSize": 56,
+        "weight": "700",
+        "lineHeight": "70px",
+        "count": 1,
+        "sample": "영화, 시리즈 등을 무제한으로"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": "32px"
+      }
+    },
+    {
+      "y": 999,
+      "h": 315,
+      "bg": "rgb(0, 0, 0)",
+      "tag": "div",
+      "cls": "default-ltr-iqcdef-cache-dn1fyv",
+      "container": 1144,
+      "columns": 6,
+      "type": [
+        {
+          "fontSize": 24,
+          "weight": "500",
+          "lineHeight": null,
+          "count": 1,
+          "sample": "지금 뜨는 콘텐츠"
+        }
+      ],
+      "headline": {
+        "fontSize": 24,
+        "weight": "500",
+        "lineHeight": null,
+        "count": 1,
+        "sample": "지금 뜨는 콘텐츠"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "transform 0.2s ease-in-out",
+        "transform 0.4s ease-in-out",
+        "opacity 0.4s ease-in-out"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 1362,
+      "h": 377,
+      "bg": "rgb(0, 0, 0)",
+      "tag": "div",
+      "cls": "default-ltr-iqcdef-cache-4fdrtc",
+      "container": 1160,
+      "columns": 4,
+      "type": [
+        {
+          "fontSize": 24,
+          "weight": "500",
+          "lineHeight": null,
+          "count": 1,
+          "sample": "가입해야 하는 또 다른 이유"
+        }
+      ],
+      "headline": {
+        "fontSize": 24,
+        "weight": "500",
+        "lineHeight": null,
+        "count": 1,
+        "sample": "가입해야 하는 또 다른 이유"
+      },
+      "assetSlots": [],
+      "glassNodes": 4,
+      "motionDecls": [
+        "all"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 1787,
+      "h": 615,
+      "bg": "rgb(0, 0, 0)",
+      "tag": "div",
+      "cls": "default-ltr-iqcdef-cache-4fdrtc",
+      "container": 1144,
+      "columns": 1,
+      "type": [
+        {
+          "fontSize": 24,
+          "weight": "500",
+          "lineHeight": null,
+          "count": 1,
+          "sample": "자주 묻는 질문"
+        }
+      ],
+      "headline": {
+        "fontSize": 24,
+        "weight": "500",
+        "lineHeight": null,
+        "count": 1,
+        "sample": "자주 묻는 질문"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "background-color 0.25s cubic-bezier(0.4, 0, 0.68, 0.06), border-radius 0.25s cub",
+        "0.25s cubic-bezier(0.32, 0.94, 0.6, 1)"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 2610,
+      "h": 570,
+      "bg": "rgb(0, 0, 0)",
+      "tag": "footer",
+      "cls": "default-ltr-iqcdef-cache-4fdrtc",
+      "container": 1148,
+      "columns": 1,
+      "type": [
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": null,
+          "count": 3,
+          "sample": "질문이 있으신가요? 문의 전화:"
+        },
+        {
+          "fontSize": 14,
+          "weight": "400",
+          "lineHeight": null,
+          "count": 1,
+          "sample": "넷플릭스 대한민국"
+        },
+        {
+          "fontSize": 13,
+          "weight": "400",
+          "lineHeight": null,
+          "count": 1,
+          "sample": "이 페이지는 Google reCAPTCHA의 보호를 받아 사용자가 로봇이"
+        },
+        {
+          "fontSize": 12,
+          "weight": "400",
+          "lineHeight": null,
+          "count": 7,
+          "sample": "넷플릭스서비시스코리아 유한회사 통신판매업신고번호: 제2018-서울종로-0"
+        }
+      ],
+      "headline": {
+        "fontSize": 16,
+        "weight": "400",
+        "lineHeight": null,
+        "count": 3,
+        "sample": "질문이 있으신가요? 문의 전화:"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "top 0.25s cubic-bezier(0.32, 0.94, 0.6, 1), font-size 0.25s cubic-bezier(0.32, 0",
+        "anim:animation-und0r9-autofillEnd"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    }
+  ],
+  "sectionsMobile": [
+    {
+      "y": 68,
+      "h": 496,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 867,
+      "h": 201,
+      "container": null,
+      "columns": 6
+    },
+    {
+      "y": 1112,
+      "h": 838,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 1990,
+      "h": 557,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 2819,
+      "h": 1003,
+      "container": null,
+      "columns": 1
+    }
+  ],
+  "reproduction": {
+    "stamp": null,
+    "note": "IR만으로 원본을 오차 밴드 내 재건축→capture 대조 통과 시 스탬프. 스탬프 없는 IR은 리드 자격 없음."
+  }
+}

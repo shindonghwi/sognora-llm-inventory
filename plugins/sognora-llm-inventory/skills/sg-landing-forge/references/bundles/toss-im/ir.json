@@ -1,0 +1,1481 @@
+{
+  "irVersion": 1,
+  "source": {
+    "url": "https://toss.im",
+    "collectedAt": "2026-08-16T17:20:46.407Z"
+  },
+  "page": {
+    "scrollHeight1440": 20149,
+    "scrollHeight390": 17046,
+    "sectionCount": 15
+  },
+  "rhythm": {
+    "bgSequence": [
+      "rgb(255, 255, 255)",
+      "rgb(249, 250, 251)",
+      "rgb(255, 255, 255)",
+      "rgb(249, 250, 251)",
+      "rgb(255, 255, 255)",
+      "rgb(249, 250, 251)",
+      "rgb(255, 255, 255)",
+      "rgb(255, 255, 255)",
+      "rgb(255, 255, 255)",
+      "rgb(249, 250, 251)",
+      "rgb(0, 0, 0)",
+      "rgb(0, 0, 0)",
+      "rgb(0, 0, 0)",
+      "rgb(245, 246, 248)",
+      "rgb(249, 250, 251)"
+    ],
+    "heights": [
+      900,
+      604,
+      1687,
+      2311,
+      1326,
+      1686,
+      1723,
+      800,
+      4232,
+      1687,
+      883,
+      231,
+      225,
+      306,
+      999
+    ],
+    "containers": [
+      1344,
+      1140,
+      1064,
+      800,
+      726,
+      518
+    ]
+  },
+  "typeScale": [
+    {
+      "px": 80,
+      "weight": "700",
+      "count": 1
+    },
+    {
+      "px": 66,
+      "weight": "700",
+      "count": 1
+    },
+    {
+      "px": 60,
+      "weight": "700",
+      "count": 2
+    },
+    {
+      "px": 50,
+      "weight": "700",
+      "count": 6
+    },
+    {
+      "px": 48,
+      "weight": "700",
+      "count": 5
+    },
+    {
+      "px": 40,
+      "weight": "700",
+      "count": 9
+    },
+    {
+      "px": 36,
+      "weight": "700",
+      "count": 1
+    },
+    {
+      "px": 32,
+      "weight": "700",
+      "count": 1
+    },
+    {
+      "px": 30,
+      "weight": "700",
+      "count": 5
+    },
+    {
+      "px": 28,
+      "weight": "700",
+      "count": 10
+    },
+    {
+      "px": 23,
+      "weight": "600",
+      "count": 10
+    },
+    {
+      "px": 22,
+      "weight": "600",
+      "count": 7
+    },
+    {
+      "px": 20,
+      "weight": "600",
+      "count": 10
+    },
+    {
+      "px": 18,
+      "weight": "400",
+      "count": 1
+    }
+  ],
+  "motion": {
+    "durationsMs": [
+      {
+        "ms": 200,
+        "count": 14
+      },
+      {
+        "ms": 100,
+        "count": 9
+      }
+    ],
+    "keyframesCount": 14,
+    "keyframesNamed": [
+      "pLoader-rotation",
+      "pLoader-rotation",
+      "pLoader-turn",
+      "pLoader-turn",
+      "pSkeleton-wave",
+      "pSkeleton-wave",
+      "fadeIn",
+      "fadeIn",
+      "rotation",
+      "rotation",
+      "turn",
+      "turn",
+      "shimmer",
+      "shimmer"
+    ],
+    "runningAnimations": [
+      {
+        "name": "animation-8hxyql",
+        "duration": 500,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "finished"
+      },
+      {
+        "name": "animation-1x3fevv",
+        "duration": 500,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "finished"
+      },
+      {
+        "name": "animation-1x3fevv",
+        "duration": 500,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "finished"
+      },
+      {
+        "name": "animation-1x3fevv",
+        "duration": 500,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "finished"
+      },
+      {
+        "name": "animation-1x3fevv",
+        "duration": 500,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "finished"
+      },
+      {
+        "name": "animation-1x3fevv",
+        "duration": 500,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "finished"
+      },
+      {
+        "name": "animation-1x3fevv",
+        "duration": 1000,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "finished"
+      },
+      {
+        "name": "animation-1x3fevv",
+        "duration": 1000,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "finished"
+      },
+      {
+        "name": "animation-1x3fevv",
+        "duration": 1000,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "finished"
+      },
+      {
+        "name": "animation-1x3fevv",
+        "duration": 1000,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "finished"
+      },
+      {
+        "name": "animation-1x3fevv",
+        "duration": 1000,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "finished"
+      },
+      {
+        "name": "animation-1x3fevv",
+        "duration": 1000,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "finished"
+      },
+      {
+        "name": "animation-1x3fevv",
+        "duration": 1000,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "finished"
+      },
+      {
+        "name": "animation-1x3fevv",
+        "duration": 1000,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "finished"
+      },
+      {
+        "name": "animation-1x3fevv",
+        "duration": 1000,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "finished"
+      },
+      {
+        "name": "animation-1x3fevv",
+        "duration": 1000,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "finished"
+      },
+      {
+        "name": "animation-1x3fevv",
+        "duration": 1000,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "finished"
+      },
+      {
+        "name": "animation-1x3fevv",
+        "duration": 1000,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "finished"
+      },
+      {
+        "name": "animation-1x3fevv",
+        "duration": 1000,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "finished"
+      },
+      {
+        "name": "animation-1x3fevv",
+        "duration": 1000,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "finished"
+      }
+    ],
+    "hoverTimelines": [
+      {
+        "selector": "a.p-button.p-button--default",
+        "frames": 25,
+        "overshoot": false
+      },
+      {
+        "selector": "button.css-19m6557",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "a.p-button.p-button--primary",
+        "frames": 40,
+        "overshoot": false
+      },
+      {
+        "selector": "a",
+        "frames": 2,
+        "overshoot": false
+      }
+    ],
+    "revealTimelines": [
+      {
+        "selector": "div.css-nwai3a",
+        "startY": 5696,
+        "frames": 2
+      },
+      {
+        "selector": "div.css-qigr3f",
+        "startY": 5794,
+        "frames": 2
+      },
+      {
+        "selector": "div.css-g3099o",
+        "startY": 9198,
+        "frames": 2
+      },
+      {
+        "selector": "div.css-lygwol",
+        "startY": 9398,
+        "frames": 2
+      },
+      {
+        "selector": "img.css-r38qjp",
+        "startY": 11645,
+        "frames": 3
+      },
+      {
+        "selector": "img.css-1i2ft9x",
+        "startY": 12945,
+        "frames": 3
+      }
+    ],
+    "listenerProfile": {
+      "click": 20,
+      "visibilitychange": 9,
+      "pageshow": 8,
+      "pagehide": 7,
+      "focus": 5,
+      "resize": 5,
+      "blur": 4,
+      "keydown": 4,
+      "pointerdown": 4,
+      "scroll": 3,
+      "keypress": 3,
+      "pointermove": 3
+    }
+  },
+  "assetStats": {
+    "count": 81,
+    "images": 31,
+    "withRect": 26,
+    "totalBytes": 3314750
+  },
+  "layers": [],
+  "sections": [
+    {
+      "y": 0,
+      "h": 900,
+      "bg": "rgb(255, 255, 255)",
+      "tag": "div",
+      "cls": "css-1dvptih",
+      "container": null,
+      "columns": 1,
+      "type": [
+        {
+          "fontSize": 66,
+          "weight": "700",
+          "lineHeight": "92.4px",
+          "count": 1,
+          "sample": "금융의 모든 것\n토스에서 쉽고 간편하게",
+          "floating": true
+        },
+        {
+          "fontSize": 23,
+          "weight": "600",
+          "lineHeight": "34.5px",
+          "count": 1,
+          "sample": "온라인과 오프라인 모두\n국내는 물론, 해외에서도\n토스로 간편하게 결제해요",
+          "floating": true
+        },
+        {
+          "fontSize": 17,
+          "weight": "600",
+          "lineHeight": "18px",
+          "count": 1,
+          "sample": "App Store",
+          "floating": true
+        },
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": "16px",
+          "count": 1,
+          "sample": "|",
+          "floating": true
+        },
+        {
+          "fontSize": 15,
+          "weight": "400",
+          "lineHeight": "20px",
+          "count": 1,
+          "sample": "회사 소개",
+          "floating": true
+        },
+        {
+          "fontSize": 12,
+          "weight": "600",
+          "lineHeight": "18px",
+          "count": 1,
+          "sample": "앱 다운로드",
+          "floating": true
+        }
+      ],
+      "headline": {
+        "fontSize": 66,
+        "weight": "700",
+        "lineHeight": "92.4px",
+        "count": 1,
+        "sample": "금융의 모든 것\n토스에서 쉽고 간편하게",
+        "floating": true
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 1440,
+          "h": 900,
+          "aspect": 1.6,
+          "radius": null,
+          "objectFit": "cover"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 900,
+      "h": 604,
+      "bg": "rgb(249, 250, 251)",
+      "tag": "div",
+      "cls": "css-1m6cwp8",
+      "container": 726,
+      "columns": 1,
+      "type": [
+        {
+          "fontSize": 32,
+          "weight": "700",
+          "lineHeight": "51.2px",
+          "count": 1,
+          "sample": "내 모든 금융 내역을 한눈에 조회하고 한 곳에서 관리하세요.\n이제껏 경험"
+        }
+      ],
+      "headline": {
+        "fontSize": 32,
+        "weight": "700",
+        "lineHeight": "51.2px",
+        "count": 1,
+        "sample": "내 모든 금융 내역을 한눈에 조회하고 한 곳에서 관리하세요.\n이제껏 경험"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all"
+      ],
+      "padding": {
+        "top": "200px",
+        "bottom": "200px"
+      }
+    },
+    {
+      "y": 1504,
+      "h": 1687,
+      "bg": "rgb(255, 255, 255)",
+      "tag": "div",
+      "cls": "p-container",
+      "container": 1140,
+      "columns": 1,
+      "type": [
+        {
+          "fontSize": 50,
+          "weight": "700",
+          "lineHeight": "70px",
+          "count": 1,
+          "sample": "내 돈 관리,\n지출부터 일정까지\n똑똑하게"
+        },
+        {
+          "fontSize": 28,
+          "weight": "700",
+          "lineHeight": "36.4px",
+          "count": 1,
+          "sample": "홈 · 소비"
+        },
+        {
+          "fontSize": 23,
+          "weight": "600",
+          "lineHeight": "34.5px",
+          "count": 1,
+          "sample": "토스에 계좌와 카드를 연결해 보세요.\n계좌 잔액, 대출·투자 내역은 기본"
+        }
+      ],
+      "headline": {
+        "fontSize": 50,
+        "weight": "700",
+        "lineHeight": "70px",
+        "count": 1,
+        "sample": "내 돈 관리,\n지출부터 일정까지\n똑똑하게"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 342,
+          "h": 741,
+          "aspect": 0.46,
+          "radius": "22px",
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 600,
+          "h": 936,
+          "aspect": 0.64,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 342,
+          "h": 741,
+          "aspect": 0.46,
+          "radius": "22px",
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 600,
+          "h": 936,
+          "aspect": 0.64,
+          "radius": null,
+          "objectFit": "fill"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "anim:0.5s ease-in-out forwards animation-1x3fevv",
+        "anim:0.5s ease-in-out 0.5s forwards animation-1x3fevv",
+        "anim:0.5s ease-in-out 1s forwards animation-1x3fevv",
+        "anim:0.5s ease-in-out 1.5s forwards animation-1x3fevv"
+      ],
+      "padding": {
+        "top": "250px",
+        "bottom": "165px"
+      }
+    },
+    {
+      "y": 3191,
+      "h": 2311,
+      "bg": "rgb(249, 250, 251)",
+      "tag": "div",
+      "cls": "p-container",
+      "container": 1140,
+      "columns": 1,
+      "type": [
+        {
+          "fontSize": 50,
+          "weight": "700",
+          "lineHeight": "70px",
+          "count": 1,
+          "sample": "간편하고 안전하게\n수수료는 평생 무료로,\n이런 송금 써보셨나요?"
+        },
+        {
+          "fontSize": 40,
+          "weight": "700",
+          "lineHeight": "56px",
+          "count": 3,
+          "sample": "토스 평생 무료송금으로\n모두의 금융에 자유를"
+        },
+        {
+          "fontSize": 28,
+          "weight": "700",
+          "lineHeight": "36.4px",
+          "count": 1,
+          "sample": "송금"
+        },
+        {
+          "fontSize": 22,
+          "weight": "600",
+          "lineHeight": "33px",
+          "count": 3,
+          "sample": "누구에게 보내든 은행 상관 없이,\n이제 토스와 함께 수수료 걱정 없이 송"
+        },
+        {
+          "fontSize": 20,
+          "weight": "600",
+          "lineHeight": "28px",
+          "count": 3,
+          "sample": "평생 무료 송금"
+        }
+      ],
+      "headline": {
+        "fontSize": 50,
+        "weight": "700",
+        "lineHeight": "70px",
+        "count": 1,
+        "sample": "간편하고 안전하게\n수수료는 평생 무료로,\n이런 송금 써보셨나요?"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 509,
+          "h": 385,
+          "aspect": 1.32,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 509,
+          "h": 385,
+          "aspect": 1.32,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 509,
+          "h": 385,
+          "aspect": 1.32,
+          "radius": null,
+          "objectFit": "fill"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "anim:0.5s ease-in-out forwards animation-1x3fevv",
+        "anim:1s ease-in-out 0.5s forwards animation-1x3fevv",
+        "anim:1s ease-in-out 1s forwards animation-1x3fevv"
+      ],
+      "padding": {
+        "top": "250px",
+        "bottom": "250px"
+      }
+    },
+    {
+      "y": 5501,
+      "h": 1326,
+      "bg": "rgb(255, 255, 255)",
+      "tag": "div",
+      "cls": "p-container",
+      "container": 1140,
+      "columns": 1,
+      "type": [
+        {
+          "fontSize": 50,
+          "weight": "700",
+          "lineHeight": "70px",
+          "count": 1,
+          "sample": "여러 은행의 조건을\n1분 만에\n확인해보세요"
+        },
+        {
+          "fontSize": 48,
+          "weight": "700",
+          "lineHeight": "72px",
+          "count": 5,
+          "sample": "한도는 높게,"
+        },
+        {
+          "fontSize": 28,
+          "weight": "700",
+          "lineHeight": "36.4px",
+          "count": 1,
+          "sample": "대출"
+        },
+        {
+          "fontSize": 23,
+          "weight": "600",
+          "lineHeight": "34.5px",
+          "count": 1,
+          "sample": "앉은 자리에서 여러 은행의 한도와 금리를 비교하고\n내게 꼭 맞는 대출을 "
+        }
+      ],
+      "headline": {
+        "fontSize": 50,
+        "weight": "700",
+        "lineHeight": "70px",
+        "count": 1,
+        "sample": "여러 은행의 조건을\n1분 만에\n확인해보세요"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 600,
+          "h": 936,
+          "aspect": 0.64,
+          "radius": null,
+          "objectFit": "fill"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "anim:0.5s ease-in-out forwards animation-1x3fevv",
+        "anim:0.5s ease-in-out 0.5s forwards animation-1x3fevv",
+        "anim:0.5s ease-in-out 1.5s forwards animation-1x3fevv",
+        "anim:0.5s ease-in-out 2s forwards animation-1x3fevv",
+        "anim:0.5s ease-in-out 2.5s forwards animation-1x3fevv",
+        "anim:0.5s ease-in-out 1s forwards animation-1x3fevv"
+      ],
+      "padding": {
+        "top": "250px",
+        "bottom": "250px"
+      }
+    },
+    {
+      "y": 6827,
+      "h": 1686,
+      "bg": "rgb(249, 250, 251)",
+      "tag": "div",
+      "cls": "p-container",
+      "container": 1140,
+      "columns": 2,
+      "type": [
+        {
+          "fontSize": 50,
+          "weight": "700",
+          "lineHeight": "70px",
+          "count": 1,
+          "sample": "금융 생활의 첫 걸음,\n신용점수를 미리\n무료로 관리하세요"
+        },
+        {
+          "fontSize": 28,
+          "weight": "700",
+          "lineHeight": "36.4px",
+          "count": 1,
+          "sample": "신용"
+        },
+        {
+          "fontSize": 28,
+          "weight": "700",
+          "lineHeight": "42px",
+          "count": 4,
+          "sample": "내 신용점수"
+        },
+        {
+          "fontSize": 22,
+          "weight": "600",
+          "lineHeight": "33px",
+          "count": 4,
+          "sample": "언제 어디서든, 원할 때 간편하게\nKCB, NICE 신용점수를 한 곳에서"
+        }
+      ],
+      "headline": {
+        "fontSize": 50,
+        "weight": "700",
+        "lineHeight": "70px",
+        "count": 1,
+        "sample": "금융 생활의 첫 걸음,\n신용점수를 미리\n무료로 관리하세요"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 120,
+          "h": 120,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 120,
+          "h": 120,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 120,
+          "h": 120,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 120,
+          "h": 120,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "fill"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "anim:0.5s ease-in-out forwards animation-1x3fevv",
+        "anim:1s ease-in-out 0.5s forwards animation-1x3fevv",
+        "anim:1s ease-in-out 1s forwards animation-1x3fevv"
+      ],
+      "padding": {
+        "top": "250px",
+        "bottom": "250px"
+      }
+    },
+    {
+      "y": 8514,
+      "h": 1723,
+      "bg": "rgb(255, 255, 255)",
+      "tag": "div",
+      "cls": "css-8vb2wj",
+      "container": 1140,
+      "columns": 1,
+      "type": [
+        {
+          "fontSize": 50,
+          "weight": "700",
+          "lineHeight": "70px",
+          "count": 1,
+          "sample": "투자,\n모두가 할 수 있도록"
+        },
+        {
+          "fontSize": 28,
+          "weight": "700",
+          "lineHeight": "36.4px",
+          "count": 1,
+          "sample": "투자"
+        },
+        {
+          "fontSize": 23,
+          "weight": "600",
+          "lineHeight": "34.5px",
+          "count": 4,
+          "sample": "이해하기 쉬운 용어, 설명이 필요 없는 직관적인 화면 구성, 송금처럼 쉬"
+        }
+      ],
+      "headline": {
+        "fontSize": 50,
+        "weight": "700",
+        "lineHeight": "70px",
+        "count": 1,
+        "sample": "투자,\n모두가 할 수 있도록"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 342,
+          "h": 744,
+          "aspect": 0.46,
+          "radius": "22px",
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 600,
+          "h": 936,
+          "aspect": 0.64,
+          "radius": null,
+          "objectFit": "fill"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "anim:0.5s ease-in-out forwards animation-1x3fevv",
+        "anim:0.5s ease-in-out 1s forwards animation-1x3fevv",
+        "anim:0.5s ease-in-out 1.5s forwards animation-1x3fevv",
+        "anim:0.5s ease-in-out 1.8s forwards animation-1x3fevv"
+      ],
+      "padding": {
+        "top": "250px",
+        "bottom": "250px"
+      }
+    },
+    {
+      "y": 10237,
+      "h": 800,
+      "bg": "rgb(255, 255, 255)",
+      "tag": "div",
+      "cls": "css-1nqg7r1",
+      "container": 518,
+      "columns": 2,
+      "type": [
+        {
+          "fontSize": 80,
+          "weight": "700",
+          "lineHeight": "104px",
+          "count": 1,
+          "sample": "꼭 필요했던 금융"
+        }
+      ],
+      "headline": {
+        "fontSize": 80,
+        "weight": "700",
+        "lineHeight": "104px",
+        "count": 1,
+        "sample": "꼭 필요했던 금융"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 11037,
+      "h": 4232,
+      "bg": "rgb(255, 255, 255)",
+      "tag": "div",
+      "cls": "p-container",
+      "container": 1140,
+      "columns": 2,
+      "type": [
+        {
+          "fontSize": 60,
+          "weight": "700",
+          "lineHeight": "84px",
+          "count": 1,
+          "sample": "금융을 넘어\n일상을 더 편리하게"
+        },
+        {
+          "fontSize": 40,
+          "weight": "700",
+          "lineHeight": "52px",
+          "count": 6,
+          "sample": "세금 납부, 등본 발급까지"
+        },
+        {
+          "fontSize": 20,
+          "weight": "600",
+          "lineHeight": "30px",
+          "count": 3,
+          "sample": "놓치기 쉬운 세금 납부 및 환급은 물론\n발급을 받을 때마다 귀찮았던 주민"
+        }
+      ],
+      "headline": {
+        "fontSize": 60,
+        "weight": "700",
+        "lineHeight": "84px",
+        "count": 1,
+        "sample": "금융을 넘어\n일상을 더 편리하게"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 740,
+          "h": 807,
+          "aspect": 0.92,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 673,
+          "h": 838,
+          "aspect": 0.8,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 336,
+          "h": 432,
+          "aspect": 0.78,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 1049,
+          "h": 706,
+          "aspect": 1.49,
+          "radius": null,
+          "objectFit": "fill"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all"
+      ],
+      "padding": {
+        "top": "250px",
+        "bottom": "250px"
+      }
+    },
+    {
+      "y": 15269,
+      "h": 1687,
+      "bg": "rgb(249, 250, 251)",
+      "tag": "div",
+      "cls": "p-container",
+      "container": 1140,
+      "columns": 1,
+      "type": [
+        {
+          "fontSize": 50,
+          "weight": "700",
+          "lineHeight": "70px",
+          "count": 1,
+          "sample": "결제는 간편하게,\n할인과 적립은 두둑히"
+        },
+        {
+          "fontSize": 28,
+          "weight": "700",
+          "lineHeight": "36.4px",
+          "count": 1,
+          "sample": "결제"
+        },
+        {
+          "fontSize": 23,
+          "weight": "600",
+          "lineHeight": "34.5px",
+          "count": 4,
+          "sample": "온라인과 오프라인 모두\n국내는 물론, 해외에서도\n토스로 간편하게 결제해요"
+        }
+      ],
+      "headline": {
+        "fontSize": 50,
+        "weight": "700",
+        "lineHeight": "70px",
+        "count": 1,
+        "sample": "결제는 간편하게,\n할인과 적립은 두둑히"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 342,
+          "h": 733,
+          "aspect": 0.47,
+          "radius": "22px",
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 600,
+          "h": 936,
+          "aspect": 0.64,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 342,
+          "h": 741,
+          "aspect": 0.46,
+          "radius": "22px",
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 600,
+          "h": 936,
+          "aspect": 0.64,
+          "radius": null,
+          "objectFit": "fill"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "anim:0.5s ease-in-out forwards animation-1x3fevv",
+        "anim:0.5s ease-in-out 1s forwards animation-1x3fevv",
+        "anim:0.5s ease-in-out 0.5s forwards animation-1x3fevv",
+        "anim:0.5s ease-in-out 1.5s forwards animation-1x3fevv"
+      ],
+      "padding": {
+        "top": "250px",
+        "bottom": "165px"
+      }
+    },
+    {
+      "y": 17056,
+      "h": 883,
+      "bg": "rgb(0, 0, 0)",
+      "tag": "div",
+      "cls": "css-j6vig4",
+      "container": null,
+      "columns": 1,
+      "type": [],
+      "headline": null,
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 1440,
+          "h": 872,
+          "aspect": 1.65,
+          "radius": null,
+          "objectFit": "fill"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "anim:0.5s ease-in-out forwards animation-1x3fevv"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 17938,
+      "h": 231,
+      "bg": "rgb(0, 0, 0)",
+      "tag": "div",
+      "cls": "css-awfxon",
+      "container": null,
+      "columns": 1,
+      "type": [
+        {
+          "fontSize": 60,
+          "weight": "700",
+          "lineHeight": "84px",
+          "count": 1,
+          "sample": "사업도 토스와 함께"
+        },
+        {
+          "fontSize": 30,
+          "weight": "700",
+          "lineHeight": "42px",
+          "count": 1,
+          "sample": "사업을 시작하셨나요?\n사업의 시작부터 관리까지\n이제 토스와 함께 하세요."
+        }
+      ],
+      "headline": {
+        "fontSize": 60,
+        "weight": "700",
+        "lineHeight": "84px",
+        "count": 1,
+        "sample": "사업도 토스와 함께"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "anim:0.5s ease-in-out forwards animation-1x3fevv"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 18369,
+      "h": 225,
+      "bg": "rgb(0, 0, 0)",
+      "tag": "div",
+      "cls": "css-q9lojb",
+      "container": 1344,
+      "columns": 4,
+      "type": [
+        {
+          "fontSize": 30,
+          "weight": "700",
+          "lineHeight": "39px",
+          "count": 4,
+          "sample": "토스결제"
+        },
+        {
+          "fontSize": 20,
+          "weight": "600",
+          "lineHeight": "32px",
+          "count": 4,
+          "sample": "합리적인 수수료,\n간편한 결제 경험으로 비용은\n절감하고 매출은 늘리세요."
+        },
+        {
+          "fontSize": 15,
+          "weight": "600",
+          "lineHeight": "18px",
+          "count": 4,
+          "sample": "가맹점 문의하기"
+        }
+      ],
+      "headline": {
+        "fontSize": 30,
+        "weight": "700",
+        "lineHeight": "39px",
+        "count": 4,
+        "sample": "토스결제"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "background 0.2s, color 0.1s"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 18844,
+      "h": 306,
+      "bg": "rgb(245, 246, 248)",
+      "tag": "section",
+      "cls": "css-2b76fp",
+      "container": 800,
+      "columns": 1,
+      "type": [
+        {
+          "fontSize": 36,
+          "weight": "700",
+          "lineHeight": "46.8px",
+          "count": 1,
+          "sample": "비즈니스 고객 제보"
+        },
+        {
+          "fontSize": 18,
+          "weight": "400",
+          "lineHeight": "27px",
+          "count": 1,
+          "sample": "토스팀과의 협업 중 불편을 느끼셨나요?\n지금 바로 알려주세요."
+        },
+        {
+          "fontSize": 15,
+          "weight": "600",
+          "lineHeight": "18px",
+          "count": 1,
+          "sample": "접수하기"
+        }
+      ],
+      "headline": {
+        "fontSize": 36,
+        "weight": "700",
+        "lineHeight": "46.8px",
+        "count": 1,
+        "sample": "비즈니스 고객 제보"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 240,
+          "h": 240,
+          "aspect": 1,
+          "radius": null,
+          "objectFit": "contain"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "background 0.2s, color 0.1s"
+      ],
+      "padding": {
+        "top": "33px",
+        "bottom": "33px"
+      }
+    },
+    {
+      "y": 19150,
+      "h": 999,
+      "bg": "rgb(249, 250, 251)",
+      "tag": "footer",
+      "cls": "p-footer",
+      "container": 1064,
+      "columns": 4,
+      "type": [
+        {
+          "fontSize": 15,
+          "weight": "700",
+          "lineHeight": "30px",
+          "count": 5,
+          "sample": "서비스"
+        },
+        {
+          "fontSize": 15,
+          "weight": "400",
+          "lineHeight": "30px",
+          "count": 37,
+          "sample": "공지사항"
+        },
+        {
+          "fontSize": 15,
+          "weight": "700",
+          "lineHeight": "20px",
+          "count": 1,
+          "sample": "㈜비바리퍼블리카"
+        },
+        {
+          "fontSize": 13,
+          "weight": "400",
+          "lineHeight": "20px",
+          "count": 2,
+          "sample": "사업자 등록번호 : 120-88-01280 | 대표 : 이승건 호스팅 서"
+        },
+        {
+          "fontSize": 13,
+          "weight": "400",
+          "lineHeight": "18px",
+          "count": 12,
+          "sample": "서비스 이용약관"
+        },
+        {
+          "fontSize": 13,
+          "weight": "500",
+          "lineHeight": "18px",
+          "count": 8,
+          "sample": "개인정보 처리방침"
+        }
+      ],
+      "headline": {
+        "fontSize": 15,
+        "weight": "700",
+        "lineHeight": "30px",
+        "count": 5,
+        "sample": "서비스"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "opacity 0.2s"
+      ],
+      "padding": {
+        "top": "50px",
+        "bottom": "100px"
+      }
+    }
+  ],
+  "sectionsMobile": [
+    {
+      "y": 0,
+      "h": 844,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 844,
+      "h": 428,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 1272,
+      "h": 1014,
+      "container": null,
+      "columns": 2
+    },
+    {
+      "y": 2597,
+      "h": 410,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 3067,
+      "h": 432,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 3559,
+      "h": 410,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 4069,
+      "h": 1151,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 5531,
+      "h": 220,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 5771,
+      "h": 220,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 6011,
+      "h": 220,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 6251,
+      "h": 220,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 6571,
+      "h": 1097,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 7668,
+      "h": 665,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 8598,
+      "h": 602,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 9299,
+      "h": 435,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 10385,
+      "h": 493,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 10978,
+      "h": 1559,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 12537,
+      "h": 604,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 13388,
+      "h": 881,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 14369,
+      "h": 310,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 14679,
+      "h": 2367,
+      "container": null,
+      "columns": 1
+    }
+  ],
+  "reproduction": {
+    "stamp": null,
+    "note": "IR만으로 원본을 오차 밴드 내 재건축→capture 대조 통과 시 스탬프. 스탬프 없는 IR은 리드 자격 없음."
+  }
+}

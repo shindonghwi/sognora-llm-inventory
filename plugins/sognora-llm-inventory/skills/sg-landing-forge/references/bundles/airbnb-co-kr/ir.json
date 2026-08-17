@@ -1,0 +1,612 @@
+{
+  "irVersion": 1,
+  "source": {
+    "url": "https://www.airbnb.co.kr",
+    "collectedAt": "2026-08-17T03:11:42.804Z"
+  },
+  "page": {
+    "scrollHeight1440": 3436,
+    "scrollHeight390": 3953,
+    "sectionCount": 9
+  },
+  "rhythm": {
+    "bgSequence": [
+      "rgb(255, 255, 255)",
+      "rgb(255, 255, 255)",
+      "rgb(255, 255, 255)",
+      "rgb(255, 255, 255)",
+      "rgb(255, 255, 255)",
+      "rgb(255, 255, 255)",
+      "rgb(255, 255, 255)",
+      "rgb(247, 247, 247)",
+      "rgb(247, 247, 247)"
+    ],
+    "heights": [
+      328,
+      315,
+      315,
+      315,
+      228,
+      331,
+      315,
+      359,
+      474
+    ],
+    "containers": [
+      1365,
+      1329
+    ]
+  },
+  "typeScale": [
+    {
+      "px": 28,
+      "weight": "700",
+      "count": 1
+    },
+    {
+      "px": 22,
+      "weight": "500",
+      "count": 1
+    },
+    {
+      "px": 21,
+      "weight": "700",
+      "count": 1
+    },
+    {
+      "px": 14,
+      "weight": "400",
+      "count": 60
+    },
+    {
+      "px": 14,
+      "weight": "500",
+      "count": 38
+    },
+    {
+      "px": 12,
+      "weight": "500",
+      "count": 3
+    },
+    {
+      "px": 10,
+      "weight": "400",
+      "count": 1
+    }
+  ],
+  "motion": {
+    "durationsMs": [
+      {
+        "ms": 300,
+        "count": 86
+      },
+      {
+        "ms": 250,
+        "count": 77
+      },
+      {
+        "ms": 200,
+        "count": 42
+      },
+      {
+        "ms": 100,
+        "count": 41
+      },
+      {
+        "ms": 33,
+        "count": 6
+      },
+      {
+        "ms": 452,
+        "count": 2
+      }
+    ],
+    "keyframesCount": 369,
+    "keyframesNamed": [
+      "kf-1dhnwt1",
+      "kf-h0qfv9",
+      "kf-mbjk4k",
+      "kf-1if0uhs",
+      "kf-ye8ntg",
+      "kf-s0j3wl",
+      "kf-1qnooym",
+      "kf-14dwuik",
+      "kf-12tey57",
+      "kf-uo7jbc",
+      "kf-1dua8o5",
+      "kf-ogm7kb",
+      "kf-1ma8klo",
+      "kf-fdfy4n",
+      "kf-aozddt",
+      "kf-ng66tb",
+      "kf-1i1njk0",
+      "kf-17sxjk4",
+      "kf-1c30mo4",
+      "kf-slu2u8"
+    ],
+    "runningAnimations": [
+      {
+        "name": "kf-h0qfv9",
+        "duration": 150,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "finished"
+      },
+      {
+        "name": "kf-h0qfv9",
+        "duration": 150,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "finished"
+      },
+      {
+        "name": "kf-h0qfv9",
+        "duration": 150,
+        "easing": "linear",
+        "iterations": 1,
+        "state": "finished"
+      }
+    ],
+    "hoverTimelines": [
+      {
+        "selector": "a.l1lx1n3h.atm_npmupv_14b5rvc_10saat9",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "a.l1lx1n3h.atm_npmupv_14b5rvc_10saat9",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "a.i1feiwj2.atm_bx_nm7nsd",
+        "frames": 2,
+        "overshoot": false
+      },
+      {
+        "selector": "button.l1lx1n3h.atm_npmupv_14b5rvc_10saat9",
+        "frames": 36,
+        "overshoot": false
+      }
+    ],
+    "revealTimelines": [],
+    "listenerProfile": {
+      "click": 250,
+      "visibilitychange": 8,
+      "pagehide": 7,
+      "focus": 7,
+      "beforeunload": 6,
+      "pointerdown": 5,
+      "mousedown": 4,
+      "touchstart": 4,
+      "pageshow": 4,
+      "resize": 4,
+      "keydown": 3,
+      "scroll": 3
+    }
+  },
+  "assetStats": {
+    "count": 161,
+    "images": 159,
+    "withRect": 110,
+    "totalBytes": 1050618
+  },
+  "layers": [],
+  "sections": [
+    {
+      "y": 201,
+      "h": 328,
+      "bg": "rgb(255, 255, 255)",
+      "tag": "div",
+      "cls": "c1yo0219",
+      "container": null,
+      "columns": 1,
+      "type": [
+        {
+          "fontSize": 14,
+          "weight": "400",
+          "lineHeight": "20.02px",
+          "count": 1,
+          "sample": "9개 중 7개 표시됨"
+        }
+      ],
+      "headline": {
+        "fontSize": 14,
+        "weight": "400",
+        "lineHeight": "20.02px",
+        "count": 1,
+        "sample": "9개 중 7개 표시됨"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1), transform 0.1s cubic-bezier(0.2, 0, ",
+        "background-color 0.25s cubic-bezier(0.2, 0, 0, 1), transform 0.25s cubic-bezier(",
+        "transform 0.25s cubic-bezier(0.2, 0, 0, 1)"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 529,
+      "h": 315,
+      "bg": "rgb(255, 255, 255)",
+      "tag": "div",
+      "cls": "c1yo0219",
+      "container": null,
+      "columns": 1,
+      "type": [
+        {
+          "fontSize": 14,
+          "weight": "400",
+          "lineHeight": "20.02px",
+          "count": 1,
+          "sample": "9개 중 7개 표시됨"
+        }
+      ],
+      "headline": {
+        "fontSize": 14,
+        "weight": "400",
+        "lineHeight": "20.02px",
+        "count": 1,
+        "sample": "9개 중 7개 표시됨"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1), transform 0.1s cubic-bezier(0.2, 0, ",
+        "background-color 0.25s cubic-bezier(0.2, 0, 0, 1), transform 0.25s cubic-bezier(",
+        "transform 0.25s cubic-bezier(0.2, 0, 0, 1)"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 843,
+      "h": 315,
+      "bg": "rgb(255, 255, 255)",
+      "tag": "div",
+      "cls": "c1yo0219",
+      "container": null,
+      "columns": 1,
+      "type": [
+        {
+          "fontSize": 14,
+          "weight": "400",
+          "lineHeight": "20.02px",
+          "count": 1,
+          "sample": "9개 중 7개 표시됨"
+        }
+      ],
+      "headline": {
+        "fontSize": 14,
+        "weight": "400",
+        "lineHeight": "20.02px",
+        "count": 1,
+        "sample": "9개 중 7개 표시됨"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1), transform 0.1s cubic-bezier(0.2, 0, ",
+        "background-color 0.25s cubic-bezier(0.2, 0, 0, 1), transform 0.25s cubic-bezier(",
+        "transform 0.25s cubic-bezier(0.2, 0, 0, 1)"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 1158,
+      "h": 315,
+      "bg": "rgb(255, 255, 255)",
+      "tag": "div",
+      "cls": "c1yo0219",
+      "container": null,
+      "columns": 1,
+      "type": [
+        {
+          "fontSize": 14,
+          "weight": "400",
+          "lineHeight": "20.02px",
+          "count": 1,
+          "sample": "9개 중 7개 표시됨"
+        }
+      ],
+      "headline": {
+        "fontSize": 14,
+        "weight": "400",
+        "lineHeight": "20.02px",
+        "count": 1,
+        "sample": "9개 중 7개 표시됨"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1), transform 0.1s cubic-bezier(0.2, 0, ",
+        "background-color 0.25s cubic-bezier(0.2, 0, 0, 1), transform 0.25s cubic-bezier(",
+        "transform 0.25s cubic-bezier(0.2, 0, 0, 1)"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 1472,
+      "h": 228,
+      "bg": "rgb(255, 255, 255)",
+      "tag": "div",
+      "cls": "c1yo0219",
+      "container": null,
+      "columns": 1,
+      "type": [
+        {
+          "fontSize": 14,
+          "weight": "400",
+          "lineHeight": "20.02px",
+          "count": 1,
+          "sample": "16개 중 10개 표시됨"
+        }
+      ],
+      "headline": {
+        "fontSize": 14,
+        "weight": "400",
+        "lineHeight": "20.02px",
+        "count": 1,
+        "sample": "16개 중 10개 표시됨"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1), transform 0.1s cubic-bezier(0.2, 0, "
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 1701,
+      "h": 331,
+      "bg": "rgb(255, 255, 255)",
+      "tag": "div",
+      "cls": "c1yo0219",
+      "container": null,
+      "columns": 1,
+      "type": [
+        {
+          "fontSize": 14,
+          "weight": "400",
+          "lineHeight": "20.02px",
+          "count": 1,
+          "sample": "9개 중 7개 표시됨"
+        }
+      ],
+      "headline": {
+        "fontSize": 14,
+        "weight": "400",
+        "lineHeight": "20.02px",
+        "count": 1,
+        "sample": "9개 중 7개 표시됨"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1), transform 0.1s cubic-bezier(0.2, 0, ",
+        "background-color 0.25s cubic-bezier(0.2, 0, 0, 1), transform 0.25s cubic-bezier("
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 2031,
+      "h": 315,
+      "bg": "rgb(255, 255, 255)",
+      "tag": "div",
+      "cls": "c1yo0219",
+      "container": null,
+      "columns": 1,
+      "type": [
+        {
+          "fontSize": 14,
+          "weight": "400",
+          "lineHeight": "20.02px",
+          "count": 1,
+          "sample": "9개 중 7개 표시됨"
+        }
+      ],
+      "headline": {
+        "fontSize": 14,
+        "weight": "400",
+        "lineHeight": "20.02px",
+        "count": 1,
+        "sample": "9개 중 7개 표시됨"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1), transform 0.1s cubic-bezier(0.2, 0, ",
+        "background-color 0.25s cubic-bezier(0.2, 0, 0, 1), transform 0.25s cubic-bezier("
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 2395,
+      "h": 359,
+      "bg": "rgb(247, 247, 247)",
+      "tag": "div",
+      "cls": "cff48sj",
+      "container": 1365,
+      "columns": 1,
+      "type": [
+        {
+          "fontSize": 22,
+          "weight": "500",
+          "lineHeight": "26px",
+          "count": 1,
+          "sample": "다음 여행을 위한 추천 여행지"
+        },
+        {
+          "fontSize": 14,
+          "weight": "500",
+          "lineHeight": "18px",
+          "count": 29,
+          "sample": "인기"
+        },
+        {
+          "fontSize": 14,
+          "weight": "400",
+          "lineHeight": "18px",
+          "count": 17,
+          "sample": "통나무집 숙소"
+        }
+      ],
+      "headline": {
+        "fontSize": 22,
+        "weight": "500",
+        "lineHeight": "26px",
+        "count": 1,
+        "sample": "다음 여행을 위한 추천 여행지"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1), transform 0.1s cubic-bezier(0.2, 0, "
+      ],
+      "padding": {
+        "top": "48px",
+        "bottom": "48px"
+      }
+    },
+    {
+      "y": 2754,
+      "h": 474,
+      "bg": "rgb(247, 247, 247)",
+      "tag": "div",
+      "cls": "w1pndi7o",
+      "container": 1329,
+      "columns": 3,
+      "type": [
+        {
+          "fontSize": 21,
+          "weight": "700",
+          "lineHeight": "30.03px",
+          "count": 1,
+          "sample": "사이트 바닥글",
+          "floating": true
+        },
+        {
+          "fontSize": 14,
+          "weight": "500",
+          "lineHeight": "18px",
+          "count": 3,
+          "sample": "에어비앤비 지원"
+        },
+        {
+          "fontSize": 14,
+          "weight": "400",
+          "lineHeight": "18px",
+          "count": 22,
+          "sample": "도움말 센터"
+        }
+      ],
+      "headline": {
+        "fontSize": 21,
+        "weight": "700",
+        "lineHeight": "30.03px",
+        "count": 1,
+        "sample": "사이트 바닥글",
+        "floating": true
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "text-decoration-thickness 0.3s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.3s cubic"
+      ],
+      "padding": {
+        "top": "48px",
+        "bottom": "48px"
+      }
+    }
+  ],
+  "sectionsMobile": [
+    {
+      "y": 195,
+      "h": 278,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 473,
+      "h": 278,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 750,
+      "h": 278,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 1028,
+      "h": 278,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 1306,
+      "h": 208,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 1513,
+      "h": 310,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 1823,
+      "h": 278,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 2150,
+      "h": 419,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 2569,
+      "h": 1304,
+      "container": null,
+      "columns": 1
+    }
+  ],
+  "reproduction": {
+    "stamp": null,
+    "note": "IR만으로 원본을 오차 밴드 내 재건축→capture 대조 통과 시 스탬프. 스탬프 없는 IR은 리드 자격 없음."
+  }
+}
