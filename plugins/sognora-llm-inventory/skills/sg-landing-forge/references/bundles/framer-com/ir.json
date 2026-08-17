@@ -377,24 +377,8 @@
       "cls": "framer-uq0uqe-container",
       "container": 1200,
       "columns": 1,
-      "type": [
-        {
-          "fontSize": 14,
-          "weight": "400",
-          "lineHeight": "21px",
-          "count": 1,
-          "sample": "We use cookies to enhance your experienc",
-          "floating": true
-        }
-      ],
-      "headline": {
-        "fontSize": 14,
-        "weight": "400",
-        "lineHeight": "21px",
-        "count": 1,
-        "sample": "We use cookies to enhance your experienc",
-        "floating": true
-      },
+      "type": [],
+      "headline": null,
       "assetSlots": [
         {
           "kind": "video",

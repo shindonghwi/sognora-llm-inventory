@@ -216,22 +216,6 @@
           "lineHeight": "56px",
           "count": 1,
           "sample": "Our mission is to give everyone a voice "
-        },
-        {
-          "fontSize": 18,
-          "weight": "400",
-          "lineHeight": "25.2px",
-          "count": 1,
-          "sample": "about.youtube uses cookies from Google t",
-          "floating": true
-        },
-        {
-          "fontSize": 16,
-          "weight": "500",
-          "lineHeight": "24px",
-          "count": 1,
-          "sample": "OK, got it",
-          "floating": true
         }
       ],
       "headline": {

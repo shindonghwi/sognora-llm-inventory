@@ -205,62 +205,6 @@
           "lineHeight": "18px",
           "count": 2,
           "sample": "이전 슬라이드 이동"
-        },
-        {
-          "fontSize": 17,
-          "weight": "400",
-          "lineHeight": null,
-          "count": 1,
-          "sample": "Bluelink Store",
-          "floating": true
-        },
-        {
-          "fontSize": 16,
-          "weight": "400",
-          "lineHeight": "30px",
-          "count": 1,
-          "sample": "모델",
-          "floating": true
-        },
-        {
-          "fontSize": 16,
-          "weight": "500",
-          "lineHeight": null,
-          "count": 1,
-          "sample": "챗봇 새창 열림",
-          "floating": true
-        },
-        {
-          "fontSize": 15,
-          "weight": "400",
-          "lineHeight": "17.25px",
-          "count": 1,
-          "sample": "EN",
-          "floating": true
-        },
-        {
-          "fontSize": 15,
-          "weight": "500",
-          "lineHeight": "15px",
-          "count": 1,
-          "sample": "견적내기",
-          "floating": true
-        },
-        {
-          "fontSize": 14,
-          "weight": "400",
-          "lineHeight": "14px",
-          "count": 1,
-          "sample": "1번째 배너",
-          "floating": true
-        },
-        {
-          "fontSize": 13.3333,
-          "weight": "400",
-          "lineHeight": null,
-          "count": 1,
-          "sample": "검색",
-          "floating": true
         }
       ],
       "headline": {

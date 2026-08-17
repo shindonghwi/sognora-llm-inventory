@@ -1,5 +1,10 @@
 # sg-landing-forge — CHANGELOG
 
+## 1.0.2 — 2026-08-17 (부유 텍스트 귀속의 쓰레기 필터 + A조 최종 정산)
+
+- ir.mjs: 부유 텍스트 귀속에서 cookie/consent/banner/modal류 오버레이 제외 — framer에서 쿠키 동의 문구가 섹션 헤드라인으로 붙던 사고("없음"보다 나쁜 "틀린 값"). 해당 섹션은 이제 정직하게 headline 없음
+- A조 최종 정산 반영: toss 히어로 66px 귀속 확정(남은 조건 #10~#12 병합 하나), linear·meshy 무조건 자격, framer·jobber 조건부. 보류 0건
+
 ## 1.0.1 — 2026-08-17 (레퍼런스 라이브러리 전면 Tier-R 개편 — 서브에이전트 4조 병렬)
 
 18종 전부 재현급 수집(번들+record+IR)·시각 검증·§8b 체크리스트·재현 노트. 결과: 리드 자격 16종(조건부 포함)·보류 1(stripe — WebGL 시그니처)·차단 2(ohou·mayoclinic). ir.json 16건 커밋(번들 원본은 로컬 캐시 전용). INDEX에 Tier-R 현황 표.

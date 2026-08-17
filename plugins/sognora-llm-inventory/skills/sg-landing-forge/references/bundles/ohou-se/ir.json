@@ -1,0 +1,51 @@
+{
+  "irVersion": 1,
+  "source": {
+    "url": "https://ohou.se",
+    "collectedAt": "2026-08-16T17:34:48.152Z"
+  },
+  "page": {
+    "scrollHeight1440": 900,
+    "scrollHeight390": 844,
+    "sectionCount": 0
+  },
+  "rhythm": {
+    "bgSequence": [],
+    "heights": [],
+    "containers": []
+  },
+  "typeScale": [
+    {
+      "px": 32,
+      "weight": "700",
+      "count": 1
+    },
+    {
+      "px": 16,
+      "weight": "400",
+      "count": 3
+    }
+  ],
+  "motion": {
+    "durationsMs": [],
+    "keyframesCount": 0,
+    "keyframesNamed": [],
+    "runningAnimations": [],
+    "hoverTimelines": [],
+    "revealTimelines": [],
+    "listenerProfile": {}
+  },
+  "assetStats": {
+    "count": 0,
+    "images": 0,
+    "withRect": 0,
+    "totalBytes": 0
+  },
+  "layers": [],
+  "sections": [],
+  "sectionsMobile": [],
+  "reproduction": {
+    "stamp": null,
+    "note": "IR만으로 원본을 오차 밴드 내 재건축→capture 대조 통과 시 스탬프. 스탬프 없는 IR은 리드 자격 없음."
+  }
+}

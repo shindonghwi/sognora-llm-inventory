@@ -463,22 +463,6 @@
           "lineHeight": "29.12px",
           "count": 6,
           "sample": "Accept and optimize payments globally—on"
-        },
-        {
-          "fontSize": 14,
-          "weight": "300",
-          "lineHeight": "19.6px",
-          "count": 1,
-          "sample": "We use cookies to improve your experienc",
-          "floating": true
-        },
-        {
-          "fontSize": 14,
-          "weight": "500",
-          "lineHeight": "19.6px",
-          "count": 1,
-          "sample": "Accept all",
-          "floating": true
         }
       ],
       "headline": {

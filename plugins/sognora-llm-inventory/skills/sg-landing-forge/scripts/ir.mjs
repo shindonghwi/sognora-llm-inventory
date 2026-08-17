@@ -142,12 +142,15 @@ function distill(f, vw) {
 // 절대배치 가지의 텍스트(배경 이미지 위 히어로 카피 등)를 y-범위가 덮는 섹션에 기하학적으로 귀속 (toss 사고)
 function overlayTexts(root) {
   const out = [];
-  (function walk(n, inOv) {
+  const junk = /cookie|consent|gdpr|banner|popup|modal|dialog/i; // 쿠키 동의 카드가 헤드라인으로 붙는 사고(framer) 방지
+  (function walk(n, inOv, inJunk) {
     const ov = inOv || isOverlay(n);
+    const j = inJunk || (n.cls ?? []).some((c) => junk.test(c)) || junk.test(n.id ?? "");
+    if (j) { for (const c of n.children ?? []) walk(c, ov, true); return; }
     if (ov && n.text && n.styles?.fontSize)
       out.push({ y: n.rect.y, fontSize: parseFloat(n.styles.fontSize), weight: n.styles.fontWeight ?? "400", lineHeight: n.styles.lineHeight ?? null, sample: n.text.slice(0, 40) });
-    for (const c of n.children ?? []) walk(c, ov);
-  })(root, false);
+    for (const c of n.children ?? []) walk(c, ov, false);
+  })(root, false, false);
   return out;
 }
 function attachFloating(secs, floats) {
