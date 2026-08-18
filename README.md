@@ -39,7 +39,6 @@ git clone https://github.com/shindonghwi/sognora-llm-inventory.git && cd sognora
 | `sg-web-replicate` | 레퍼런스 사이트의 화면을 측정값으로 복제. 라우트 탐색 → 캡처·측정 → 원본 자산 수집 → 구현 → pixel/box diff 게이트 수렴. 화면 전용 |
 | `sg-biz-validate` | 사업 아이디어 검증. 인터뷰(질문 수 예고) → 경쟁사 3곳+ 실물 분석 → 진입/조건부/철회 판정 → PRD |
 | `sg-growth-expose` | 검색·스토어·AI 답변 노출 최적화. 웹/앱을 자동 판별해 — 웹은 SEO+GEO(AI 크롤러 가시성) 감사 후 적용, 앱은 로케일별 스토어 리스팅 생성. 역효과 전술은 거부 |
-| `sg-demand-mine` | 사업 아이디어를 데이터에서 캔다. 주제어를 사람이 정하지 않고 검색 자동완성이 시드를 고름 → 앱스토어 유입·불만·방치일로 기회 순위(누적 아닌 유량) → 증거 URL·날짜·원문 인용 필수 → 인용 코퍼스 verbatim 대조·킬 패널. 기준은 매출이 아니라 first-dollar |
 | `sg-page-craft` | 랜딩 외 나머지 페이지(요금제·기능·문의·정책·제품 화면). 랜딩 토큰 상속으로 팔레트 표류 차단, 페이지 유형별 근거 규칙(요금제 비교 구조·가격 표기 법적 요건·폼 규범), "살아 있는가" 검사(런타임·콘솔·CSS 클래스 불일치·빈 상태), 치수는 Spectrum·Carbon·Primer에서 인용 |
 | `sg-landing-forge` | 랜딩을 레퍼런스급으로 단조하는 변환 공정(v1). 리드 레퍼런스를 재현급 실측(번들→IR)해 골격을 세우고 토큰·카피·자산·시그니처만 치환. 모든 의무는 기계 게이트(conform·behavior·detect·잔존 검사)가 판정, 증거 3클래스·divergence 판정·라운드 2 |
 
