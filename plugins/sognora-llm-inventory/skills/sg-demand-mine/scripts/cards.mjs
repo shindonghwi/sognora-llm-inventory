@@ -74,7 +74,9 @@ for (const f of files) {
   }
   // 2) A급 하한 — 돈이 오간 흔적 없으면 카드가 아니다
   const aCount = ev.filter((e) => e.class === "A").length;
-  if (aCount === 0) fail.push("A급(지불) 증거 0 — 관찰 목록으로 격리 대상이지 후보가 아니다");
+  const dCount = ev.filter((e) => e.class === "D").length;
+  if (aCount === 0) fail.push("A급(지불 의사) 증거 0 — 관찰 목록으로 격리 대상이지 후보가 아니다");
+  if (dCount) fail.push(`D급(분쟁) 증거 ${dCount}건을 근거로 씀 — 해지·환불·과금 분쟁은 벤더 내부 문제이고 제3자가 들어갈 자리가 없다(rules §1)`);
 
   // 3) 지불자 특정
   if (!card.payer || GENERIC.test(String(card.payer).trim())) fail.push(`지불자가 뭉뚱그려짐: "${card.payer ?? "없음"}"`);

@@ -15,7 +15,10 @@
  *   collection-log.md   채널별 시도/성공/차단/획득 건수 — **차단은 숨기지 않고 기록한다(우회 금지)**
  *
  * 증거 클래스 (rules §1):
- *   A = 돈이 오간 흔적만 (유료 앱 사용자의 결제·해지·가격 불만, 공개 가격표)
+ *   A = **지불 의사** — 공개 가격표(그 값에 실제로 팔리는 중), 유료 사용자의 기능 갭·확장 요구
+ *   D = **분쟁**(해지·환불·과금 오류·가격 인상 불만) — 카드 근거로 쓸 수 없다.
+ *       실전 발견: "돈을 언급하는 사람"은 대개 **돈을 뜯겼다고 느끼는 사람**이지 낼 사람이 아니다.
+ *       피해자는 더 낼 의사가 없고, 벤더는 고칠 의지가 없으며, 제3자가 들어갈 자리가 없다.
  *   B = 시간·노력 (커뮤니티 고통, 이슈 스레드)
  *   C = 정황 (출시·규제·해외 사례) — 단독으로 카드 성립 불가
  */
@@ -44,6 +47,15 @@ const push = async (rows) => {
     seen.add(k);
     await appendFile(corpusPath, JSON.stringify(r) + "\n"); total++;
   }
+};
+// 인용을 분류한다 — 분쟁(D)과 지불 의사(A)를 가르는 것이 이 스킬의 사활이다
+const DISPUTE = /(cancel|refund|scam|fraud|charged|billing|overcharge|price (hike|increase)|rip.?off|unauthorized|해지|환불|사기|과금|청구|인상)/i;
+const PAYGAP  = /(wish it|i wish|can'?t|cannot|unable|impossible|doesn'?t (support|have|let|work with)|no way to|no option|would be (great|nice) if|needs? to|missing|lacks|limited|only (works|supports|lets)|only if|integrat|export|sync|workaround|manual(ly)?|tedious|clunky|hoop|struggl|we pay|paying for|switched from|had to buy|아쉽|안 ?되|불편|수기로)/i;
+const classify = (text, base) => {
+  const s = String(text);
+  if (DISPUTE.test(s) && !PAYGAP.test(s)) return "D";   // 순수 분쟁 = 카드 근거 불가
+  if (PAYGAP.test(s)) return "A";                        // 유료로 쓰면서 못 하는 것 = 지불 의사
+  return base ?? "B";
 };
 const relevant = (text, kw) => { // 키워드 토큰이 실제로 등장하는 항목만 — 검색 페이지의 무관 목록 배제
   const toks = String(kw).split(/\s+/).filter((s) => s.length >= 2);
@@ -96,13 +108,21 @@ if (CHANNELS.has("appstore")) {
   for (const kw of [...EN, ...KWS]) {
     try {
       const s = await (await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(kw)}&entity=software&limit=8&country=${MK}`, { headers: { "user-agent": UA } })).json();
-      for (const a of (s.results ?? []).filter((x) => (x.userRatingCount ?? 0) >= 200).slice(0, 3)) {
+      // seeds.mjs와 같은 정합성 검사 — 여기 없으면 "msp psa"가 트레이딩 카드 감정 앱을 물어온다(실전 사고)
+      const BAD = /^(Games|Entertainment|Music|Sports|Books|Photo & Video|Social Networking|Lifestyle|Travel|News|Weather)$/i;
+      const kwToks = kw.split(/\s+/).filter((w) => w.length >= 4);
+      const fit = (a) => !BAD.test(a.primaryGenreName ?? "") &&
+        (kwToks.length === 0 || kwToks.some((tk) => new RegExp(`\\b${tk.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`, "i").test(`${a.trackName ?? ""} ${a.description ?? ""}`)));
+      const pool = (s.results ?? []).filter((x) => (x.userRatingCount ?? 0) >= 200);
+      const fitted = pool.filter(fit);
+      if (!fitted.length && pool.length) { note(`appstore 정합성 실패: "${kw}"`, "blocked", `질의와 무관한 앱만 잡힘 — ${pool.slice(0, 2).map((a) => `${a.trackName}(${a.primaryGenreName})`).join(", ")}`, 0); continue; }
+      for (const a of fitted.slice(0, 3)) {
         const r = await (await fetch(`https://itunes.apple.com/${MK}/rss/customerreviews/id=${a.trackId}/sortBy=mostRecent/json`, { headers: { "user-agent": UA } })).json();
         const rows = (r?.feed?.entry ?? []).filter((x) => x["im:rating"]).map((x) => ({
           stars: +x["im:rating"].label, date: (x.updated?.label ?? "").slice(0, 10),
           text: `${x.title?.label ?? ""} — ${(x.content?.label ?? "").replace(/\s+/g, " ")}`.slice(0, 260),
         })).filter((x) => x.stars <= 3).map((x) => ({
-          channel: "appstore", class: PAY.test(x.text) ? "A" : "B", // 결제·해지 언급이면 지불 증거
+          channel: "appstore", class: classify(x.text, "B"), // 분쟁(D)과 지불 의사(A)를 가른다
           url: a.trackViewUrl, date: x.date, quote: x.text,
           meta: { app: a.trackName, stars: x.stars, ratings: a.userRatingCount, kw, why: "유료 앱 사용자의 최근 불만 = 검증된 지불 의사 + 현재 미충족" },
         }));
@@ -153,7 +173,8 @@ if (browserChannels.length) {
         const { status, rows } = await visit(urlOf(kw), (page) => page.evaluate(extract));
         if (status >= 400 || status === -1) { blocked++; continue; }
         const mapped = rows.filter((x) => relevant(x, kw)).map((x) => ({
-          channel: name, class: /\$\s?\d|\/month|per month|free plan|pricing/i.test(x) ? "A" : "B",
+          // 마켓 카드에 붙은 공개 가격은 "이 기능이 그 값에 실제로 팔린다"는 지불 증거다
+          channel: name, class: /\$\s?\d|\/month|per month|월\s?[\d,]+원|pricing/i.test(x) ? "A" : classify(x, "B"),
           url: urlOf(kw), date: today, quote: x.slice(0, 240),
           meta: { kw, why: "업무용 3자 앱 마켓 — 유료로 붙여 쓰는 도구의 평점·가격이 드러난다" },
         }));
@@ -178,7 +199,7 @@ if (browserChannels.length) {
           }));
         if (status >= 400 || status === -1) { blocked++; continue; }
         const mapped = rows.filter((r) => relevant(r.text, kw)).map((r) => ({
-          channel: "reddit", class: /cancel|switch(ing)? (from|to)|pay(ing)?|\$\d|per month|\/mo\b|subscription|refund|invoice|quote|해지|결제|유료|구독/i.test(r.text) ? "A" : "B",
+          channel: "reddit", class: classify(r.text, "B"),
           url: r.href, date: today, quote: r.text, meta: { kw, note: "날짜는 수집일 — 스레드 원 날짜는 카드 작성 시 확인" },
         }));
         await push(mapped); got += mapped.length;
@@ -193,7 +214,7 @@ if (browserChannels.length) {
 note("G2·Capterra·Trustpilot·ProductHunt·Fiverr·Upwork", "blocked", "실측(2026-08): playwright+표준 UA로도 403. 우회 시도 금지 — 유료 사용자 불만은 appstore 채널로 대체", 0);
 note("외주·구인 마켓(크몽·숨고·잡코리아 등)", "excluded", "정책상 사용 금지 — 이 스킬은 외주 단가를 증거로 쓰지 않는다", 0);
 
-const byClass = { A: 0, B: 0, C: 0 };
+const byClass = { A: 0, B: 0, C: 0, D: 0 };
 for (const line of (await import("node:fs")).readFileSync(corpusPath, "utf8").split("\n").filter(Boolean))
   byClass[JSON.parse(line).class] = (byClass[JSON.parse(line).class] ?? 0) + 1;
 
@@ -205,11 +226,13 @@ const md = `# 수집 로그 — ${new Date().toISOString().slice(0, 10)}
 |---|---|---|---|
 ${log.map((l) => `| ${l.channel} | ${l.status === "ok" ? "✅" : l.status === "blocked" ? "⛔ 차단" : l.status === "excluded" ? "🚫 정책 제외" : "❌ 실패"} | ${l.got} | ${l.detail} |`).join("\n")}
 
-**총 ${total}건 — A급 ${byClass.A} · B급 ${byClass.B} · C급 ${byClass.C}**
+**총 ${total}건 — A급(지불 의사) ${byClass.A} · B급(시간·노력) ${byClass.B} · C급(정황) ${byClass.C} · **D급(분쟁) ${byClass.D} — 카드 근거 불가****
+
+${byClass.D > byClass.A ? "> ⚠️ **분쟁 신호가 지불 의사보다 많다.** 이 채널·키워드 조합은 '돈을 뜯겼다고 느끼는 사람'을 길어 올리고 있다 — 공개 가격표가 붙은 B2B 마켓(shopify·wordpress)을 주력으로 돌리거나 키워드를 바꿔라(rules §1).\n" : ""}
 
 수집 언어·지역: 질의 ko ${KWS.length}개 / en ${EN.length}개 · 시장 ${args.market ?? "us"} — **영어권 과대·국내 과소 편향을 감안하고 읽어라**(rules §9).
 
-${byClass.A === 0 ? "> ⛔ **A급(지불) 증거 0건. 이 실행은 카드를 만들 수 없다** — 키워드를 바꾸거나 수동 투입 경로를 쓴다. 근거 없는 생성보다 URL이 붙은 생성이 더 위험하다(rules §0).\n" : ""}
+${byClass.A === 0 ? "> ⛔ **A급(지불 의사) 증거 0건. 이 실행은 카드를 만들 수 없다** — 키워드를 바꾸거나 수동 투입 경로를 쓴다. 근거 없는 생성보다 URL이 붙은 생성이 더 위험하다(rules §0).\n" : ""}
 `;
 await writeFile(join(args.out, "collection-log.md"), md);
 console.log(md);
