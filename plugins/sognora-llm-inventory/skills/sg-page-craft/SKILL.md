@@ -12,7 +12,7 @@ description: 랜딩 말고 **나머지 페이지**를 같은 제품처럼 만든
 
 랜딩만 공들이면 하위 페이지가 다른 제품처럼 보인다. 실전 사고 셋이 이 스킬의 근거다:
 
-1. **팔레트 표류** — 랜딩은 웜 페이퍼+오렌지인데 요금제만 회청색+코발트블루. 헤더는 공유하는데 본문에 들어서는 순간 다른 팀이 만든 것처럼 보인다.
+1. **팔레트 표류** — 랜딩과 요금제가 서로 다른 계열의 팔레트를 썼다. 헤더·푸터는 공유하는데 본문에 들어서는 순간 다른 팀이 만든 것처럼 보인다. (이후 랜딩이 개편되며 상당 부분 수렴했지만, **본문 뉴트럴 계열이 여전히 갈렸다** — 한쪽은 웜 그레이, 한쪽은 쿨 슬레이트. 토큰이 한 벌로 정리되지 않으면 이 미세 이탈이 남는다.)
 2. **비교 불가능한 비교표** — 세 플랜의 항목이 서로 달라(사용자 1명 / 팀 공유 크레딧 / 브랜드 설정) 행 축이 성립하지 않았다. 정작 "기능은 전 플랜 동일, 크레딧·인원·팀 관리만 다름"이라는 핵심 사실은 접힌 FAQ 안에 있었다.
 3. **죽은 페이지** — CSS는 `.planLedger/.planRow`를 정의하는데 컴포넌트는 `.planGrid/.planCard`를 써서 레이아웃이 통째로 안 먹었고, 나중엔 `plan.highlights` undefined로 런타임 에러가 났다. **한 번 열어보기만 했어도** 잡혔다.
 
@@ -39,8 +39,8 @@ description: 랜딩 말고 **나머지 페이지**를 같은 제품처럼 만든
   ```
   node scripts/alive.mjs --url <URL> --src <컴포넌트 디렉터리> --out _page/qa
   node scripts/copylint.mjs --url <URL> --out _page/qa
-  node ../sg-landing-forge/scripts/conform.mjs --tokens <랜딩 tokens.json> --url <URL>   # 토큰 상속 검증
-  node ../sg-landing-forge/scripts/detect.mjs --url <URL> --out _page/qa/detect          # AI 티
+  node scripts/conform.mjs --tokens <랜딩 tokens.json> --url <URL>   # 토큰 상속 검증(forge 계기 심)
+  node scripts/detect.mjs --url <URL> --out _page/qa/detect          # AI 티(forge 계기 심)
   ```
 - **P4 눈 검수** — 랜딩과 나란히 놓고 **같은 제품으로 보이는가**, 그리고 이 페이지가 돕기로 한 결정이 실제로 쉬워졌는가. 제품 화면이면 빈 상태·로딩·오류·권한없음 화면을 직접 열어본다(기계는 존재 여부만 안다).
 
@@ -50,7 +50,7 @@ description: 랜딩 말고 **나머지 페이지**를 같은 제품처럼 만든
 |---|---|
 | `alive.mjs` | 살아있는가 — 런타임·콘솔·빈 화면·CSS 클래스 불일치·좌단 밀착·빈 상태 분기 |
 | `copylint.mjs` | 카피 길이·금칙어(GOV.UK 규범 + 한글 상투어 + 제작자 시점 서술) |
-| `conform.mjs`·`detect.mjs` (sg-landing-forge) | 토큰 상속 검증 · AI 티 |
+| `conform.mjs`·`detect.mjs` | sg-landing-forge 계기를 자기 위치 기준으로 찾아 실행하는 심 — 토큰 상속 검증·AI 티. 상대경로에 의존하지 않는다 |
 
 ## 사전 준비
 
