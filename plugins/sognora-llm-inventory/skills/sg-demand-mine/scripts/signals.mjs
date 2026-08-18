@@ -29,7 +29,7 @@ if (!args.q || !args.out) { console.error('usage: signals.mjs --q "키워드,키
 const KWS = String(args.q).split(",").map((s) => s.trim()).filter(Boolean);
 const EN = args.en ? String(args.en).split(",").map((s) => s.trim()).filter(Boolean) : [];
 const LIMIT = +(args.limit ?? 12);
-const CHANNELS = new Set(String(args.channels ?? "appstore,reddit,hn,github").split(",").map((s) => s.trim()));
+const CHANNELS = new Set(String(args.channels ?? "appstore,shopify,wordpress,reddit,hn,github").split(",").map((s) => s.trim()));
 const UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36";
 await mkdir(args.out, { recursive: true });
 const corpusPath = join(args.out, "corpus.jsonl");
@@ -113,8 +113,19 @@ if (CHANNELS.has("appstore")) {
   note("appstore(유료 사용자 불만)", err && !got ? "fail" : "ok", err ?? "★≤3 리뷰 원문+날짜(결제 언급은 A급)", got);
 }
 
+// ── B2B 앱 마켓플레이스: 앱스토어가 구조적으로 못 잡는 업무용 3자 앱의 유료 사용자 ────
+// (실전 발견: 앱스토어 검색은 어떤 B2B 용어든 최대 소비자 앱으로 수렴한다 — QuickBooks 생태계를 한 건도 못 잡았다)
+const VERTICAL = [
+  ["shopify", (kw) => `https://apps.shopify.com/search?q=${encodeURIComponent(kw)}`,
+    () => [...document.querySelectorAll('[data-controller~="app-card"], li, article')].map((el) => el.innerText.replace(/\s+/g, " ").trim())
+      .filter((x) => x.length > 30 && /\d\.\d/.test(x)).slice(0, 12)],
+  ["wordpress", (kw) => `https://wordpress.org/plugins/search/${encodeURIComponent(kw)}/`,
+    () => [...document.querySelectorAll("article, .plugin-card")].map((el) => el.innerText.replace(/\s+/g, " ").trim())
+      .filter((x) => x.length > 30).slice(0, 12)],
+];
+
 // ── 브라우저 채널 (JS 렌더·봇 판별 회피용 표준 UA) ────────────────────────
-const browserChannels = ["reddit"].filter((c) => CHANNELS.has(c));
+const browserChannels = ["reddit", ...VERTICAL.map((v) => v[0])].filter((c) => CHANNELS.has(c));
 if (browserChannels.length) {
   const pw = await load("playwright");
   if (!pw) { note("browser", "fail", "playwright 미설치 — npm i -D playwright && npx playwright install chromium"); }
@@ -134,6 +145,22 @@ if (browserChannels.length) {
       } catch (e) { await ctx.close().catch(() => {}); return { status: -1, rows: [], err: String(e.message).slice(0, 60) }; }
     };
     const today = new Date().toISOString().slice(0, 10);
+
+    for (const [name, urlOf, extract] of VERTICAL) {
+      if (!CHANNELS.has(name)) continue;
+      let got = 0, blocked = 0;
+      for (const kw of [...EN, ...KWS].slice(0, 5)) {
+        const { status, rows } = await visit(urlOf(kw), (page) => page.evaluate(extract));
+        if (status >= 400 || status === -1) { blocked++; continue; }
+        const mapped = rows.filter((x) => relevant(x, kw)).map((x) => ({
+          channel: name, class: /\$\s?\d|\/month|per month|free plan|pricing/i.test(x) ? "A" : "B",
+          url: urlOf(kw), date: today, quote: x.slice(0, 240),
+          meta: { kw, why: "업무용 3자 앱 마켓 — 유료로 붙여 쓰는 도구의 평점·가격이 드러난다" },
+        }));
+        await push(mapped); got += mapped.length;
+      }
+      note(`${name}(B2B 앱 마켓)`, blocked ? "blocked" : "ok", blocked ? `${blocked}개 질의 차단` : "앱 카드(평점·가격)", got);
+    }
 
     if (CHANNELS.has("reddit")) { // B급: 고통 신호 + 유료 이탈 언급(A급 승격 후보)
       let got = 0, blocked = 0;
@@ -179,6 +206,8 @@ const md = `# 수집 로그 — ${new Date().toISOString().slice(0, 10)}
 ${log.map((l) => `| ${l.channel} | ${l.status === "ok" ? "✅" : l.status === "blocked" ? "⛔ 차단" : l.status === "excluded" ? "🚫 정책 제외" : "❌ 실패"} | ${l.got} | ${l.detail} |`).join("\n")}
 
 **총 ${total}건 — A급 ${byClass.A} · B급 ${byClass.B} · C급 ${byClass.C}**
+
+수집 언어·지역: 질의 ko ${KWS.length}개 / en ${EN.length}개 · 시장 ${args.market ?? "us"} — **영어권 과대·국내 과소 편향을 감안하고 읽어라**(rules §9).
 
 ${byClass.A === 0 ? "> ⛔ **A급(지불) 증거 0건. 이 실행은 카드를 만들 수 없다** — 키워드를 바꾸거나 수동 투입 경로를 쓴다. 근거 없는 생성보다 URL이 붙은 생성이 더 위험하다(rules §0).\n" : ""}
 `;

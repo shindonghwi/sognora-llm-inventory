@@ -57,10 +57,20 @@ for (const f of files) {
   if (!ev.length) fail.push("evidence 없음");
   for (const e of ev) {
     if (!e.quote) { fail.push("인용문 없는 증거 항목"); continue; }
-    if (!corpusText.includes(norm(e.quote).slice(0, Math.min(40, norm(e.quote).length))))
+    const nq = norm(e.quote);
+    if (!corpusText.includes(nq.slice(0, Math.min(40, nq.length))))
       fail.push(`인용이 코퍼스에 없음(지어낸 인용 혐의): "${String(e.quote).slice(0, 40)}…"`);
+    else {
+      // verbatim 대조는 '지어낸 인용'만 잡는다. 진짜 인용의 **앞부분을 잘라내** 다른 문제로 재포장하는 수법은 통과한다.
+      const src = corpusRows.find((r) => norm(r.quote).includes(nq.slice(0, Math.min(40, nq.length))));
+      if (src) {
+        const idx = norm(src.quote).indexOf(nq.slice(0, Math.min(40, nq.length)));
+        if (idx > 25) fail.push(`인용 앞부분 ${idx}자를 잘라냈다 — 원문은 "${src.quote.slice(0, 45)}…"로 시작한다(문제 재포장 혐의)`);
+      }
+    }
     if (e.url && !corpusUrls.has(e.url)) warn.push(`URL이 코퍼스 밖: ${e.url}`);
     if (e.date && monthsAgo(e.date) > 12) warn.push(`증거 12개월 초과(TTL): ${e.date} — 재확인 필요`);
+    if (e.class === "A" && e.date && monthsAgo(e.date) > 12) fail.push(`A급 증거가 12개월 밖(${e.date}) — 지불 증거는 최신이어야 한다`);
   }
   // 2) A급 하한 — 돈이 오간 흔적 없으면 카드가 아니다
   const aCount = ev.filter((e) => e.class === "A").length;
@@ -70,6 +80,17 @@ for (const f of files) {
   if (!card.payer || GENERIC.test(String(card.payer).trim())) fail.push(`지불자가 뭉뚱그려짐: "${card.payer ?? "없음"}"`);
   // 4) 현행 지불액 — 가격 상한의 실물 근거
   if (!card.currentSpend?.amountKRW) fail.push("currentSpend 없음 — 지금 이 문제에 얼마를 내고 있는지가 가격 상한이다");
+  else {
+    // 필수 필드로 두면 "없는 근거를 만들어내는 압력"이 생긴다 → 출처 등급을 강제하고 추정은 격리한다
+    const ec = card.currentSpend.evidenceClass;
+    if (!["quoted", "public-pricing", "estimated"].includes(ec))
+      fail.push('currentSpend.evidenceClass 없음 — quoted(인용에 금액 있음) | public-pricing(공개 가격표 URL) | estimated(추정) 중 택1');
+    else if (ec === "quoted" && !ev.some((e) => /[\d][\d,.]*\s*(원|달러|\$|USD|KRW)|\$\s?[\d]/.test(String(e.quote))))
+      fail.push("currentSpend.evidenceClass=quoted인데 인용에 금액 표기가 없다");
+    else if (ec === "public-pricing" && !/https?:\/\//.test(String(card.currentSpend.source ?? "")))
+      fail.push("currentSpend.evidenceClass=public-pricing인데 가격표 URL이 없다");
+    else if (ec === "estimated") warn.push("currentSpend가 추정값 — 가격 상한 근거로 쓸 수 없다. 이 카드는 관찰 목록으로 격리(숏리스트 진입 불가)");
+  }
 
   // 5) why-now: 유형 + 12개월 내 날짜 출처, "LLM 때문" 단독 무효
   const wn = card.whyNow ?? {};
@@ -102,7 +123,9 @@ for (const f of files) {
     fail.push(`clicheType=${card.clicheType} — 추가 입증(clicheProof) 미제출로 탈락`);
 
   // 10) 원장 중복 — 죽은 문제 재제안 금지
-  const dead = ledger.find((l) => norm(l.problem).slice(0, 30) === norm(card.problem).slice(0, 30) && l.verdict === "dead");
+  const toks = (s2) => new Set(norm(s2).split(/\s+/).filter((w) => w.length >= 2));
+  const jac = (a, b) => { const A = toks(a), B = toks(b); const inter = [...A].filter((x) => B.has(x)).length; return inter / Math.max(1, A.size + B.size - inter); };
+  const dead = ledger.find((l) => l.verdict === "dead" && jac(l.problem, card.problem) >= 0.5); // 문장만 바꾼 재제안도 잡는다
   if (dead) fail.push(`이전에 사망한 문제 재제안(${dead.date}: ${dead.reason}) — 새 증거·상황 변화 없이 불가`);
 
   results.push({ file: f, id: card.id ?? f, pass: fail.length === 0, fail, warn, aCount, evCount: ev.length });

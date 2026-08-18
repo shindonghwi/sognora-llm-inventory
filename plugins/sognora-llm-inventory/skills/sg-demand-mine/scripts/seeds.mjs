@@ -105,11 +105,31 @@ console.log(`  문제 구절 ${terms.length}개`);
 console.log(`▶ 시장 실측(country=${MARKET}, 최신성 ${FRESH_DAYS}일) …`);
 const nowSec = Math.floor(NOW.getTime() / 1000), D90 = 90 * 86400;
 const seeds = [];
+const incoherent = [];
 for (const t of terms) {
   if (seeds.length >= TOP) break;
   const s = await j(`https://itunes.apple.com/search?term=${encodeURIComponent(t.term)}&entity=software&limit=50&country=${MARKET}`);
   const all = (s?.results ?? []);
-  const apps = all.filter((a) => (a.userRatingCount ?? 0) >= (KO ? 50 : 200))
+  // 정합성 검사 — 앱스토어 검색은 용어를 흘려 **무관한 최대 소비자 앱**을 물어온다
+  // (실전 사고: "pap smear" → Paper.io 2, "breaking concrete" → Bucket Crusher, "airbnb and vrbo" → Expedia).
+  // 조용히 틀리기 때문에 §0 안전장치(A급 0건 정지)에 걸리지 않는다 → 여기서 잡아야 한다.
+  const BAD_GENRE = /^(Games|Entertainment|Music|Sports|Books|Photo & Video|Social Networking|Lifestyle|Travel|News|Weather)$/i;
+  const tokens = t.term.split(/\s+/).filter((w) => w.length >= 4);
+  const coherent = (a) => {
+    if (BAD_GENRE.test(a.primaryGenreName ?? "")) return false; // 게임·엔터는 어떤 업무 질의의 경쟁자도 아니다
+    const hay = `${a.trackName ?? ""} ${a.description ?? ""}`.toLowerCase();
+    return tokens.length === 0 || tokens.some((tk) => new RegExp(`\\b${tk.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`, "i").test(hay));
+  };
+  const considered = all.filter((a) => (a.userRatingCount ?? 0) >= (KO ? 50 : 200));
+  const kept = considered.filter(coherent);
+  const coherence = considered.length ? +(kept.length / considered.length).toFixed(2) : 0;
+  if (kept.length < 2 || coherence < 0.4) { // 검색 결과가 질의와 어긋나면 이 시드의 시장 수치는 무의미하다
+    incoherent.push({ term: t.term, coherence,
+      reason: coherence < 0.4 ? "질의와 무관한 앱이 다수" : "정합 앱이 2개 미만(시장이 얇음)",
+      sawInstead: considered.slice(0, 3).map((a) => `${a.trackName}(${a.primaryGenreName})`) });
+    continue;
+  }
+  const apps = kept
     .map((a) => ({ id: a.trackId, name: a.trackName, ratings: a.userRatingCount, avg: a.averageUserRating, price: a.formattedPrice, url: a.trackViewUrl,
       updated: (a.currentVersionReleaseDate ?? "").slice(0, 10), released: (a.releaseDate ?? "").slice(0, 10) }))
     .sort((a, b) => b.ratings - a.ratings);
@@ -158,6 +178,8 @@ for (const t of terms) {
     term: t.term, market: MARKET, collectedAt: NOW.toISOString().slice(0, 10),
     demandScore: t.demandScore, queryHits: t.hits, srcCount: t.srcCount, exampleQueries: t.examples,
     flow: { inflowPerDay, staleDays, newEntrants, sampledApps: measured },
+    coherence,
+    measuredApps: apps.slice(0, 3).map((a) => a.name),
     cumulative: { apps: apps.length, totalRatings: apps.reduce((x, a) => x + a.ratings, 0) }, // 참고값 — 판정에 쓰지 않는다
     top: apps.slice(0, 3),
     freshness: { windowDays: FRESH_DAYS, sampled: fresh, from: oldest?.toISOString().slice(0, 10), to: newest?.toISOString().slice(0, 10) },
@@ -174,10 +196,11 @@ const md = `# 시드 발견 — ${NOW.toISOString().slice(0, 10)} · 시장 ${MA
 문형 ${STEMS.length}종 → 실제 질의 ${uniq.length}개(${KO ? "구글+네이버" : "구글"}) → 문제 구절 ${terms.length}개 → 시장 실측 ${seeds.length}개.
 **주제를 사람이 고르지 않았다** — 검색 질의 빈도와 앱스토어 실측이 골랐다.
 
-| # | 시드 | 기회 | 리뷰 유입(일) | 최신 불만율 | 1위 앱 방치 | 신규 진입(1년) | 추세(90일) | 누적(참고) |
+| # | 시드 | 기회 | 리뷰 유입(일) | 최신 불만율 | 1위 앱 방치 | 신규 진입(1년) | 추세(90일) | **측정된 앱(정합 확인용)** |
 |---|---|---|---|---|---|---|---|---|
-${seeds.map((s, i) => `| ${i + 1} | **${s.term}** | ${s.opportunity} | ${s.flow.inflowPerDay}건 | ${Math.round(s.dissatisfaction * 100)}% (n=${s.freshness.sampled}) | ${s.flow.staleDays}일 | ${s.flow.newEntrants}개 | ${s.trend ? `${s.trend.recent90}/${s.trend.prior90}` : "-"} | ${s.cumulative.totalRatings.toLocaleString()} |`).join("\n")}
+${seeds.map((s, i) => `| ${i + 1} | **${s.term}** | ${s.opportunity} | ${s.flow.inflowPerDay}건 | ${Math.round(s.dissatisfaction * 100)}% (n=${s.freshness.sampled}) | ${s.flow.staleDays}일 | ${s.flow.newEntrants}개 | ${s.trend ? `${s.trend.recent90}/${s.trend.prior90}` : "-"} | ${(s.measuredApps ?? []).slice(0, 2).join(", ") || "-"} |`).join("\n")}
 
+${incoherent.length ? `\n### ⚠️ 제외된 시드 ${incoherent.length}개 (정합성·표본 부족)\n\n${incoherent.slice(0, 10).map((x) => `- **${x.term}** — ${x.reason}(정합 ${x.coherence}) → 잡힌 앱: ${x.sawInstead.join(", ") || "없음"}`).join("\n")}\n` : ""}
 > **누적이 아니라 유량으로 잰다.** 누적 평점은 5년치 합계일 뿐 오늘의 수요가 아니다(맨 오른쪽 참고값).
 > 기회 = log10(1+월 리뷰 유입) × 최신 불만율 × 추세배수 × 방치배수. 리뷰 유입은 최근 리뷰 N건이 실제로 며칠에 걸쳐 쌓였는지로 계산한다.
 > 불만율은 **최근 ${FRESH_DAYS}일 리뷰만** 센다. **1위 앱 방치일**이 길수록 기회이고, **신규 진입**이 많으면 수요가 살아 있다는 뜻이다.
