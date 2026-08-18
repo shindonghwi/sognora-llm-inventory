@@ -582,6 +582,18 @@ function evaluateTells(raw, viewport, theme, isDesktop) {
     const spaced = ko.filter((e) => e.ls > 0);
     if (spaced.length >= 3) add("KO3", null, `한글 본문 양수 자간 ${spaced.length}곳`);
     if (!KOREAN_FONT_RE.test(raw.bodyFont)) add("KO4", null, `한글 페이지인데 스택에 한글 폰트 없음: ${raw.bodyFont.slice(0, 60)}`);
+
+    // KO5 제작 노트 문체 — 만든 사람이 자기가 한 일을 보고하는 문장. 랜딩은 제작 후기가 아니다.
+    const MAKER = /(이어\s?붙였|배치했|놓았|구성했|정리했|담았|반영했|적용했|맞췄|설계했|제작했|촬영했|골랐|선정했|넣었|잘리지 않)(습니다|어요|다)?/;
+    const makerLines = textEls.filter((e) => e.korean && e.textLen >= 12 && MAKER.test(e.text));
+    if (makerLines.length >= 2)
+      add("KO5", null, `제작 노트 문체 ${makerLines.length}곳 — 만든 과정을 서술한다(예: "${makerLines[0].text.slice(0, 34)}…"). 랜딩은 고객이 얻는 결과를 말한다`);
+
+    // KO6 설명서 문체 — 사용 절차를 가르치는 문장이 본문을 지배하면 매뉴얼이다(§2d 매뉴얼화 금지의 문장 단위 검출)
+    const MANUAL = /(하시면 됩니다|하면 됩니다|해 주세요|입력하세요|등록하세요|선택하세요|먼저 .{0,12}(하고|한 뒤)|다음 단계|순서대로)/;
+    const manualLines = textEls.filter((e) => e.korean && e.textLen >= 12 && MANUAL.test(e.text));
+    if (manualLines.length >= 3)
+      add("KO6", null, `사용 설명 문체 ${manualLines.length}곳 — 절차를 가르친다(예: "${manualLines[0].text.slice(0, 34)}…"). 절차는 압축 모듈 1~2개로 제한(§2d)`);
   }
 
   // 같은 룰+섹션은 1건만

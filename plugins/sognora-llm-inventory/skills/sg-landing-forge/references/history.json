@@ -1,0 +1,24 @@
+[
+  {
+    "date": "2026-08-18",
+    "project": "sognora-front-puanai",
+    "product": "환수지키미",
+    "route": "/hwansu",
+    "lead": "getjobber-com",
+    "direction": "규율형+문서형",
+    "paletteFamily": "먹(#14100D)·인주(#A83226)·종이(#FBF7EF)",
+    "axes": {
+      "bandRhythm": "2색 교대 9밴드",
+      "container": 1360,
+      "maxWeight": 700,
+      "durations": [160, 240],
+      "bandTransition": "장부 괘선(scaleX)",
+      "trustUnit": "제품 목업 + 정직 고지",
+      "motionVocab": "색 전환 only"
+    },
+    "grade": "B",
+    "gradeCapReason": "실증거 0(고객 얼굴·후기·현장사진 없음)",
+    "gates": { "detectRed": 0, "conform": "pass", "behavior": "pass", "sceneBudget": "pass", "depthPx": 5252 },
+    "note": "런타임 중립 폴백(순차 실행) — 패널 P7·라운드2 P8 미실시로 한 등급 하향 고지"
+  }
+]

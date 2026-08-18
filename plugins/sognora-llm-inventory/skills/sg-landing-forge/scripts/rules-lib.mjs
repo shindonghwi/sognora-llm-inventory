@@ -43,6 +43,8 @@ export const RULES = {
   KO2: { sev: "yellow", layer: "surface", judge: "det", scope: "page" },
   KO3: { sev: "yellow", layer: "surface", judge: "det", scope: "page" },
   KO4: { sev: "yellow", layer: "surface", judge: "det", scope: "page" },
+  KO5: { sev: "red", layer: "content", judge: "det", scope: "page" },
+  KO6: { sev: "red", layer: "content", judge: "suspect", scope: "page" },
 };
 
 export const EPS = { size: 4, wrapper: 0.95, smallSection: 0.15, semanticCover: 0.7 };
