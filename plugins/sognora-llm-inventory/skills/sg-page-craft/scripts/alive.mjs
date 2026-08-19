@@ -48,6 +48,12 @@ if (args.type && !TYPES.includes(args.type)) {
   exit(2);
 }
 const expectStatus = args["expect-status"] ? parseInt(args["expect-status"], 10) : null;
+// 계약(§0e)에 선언된 "이 화면에 반드시 있어야 하는 것 / 있으면 안 되는 것".
+// `css:<셀렉터>`는 요소 존재로, 그 외 문자열은 본문 텍스트 정규식으로 판정한다.
+// **존재만 확인한다** — 그것이 잘 만들어졌는지는 사람의 일이다.
+const parseList = (v) => (typeof v === "string" ? v.split("||").map((s) => s.trim()).filter(Boolean) : []);
+const mustList = parseList(args.must);
+const mustNotList = parseList(args["must-not"]);
 const viewports = (args.viewports ?? "1440x900").split(",").map((v) => {
   const [w, h] = v.trim().split("x").map(Number);
   if (!w || !h) { console.error(`--viewports 형식 오류: "${v}" (예: 1440x900,390x844)`); exit(2); }
@@ -381,6 +387,36 @@ for (let vi = 0; vi < viewports.length; vi++) {
       },
     };
   }, { inkSrc: inkSrcShared });
+
+  // ── 계약 대비 판정(§0e) — 사람이 한 번 선언한 의도를 기계가 매번 확인한다 ──────
+  if (isFirst && (mustList.length || mustNotList.length)) {
+    const verdict = await page.evaluate(({ must, mustNot }) => {
+      const root = document.querySelector("main, [role=main]") || document.body;
+      const text = (root.innerText || "").replace(/\s+/g, " ");
+      const check = (item) => {
+        if (item.startsWith("css:")) {
+          const sel = item.slice(4);
+          try {
+            return [...document.querySelectorAll(sel)].some((el) => {
+              const r = el.getBoundingClientRect();
+              return r.width >= 2 && r.height >= 2 || el.tagName === "INPUT"; // 숨긴 file input은 표준 패턴
+            });
+          } catch { return null; } // 셀렉터 오류는 "판정 못 함"이지 "없음"이 아니다
+        }
+        try { return new RegExp(item, "i").test(text); } catch { return text.includes(item); }
+      };
+      return { must: must.map((m) => [m, check(m)]), mustNot: mustNot.map((m) => [m, check(m)]) };
+    }, { must: mustList, mustNot: mustNotList });
+
+    for (const [item, ok] of verdict.must) {
+      if (ok === null) add("yellow", "CONTRACT-BAD-SELECTOR", `계약의 must "${item}" — 셀렉터가 잘못됐다. 계약 파일을 고쳐라`);
+      else if (!ok) add("red", "CONTRACT-MUST-MISSING", `계약에 선언한 "${item}"이(가) 화면에 없다 — 이 화면이 하기로 한 일이 빠졌다(존재만 확인한다)`);
+    }
+    for (const [item, hit] of verdict.mustNot) {
+      if (hit === null) add("yellow", "CONTRACT-BAD-SELECTOR", `계약의 mustNot "${item}" — 셀렉터가 잘못됐다. 계약 파일을 고쳐라`);
+      else if (hit) add("red", "CONTRACT-MUSTNOT-PRESENT", `계약이 금지한 "${item}"이(가) 화면에 있다`);
+    }
+  }
 
   if (isFirst) {
     if (probe.overlayText && /error|Cannot read|undefined|Unhandled|TypeError/i.test(probe.overlayText))
