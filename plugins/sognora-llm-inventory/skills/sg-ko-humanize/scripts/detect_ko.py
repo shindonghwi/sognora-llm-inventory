@@ -32,6 +32,7 @@ sg-landing-forge의 콘텐츠 검수(forge-rules §5)는 "카피에 sg-ko-humani
 Exit: 0 = 🔴 없음 / 1 = 🔴 있음 / 3 = 실행 오류
 """
 import json
+import pathlib
 import re
 import sys
 
@@ -180,11 +181,48 @@ def scan(text: str, genre: str) -> dict:
             locs.append({"line": ln, "match": text[m.start():m.end()].strip()})
         findings.append({"rule": rid, "name": name, "severity": sev, "count": n,
                          "locations": locs, "note": note})
+    clusters = {}
     if genre in UI_FAMILY:
         findings.extend(term_drift(masked, text))
-    return {"findings": findings,
+        clusters = cluster_counts(masked)
+    return {"findings": findings, "_clusters": clusters,
             "counts": {"red": sum(1 for f in findings if f["severity"] == "red"),
                        "yellow": sum(1 for f in findings if f["severity"] == "yellow")}}
+
+
+def cluster_counts(masked: str) -> dict:
+    """클러스터별 멤버 출현 수 — term_drift(파일 안)와 cross_file_drift(파일 간)가 공유한다."""
+    return {label: {m: len(re.findall(m, masked)) for m in members if re.search(m, masked)}
+            for label, members in TERM_CLUSTERS}
+
+
+def cross_file_drift(per_file: list) -> list:
+    """파일마다 다른 이름을 쓰는가 — KOH21이 구조적으로 못 보는 축.
+
+    실제로 이렇게 샜다: 랜딩은 "요금제"로 통일돼 있고 요금제 페이지는 "플랜" 6회였다.
+    두 파일 각각은 내부적으로 일관돼서 KOH21이 침묵했고, 사람이 눈으로 찾아냈다.
+    파일을 여러 개 받았을 때만 돈다(한 개면 비교할 상대가 없다).
+    """
+    out = []
+    for label, members in TERM_CLUSTERS:
+        # 파일별 '지배 용어' — 그 파일이 사실상 하나로 통일해 쓰는 이름
+        dom = {}
+        for f in per_file:
+            c = f.get("_clusters", {}).get(label, {})
+            if not c:
+                continue
+            top, n = max(c.items(), key=lambda kv: kv[1])
+            if n >= 2 * sum(v for k, v in c.items() if k != top) + 1:  # 압도적일 때만 '지배'로 본다
+                dom[f["file"]] = (top, n)
+        if len({t for t, _ in dom.values()}) < 2:
+            continue
+        locs = [{"line": 0, "match": f"{pathlib.PurePath(fn).name}={t}×{n}"} for fn, (t, n) in dom.items()]
+        out.append({"rule": "KOH22", "name": f"용어 표류(파일 간·{label})", "severity": "yellow",
+                    "count": len(dom), "locations": locs,
+                    "note": "rules.md §8 🟡 — 파일마다 다른 이름을 쓴다: "
+                            + " / ".join(f"{pathlib.PurePath(fn).name}은 \"{t}\"" for fn, (t, n) in dom.items())
+                            + " → 제품 전체에서 하나로"})
+    return out
 
 
 def term_drift(masked: str, text: str) -> list:
@@ -251,8 +289,16 @@ def main() -> int:
         total_red += r["counts"]["red"]
         total_yellow += r["counts"]["yellow"]
 
+    cross = cross_file_drift(out) if (genre in UI_FAMILY and len(out) > 1) else []
+    if min_sev == "red":
+        cross = [x for x in cross if x["severity"] == "red"]
+    total_yellow += sum(1 for x in cross if x["severity"] == "yellow")
+    total_red += sum(1 for x in cross if x["severity"] == "red")
+    for o in out:
+        o.pop("_clusters", None)
+
     if as_json:
-        print(json.dumps({"genre": genre or "(기본)", "files": out,
+        print(json.dumps({"genre": genre or "(기본)", "files": out, "crossFile": cross,
                           "total": {"red": total_red, "yellow": total_yellow},
                           "exit": 1 if total_red else 0}, ensure_ascii=False, indent=1))
         return 1 if total_red else 0
@@ -263,6 +309,10 @@ def main() -> int:
             icon = "🔴" if x["severity"] == "red" else "🟡"
             print(f"  {icon} {x['rule']} {x['name']} ×{x['count']} — 예: " +
                   "; ".join(f"L{l['line']} \"{l['match'][:24]}\"" for l in x["locations"][:3]))
+    for x in cross:
+        icon = "🔴" if x["severity"] == "red" else "🟡"
+        print(f"── (파일 간)\n  {icon} {x['rule']} {x['name']} — " +
+              "; ".join(l["match"] for l in x["locations"]))
     print(f"합계: 🔴{total_red} 🟡{total_yellow} — exit {1 if total_red else 0}")
     return 1 if total_red else 0
 
