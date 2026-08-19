@@ -40,6 +40,15 @@ const run = (script, a) => new Promise((res) => {
   p.stderr.on("data", (d) => (err += d));
   p.on("close", (code) => res({ code, out: out.trim(), err: err.trim() }));
 });
+const pipePython = (script, a, input) => new Promise((res) => {
+  const p = spawn("python3", [script, ...a], { stdio: ["pipe", "pipe", "pipe"] });
+  let out = "", err = "";
+  p.stdout.on("data", (d) => (out += d));
+  p.stderr.on("data", (d) => (err += d));
+  p.on("error", (e) => res({ code: 2, out: "", err: String(e) }));
+  p.on("close", (code) => res({ code, out: out.trim(), err: err.trim() }));
+  p.stdin.end(input);
+});
 const readJson = async (f) => { try { return JSON.parse(await readFile(f, "utf8")); } catch { return null; } };
 const tail = (s, n = 6) => s.split("\n").filter(Boolean).slice(-n).join("\n");
 
@@ -73,6 +82,29 @@ const scan = await readJson(join(args.out, "detect", "scan.json"));
   add("detect", scan ? (fail.length === 0 ? "pass" : "fail") : "error",
     scan ? `🔴 ${red.length} · 🟡 ${yellow.length}${qf.length ? ` · 차단QF ${qf.length}(콘텐츠·조작 파손 — 등급 무관 실패)` : ""}${fail.length ? ` — ${fail.map((f) => f.rule + (f.sec != null ? `§${f.sec}` : "")).join(", ")}` : ""}` : tail(det.err, 3),
     { red: red.map((f) => ({ rule: f.rule, sec: f.sec })), yellow: yellow.map((f) => f.rule) });
+}
+
+// ── 1b. 카피 게이트 (forge-rules §5 — 내부 기획 용어·능력 서술 도배) ──────
+// detect.mjs는 보더·레이아웃만 본다. 카피 축은 v1.6.4 이전까지 **판정자가 없었다** —
+// forge-rules §5가 "sg-ko-humanize 🔴 0"을 요구하는데 그걸 재는 기계가 파이프라인에 없었고,
+// 검출기(detect_ko.py)는 바로 이 요구를 위해 만들어졌다고 자기 문서에 적어두고도 미연결이었다.
+{
+  const KO = join(HERE, "..", "..", "sg-ko-humanize", "scripts", "detect_ko.py");
+  const copy = Array.isArray(scan?.desktop?.copy) ? scan.desktop.copy : null;
+  if (!copy) {
+    add("copy:ko", "missing", "scan.json에 desktop.copy 없음 — detect.mjs가 구버전이면 카피 축이 판정되지 않는 상태다");
+  } else if (!copy.some((l) => /[가-힣]/.test(l))) {
+    add("copy:ko", "skip", "한글 카피 없음 — 이 검출기는 한국어 전용이다");
+  } else {
+    const r = await pipePython(KO, ["-", "--genre", "랜딩", "--json"], copy.join("\n"));
+    let j = null; try { j = JSON.parse(r.out); } catch { /* 아래 error 분기 */ }
+    if (!j) add("copy:ko", "error", tail(r.err || r.out, 3) || "detect_ko.py 실행 불가");
+    else {
+      const red = j.total?.red ?? 0, yellow = j.total?.yellow ?? 0;
+      const hits = (j.files?.[0]?.findings ?? []).map((f) => `${f.rule}(${f.name})×${f.count}`).join(", ");
+      add("copy:ko", red === 0 ? "pass" : "fail", `🔴 ${red} · 🟡 ${yellow}${hits ? ` — ${hits}` : ""}`, { red, yellow });
+    }
+  }
 }
 
 // ── 2. conform (토큰 준수) ────────────────────────────────────────────────

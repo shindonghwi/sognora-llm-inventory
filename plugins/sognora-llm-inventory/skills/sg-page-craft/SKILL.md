@@ -42,8 +42,12 @@ description: 랜딩 말고 **나머지 페이지**를 같은 제품처럼 만든
   node scripts/alive.mjs --url <URL> --type <catalog|tool|pricing|form|dashboard|landing> --src <컴포넌트 디렉터리> --out _page/qa
   node scripts/copylint.mjs --url <URL> --out _page/qa
   node scripts/conform.mjs --tokens <랜딩 tokens.json> --url <URL>   # 토큰 상속 검증(forge 계기 심)
-  node scripts/detect.mjs --url <URL> --out _page/qa/detect          # AI 티(forge 계기 심)
+  node scripts/detect.mjs --url <URL> --out _page/qa/detect          # 시각 AI 티(forge 계기 심)
+  # 카피 AI 티 — 내부 기획 용어·능력 서술 도배. 장르는 --type이 landing이면 `랜딩`, 아니면 `UI`
+  node -e 'const j=JSON.parse(require("fs").readFileSync(process.argv[1],"utf8"));process.stdout.write((j.desktop?.copy||[]).join("\n"))' \
+    _page/qa/detect/scan.json | python3 ../sg-ko-humanize/scripts/detect_ko.py - --genre UI
   ```
+  마지막 줄이 exit 1이면 실패다. **`detect.mjs`는 보더·레이아웃만 본다 — 카피는 한 글자도 읽지 않는다.** 두 계기는 다른 축이고, 카피 축은 v1.6.4까지 판정자가 없었다.
 - **P4 눈 검수** — 랜딩과 나란히 놓고 **같은 제품으로 보이는가**, 그리고 이 페이지가 돕기로 한 결정이 실제로 쉬워졌는가. 제품 화면이면 빈 상태·로딩·오류·권한없음 화면을 직접 열어본다(기계는 존재 여부만 안다).
 
 ## 계기
@@ -52,7 +56,8 @@ description: 랜딩 말고 **나머지 페이지**를 같은 제품처럼 만든
 |---|---|
 | `alive.mjs` | 살아있는가 — 런타임·콘솔·빈 화면·CSS 클래스 불일치·좌단 밀착·빈 상태 분기 |
 | `copylint.mjs` | 카피 길이·금칙어(GOV.UK 규범 + 한글 상투어 + 제작자 시점 서술) |
-| `conform.mjs`·`detect.mjs` | sg-landing-forge 계기를 자기 위치 기준으로 찾아 실행하는 심 — 토큰 상속 검증·AI 티. 상대경로에 의존하지 않는다 |
+| `conform.mjs`·`detect.mjs` | sg-landing-forge 계기를 자기 위치 기준으로 찾아 실행하는 심 — 토큰 상속 검증·**시각** AI 티. 상대경로에 의존하지 않는다 |
+| `detect_ko.py`(sg-ko-humanize) | **카피** AI 티 — 내부 기획 용어(§8)·능력 서술 도배. `detect.mjs`가 `scan.json`에 실은 실제 렌더 카피를 받는다. `copylint.mjs`(마케팅 상투어·주어 시점)와는 다른 축이다 |
 
 ## 사전 준비
 

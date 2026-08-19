@@ -18,9 +18,17 @@ sg-landing-forge의 콘텐츠 검수(forge-rules §5)는 "카피에 sg-ko-humani
 - 결론적으로·되어지·과장 어휘·"것이다.": 헌법 0회 → 🔴 정규식화 안전.
 
 사용:
-  python3 detect_ko.py <file...|-> [--genre 칼럼|리포트|블로그|공적|구어|법률|스펙] [--json] [--min red]
+  python3 detect_ko.py <file...|-> [--genre UI|칼럼|리포트|블로그|공적|구어|법률|스펙] [--json] [--min red]
   '-' 는 stdin(개행 구분 카피 문자열 — forge가 DOM 텍스트를 파이프하는 인터페이스).
 전처리: 코드펜스·인라인 코드·URL·front-matter·큰따옴표 인용은 검사에서 제외(자리는 보존).
+  단 `--genre UI`는 큰따옴표 안을 **검사한다** — i18n·TS·JSON 카피가 전부 거기 들어 있다.
+
+## UI 장르 (제품 카피·랜딩·i18n)
+산문 전용 규칙(PROSE_ONLY)을 끄고 §8 어휘 규칙을 켠다. 밀도의 분모도 개행이 아니라
+'서술어로 끝나는 줄'이다. 이 세 가지가 없던 동안 랜딩 i18n 파일은 구조적으로 항상
+🔴0을 받았다 — 따옴표 마스킹이 카피를 통째로 지웠고, 남았어도 §8 규칙 자체가 없었으며,
+개행 분모가 밀도 규칙을 영영 잠재웠다. 검출기가 침묵한 것이지 카피가 깨끗한 게 아니었다.
+
 Exit: 0 = 🔴 없음 / 1 = 🔴 있음 / 3 = 실행 오류
 """
 import json
@@ -64,12 +72,38 @@ RULES = [
      1, 3, set(), "실소유 의미 오탐 여지 — 1회는 🟡"),
     ("KOH16", "겹조사", r"에서의|으로의|에의(?=[\s,.])",
      2, None, set(), "rules.md §1 🟡 — 단순 '~의'는 매치하지 않는다"),
+    # --- rules.md §1 🟡 인데 검출기가 없던 구멍. 헌법 53회 실측 → 법률·공적·스펙 면제 필수.
+    # 종성 ㄹ은 낱자 클래스([ㄹ])로 못 잡는다 — 한글은 음절 합성이라 '할'은 U+D560 한 글자다.
+    ("KOH17", "능력 서술 도배", r"[가-힣] 수 있",
+     4, None, {"법률", "공적", "스펙"}, "밀도 게이트 통과 시에만 🟡 — 기능 명세를 옮긴 카피의 지문"),
+    # --- rules.md §8. 고객이 읽는 화면에서만 본다. 스펙·법률·공적은 여기서 정확한 용어다.
+    # 개발·기획 어휘가 화면에 그대로 샌 경우 — 기능 UI에서도 변호가 안 된다.
+    ("KOH18", "내부 명세어(명백)", r"결정할 화면|제공량|인입|상태값|유효성 검사|예외 처리"
+     r"|어드민|프로비저닝|디폴트|파라미터|엔드포인트",
+     None, 1, {"스펙", "법률", "공적", "리포트"}, "rules.md §8 🔴 — 만든 사람의 말이 고객 화면에 그대로 나옴"),
+    ("KOH19", "운영 지표어·명세 동사", r"진입한|이탈한|유입된|전환율|정상적으로|해당 [가-힣]"
+     r"|를 수행합니다|를 처리합니다|처리했습니다|처리되었습니다|에 반영합니다|를 제공합니다",
+     2, None, {"스펙", "법률", "공적", "리포트"}, "rules.md §8 🟡 — 구체 동사·고객 행동으로"),
+    # 문맥 의존 — 기능 화면에서는 정확한 용어("읽기 전용" 파일 권한)이나 마케팅 카피에서는
+    # 명세서 어투다. 그래서 `랜딩`에서만 🔴로 승격하고 `UI`에서는 🟡로 둔다. gpt-5.6-sol 교차검증에서
+    # 이 목록이 "오탐 위험 높음"으로 지목됐고, 실제 위험은 어휘가 아니라 **쓰인 자리**였다.
+    ("KOH20", "명세어(문맥 의존)", r"읽기 전용|쓰기 전용|편집 화면|작업 화면|관리 화면"
+     r"|지원 범위|적용 대상|적용 위치|워크스페이스|온보딩|플로우|트리거|케이스",
+     1, None, {"스펙", "법률", "공적", "리포트"}, "rules.md §8 — `랜딩`에서 🔴 승격, `UI`에서는 🟡"),
 ]
+
+# UI 계열(제품 카피) — 산문 규칙을 끄고 §8 어휘 규칙을 켜는 장르들.
+# `랜딩`은 마케팅 카피(고객 설득), `UI`는 앱 기능 화면(조작). 어휘 허용치가 다르다.
+UI_FAMILY = {"UI", "랜딩"}
+# UI 계열에서 끄는 산문 전용 규칙 — 버튼 라벨에 산문 리듬을 들이대면 UI가 깨진다.
+PROSE_ONLY = {"KOH03", "KOH09", "KOH10", "KOH11", "KOH12"}
+# 특정 장르에서만 🔴로 승격하는 규칙 — {규칙: {장르...}}
+PROMOTE_RED = {"KOH20": {"랜딩"}}
 
 STRUCT_NEXT_RE = re.compile(r"^\s*(?:[-*|]|\d{1,2}[.)]|```|#)")  # KOH03 구조적 면제용
 
 
-def mask(text: str) -> str:
+def mask(text: str, genre: str = "") -> str:
     """검사 제외 구간을 같은 길이의 공백으로 치환 — 오프셋·줄번호 보존."""
     def blank(m):
         return re.sub(r"\S", " ", m.group(0))
@@ -77,17 +111,32 @@ def mask(text: str) -> str:
     text = re.sub(r"```.*?```", blank, text, flags=re.S)                 # 코드펜스
     text = re.sub(r"`[^`\n]+`", blank, text)                             # 인라인 코드
     text = re.sub(r"https?://[^\s)\]>]+", blank, text)                   # URL
-    text = re.sub(r"“[^“”]{2,}”|\"[^\"\n]{2,}\"", blank, text)  # 인용 보호
+    if genre in UI_FAMILY:
+        # i18n·TS·JSON 카피는 전부 큰따옴표 안에 있다. 산문용 '인용 보호'를 그대로 적용하면
+        # 검사 대상이 통째로 지워져 무조건 🔴0이 나온다 — 랜딩 카피가 만점을 받고 사람에게
+        # 반려당한 진짜 원인이 이 한 줄이었다. UI 장르에서는 따옴표 안이 곧 본문이다.
+        text = re.sub(r"“[^“”]{2,}”", blank, text)                       # 한글 인용부만 보호
+    else:
+        text = re.sub(r"“[^“”]{2,}”|\"[^\"\n]{2,}\"", blank, text)       # 인용 보호
     return text
 
 
 def scan(text: str, genre: str) -> dict:
-    masked = mask(text)
+    masked = mask(text, genre)
     lines = masked.splitlines()
-    sent_n = max(1, len(re.findall(r"[.!?]\s|[.!?]$|\n", masked)))
+    if genre in UI_FAMILY:
+        # 제품 카피는 문자열 하나가 곧 한 발화다. i18n 파일은 줄 대부분이 코드·영문이라
+        # 개행을 문장으로 세면 분모가 부풀어 밀도 규칙이 영영 발화하지 않는다(이 검출기가
+        # 랜딩 카피에 🔴0을 준 원인). 서술어로 끝나는 줄만 발화 단위로 센다 —
+        # "단독주택", "요금제 보기" 같은 라벨을 분모에 넣으면 다시 분모가 부푼다.
+        sent_n = max(1, sum(1 for ln in lines if re.search(r"(?:다|요|까)[.!?]?[\"'”]", ln)))
+    else:
+        sent_n = max(1, len(re.findall(r"[.!?]\s|[.!?]$|\n", masked)))
     findings = []
     for rid, name, pat, y_at, r_at, exempt, note in RULES:
         if genre in exempt:
+            continue
+        if genre in UI_FAMILY and rid in PROSE_ONLY:
             continue
         matches = list(re.finditer(pat, masked))
         if rid == "KOH03":  # 직후 2줄에 목록·표·펜스가 오면 그 매치는 구조적 예고 — 면제
@@ -103,6 +152,10 @@ def scan(text: str, genre: str) -> dict:
             continue
         if rid == "KOH10" and not (n >= (y_at or 3) and n > 0.5 * sent_n):
             continue  # 밀도 미달 — 사람 글에서 흔한 수준
+        if rid == "KOH17" and not (n >= (y_at or 4) and n > 0.2 * sent_n):
+            continue  # 능력 서술은 정상 어법 — 문장 대비 비율이 넘을 때만 도배로 본다
+        if genre in PROMOTE_RED.get(rid, ()):
+            r_at = y_at or 1   # 같은 어휘라도 마케팅 카피에서는 즉시 제거 대상이다
         sev = "red" if (r_at and n >= r_at) else ("yellow" if (y_at and n >= y_at) else None)
         if not sev:
             continue

@@ -286,12 +286,16 @@ async function extract(p) {
       }
       return getComputedStyle(document.body).backgroundColor;
     };
+    const copyLines = [];
     for (const el of document.querySelectorAll("body *")) {
       if (els.length >= 1500) break;
       if (!vis(el)) continue;
       const r = el.getBoundingClientRect();
       const cs = getComputedStyle(el);
       const t = ownText(el);
+      // 카피 코퍼스 — sg-ko-humanize/detect_ko.py 로 넘길 원문(자르지 않는다).
+      // els.text는 80자로 잘려 있어 문장 끝의 패턴을 놓친다.
+      if (t.trim()) copyLines.push(t.trim().replace(/\s+/g, " "));
       const svg = el.tagName === "svg" ? [...el.querySelectorAll("path")].map((pp) => pp.getAttribute("d") || "").join("|").slice(0, 400) : null;
       const bws = [cs.borderTopWidth, cs.borderRightWidth, cs.borderBottomWidth, cs.borderLeftWidth].map((v) => parseFloat(v) || 0);
       const bmax = Math.max(...bws);
@@ -389,6 +393,7 @@ async function extract(p) {
       hOverflow: document.documentElement.scrollWidth > vw + 1,
       bodyFont: bodyCs.fontFamily, bodyBg: baseBg,
       fontSizes, koreanPage: /[가-힣]/.test((document.body.innerText || "").slice(0, 4000)),
+      copy: [...new Set(copyLines)],
       waapiLoops,
     };
   }, { cfg: EPS, inkBoxSrc: inkBoxSrc.toString() });

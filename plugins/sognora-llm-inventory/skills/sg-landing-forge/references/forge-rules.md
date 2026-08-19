@@ -133,7 +133,15 @@
 
 - 모든 주장·수치가 `facts.md`의 출처와 1:1 대응 — 대응 없는 문장은 삭제
 - 법적·정직성 고지(예: "시안은 실제 색과 다를 수 있음") 누락 여부 — facts의 "제약·고지" 항목 전수 반영
-- 카피에 sg-ko-humanize 🔴 패턴(상투구·과장·번역투) 0
+- 카피에 sg-ko-humanize 🔴 패턴 0 — **판정자가 붙었다.** `detect.mjs`가 `scan.json`에 실제 렌더 카피(`desktop.copy`)를 싣고, 그걸 humanize 검출기에 파이프한다. exit 1이면 이 게이트는 실패다.
+
+  ```sh
+  node -e 'const j=JSON.parse(require("fs").readFileSync(process.argv[1],"utf8"));process.stdout.write((j.desktop?.copy||[]).join("\n"))' \
+    _forge/qa/detect/scan.json \
+    | python3 "$(dirname "$0")/../sg-ko-humanize/scripts/detect_ko.py" - --genre 랜딩
+  ```
+
+  > **v1.6.4 이전까지 이 줄은 판정자가 없었다.** `detect_ko.py`는 바로 이 요구를 위해 만들어졌다고 자기 문서에 적어두고도 **어느 파이프라인에도 연결되지 않았다** — forge의 `detect.mjs`는 보더·레이아웃을 보는 *시각* 스캐너라 카피는 한 글자도 읽지 않았다. "판정자 없는 규칙은 없다"를 이 스킬 자신의 §5가 위반하고 있었다. 장르는 `랜딩`이다(마케팅 카피 — "읽기 전용/편집 화면"류가 🔴로 승격된다).
 - 금지: 제품이 안 하는 것(로드맵·미출시 기능)을 하는 것처럼 쓰기
 
 ## 6. 같은 형태 반복 금지
