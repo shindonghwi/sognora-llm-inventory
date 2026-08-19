@@ -104,8 +104,14 @@ const md =
   `특정 라이브러리를 쓰라고 강요하지 않는다 — 직접 만든 프리미티브 층도 층이다.\n\n` +
   `- CSS 파일 ${cssFiles.length}개 · 컴포넌트 파일 ${compFiles.length}개\n` +
   `- 공용 프리미티브: ${shared.length ? `${shared.length}개\n` + shared.slice(0, 10).map((s) => `  - ${s}`).join("\n") : "**없음**"}\n\n` +
-  (findings.length ? findings.map(([sev, rule, detail]) => `- ${sev === "red" ? "🔴" : "🟡"} **${rule}** — ${detail}`).join("\n") : "- ✅ 프리미티브 중복 정의 없음") +
-  `\n\n**${red.length ? `실패 ${red.length}건` : "통과"}** · 경고 ${findings.length - red.length}건\n`;
+  (findings.length
+    ? findings.map(([sev, rule, detail]) => `- ${sev === "red" ? "🔴" : "🟡"} **${rule}** — ${detail}`).join("\n")
+    // 파일이 적으면 중복될 여지 자체가 없다. 그 통과를 "컴포넌트 층이 갖춰졌다"로 읽으면
+    // 안 되므로 도장에 새긴다(v1.6.9 원칙 — 관측 범위를 도장 자체에 적는다).
+    : cssFiles.length < 3
+      ? `- ✅ 프리미티브 중복 정의 없음 — **다만 CSS 파일이 ${cssFiles.length}개뿐이라 중복될 여지가 없었다.** 화면이 늘어나면 다시 재라(지금 통과가 컴포넌트 층이 갖춰졌다는 뜻은 아니다)`
+      : "- ✅ 프리미티브 중복 정의 없음") +
+  `\n\n**${red.length ? `실패 ${red.length}건` : cssFiles.length < 3 ? "통과(표본 부족)" : "통과"}** · 경고 ${findings.length - red.length}건\n`;
 
 if (args.out) { await mkdir(String(args.out), { recursive: true }); await writeFile(join(String(args.out), "primitives.md"), md); }
 console.log(md);
