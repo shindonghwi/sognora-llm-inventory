@@ -63,8 +63,15 @@ const scan = await readJson(join(args.out, "detect", "scan.json"));
   const uniq = [...new Map(findings.map((f) => [`${f.rule}|${f.sec}`, f])).values()];
   const red = uniq.filter((f) => (f.sev ?? f.severity) === "red");
   const yellow = uniq.filter((f) => (f.sev ?? f.severity) === "yellow");
-  add("detect", scan ? (red.length === 0 ? "pass" : "fail") : "error",
-    scan ? `🔴 ${red.length} · 🟡 ${yellow.length}${red.length ? ` — ${red.map((f) => f.rule + (f.sec != null ? `§${f.sec}` : "")).join(", ")}` : ""}` : tail(det.err, 3),
+  // forge-rules §1의 통과 조건은 "🔴 0 · **차단 QF 0**"이다.
+  // QF를 전부 fail로 올렸다가 되돌렸다 — 바닥의 정의는 "콘텐츠·조작이 파손됨(이진적)"이고,
+  // QF3(가독 저하)·QF6(unsized img)은 거기 안 든다. 특히 QF6은 **속성 프록시**라
+  // CSS로 치수를 고정한 이미지를 오탐한다(실측) — 프록시 검사를 바닥으로 승격하면 억울한 실패를 양산한다.
+  const BLOCKING_QF = /^QF[1245]$/;
+  const qf = uniq.filter((f) => BLOCKING_QF.test(f.rule ?? ""));
+  const fail = [...red, ...qf.filter((f) => (f.sev ?? f.severity) !== "red")];
+  add("detect", scan ? (fail.length === 0 ? "pass" : "fail") : "error",
+    scan ? `🔴 ${red.length} · 🟡 ${yellow.length}${qf.length ? ` · 차단QF ${qf.length}(콘텐츠·조작 파손 — 등급 무관 실패)` : ""}${fail.length ? ` — ${fail.map((f) => f.rule + (f.sec != null ? `§${f.sec}` : "")).join(", ")}` : ""}` : tail(det.err, 3),
     { red: red.map((f) => ({ rule: f.rule, sec: f.sec })), yellow: yellow.map((f) => f.rule) });
 }
 
