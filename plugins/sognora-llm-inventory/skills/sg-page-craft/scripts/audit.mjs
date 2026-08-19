@@ -1,8 +1,8 @@
 /**
  * audit.mjs — 계약 하나로 전 페이지를 무인 감사한다
  *
- * usage: audit.mjs --contract _page/contract.json [--out _page/qa] [--viewports 1440x900,390x844]
- *                  [--locale ""] [--only /pricing]
+ * usage: audit.mjs --contract _page/contract.json [--src src] [--out _page/qa]
+ *                  [--viewports 1440x900,390x844] [--locale ""] [--only /pricing]
  *
  * 왜 있나 — 실전 사고: 29개 라우트를 감사하면서 **URL과 유형을 손으로 짝지어** 명령을
  * 스무 번 넘게 쳤다. 그 과정에서 유형을 추측했고, 추측이 막히자 사람에게 되물었다.
@@ -25,7 +25,7 @@ import { loadContract } from "./contract.mjs";
 const here = dirname(fileURLToPath(import.meta.url));
 const args = parseArgs(argv.slice(2));
 if (!args.contract) {
-  console.error("usage: audit.mjs --contract <계약파일> [--out <dir>] [--viewports 1440x900,390x844] [--locale <접두사>] [--only <route>]");
+  console.error("usage: audit.mjs --contract <계약파일> [--src <소스 디렉터리>] [--out <dir>] [--viewports 1440x900,390x844] [--locale <접두사>] [--only <route>]");
   console.error("계약이 없으면 먼저: node contract.mjs --init --base <URL> --routes </a,/b,...>");
   exit(2);
 }
@@ -51,6 +51,16 @@ const targets = contract.pages.filter((p) => !p.skip && (!onlyRoute || p.route =
 if (!targets.length) { console.error("대상 페이지가 없다(--only 오타이거나 전부 skip)"); exit(2); }
 
 const urlOf = (route, loc) => contract.baseUrl + (loc || "") + (route === "/" ? "/" : route);
+
+// ── 0) 컴포넌트 층 — 프로젝트 단위라 **1회만** 돈다 ──────────────────────
+// 페이지마다 내면 같은 🔴이 열 번 찍혀 보고서를 못 읽는 물건으로 만든다.
+let primOut = "- (건너뜀 — `--src`를 주면 컴포넌트 층을 검사한다)\n", primCode = 0;
+const srcDir = typeof args.src === "string" ? args.src : (typeof contract.src === "string" ? contract.src : null);
+if (srcDir) {
+  const r = await run([join(here, "primitives.mjs"), "--src", srcDir]);
+  primOut = r.out; primCode = r.code;
+  process.stderr.write(`${primCode === 0 ? "✅" : "🔴"} 컴포넌트 층 (${srcDir})\n`);
+}
 
 // ── 1) 페이지마다 alive ──────────────────────────────────────────────────
 const rows = [];
@@ -99,11 +109,13 @@ const md =
     ? "- ✅ 구조·계약 이상 없음(의도 부합은 미판정)\n"
     : rows.filter((r) => r.findings.length).map((r) => `### \`${r.loc || "/"}${r.route === "/" ? "" : r.route}\` (${r.type.name})\n\n${r.findings.join("\n")}\n`).join("\n")) +
   `\n## 교차 검사 — 서로 같은 화면인가\n\n${crossOut}\n` +
-  `\n---\n\n**화면 ${rows.length}개 중 실패 ${failed.length}개**${errored.length ? ` · 실행 실패 ${errored.length}개` : ""} · 교차 검사 ${crossCode === 0 ? "통과" : "실패"}\n`;
+  `\n## 컴포넌트 층 (프로젝트 단위 · 1회)\n\n${primOut}\n` +
+  `\n---\n\n**화면 ${rows.length}개 중 실패 ${failed.length}개**${errored.length ? ` · 실행 실패 ${errored.length}개` : ""}` +
+  ` · 교차 검사 ${crossCode === 0 ? "통과" : "실패"}${srcDir ? ` · 컴포넌트 층 ${primCode === 0 ? "통과" : "실패"}` : ""}\n`;
 
 if (outDir) { await mkdir(outDir, { recursive: true }); await writeFile(join(outDir, "audit.md"), md); }
 console.log(md);
-exit(failed.length || crossCode === 1 || errored.length ? 1 : 0);
+exit(failed.length || crossCode === 1 || primCode === 1 || errored.length ? 1 : 0);
 
 function run(argv2) {
   return new Promise((res) => {

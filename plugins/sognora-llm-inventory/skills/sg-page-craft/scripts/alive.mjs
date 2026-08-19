@@ -364,6 +364,32 @@ for (let vi = 0; vi < viewports.length; vi++) {
 
     // "빈 화면"은 글자 수만으로 판정하지 않는다 — 컨트롤이 살아 있으면 렌더는 된 것이다.
     // 설정 폼·로그인 화면은 글이 원래 짧다(실측: 로그인 89자).
+    // ── 구조 밀도 — "글만 있는 페이지"를 잰다 ─────────────────────────────
+    // 사용자 지적: "글만 있는 페이지는 사실상 최악. 컴포넌트도 없고."
+    // 구조 요소 = 문단이 아닌 것(컨트롤·표·항목 목록·큰 미디어·반복 그리드·목차).
+    // 링크는 세지 않는다 — 본문 링크는 문단의 일부지 구조가 아니다.
+    const visq = (sel) => [...document.querySelectorAll(sel)].filter((el) => chromeless(el) && vis(el));
+    const structControls = visq("button,[role=button],input:not([type=hidden]),textarea,select").length;
+    const structTables = visq("table").length;
+    const structLists = visq("ul,ol").filter((l) => [...l.children].filter(vis).length >= 3).length;
+    const structMedia = visq("img,svg,video,canvas,picture").filter((e) => {
+      const r = e.getBoundingClientRect(); return r.width >= 200 && r.height >= 150;
+    }).length;
+    const structAnchors = visq("a[href^='#']").length;
+    let structRepeat = 0;
+    for (const par of visq("*")) {
+      const kids = [...par.children].filter(vis);
+      if (kids.length < 3) continue;
+      const rs = kids.map((k) => k.getBoundingClientRect());
+      if (!rs.every((r) => r.height >= 40 && r.width >= 120)) continue;
+      const hs = rs.map((r) => r.height);
+      if (Math.max(...hs) > Math.min(...hs) * 2) continue;
+      structRepeat = Math.max(structRepeat, kids.length);
+    }
+    const structural = structControls + structTables + structLists + structMedia +
+      (structRepeat >= 3 ? 1 : 0) + (structAnchors >= 3 ? 1 : 0);
+    const mainLen = ((document.querySelector("main, [role=main]") ?? document.body).innerText || "").replace(/\s+/g, " ").trim().length;
+
     const controls = [...document.querySelectorAll("button,[role=button],a[href],input,textarea,select")]
       .filter((el) => {
         if (!chromeless(el)) return false;
@@ -373,6 +399,8 @@ for (let vi = 0; vi < viewports.length; vi++) {
 
     return {
       len: txt.length, sample: txt.slice(0, 120), overlayText, flush, blocks, controls,
+      structural, mainLen,
+      structParts: { c: structControls, t: structTables, l: structLists, m: structMedia, r: structRepeat, a: structAnchors },
       firstInputY, firstCardY, fold: vh,
       h1: document.querySelectorAll("h1").length,
       struct: {
@@ -439,6 +467,24 @@ for (let vi = 0; vi < viewports.length; vi++) {
     if (realErrors.length) add(realErrors.some((e) => /pageerror|TypeError|Cannot read/i.test(e)) ? "red" : "yellow",
       "CONSOLE", `콘솔 에러 ${realErrors.length}건 — ${realErrors[0]}`);
     if (probe.h1 === 0) add("yellow", "NO-H1", "h1 없음");
+
+    // ── 글만 있는 페이지 ──────────────────────────────────────────────────
+    // 밀도 = 본문 500자당 구조 요소 개수. 실측 사다리(1440x900, 같은 사이트):
+    //   도구 32 · 폼 15 · 요금제 7.5 · 랜딩 5.6 ‖ 소개 0.92 · 카탈로그 0 · 대시보드 0 · 설정 0
+    // 1.0 아래에서 깨끗이 갈린다.
+    // **문서(정책·약관)에는 적용하지 않는다** — 거기서는 글이 본체이고, 구조 요구는
+    // 목차·절로 NOT-A-DOCUMENT·NO-TOC이 따로 본다(실측 privacy 0.88 — 여기서 걸리면 오탐).
+    if (args.type !== "document" && probe.mainLen >= 80) {
+      const density = probe.structural / (probe.mainLen / 500);
+      const p = probe.structParts;
+      const breakdown = `컨트롤 ${p.c} · 표 ${p.t} · 항목목록 ${p.l} · 미디어 ${p.m} · 반복그리드 ${p.r} · 목차앵커 ${p.a}`;
+      if (probe.structural === 0)
+        add("red", "PROSE-ONLY", `본문 ${probe.mainLen}자에 구조 요소가 **0개** — 제목과 문단뿐이다(${breakdown}). ` +
+          `컴포넌트가 없어 화면마다 CSS를 다시 짜는 상태면 제일 싼 것(문단)으로 수렴한다 — \`primitives.mjs\`로 컴포넌트 층부터 확인하라(§1b)`);
+      else if (density < 1)
+        add("red", "PROSE-ONLY", `구조 밀도 ${density.toFixed(2)}(본문 500자당 구조 요소 ${density.toFixed(2)}개) — 사실상 글만 있는 페이지다(${breakdown}). ` +
+          `실측 사다리: 도구 32 · 폼 15 · 요금제 7.5 · 랜딩 5.6 ‖ 1.0 미만은 문단 나열`);
+    }
   }
   if (probe.blocks >= 6 && probe.flush / probe.blocks > 0.4)
     add("red", "NO-CONTAINER", `본문 블록 ${probe.blocks}개 중 ${probe.flush}개가 화면 좌단(x<8)에 밀착 — 컨테이너 패딩·그리드가 적용되지 않았다${at}`);

@@ -79,7 +79,12 @@ export async function loadContract(path) {
     });
   }
   if (errs.length) throw new Error(`계약 파일 오류 ${errs.length}건:\n  - ${errs.join("\n  - ")}`);
-  return { baseUrl: String(c.baseUrl).replace(/\/$/, ""), tokens: c.tokens ?? null, locales, pages, todos };
+  return {
+    baseUrl: String(c.baseUrl).replace(/\/$/, ""),
+    tokens: c.tokens && c.tokens !== TODO ? c.tokens : null,
+    src: c.src && c.src !== TODO ? String(c.src) : null, // 컴포넌트 층 검사 대상
+    locales, pages, todos,
+  };
 }
 
 export function urlsOf(contract, page) {
@@ -114,6 +119,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
       $comment: "sg-page-craft 페이지 계약. 사람이 한 번 채우면 이후 검사는 이 파일 대비로 무인 수행된다. TODO는 기계가 지어내지 않는다.",
       baseUrl: String(args.base).replace(/\/$/, ""),
       locales,
+      src: "src",
       tokens: TODO,
       pages: routes.map((route) => ({
         route,
