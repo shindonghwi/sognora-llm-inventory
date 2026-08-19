@@ -277,8 +277,15 @@ for (let vi = 0; vi < viewports.length; vi++) {
     // ── 랜딩 표류: 단어 매칭이 아니라 **섹션 실체**로 판정 ────────────────
     // 내비의 "요금제" 링크, 본문의 "요금제 보기 →" 한 줄 링크로는 발동하지 않는다.
     const bq = [...document.querySelectorAll("blockquote")].filter((el) => chromeless(el)).length;
-    const testiClassBlock = [...document.querySelectorAll('[class*="testimonial" i],[class*="review" i]')]
-      .filter((el) => chromeless(el) && el.getBoundingClientRect().height >= 120).length;
+    // 클래스 부분 문자열 매칭은 **단어 경계**로 잰다. 실측 사고: `[class*="review"]`가
+    // CSS 모듈 클래스 `previewPanel`(p+review)에 걸려, 도구 화면의 **미리보기 패널**을
+    // 후기 섹션으로 오인하고 LANDING-DRIFT 🔴을 찍었다. preview·previewer·overview가 전부 걸린다.
+    const TESTI_CLASS_RE = /(?:^|[^a-zA-Z])(?:testimonial|review)|[a-z](?:Testimonial|Review)/;
+    const testiClassBlock = [...document.querySelectorAll("[class]")]
+      .filter((el) => {
+        const cls = typeof el.className === "string" ? el.className : (el.getAttribute("class") || "");
+        return TESTI_CLASS_RE.test(cls) && chromeless(el) && el.getBoundingClientRect().height >= 120;
+      }).length;
     const headTesti = [...document.querySelectorAll("h2,h3")]
       .filter((el) => chromeless(el) && /후기|고객\s*사례|testimonial|reviews?\b|what\s+\w+\s+(are\s+)?saying/i.test(el.innerText || "")).length;
     const testimonial = bq >= 2 || testiClassBlock > 0 || headTesti > 0;
@@ -349,8 +356,17 @@ for (let vi = 0; vi < viewports.length; vi++) {
       .filter((el) => (mainEl ? true : chromeless(el))).length;
     const effectiveDate = /시행일|발효일|최종\s*(?:수정|갱신|업데이트)|effective\s+(?:date|as)|last\s+updated/i.test(mainText);
 
+    // "빈 화면"은 글자 수만으로 판정하지 않는다 — 컨트롤이 살아 있으면 렌더는 된 것이다.
+    // 설정 폼·로그인 화면은 글이 원래 짧다(실측: 로그인 89자).
+    const controls = [...document.querySelectorAll("button,[role=button],a[href],input,textarea,select")]
+      .filter((el) => {
+        if (!chromeless(el)) return false;
+        const r = el.getBoundingClientRect();
+        return r.width >= 24 && r.height >= 12;
+      }).length;
+
     return {
-      len: txt.length, sample: txt.slice(0, 120), overlayText, flush, blocks,
+      len: txt.length, sample: txt.slice(0, 120), overlayText, flush, blocks, controls,
       firstInputY, firstCardY, fold: vh,
       h1: document.querySelectorAll("h1").length,
       struct: {
@@ -371,7 +387,15 @@ for (let vi = 0; vi < viewports.length; vi++) {
       add("red", "RUNTIME-ERROR", `개발 에러 오버레이: ${probe.overlayText.slice(0, 140)}`);
     // 에러 페이지(--expect-status ≥400)는 본문이 짧은 게 정상 — 임계를 낮춘다
     const blankMin = expectStatus != null && expectStatus >= 400 ? 40 : 200;
-    if (probe.len < blankMin) add("red", "BLANK", `본문 텍스트 ${probe.len}자 — 사실상 빈 화면(${probe.sample})`);
+    // 글자가 짧아도 **살아 있는 컨트롤이 3개 이상이면 렌더 실패가 아니다** — 얇은 화면이다.
+    // 실측 사고: 로그인·설정·대시보드 11개 화면이 전부 🔴 BLANK을 맞았는데, 전부 정상 렌더였다.
+    // 그 화면들의 진짜 문제는 "죽었다"가 아니라 "할 게 없다"이고, 그건 NOT-A-FORM·THIN-*가 잡는다.
+    if (probe.len < blankMin) {
+      if (probe.controls >= 3)
+        add("yellow", "THIN-CONTENT", `본문 텍스트 ${probe.len}자 · 컨트롤 ${probe.controls}개 — 렌더는 됐지만 화면에 내용이 거의 없다(${probe.sample.slice(0, 80)})`);
+      else
+        add("red", "BLANK", `본문 텍스트 ${probe.len}자 · 컨트롤 ${probe.controls}개 — 사실상 빈 화면(${probe.sample})`);
+    }
     // --expect-status ≥400이면 그 상태의 리소스 로드 실패 로그는 기대된 동작이다 — 그 외 콘솔 에러만 본다
     const realErrors = expectStatus != null && expectStatus >= 400
       ? consoleErrors.filter((e) => !new RegExp(`Failed to load resource.*${expectStatus}`).test(e))

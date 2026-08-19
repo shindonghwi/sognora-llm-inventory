@@ -128,30 +128,52 @@ const untyped = pairs.filter((p) => !typed(p));
 // 이 프로젝트에서 "한 틀에서 나왔다"가 실제로 몇 %로 찍히는지를 말해준다.
 // 다른 유형 쌍이 그 자를 넘으면, 같아도 되는 쌍만큼 닮았다는 뜻이다.
 // 같은 유형 쌍이 하나도 없을 때만 폴백 상수를 쓰고, 보고서에 그렇게 썼다고 밝힌다.
-// **보정은 엄격해지는 방향으로만 작동한다.** 같은 유형 쌍이 전부 100%인 프로젝트에서
-// 기준선을 그대로 쓰면 바가 100%로 올라가, 95%짜리 복제본이 통과한다. 자로 쓰되
-// 실측 사다리(다른 유형 = 0~25%, 그 위가 빈 구간)의 폴백을 넘지는 못하게 한다.
+// 기준선은 **"이 프로젝트에서 한 틀을 공유하면 몇 %로 찍히는가"**다.
+//
+// 실측 사고: 처음엔 같은 유형 쌍의 **최저치**를 썼다가 계기가 터졌다 — 같은 유형이라고
+// 반드시 한 틀인 건 아니다(공개 카탈로그와 앱 안 카탈로그는 남남이다). 그 한 쌍이 0%를
+// 찍는 순간 바가 0%로 무너져, **0% 일치 쌍까지 "복제"로 신고**했다(실사이트 95건).
+// 같은 유형 분포는 쌍봉이라 최저치는 아무것도 뜻하지 않는다 — **한 틀을 공유할 때의
+// 점수는 분포의 위쪽**에 있다. 그래서 최고치를 "템플릿 점수"로 읽는다.
+//
+// 그리고 **보정은 엄격해지는 방향으로만 작동한다.** 템플릿 점수가 100%인 프로젝트에서
+// 그대로 쓰면 바가 100%로 올라가 95%짜리 복제본이 통과하므로, 실측 사다리의 폴백을 상한으로 둔다.
 const baseline = (() => {
   if (!sameType.length) return { value: FALLBACK, from: "같은 유형 쌍이 없어 폴백 기준 사용 — --threshold로 조정" };
-  const measuredBar = Math.min(...sameType.map((p) => p.jac));
-  return measuredBar < FALLBACK
-    ? { value: measuredBar, from: `이 프로젝트의 같은 유형 쌍 ${sameType.length}개 중 최저치 — 폴백(${pct(FALLBACK)})보다 엄격해 이쪽을 쓴다` }
-    : { value: FALLBACK, from: `이 프로젝트의 같은 유형 쌍 최저치는 ${pct(measuredBar)}지만, 보정은 엄격해지는 방향으로만 쓴다` };
+  const templateScore = Math.max(...sameType.map((p) => p.jac));
+  return templateScore < FALLBACK
+    ? { value: templateScore, from: `이 프로젝트가 한 틀을 공유할 때의 점수 ${pct(templateScore)}(같은 유형 쌍 ${sameType.length}개 중 최고치) — 폴백(${pct(FALLBACK)})보다 엄격해 이쪽을 쓴다` }
+    : { value: FALLBACK, from: `한 틀 공유 점수는 ${pct(templateScore)}지만, 보정은 엄격해지는 방향으로만 쓴다(폴백 ${pct(FALLBACK)} 상한)` };
 })();
 
-// 1) 다른 유형인데 같은 골격 — 이 계기의 존재 이유
-for (const p of crossType.filter((p) => p.jac >= baseline.value).sort((x, y) => y.jac - x.jac)) {
-  add("red", "CROSS-TYPE-CLONE",
-    `${short(p.a.url)}(${p.a.type.name}) ↔ ${short(p.b.url)}(${p.b.type.name}) 골격 일치 ${pct(p.jac)} ≥ 기준 ${pct(baseline.value)} — ` +
-    `유형이 다른데 같은 틀에서 나왔다. 유형별 필수 구조(page-rules §0b)를 각자 갖추게 하라: ` +
-    `공유 블록 ${sharedOf(p).slice(0, 4).join(" / ") || "-"}`);
+// 공유 블록이 하나도 없으면 복제가 아니다 — 기준선이 아무리 낮아도 0% 쌍은 신고하지 않는다.
+const clonish = (p) => p.jac > 0 && p.jac >= baseline.value;
+// 지문이 얇으면(블록 1개) 100%가 쉽게 나온다. 숨기지는 않되 문구에 밝힌다.
+const thinNote = (p) => (Math.min(p.a.blocks.length, p.b.blocks.length) < 2
+  ? " ※ 두 페이지 다 골격이 얇다(블록 1개) — 화면이 비어 있어 쉽게 100%가 됐을 수 있다. 내용을 채운 뒤 다시 재라" : "");
+
+// 1) 다른 유형인데 같은 골격 — 이 계기의 존재 이유.
+// 쌍마다 한 건씩 내면 15페이지에서 100건이 넘어 읽을 수 없다 — 한 건으로 묶는다.
+{
+  const hits = crossType.filter(clonish).sort((x, y) => y.jac - x.jac);
+  if (hits.length) {
+    const lines = hits.slice(0, 8).map((p) =>
+      `${short(p.a.url)}(${p.a.type.name}) ↔ ${short(p.b.url)}(${p.b.type.name}) ${pct(p.jac)}${thinNote(p)}`);
+    add("red", "CROSS-TYPE-CLONE",
+      `유형이 다른데 같은 틀에서 나온 쌍 ${hits.length}건 (기준 ${pct(baseline.value)} 이상)\n` +
+      lines.map((l) => `    · ${l}`).join("\n") +
+      (hits.length > 8 ? `\n    · … 외 ${hits.length - 8}건` : "") +
+      `\n    공유 블록: ${sharedOf(hits[0]).slice(0, 4).join(" / ") || "-"} — 유형별 필수 구조(page-rules §0b)를 각자 갖추게 하라`);
+  }
 }
 
 // 2) 유형 미선언 쌍 — 🔴을 찍을 근거가 없다. 유형을 선언하면 판정이 올라간다
-for (const p of untyped.filter((p) => p.jac >= baseline.value).sort((x, y) => y.jac - x.jac)) {
-  add("yellow", "UNTYPED-CLONE",
-    `${short(p.a.url)} ↔ ${short(p.b.url)} 골격 일치 ${pct(p.jac)} — 유형을 선언하지 않아 정상인지 판정할 수 없다. ` +
-    `--types로 각 페이지의 동사(§0b)를 선언하면 🔴/정상이 갈린다`);
+{
+  const hits = untyped.filter(clonish).sort((x, y) => y.jac - x.jac);
+  if (hits.length)
+    add("yellow", "UNTYPED-CLONE",
+      `유형 미선언 쌍 ${hits.length}건이 닮았다 — 정상인지 판정할 수 없다. --types로 각 페이지의 동사(§0b)를 선언하라\n` +
+      hits.slice(0, 5).map((p) => `    · ${short(p.a.url)} ↔ ${short(p.b.url)} ${pct(p.jac)}`).join("\n"));
 }
 
 // 3) 도입부 — **읽는 화면과 하는 화면이 똑같이 여는가**
@@ -226,11 +248,15 @@ const table = [
   "|---|---|---|---|---|---|",
   ...measured.map((m) => `| ${short(m.url)} | ${m.type ? `${m.type.name}(${m.type.verb === "read" ? "읽는다" : "한다"})` : "—"} | ${m.blocks.length} | ${m.preamble ?? "—"} | ${(m.foldInk * 100).toFixed(0)}% | ${m.scrollH}px |`),
 ].join("\n");
+// 쌍은 N(N-1)/2로 불어난다(15페이지 = 105쌍). 닮은 쪽부터 보여주고, 자른 것은 밝힌다.
+const MATRIX_MAX = 20;
+const ranked = pairs.slice().sort((a, b) => b.jac - a.jac);
+const shown = ranked.filter((p) => p.jac > 0).slice(0, MATRIX_MAX);
 const matrix = pairs.length
-  ? ["", "**쌍별 골격 일치**", "", ...pairs.sort((a, b) => b.jac - a.jac).map((p) => {
+  ? ["", "**쌍별 골격 일치** (겹치는 쌍만, 닮은 순)", "", ...shown.map((p) => {
       const kind = !typed(p) ? "유형 미선언" : p.a.type.name === p.b.type.name ? "같은 유형 — 정상" : "다른 유형";
       return `- ${short(p.a.url)} ↔ ${short(p.b.url)} — **${pct(p.jac)}** (${kind})`;
-    })].join("\n")
+    }), `- (전체 ${pairs.length}쌍 중 겹치는 ${ranked.filter((p) => p.jac > 0).length}쌍, 상위 ${shown.length}쌍 표시 · 나머지는 0%)`].join("\n")
   : "";
 const note = sameType.filter((p) => p.jac >= baseline.value).length
   ? `\n> 같은 유형끼리의 높은 일치 ${sameType.filter((p) => p.jac >= baseline.value).length}쌍은 **정상**이다 — 같은 장르는 한 틀을 쓰는 것이 옳다. 이 계기는 그것을 벌하지 않는다.\n`
