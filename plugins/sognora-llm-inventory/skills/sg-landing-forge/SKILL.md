@@ -73,13 +73,13 @@ description: 랜딩을 레퍼런스급 품질로 단조한다 — v1 변환 아�
 | `ir.mjs` | 번들→IR 증류 → `references/ir/<이름>.json`(커밋되는 측정 사실): 섹션 기하·리듬·타입·슬롯·모션 어휘. 재현 스탬프 필드 |
 | `conform.mjs` | 토큰 준수: 소스 린트+렌더 전수 검사, 어휘 예산, 해시 대조. alpha 정책 rgb-in-set-alpha-free |
 | `behavior.mjs` | engineering.json 선언 실측 검증 + no-JS/reduced-motion 가시성 |
-| `detect.mjs` / `probe.mjs` | AI 티 37룰 / 호버·리빌·모션 실측 (구세대에서 계승) |
+| `detect.mjs` / `probe.mjs` | AI 티 42룰 / 호버·리빌·모션 실측 (구세대에서 계승) |
 | `capture.mjs` (sg-web-replicate) | 자기 diff 측정 |
 | `audit.mjs` | **P6 배터리 러너** — 캡처+detect+conform+behavior+장면 예산+깊이 대조를 한 명령으로, 판정표와 패널 입력까지 생성. 누락 게이트를 '미제공'으로 명시 |
 
 ## 라이브러리 — 2단
 
-- **Tier-S** (`references/library/`, 18종+): 요약 실측 문서 — 방향 인터뷰·문법 교차 결론의 근거. 커밋 대상.
+- **Tier-S** (`references/library/`, 19종+): 요약 실측 문서 — 방향 인터뷰·문법 교차 결론의 근거. 커밋 대상.
 - **Tier-R**: 두 층으로 나뉜다 — **`references/ir/<이름>.json`(커밋됨)**: 번들에서 증류한 측정 사실, 변환 빌드의 골격 입력. / **`references/bundles/<이름>/`(로컬 캐시 전용, gitignore)**: 원본 CSS·자산 사본이라 공개 저장소 커밋은 재배포 — 절대 금지. 리드로 지목될 때 온디맨드 수집. **비심링크(마켓플레이스) 설치에선 플러그인 업데이트 시 번들 캐시가 소실될 수 있다 — ir.json은 커밋돼 함께 배포되므로 골격 입력은 살아 있고, 원본 대조가 필요하면 수집 스크립트로 재생성한다.**
 
 ## 런타임 중립 폴백

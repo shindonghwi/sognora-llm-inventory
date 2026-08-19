@@ -1,6 +1,6 @@
 /**
- * 룰 메타데이터 + 순수 판정 로직 — detect.mjs(수집→판정)와 gate.mjs(비교)가 공유한다.
- * 룰 ID는 references/rules.md와 1:1. 한쪽만 고치면 게이트가 어긋난다.
+ * 룰 메타데이터 + 순수 판정 로직 — detect.mjs(수집→판정)와 audit.mjs(배터리)가 공유한다.
+ * **룰 ID의 SSOT는 이 파일이다** — forge-rules.md의 서술과 어긋나면 이 파일이 맞다.
  */
 
 export const RULES = {
@@ -23,6 +23,7 @@ export const RULES = {
   IC4: { sev: "yellow", layer: "surface", judge: "suspect", scope: "section" },
   DE1: { sev: "red", layer: "structural", judge: "det", scope: "section" },
   DE2: { sev: "yellow", layer: "structural", judge: "det", scope: "section" },
+  DE4: { sev: "red", layer: "structural", judge: "det", scope: "section" },
   AS1: { sev: "yellow", layer: "surface", judge: "det", scope: "page" },
   BD1: { sev: "red", layer: "surface", judge: "det", scope: "section" },
   CO5: { sev: "red", layer: "surface", judge: "det", scope: "section" },
@@ -139,8 +140,8 @@ export const DEFAULT_STACK_RE = /^(inter|roboto|system-ui|-apple-system|arial|he
 
 // ---------- 시그니처 (게이트 2 — 이산 4성분) ----------
 
-// 자식 박스 y-겹침 행 클러스터링 → 행별 열 수 시퀀스
-export function rowsOf(children) {
+// 자식 박스 y-겹침 행 클러스터링 → 행 단위 멤버 목록 (DE4가 행별 여백을 재려면 멤버가 필요하다)
+export function rowGroups(children) {
   const boxes = children.filter((c) => c.w > 8 && c.h > 8).sort((a, b) => a.y - b.y);
   const rows = [];
   for (const b of boxes) {
@@ -149,12 +150,142 @@ export function rowsOf(children) {
       return bottom - top >= 0.5 * Math.min(r.h, b.h);
     });
     if (row) {
-      row.n++;
+      row.members.push(b);
       row.y = Math.min(row.y, b.y);
       row.h = Math.max(row.h, b.h);
-    } else rows.push({ y: b.y, h: b.h, n: 1 });
+    } else rows.push({ y: b.y, h: b.h, members: [b] });
   }
-  return rows.map((r) => r.n);
+  return rows;
+}
+
+// 행별 열 수 시퀀스 (시그니처용)
+export function rowsOf(children) {
+  return rowGroups(children).map((r) => r.members.length);
+}
+
+
+// ---------- 잉크 박스 (브라우저 주입용 — detect와 alive가 공유) ----------
+//
+// **이 함수는 문자열로 주입돼 페이지 안에서 실행된다.** 외부 클로저에 의존하면 안 되므로
+// 필요한 헬퍼를 내부에 품는다. 두 계기가 각자 복제본을 들고 있으면 한쪽만 고쳐져 갈라진다
+// (실제로 이 함수는 하루 사이 두 번 고쳐졌다 — 요소 rect → 텍스트 노드 Range 구간 합 → 투명 필러·배경이미지 대응).
+export function inkBox(c) {
+  const __vis = (el) => {
+    const r = el.getBoundingClientRect();
+    if (r.width < 2 || r.height < 2) return false;
+    const cs = getComputedStyle(el);
+    return cs.display !== "none" && cs.visibility !== "hidden" && cs.opacity !== "0";
+  };
+
+        const runs = [];
+        let n = 0, mediaH = 0, pinned = false;
+        const walk = (node, alpha) => {
+          if (++n > 600) return;
+          for (const nd of node.childNodes) {
+            if (nd.nodeType === 3) {
+              if (!nd.textContent.trim()) continue;
+              // 보이지 않는 글자는 잉크가 아니다 — opacity .011짜리 180px 마침표로 박스를
+              // 채워 DE4를 침묵시키는 우회가 실측됐다. 누적 opacity와 글자색 알파를 함께 본다.
+              const pcs = getComputedStyle(node);
+              const ca = /rgba?\([^)]*?,\s*([\d.]+)\s*\)/.exec(pcs.color);
+              if (alpha < 0.1 || (ca && parseFloat(ca[1]) < 0.1)) continue;
+              const rg = document.createRange();
+              rg.selectNodeContents(nd);
+              const rr = rg.getBoundingClientRect();
+              if (rr.height > 0) runs.push([rr.top, rr.bottom]);
+              continue;
+            }
+            if (nd.nodeType !== 1 || !__vis(nd)) continue;
+            const ncs = getComputedStyle(nd);
+            const a2 = alpha * (parseFloat(ncs.opacity) || 0);
+            const nr = nd.getBoundingClientRect();
+            if (ncs.position === "sticky" || ncs.position === "fixed") pinned = true;
+            const isEl = ["IMG", "VIDEO", "CANVAS", "PICTURE", "SVG"].includes(nd.tagName.toUpperCase());
+            // 배경 이미지로 그린 포토 카드도 잉크다 — <img>면 통과하고 background-image면 걸리던
+            // 비대칭이 airbnb식 표준 패턴을 오탐시켰다(toss 실측).
+            const isBg = ncs.backgroundImage.includes("url(");
+            // CSS로 그린 것도 잉크다 — 그라데이션 서피스·스켈레톤 바로 조립한 제품 목업은
+            // 텍스트도 <img>도 없지만 화면에는 꽉 차 있다(toss 실측 오탐의 정체).
+            // 판정은 "자기 서피스를 가진 요소": 배경(색·그라데이션) 또는 보더.
+            const drawn = ncs.backgroundImage !== "none" ||
+              ncs.backgroundColor !== "rgba(0, 0, 0, 0)" ||
+              [ncs.borderTopWidth, ncs.borderRightWidth, ncs.borderBottomWidth, ncs.borderLeftWidth]
+                .some((v) => parseFloat(v) >= 1);
+            if ((isEl || isBg || drawn) && nr.width * nr.height >= 256 && a2 >= 0.1) {
+              runs.push([nr.top, nr.bottom]);
+              if (isEl || isBg) mediaH = Math.max(mediaH, nr.height);
+              if (isEl || isBg) continue;   // 실미디어는 내부를 더 볼 것이 없다
+            }
+            walk(nd, a2);
+          }
+        };
+        walk(c, 1);
+        if (!runs.length) return { inkTop: 0, inkH: 0, inkMin: 0, inkMax: 0, mediaH: 0, pinned };
+        runs.sort((a, b) => a[0] - b[0]);
+        let sum = 0, [s, e] = runs[0];
+        const min = runs[0][0];
+        let max = runs[0][1];
+        for (let i = 1; i < runs.length; i++) {
+          max = Math.max(max, runs[i][1]);
+          if (runs[i][0] <= e) e = Math.max(e, runs[i][1]);
+          else { sum += e - s; [s, e] = runs[i]; }
+        }
+        sum += e - s;
+        // inkMin/inkMax는 밴드 분기(bandVoid)의 기하 계산용 — inkH가 '합'이 된 뒤로
+        // inkTop+inkH를 하단으로 쓰던 산술이 깨져 있었다.
+        return { inkTop: min, inkH: sum, inkMin: min, inkMax: max, mediaH, pinned };
+      }
+
+// ---------- 여백 판정 (DE4 — "박스가 내용보다 크다") ----------
+//
+// 분모는 섹션이 아니라 **아이템 박스**다. 섹션 패딩은 리듬이므로 무죄이고,
+// 죄는 카드·열 안쪽이 내용보다 큰 것 — 화면에서 "미완성"으로 읽히는 그 공백이다.
+export const VOID = { minBoxH: 120, minVoidPx: 64, fillRatio: 0.5, minBandH: 140, minBandVoid: 96 };
+
+// 진짜 "열"인가 — 멤버들이 가로로 **서로소**여야 나란한 다열이다.
+// rowGroups는 y-겹침만 보므로 "나란한 3열"과 "같은 자리에 포개진 3층"을 구분하지 못한다.
+// 후자는 크로스페이드 스크롤텔링·캐러셀의 표준 구조이고, 잉크 비율 개념이 성립하지 않는다
+// (toss 실측: x=0·w=1440 전폭 absolute 레이어 3장이 "3열 여백 지배"로 잡혔다).
+export function isColumnRow(members) {
+  if (!members || members.length < 2) return false;
+  for (let i = 0; i < members.length; i++)
+    for (let j = i + 1; j < members.length; j++) {
+      const a = members[i], b = members[j];
+      const ov = Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x);
+      if (ov > 0.2 * Math.min(a.w, b.w)) return false;   // 겹치면 열이 아니라 층이다
+    }
+  return true;
+}
+
+// 아이템 1개 판정: 자기 박스의 절반도 못 채우고, 남은 공백이 절대량으로도 크다
+export function isVoidBox(c) {
+  if (!c || !(c.inkH > 0)) return false;
+  if (c.h < VOID.minBoxH) return false;
+  // 핀 고정 스크롤텔링(sticky/fixed 자손)의 박스 높이는 '스크롤 길이'이지 방의 크기가 아니다.
+  // 화면에는 늘 꽉 찬 장면이 보이므로 잉크 비율 개념이 성립하지 않는다(toss 히어로 실측).
+  if (c.pinned) return false;
+  // 미디어가 박스 높이의 30%+를 차지하면 '빈 방'이 아니다 — 스태거(오프셋) 갤러리처럼
+  // 리듬용 여백을 가진 사진 열이 걸리던 오탐(toss 실측).
+  if (c.mediaH && c.mediaH >= 0.3 * c.h) return false;
+  const gap = c.h - c.inkH;
+  return gap >= VOID.minVoidPx && c.inkH < VOID.fillRatio * c.h;
+}
+
+// 컨테이너 1개 판정: 경계(배경·보더)가 있는 **다열 밴드**인데 잉크가 자기 높이의 절반도 안 됨.
+// 패딩이 열마다가 아니라 컨테이너에 걸린 형태를 잡는다.
+// 다열(row.members ≥ 3)을 요구하는 것이 핵심 — 아이브로+제목+본문이 세로로 쌓인 섹션 헤더는
+// 같은 수치가 나와도 정상 리듬이다(aside.com `border-x ... py-24` 오검으로 확인).
+export function bandVoid(box, row) {
+  const inked = (row?.members ?? []).filter((c) => c.inkH > 0);
+  if (inked.length < 3 || box.h < VOID.minBandH) return null;
+  if (!box.surface && !box.bordered) return null;
+  if (inked.some((c) => c.pinned)) return null;
+  const top = Math.min(...inked.map((c) => c.inkMin ?? c.inkTop));
+  const bottom = Math.max(...inked.map((c) => c.inkMax ?? c.inkTop + c.inkH));
+  const ink = bottom - top;
+  const gap = box.h - ink;
+  if (gap < VOID.minBandVoid || ink >= VOID.fillRatio * box.h) return null;
+  return { ink: Math.round(ink), gap: Math.round(gap), h: Math.round(box.h) };
 }
 
 export function uniformSiblings(children) {

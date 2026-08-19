@@ -12,8 +12,9 @@ import { mkdir, writeFile, readFile, readdir } from "node:fs/promises";
 import { join, extname } from "node:path";
 import { argv, exit } from "node:process";
 import {
-  RULES, EPS, normText, hasEmoji, parseColor, rgbToHsl, contrast,
-  purpleGradient, KOREAN_FONT_RE, DEFAULT_STACK_RE, signatureOf, rowsOf, hashStr,
+  RULES, EPS, normText, hasEmoji, parseColor, rgbToHsl, contrast, isOrdinal,
+  purpleGradient, KOREAN_FONT_RE, DEFAULT_STACK_RE, signatureOf, rowsOf, rowGroups,
+  isVoidBox, bandVoid, isColumnRow, inkBox as inkBoxSrc, hashStr,
 } from "./rules-lib.mjs";
 
 const args = parseArgs(argv.slice(2));
@@ -73,7 +74,12 @@ for (let i = 0; i < viewports.length; i++) {
   });
   await page.waitForTimeout(400);
 
+  // detect 컨텍스트는 reducedMotion:"reduce"라 framer-motion류가 루프를 아예 안 돌린다.
+  // WAAPI 스냅샷 직전에만 해제했다가 되돌린다 — 안 그러면 MO1의 JS 경로가 항상 0으로 나온다.
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.waitForTimeout(250);
   const raw = await extract(page);
+  await page.emulateMedia({ reducedMotion: "reduce" });
   const tells = evaluateTells(raw, vp.label, "light", isDesktop);
   mergeTells(tells);
 
@@ -123,7 +129,9 @@ exit(failed ? 1 : 0);
 // ---------------- 브라우저 내 수집 ----------------
 
 async function extract(p) {
-  return p.evaluate((cfg) => {
+  // inkBox는 rules-lib이 단일 소스다. 브라우저 안에서 돌아야 하므로 소스를 문자열로 넘겨 복원한다.
+  return p.evaluate(({ cfg, inkBoxSrc: __src }) => {
+    const __inkBox = new Function("return (" + __src + ")")();
     const vis = (el) => {
       const r = el.getBoundingClientRect();
       if (r.width < 2 || r.height < 2) return false;
@@ -187,11 +195,14 @@ async function extract(p) {
       const right = Math.max(...rects.map((r) => r.right)), bottom = Math.max(...rects.map((r) => r.bottom));
       // 컨테이너 수집: 자식 3개 이상인 하위 요소 전부 (깊이 5, 섹션당 15개 상한) — LA1·LA2·DE2 판정용
       const secW = right - left;
+      // 잉크 박스 — 박스 안에서 글자·미디어가 실제로 찍힌 세로 구간. 여백 판정(DE4)의 분자다.
+      const inkBox = __inkBox;   // rules-lib 단일 소스를 주입받는다(아래 addInitScript 계약)
       const childInfo = (c) => {
         const r = c.getBoundingClientRect();
         const cs2c = getComputedStyle(c);
         return {
           tag: c.tagName.toLowerCase(), x: r.x, y: r.y, w: r.width, h: r.height,
+          ...inkBox(c),
           skeleton: [...c.children].map((g) => g.tagName.toLowerCase()).join(","),
           textLen: (c.innerText || "").trim().length,
           numText: /^\s*\d[\d,.]*\s*[+%]?/.test((c.innerText || "").trim()),
@@ -208,7 +219,14 @@ async function extract(p) {
         const kids = [...el.children].filter(vis);
         if (kids.length < 3) return;
         const r = el.getBoundingClientRect();
-        containers.push({ w: r.width, h: r.height, depth, children: kids.map(childInfo) });
+        const cs = getComputedStyle(el);
+        const bw = [cs.borderTopWidth, cs.borderRightWidth, cs.borderBottomWidth, cs.borderLeftWidth].map((v) => parseFloat(v) || 0);
+        const bs = [cs.borderTopStyle, cs.borderRightStyle, cs.borderBottomStyle, cs.borderLeftStyle];
+        containers.push({
+          w: r.width, h: r.height, depth, children: kids.map(childInfo),
+          surface: cs.backgroundColor !== "rgba(0, 0, 0, 0)" || cs.boxShadow !== "none",
+          bordered: bw.some((v, i) => v >= 1 && bs[i] !== "none"),
+        });
       };
       const walk = (el, depth) => {
         if (depth > 5 || containers.length >= 15) return;
@@ -349,6 +367,11 @@ async function extract(p) {
       }
     }
 
+    // CSS animation만 보면 framer-motion·GSAP 같은 JS 구동 루프가 통째로 안 잡힌다(현대 스택의 기본값).
+    const waapiLoops = (document.getAnimations?.() ?? [])
+      .filter((a) => a.effect?.getTiming?.().iterations === Infinity && a.playState === "running")
+      .slice(0, 20).map((a) => a.animationName || a.id || "waapi");
+
     const bodyCs = getComputedStyle(document.body);
     // 사용자 눈에 보이는 "페이지 필드" 색 — body가 투명하거나 main이 화면 대부분을 덮으면 main의 배경이 실체다
     let baseBg = bodyCs.backgroundColor;
@@ -366,8 +389,9 @@ async function extract(p) {
       hOverflow: document.documentElement.scrollWidth > vw + 1,
       bodyFont: bodyCs.fontFamily, bodyBg: baseBg,
       fontSizes, koreanPage: /[가-힣]/.test((document.body.innerText || "").slice(0, 4000)),
+      waapiLoops,
     };
-  }, EPS);
+  }, { cfg: EPS, inkBoxSrc: inkBoxSrc.toString() });
 }
 
 // ---------------- 판정 (Node 측 — 룰 ID는 rules-lib·rules.md와 1:1) ----------------
@@ -420,10 +444,30 @@ function evaluateTells(raw, viewport, theme, isDesktop) {
   const ratios = sections.map((s) => s.contentArea / Math.max(1, s.width * s.height));
   const medRatio = [...ratios].sort()[Math.floor(ratios.length / 2)] || 0;
   const sideBySide = (g) => rowsOf(g).some((n) => n >= 2); // 가로 나열/그리드만 카드 티 — 세로 목록은 정상
+  const de4 = new Set(); // 섹션당 1건 (같은 밴드가 컨테이너 계층마다 중복 보고되는 것 방지)
   for (const s of sections) {
     if (["header", "footer", "nav"].includes(s.tag)) continue;
-    const pools = [...(s.containers ?? []).map((c) => c.children), s.children];
-    for (const pool of pools) {
+    const boxes = [...(s.containers ?? []), { w: s.width, h: s.height, children: s.children, surface: false, bordered: false }];
+    // DE4 — 여백이 콘텐츠보다 큰 밴드. 분모는 섹션이 아니라 아이템 박스다(섹션 패딩은 리듬이므로 무죄).
+    if (isDesktop && !de4.has(s.index)) {
+      for (const box of boxes) {
+        const row = rowGroups(box.children ?? []).find((r) => r.members.length >= 3 && isColumnRow(r.members));
+        const hollow = row ? row.members.filter(isVoidBox) : [];
+        if (row && hollow.length > row.members.length / 2) {
+          const w = hollow[0];
+          add("DE4", s.index, `열 ${row.members.length}개 중 ${hollow.length}개가 여백 지배 — 박스 ${Math.round(w.h)}px에 콘텐츠 ${Math.round(w.inkH)}px, 상하 공백 ${Math.round(w.h - w.inkH)}px(공백 > 콘텐츠)`);
+          de4.add(s.index);
+          break;
+        }
+        const band = bandVoid(box, row);
+        if (band) {
+          add("DE4", s.index, `경계 밴드 높이 ${band.h}px에 콘텐츠 ${band.ink}px, 안쪽 공백 ${band.gap}px(공백 > 콘텐츠)`);
+          de4.add(s.index);
+          break;
+        }
+      }
+    }
+    for (const pool of boxes.map((b) => b.children)) {
       const cards = pool.filter((c) => c.h >= 80);
       const groups = {};
       for (const c of cards) {
@@ -441,10 +485,10 @@ function evaluateTells(raw, viewport, theme, isDesktop) {
         }
       }
       const nums = pool.filter((c) => c.numText && c.textLen <= 40);
-      if (nums.length >= 3 && nums.length <= 4 && sideBySide(nums)) add("LA2", s.index, `숫자 지배 형제 ${nums.length}개 가로 나열(통계 배너)`);
+      if (nums.length >= 3 && sideBySide(nums)) add("LA2", s.index, `숫자 지배 형제 ${nums.length}개 가로 나열(통계 배너)`);
       // 서술형 스탯 밴드 — 수치도 미디어도 없는 라벨+상태문 나열("검토 중"류). 증거 없는 빈 띠
       const proseStats = pool.filter((c) => !c.numText && c.textLen >= 6 && c.textLen <= 48 && c.h >= 40 && c.h <= 260 && !c.hasMedia);
-      if (proseStats.length >= 3 && proseStats.length <= 4 && sideBySide(proseStats) && s.mediaEls.length === 0 && s.height <= 520)
+      if (proseStats.length >= 3 && sideBySide(proseStats) && s.mediaEls.length === 0 && s.height <= 520)
         add("DE3", s.index, `서술형 스탯 밴드 ${proseStats.length}열 — 수치·증거·미디어 없음(측정값 없으면 밴드를 생략하라)`);
     }
     const r = s.contentArea / Math.max(1, s.width * s.height);
@@ -493,18 +537,37 @@ function evaluateTells(raw, viewport, theme, isDesktop) {
   if (mute.length >= 3) for (const sec of new Set(mute.map((e) => e.sec))) add("IC3", sec, `텍스트·aria 없는 아이콘 ${mute.filter((e) => e.sec === sec).length}개`);
   const blobs = els.filter((e) => e.pos === "absolute" && e.textLen === 0 && Math.min(e.w, e.h) >= 80 && e.br >= Math.min(e.w, e.h) / 2 && (e.hasOwnBg || e.bgImage.includes("gradient")));
   for (const sec of new Set(blobs.map((e) => e.sec))) add("IC4", sec, `장식 블롭(absolute 원형) ${blobs.filter((e) => e.sec === sec).length}개`);
-  // 번호 텍스트 목록 카드 — 시각 실체(건물·제품·공간)를 "01/02/03" 텍스트로 대체. 주변에 실미디어가 있으면 정당
+  // 번호 텍스트 목록·스테퍼 — 시각 실체(건물·제품·공간)를 "01/02/03" 텍스트로 대체. 주변에 실미디어가 있으면 정당.
+  // 세로 목록(칼럼 축)과 가로 스테퍼 밴드(행 축)를 모두 본다 — 같은 죄이고, 가로 배치가 훨씬 흔하다.
   {
-    const ords = els.filter((e) => /^0?\d{1,2}$/.test(e.text) && e.w <= 80 && e.h <= 60);
+    const ords = els.filter((e) => isOrdinal(e.text) && e.w <= 120 && e.h <= 60);
+    const ic6 = new Set();
+    const flag = (g, axis) => {
+      if (ic6.has(g[0].sec)) return;
+      const y0 = Math.min(...g.map((o) => o.y)), y1 = Math.max(...g.map((o) => o.y + o.h));
+      // 크기 무관 img 1장이면 사면되던 구멍 — 실미디어 기준(100×100=10,000px²)으로 통일한다.
+      const media = els.some((e) => ["img", "video"].includes(e.tag) && e.sec === g[0].sec && e.w * e.h >= 10000 && e.y > y0 - 500 && e.y < y1 + 500);
+      if (media) return;
+      ic6.add(g[0].sec);
+      add("IC6", g[0].sec, `번호 ${axis}(${g.slice(0, 5).map((o) => `"${o.text}"`).join(",")}) — 시각 앵커 0인 단계 나열(대상이 실체면 주석 이미지로)`);
+    };
     const byCol = {};
     for (const o of ords) { const k = `${o.sec}|${Math.round(o.x / 32)}`; (byCol[k] = byCol[k] ?? []).push(o); }
     for (const g of Object.values(byCol)) {
       if (g.length < 3) continue;
       g.sort((a, b) => a.y - b.y);
-      const y0 = g[0].y, y1 = g[g.length - 1].y + g[g.length - 1].h;
-      if (y1 - y0 > 900 || !g.every((o, i) => i === 0 || o.y - g[i - 1].y < 260)) continue;
-      const media = els.some((e) => ["img", "video"].includes(e.tag) && e.sec === g[0].sec && e.w >= 80 && e.y > y0 - 500 && e.y < y1 + 500);
-      if (!media) add("IC6", g[0].sec, `번호 텍스트 목록(${g.slice(0, 4).map((o) => `"${o.text}"`).join(",")}) — 시각 앵커 0인 목록 카드(대상이 실체면 주석 이미지로)`);
+      if (g[g.length - 1].y + g[g.length - 1].h - g[0].y > 900) continue;
+      if (!g.every((o, i) => i === 0 || o.y - g[i - 1].y < 260)) continue;
+      flag(g, "세로 목록");
+    }
+    const byRow = {};
+    for (const o of ords) { const k = `${o.sec}|${Math.round(o.y / 32)}`; (byRow[k] = byRow[k] ?? []).push(o); }
+    for (const g of Object.values(byRow)) {
+      if (g.length < 3) continue;
+      g.sort((a, b) => a.x - b.x);
+      const secW = sections.find((s) => s.index === g[0].sec)?.width ?? vw;
+      if (g[g.length - 1].x - g[0].x < 0.3 * secW) continue; // 문장 안 숫자가 아니라 페이지를 가로지르는 밴드일 것
+      flag(g, "가로 스테퍼");
     }
   }
 
@@ -536,7 +599,11 @@ function evaluateTells(raw, viewport, theme, isDesktop) {
     const longLines = textEls.filter((e) => e.textLen >= 80 && (e.korean ? e.w / e.fs > 42 : e.w / (e.fs * 0.52) > 95));
     if (longLines.length >= 2) add("QF3", null, `본문 행폭 과대 ${longLines.length}곳 (가독 한계 초과)`);
   }
-  const floorMiss = textEls.filter((e) => !e.korean && e.textLen >= 40 && (e.fs < 12 || (e.lh && e.lh / e.fs < 1.3)));
+  // 한글 제외 조항이 있었다 — 한글 랜딩을 만드는 스킬에서 한글이 타이포 하한을 면제받는 건 규칙의 자기부정이다.
+  // (행간은 한글이 더 엄격한 KO1 1.5로 따로 잡히므로 여기서는 12px 하한이 핵심이다.)
+  // 12px 하한은 모든 텍스트에 적용하되, **행간 프롱은 본문 크기(≤20px)에만** 적용한다.
+  // 디스플레이는 1.05~1.2가 정상이라(라이브러리 실측) 상한 없이 걸면 잘 만든 레퍼런스가 잡힌다(aside 4건 실측).
+  const floorMiss = textEls.filter((e) => e.textLen >= 40 && (e.fs < 12 || (e.fs <= 20 && e.lh && e.lh / e.fs < 1.3)));
   if (floorMiss.length >= 3) add("QF4", null, `본문 타이포 하한 미달 ${floorMiss.length}곳 (12px 미만 또는 행간 1.3 미만)`);
   if (raw.viewport.w <= 480) {
     const smallTap = els.filter((e) => (["button", "input", "select"].includes(e.tag) || (e.tag === "a" && e.hasOwnBg)) && (e.w < 44 || e.h < 44) && e.w > 2 && e.h > 2);
@@ -570,7 +637,9 @@ function evaluateTells(raw, viewport, theme, isDesktop) {
 
   // 7. 모션
   const loops = els.filter((e) => e.animIter?.includes("infinite") && e.animName && e.animName !== "none");
-  if (loops.length) add("MO1", null, `infinite 애니메이션 ${loops.length}곳 (${[...new Set(loops.map((e) => e.animName))].slice(0, 3).join(", ")})`);
+  const waapi = raw.waapiLoops ?? [];
+  if (loops.length || waapi.length)
+    add("MO1", null, `infinite 애니메이션 ${loops.length + waapi.length}곳 (CSS ${loops.length}${waapi.length ? ` · JS/WAAPI ${waapi.length}` : ""}: ${[...new Set([...loops.map((e) => e.animName), ...waapi])].slice(0, 3).join(", ")})`);
 
   // 8. 한글 타이포
   if (raw.koreanPage) {
