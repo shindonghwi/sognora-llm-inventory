@@ -38,7 +38,9 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { argv, exit } from "node:process";
 import { load } from "./_deps.mjs";
 
-const TYPES = ["landing", "catalog", "tool", "pricing", "form", "dashboard"];
+const TYPES = ["landing", "catalog", "tool", "pricing", "form", "dashboard", "document", "about"];
+// 읽는 화면 — 소개문으로 여는 것이 옳다. "일이 첫 화면에 있는가"(PURPOSE-*)를 묻지 않는다.
+const READING = new Set(["landing", "document", "about"]);
 const args = parseArgs(argv.slice(2));
 if (!args.url) { console.error("usage: alive.mjs --url <URL> [--type " + TYPES.join("|") + "] [--src <dir>] [--out <dir>] [--viewports 1440x900,390x844] [--expect-status <n>]"); exit(2); }
 if (args.type && !TYPES.includes(args.type)) {
@@ -330,6 +332,22 @@ for (let vi = 0; vi < viewports.length; vi++) {
     const contactSales = /문의|contact\s+(?:sales|us)|견적|영업팀/i.test(low);
     const weakPrice = /\d+\s*원|무료|\bfree\b/i.test(low); // NOT-A-PRICING의 최후 방어(콤마 없는 "500원" 등)
     const emptyStateShown = /아직 없|비어 있|데이터가 없|없습니다|no data|nothing (?:here|yet)|시작해 보|추가해 보|get started/i.test(low);
+    // 문서(정책·약관) 구조: 산문을 거느린 절 + 목차.
+    // h2 개수만 세면 카드 제목이 h2인 카탈로그가 "9절짜리 문서"로 통과한다 — 절은 산문을 거느린다.
+    const mainEl = document.querySelector("main, [role=main]");
+    const docSections = [...document.querySelectorAll("h2")].filter((el) => {
+      if (!chromeless(el)) return false;
+      const scope = el.parentElement;
+      if (!scope) return false;
+      // 절이 거느린 글이 120자 미만이면 조항이 아니라 카드 제목이다.
+      // 한 문단 길이로 재면 한국어 문서에서 짧은 조항이 억울하게 걸린다 — 절 전체로 잰다.
+      return (scope.innerText || "").replace(/\s+/g, " ").trim().length >= 120;
+    }).length;
+    // 목차는 <nav> 안에 있는 것이 정상이다 — chromeless로 걸러내면 목차가 있는 문서에 NO-TOC이 뜬다.
+    // main이 있으면 그 안쪽 앵커를 세고, 없을 때만 크롬을 걷어낸다.
+    const tocLinks = [...(mainEl ?? document).querySelectorAll("a[href^='#']")]
+      .filter((el) => (mainEl ? true : chromeless(el))).length;
+    const effectiveDate = /시행일|발효일|최종\s*(?:수정|갱신|업데이트)|effective\s+(?:date|as)|last\s+updated/i.test(mainText);
 
     return {
       len: txt.length, sample: txt.slice(0, 120), overlayText, flush, blocks,
@@ -339,6 +357,7 @@ for (let vi = 0; vi < viewports.length; vi++) {
         repeatCards: best ? best.n : 0, maxGroup, hollowCards,
         cardsWithAction: best ? best.withAction : 0, repeat2,
         toolInputs, formFields, inForm, actionButtons, testimonial, priceish, emptyStateShown,
+        docSections, tocLinks, effectiveDate,
       },
       pricing: {
         priceCount: priceEls.length, priceNoPeriod, planCount: planCards.length,
@@ -412,10 +431,12 @@ for (let vi = 0; vi < viewports.length; vi++) {
     // 목적 표류 — 이 페이지의 "일"이 첫 화면 밖으로 밀렸는가(page-rules §0c). 뷰포트마다 잰다.
     {
       const fold = probe.fold ?? vp.height;
-      const work = { tool: ["입력(업로드·텍스트·캔버스)", probe.firstInputY],
-                     catalog: ["고를 항목", probe.firstCardY],
-                     dashboard: ["데이터 블록", probe.firstCardY ?? probe.firstInputY],
-                     form: ["입력 필드", probe.firstInputY] }[args.type];
+      // 읽는 화면(랜딩·문서·소개)에는 "첫 화면으로 올려야 할 일"이 없다 — 읽는 것이 일이다.
+      const work = READING.has(args.type) ? null
+        : { tool: ["입력(업로드·텍스트·캔버스)", probe.firstInputY],
+            catalog: ["고를 항목", probe.firstCardY],
+            dashboard: ["데이터 블록", probe.firstCardY ?? probe.firstInputY],
+            form: ["입력 필드", probe.firstInputY] }[args.type];
       if (work) {
         const [what, y] = work;
         if (y === null) { if (isFirst) add("yellow", "NO-WORK-ELEMENT", `${what}을(를) 찾지 못했다 — 유형 구조 검사 결과와 함께 확인하라`); }
@@ -429,6 +450,25 @@ for (let vi = 0; vi < viewports.length; vi++) {
       // §5가 요구하는 빈 상태 화면(0건 문구+다음 행동)은 벌하지 않는다
       if (!(s.emptyStateShown && s.actionButtons > 0))
         add("yellow", "THIN-DASHBOARD", "대시보드인데 반복 데이터도 조작 요소도 없다 — 의도된 빈 상태(0건 문구+다음 행동)면 이 경고는 무시");
+    }
+    // 문서(정책·약관·이용정책·환불) — 읽는 화면이다. 구조는 "번호 붙은 절 + 목차 + 시행일".
+    // 기계는 **존재만** 본다. 내용의 적법성·정확성은 판정하지 않는다.
+    if (isFirst && args.type === "document") {
+      if (s.docSections < 2)
+        add("red", "NOT-A-DOCUMENT", `본문 절(h2)이 ${s.docSections}개 — 조건을 확인하러 오는 화면은 절로 나뉘어야 한다(§0b). 한 덩어리 글이면 유형을 다시 정하라`);
+      if (s.docSections >= 5 && s.tocLinks < 3)
+        add("yellow", "NO-TOC", `절 ${s.docSections}개인데 같은 페이지 앵커 링크가 ${s.tocLinks}개 — 목차 없이 긴 문서를 훑기 어렵다`);
+      if (!s.effectiveDate)
+        add("yellow", "NO-EFFECTIVE-DATE", "시행일·최종 수정일 표기를 찾지 못했다 — 존재만 확인하는 검사다, 사람 확인");
+      // 가격 표류는 여기서 보지 않는다 — 환불 정책·이용약관이 요금과 청구 주기를 다루는 것은
+      // 표류가 아니라 그 문서의 내용이다. 실측에서 약관이 이 규칙으로 오탐을 맞았다.
+      if (s.testimonial)
+        add("yellow", "LANDING-DRIFT", "문서 페이지에 후기 섹션이 섞였다 — 설득은 랜딩의 일이다");
+    }
+    // 소개 — 읽는 화면이되 랜딩의 복제가 아니어야 한다(§0b)
+    if (isFirst && args.type === "about") {
+      if (s.testimonial || s.priceish)
+        add("yellow", "LANDING-DRIFT", "소개 페이지에 후기·가격 섹션 — 랜딩 밴드를 복제했는지 확인하라");
     }
     if (isFirst && args.type === "form") {
       if (s.formFields < 2)
