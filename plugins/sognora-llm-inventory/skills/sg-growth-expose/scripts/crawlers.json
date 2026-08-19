@@ -1,0 +1,112 @@
+{
+  "note": "AI 크롤러 UA 원장. 각 행의 source가 1차 출처, checkedAt이 대조일 — 값을 고치면 반드시 checkedAt을 갱신한다. 낡음은 데이터가 스스로 드러내야 한다.",
+  "classes": {
+    "search": "검색 인덱스 — 차단하면 그 AI 답변·검색에서 제외된다. 차단 발견 시 해제 대상(auto)",
+    "user": "사용자 발동 — 개별 질의 시 실시간 페치. robotsBound가 true인 것만 해제 대상",
+    "training": "훈련 전용 — 차단해도 노출과 무관. 학습 옵트아웃은 소유자의 콘텐츠 권리 의사 표시이므로 불가침(forbidden)"
+  },
+  "crawlers": [
+    {
+      "ua": "OAI-SearchBot",
+      "class": "search",
+      "robotsBound": true,
+      "fix": "auto",
+      "blockedEffect": "\"Sites that are opted out of OAI-SearchBot will not be shown in ChatGPT search answers\"",
+      "source": "https://developers.openai.com/api/docs/bots",
+      "checkedAt": "2026-08-19"
+    },
+    {
+      "ua": "Claude-SearchBot",
+      "class": "search",
+      "robotsBound": true,
+      "fix": "auto",
+      "blockedEffect": "\"prevents our system from indexing your content for search optimization\"",
+      "source": "https://support.claude.com/en/articles/8896518-does-anthropic-crawl-data-from-the-web-and-how-can-site-owners-block-the-crawler",
+      "checkedAt": "2026-08-19"
+    },
+    {
+      "ua": "PerplexityBot",
+      "class": "search",
+      "robotsBound": true,
+      "fix": "auto",
+      "blockedEffect": "Perplexity 검색 결과 표면화용(훈련 아님). robots.txt 존중을 문서가 명시",
+      "source": "https://docs.perplexity.ai/guides/bots",
+      "checkedAt": "2026-08-19"
+    },
+    {
+      "ua": "Claude-User",
+      "class": "user",
+      "robotsBound": true,
+      "fix": "auto",
+      "blockedEffect": "\"prevents our system from retrieving your content in response to a user query\"",
+      "source": "https://support.claude.com/en/articles/8896518-does-anthropic-crawl-data-from-the-web-and-how-can-site-owners-block-the-crawler",
+      "checkedAt": "2026-08-19"
+    },
+    {
+      "ua": "ChatGPT-User",
+      "class": "user",
+      "robotsBound": false,
+      "fix": "report-only",
+      "blockedEffect": "\"Because these actions are initiated by a user, robots.txt rules may not apply\" — Disallow는 무효 지시어. 지우든 두든 동작이 안 바뀌므로 해제를 성과로 보고하지 않는다",
+      "source": "https://developers.openai.com/api/docs/bots",
+      "checkedAt": "2026-08-19"
+    },
+    {
+      "ua": "Perplexity-User",
+      "class": "user",
+      "robotsBound": false,
+      "fix": "report-only",
+      "blockedEffect": "\"Since a user requested the fetch, this fetcher generally ignores robots.txt rules\" — Disallow는 무효 지시어",
+      "source": "https://docs.perplexity.ai/guides/bots",
+      "checkedAt": "2026-08-19"
+    },
+    {
+      "ua": "GPTBot",
+      "class": "training",
+      "robotsBound": true,
+      "fix": "forbidden",
+      "blockedEffect": "\"Disallowing GPTBot indicates a site's content should not be used in training\" — 노출과 무관",
+      "source": "https://developers.openai.com/api/docs/bots",
+      "checkedAt": "2026-08-19"
+    },
+    {
+      "ua": "ClaudeBot",
+      "class": "training",
+      "robotsBound": true,
+      "fix": "forbidden",
+      "blockedEffect": "훈련 기여 가능 콘텐츠 수집(\"could potentially contribute to their training\") — 노출과 무관",
+      "source": "https://support.claude.com/en/articles/8896518-does-anthropic-crawl-data-from-the-web-and-how-can-site-owners-block-the-crawler",
+      "checkedAt": "2026-08-19"
+    },
+    {
+      "ua": "Google-Extended",
+      "class": "training",
+      "robotsBound": true,
+      "fix": "forbidden",
+      "blockedEffect": "Gemini·Vertex 훈련 제어 전용. \"doesn't affect a site's inclusion in Search, nor do we use Google-Extended as a ranking signal\"",
+      "source": "https://developers.google.com/crawling/docs/crawlers-fetchers/google-special-case-crawlers",
+      "checkedAt": "2026-08-19"
+    },
+    {
+      "ua": "CCBot",
+      "class": "training",
+      "robotsBound": true,
+      "fix": "forbidden",
+      "blockedEffect": "Common Crawl 수집 — 훈련 데이터셋 유통 경로. 노출과 무관",
+      "source": "1차 미확인(commoncrawl.org 미대조, 2026-08-19 기준 2차 다수 일치)",
+      "checkedAt": "2026-08-19"
+    }
+  ],
+  "legacy": [
+    {
+      "ua": "Claude-Web",
+      "status": "현행 Anthropic 문서(support.claude.com/8896518, 2026-08-19 대조)에 존재하지 않음 — 감사 대상 아님. robots.txt에 남아 있으면 정리 후보로 보고만",
+      "checkedAt": "2026-08-19"
+    },
+    {
+      "ua": "anthropic-ai",
+      "status": "현행 Anthropic 문서에 존재하지 않음 — 감사 대상 아님. 보고만",
+      "checkedAt": "2026-08-19"
+    }
+  ]
+}
