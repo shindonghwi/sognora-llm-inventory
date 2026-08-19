@@ -52,7 +52,16 @@ if (!targets.length) { console.error("대상 페이지가 없다(--only 오타�
 
 const urlOf = (route, loc) => contract.baseUrl + (loc || "") + (route === "/" ? "/" : route);
 
-// ── 0) 컴포넌트 층 — 프로젝트 단위라 **1회만** 돈다 ──────────────────────
+// ── 0a) 시안 존재 — 코드를 짜기 전에 보고 만들 목표물이 있어야 한다(§1c) ──
+let compOut = "", compCode = 0;
+{
+  const r = await run([join(here, "comp.mjs"), "--contract", String(args.contract), "--check",
+    ...(args["comps"] ? ["--out", String(args["comps"])] : [])]);
+  compOut = r.out; compCode = r.code;
+  process.stderr.write(`${compCode === 0 ? "✅" : "🔴"} 시안\n`);
+}
+
+// ── 0b) 컴포넌트 층 — 프로젝트 단위라 **1회만** 돈다 ──────────────────────
 // 페이지마다 내면 같은 🔴이 열 번 찍혀 보고서를 못 읽는 물건으로 만든다.
 let primOut = "- (건너뜀 — `--src`를 주면 컴포넌트 층을 검사한다)\n", primCode = 0;
 const srcDir = typeof args.src === "string" ? args.src : (typeof contract.src === "string" ? contract.src : null);
@@ -109,13 +118,15 @@ const md =
     ? "- ✅ 구조·계약 이상 없음(의도 부합은 미판정)\n"
     : rows.filter((r) => r.findings.length).map((r) => `### \`${r.loc || "/"}${r.route === "/" ? "" : r.route}\` (${r.type.name})\n\n${r.findings.join("\n")}\n`).join("\n")) +
   `\n## 교차 검사 — 서로 같은 화면인가\n\n${crossOut}\n` +
+  `\n## 시안 (§1c · 빌드 전 목표물)\n\n${compOut}\n` +
   `\n## 컴포넌트 층 (프로젝트 단위 · 1회)\n\n${primOut}\n` +
   `\n---\n\n**화면 ${rows.length}개 중 실패 ${failed.length}개**${errored.length ? ` · 실행 실패 ${errored.length}개` : ""}` +
-  ` · 교차 검사 ${crossCode === 0 ? "통과" : "실패"}${srcDir ? ` · 컴포넌트 층 ${primCode === 0 ? "통과" : "실패"}` : ""}\n`;
+  ` · 교차 검사 ${crossCode === 0 ? "통과" : "실패"} · 시안 ${compCode === 0 ? "통과" : "실패"}` +
+  `${srcDir ? ` · 컴포넌트 층 ${primCode === 0 ? "통과" : "실패"}` : ""}\n`;
 
 if (outDir) { await mkdir(outDir, { recursive: true }); await writeFile(join(outDir, "audit.md"), md); }
 console.log(md);
-exit(failed.length || crossCode === 1 || primCode === 1 || errored.length ? 1 : 0);
+exit(failed.length || crossCode === 1 || primCode === 1 || compCode === 1 || errored.length ? 1 : 0);
 
 function run(argv2) {
   return new Promise((res) => {
