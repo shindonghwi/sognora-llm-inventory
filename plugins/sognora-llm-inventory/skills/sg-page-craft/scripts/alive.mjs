@@ -508,7 +508,13 @@ for (let vi = 0; vi < viewports.length; vi++) {
 await browser.close();
 
 const red = findings.filter((f) => f.sev === "red");
-const md = `# 살아있는가 검사 — ${args.url}${args.type ? ` (유형: ${args.type})` : ""}${viewports.length > 1 ? ` · 뷰포트 ${viewports.map((v) => `${v.width}x${v.height}`).join(", ")}` : ""}\n\n${findings.length ? findings.map((f) => `- ${f.sev === "red" ? "🔴" : "🟡"} **${f.rule}** — ${f.detail}`).join("\n") : "- ✅ 이상 없음"}\n\n**${red.length ? `실패 ${red.length}건` : "통과"}** · 경고 ${findings.length - red.length}건\n`;
+// 초록 도장에는 **그 도장이 무엇을 뜻하지 않는지**를 새긴다.
+// 실전 사고: `--type tool` 통과를 보고 "이 화면이 제일 잘 만들어졌다"고 보고했는데,
+// 기획 의도와 다르게 만들어진 화면이었다. 이 계기는 구조·렌더만 본다 —
+// "원래 만들려던 화면인가"는 관측할 수 없고, 관측 불가 영역에 도장을 찍지 않는다.
+const SCOPE_NOTE = "> 이 검사는 **구조·렌더**만 본다(요소 존재·위치·콘솔·클래스 정합). " +
+  "통과는 **의도대로 만들어졌다는 뜻이 아니다** — 이 화면이 만들려던 그 화면인지, 내용이 맞는지는 기획자만 판정한다.";
+const md = `# 살아있는가 검사 — ${args.url}${args.type ? ` (유형: ${args.type})` : ""}${viewports.length > 1 ? ` · 뷰포트 ${viewports.map((v) => `${v.width}x${v.height}`).join(", ")}` : ""}\n\n${SCOPE_NOTE}\n\n${findings.length ? findings.map((f) => `- ${f.sev === "red" ? "🔴" : "🟡"} **${f.rule}** — ${f.detail}`).join("\n") : "- ✅ 구조·렌더 이상 없음(의도 부합은 미판정)"}\n\n**${red.length ? `실패 ${red.length}건` : "구조 통과"}** · 경고 ${findings.length - red.length}건\n`;
 if (args.out) { await mkdir(args.out, { recursive: true }); await writeFile(join(args.out, "alive.md"), md); }
 console.log(md);
 exit(red.length ? 1 : 0);

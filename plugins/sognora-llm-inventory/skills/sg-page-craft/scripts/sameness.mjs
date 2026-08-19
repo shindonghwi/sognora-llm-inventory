@@ -264,7 +264,7 @@ const note = sameType.filter((p) => p.jac >= baseline.value).length
 
 const md = `# 서로 같은 화면인가 — ${measured.length}개 페이지 (${vw}x${vh})\n\n> 기준 ${pct(baseline.value)} — ${baseline.from}\n\n${table}\n${matrix}\n${note}\n${
   findings.length ? findings.map((f) => `- ${f.sev === "red" ? "🔴" : "🟡"} **${f.rule}** — ${f.detail}`).join("\n") : "- ✅ 유형이 다른 페이지끼리 골격이 갈렸다"
-}\n\n**${red.length ? `실패 ${red.length}건` : "통과"}** · 경고 ${findings.length - red.length}건\n`;
+}\n\n**${red.length ? `실패 ${red.length}건` : "통과"}** · 경고 ${findings.length - red.length}건\n\n> 이 계기는 **골격이 서로 다른가**만 본다. 갈렸다는 것이 각 화면이 **의도대로 만들어졌다는 뜻은 아니다** — 유형별 내용은 \`alive.mjs\`가, 의도 부합은 기획자가 판정한다.\n`;
 
 if (args.out) { await mkdir(args.out, { recursive: true }); await writeFile(join(args.out, "sameness.md"), md); }
 console.log(md);
