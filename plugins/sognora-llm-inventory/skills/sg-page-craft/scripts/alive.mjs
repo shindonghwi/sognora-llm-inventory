@@ -98,13 +98,25 @@ const probe = await page.evaluate(() => {
   const repeatCards = biggest.length;
   const cardsWithAction = biggest.filter((el) => el.querySelector("a,button,[role=button]") || el.closest("a")).length;
   const inputs = document.querySelectorAll('input,textarea,select,canvas,[contenteditable="true"],[type=file]').length;
+  // 폼 판정은 "사람이 값을 적는 보이는 필드"만 센다 — canvas·hidden·검색창을 필드로 세면 랜딩이 폼으로 통과한다
+  const formFields = [...document.querySelectorAll("input,textarea,select")].filter((el) => {
+    const ty = (el.getAttribute("type") || "text").toLowerCase();
+    if (["hidden", "submit", "button", "image", "reset"].includes(ty)) return false;
+    const r = el.getBoundingClientRect();
+    if (r.width < 40 || r.height < 16) return false;
+    const id = el.id;
+    const labeled = Boolean(el.getAttribute("aria-label") || el.getAttribute("placeholder") || el.closest("label") ||
+      (id && document.querySelector(`label[for="${CSS.escape(id)}"]`)));
+    return labeled;
+  }).length;
+  const inForm = document.querySelectorAll("form").length;
   const actionButtons = document.querySelectorAll("button,[role=button],input[type=submit]").length;
   const body = txt.toLowerCase();
   const testimonial = /what (creators|customers|users) (are )?saying|후기|고객 사례|testimonial|★★★|리뷰/.test(body) || document.querySelectorAll('[class*="testimonial" i],[class*="review" i]').length > 0;
   const priceish = /\$\d+\s*\/\s*(mo|month)|원\s*\/\s*월|per month|요금제|pricing/.test(body);
   return { len: txt.length, sample: txt.slice(0, 120), overlayText, flush, blocks,
     h1: document.querySelectorAll("h1").length, imgs: document.querySelectorAll("img,video").length,
-    struct: { repeatCards, cardsWithAction, inputs, actionButtons, testimonial, priceish } };
+    struct: { repeatCards, cardsWithAction, inputs, formFields, inForm, actionButtons, testimonial, priceish } };
 });
 if (probe.overlayText && /error|Cannot read|undefined|Unhandled|TypeError/i.test(probe.overlayText))
   add("red", "RUNTIME-ERROR", `개발 에러 오버레이: ${probe.overlayText.slice(0, 140)}`);
@@ -134,8 +146,14 @@ if (args.type && args.type !== "landing") {
   }
   if (args.type === "dashboard" && s.repeatCards < 2 && s.inputs === 0)
     add("yellow", "THIN-DASHBOARD", "대시보드인데 반복 데이터도 조작 요소도 없다");
-  if (args.type === "form" && s.inputs < 2)
-    add("red", "NOT-A-FORM", `입력 필드 ${s.inputs}개 — 폼이 아니다`);
+  if (args.type === "form") {
+    if (s.formFields < 2)
+      add("red", "NOT-A-FORM", `라벨 붙은 입력 필드 ${s.formFields}개 — 폼이 아니다(canvas·hidden은 세지 않는다)`);
+    else if (s.formFields > 5)
+      add("yellow", "FORM-TOO-LONG", `필드 ${s.formFields}개 — 문의 폼은 3~5개 권장(page-rules §4)`);
+    if (s.inForm === 0) add("yellow", "NO-FORM-ELEMENT", "<form> 요소가 없다 — 제출·검증 처리를 확인하라");
+    if (landingish) add("yellow", "LANDING-DRIFT", "폼 페이지에 후기·가격 섹션");
+  }
 }
 
 await browser.close();
