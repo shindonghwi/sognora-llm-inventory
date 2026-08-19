@@ -88,7 +88,12 @@ node scripts/diff.mjs --ref _replica/ref/<라우트> --local <로컬URL> --out _
 ```
 npm i -D playwright pixelmatch pngjs && npx playwright install chromium
 ```
-없으면 스크립트가 exit 2와 함께 안내한다. pixelmatch·pngjs가 없으면 pixel diff만 건너뛰고 수치 게이트는 계속 작동한다.
+**클록 도입(v1.6.3) 이전에 만든 `_replica/ref/`는 재캡처해야 한다** — 캡처 조건이 다르고, diff가 이를 감지해 exit 2로 막는다.
+
+없으면 스크립트가 exit 2와 함께 안내한다. **pixelmatch·pngjs가 없으면 `diff.mjs`는 판정을 거부한다(exit 2)** — 통과가 아니라 "판정되지 않음"이다.
+
+> 예전 문면은 "pixel diff만 건너뛰고 수치 게이트는 계속 작동한다"였는데 **거짓이었다.** 그 상태의 수치 게이트는 box·font만 보므로 실측에서 **빈 페이지·다크 반전·전 텍스트 굵게·문구 전면 교체가 모두 exit 0으로 통과**했다. 수치만으로는 화면이 같은지 판정할 수 없다.
+> 수치 비교만 하고 싶으면 `--no-pixel`을 명시해야 하고, 그 런은 보고서에 **"픽셀 미판정"**으로 남으며 완료 선언의 근거가 될 수 없다.
 
 ## 최적화 규칙
 
