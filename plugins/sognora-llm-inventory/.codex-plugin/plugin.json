@@ -1,6 +1,6 @@
 {
   "name": "sognora-llm-inventory",
-  "version": "1.6.4",
+  "version": "1.6.5",
   "description": "개인 스킬 무기고 — 설치 한 번으로 전체 스킬 장착. Claude Code + Codex CLI 지원.",
   "author": {
     "name": "donghwishin"

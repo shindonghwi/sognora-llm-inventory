@@ -100,6 +100,21 @@ PROSE_ONLY = {"KOH03", "KOH09", "KOH10", "KOH11", "KOH12"}
 # 특정 장르에서만 🔴로 승격하는 규칙 — {규칙: {장르...}}
 PROMOTE_RED = {"KOH20": {"랜딩"}}
 
+# KOH21 용어 표류 — 한 파일에서 같은 것을 두 이름으로 부르는 경우.
+# **역할이 갈리지 않는 진짜 동의어만 넣는다.** "고객/사용자"는 뺐다 — 실측(nolpop)에서
+# 고객=시공사의 의뢰인, 사용자=좌석 수로 서로 다른 것을 가리켰다. 넣었으면 오탐이었다.
+# "사진/이미지"도 뺐다(현장 사진 vs 이미지 자산). 룰북이 "기계가 못 센다"고 적어둔 축인데,
+# 셀 수 있는 부분만 정직하게 떼어내 기계에 넘기고 나머지는 사람 몫으로 남긴다.
+TERM_CLUSTERS = [
+    ("요금제", ("요금제", "플랜")),
+    ("미리보기", ("미리보기", "프리뷰")),
+    ("계정", ("계정", "어카운트")),
+    ("로그인", ("로그인", "사인인")),
+]
+
+# 카피가 문자열 리터럴 안에 사는 파일 유형 — 장르 없이 검사하면 거짓 통과가 나온다.
+CODE_EXT = (".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs", ".json", ".vue", ".svelte", ".py")
+
 STRUCT_NEXT_RE = re.compile(r"^\s*(?:[-*|]|\d{1,2}[.)]|```|#)")  # KOH03 구조적 면제용
 
 
@@ -165,9 +180,30 @@ def scan(text: str, genre: str) -> dict:
             locs.append({"line": ln, "match": text[m.start():m.end()].strip()})
         findings.append({"rule": rid, "name": name, "severity": sev, "count": n,
                          "locations": locs, "note": note})
+    if genre in UI_FAMILY:
+        findings.extend(term_drift(masked, text))
     return {"findings": findings,
             "counts": {"red": sum(1 for f in findings if f["severity"] == "red"),
                        "yellow": sum(1 for f in findings if f["severity"] == "yellow")}}
+
+
+def term_drift(masked: str, text: str) -> list:
+    """같은 것을 두 이름으로 부르는가 — 파일 안에서만 본다(프로젝트 전역은 관할 밖)."""
+    out = []
+    for label, members in TERM_CLUSTERS:
+        seen = {m: len(re.findall(m, masked)) for m in members}
+        used = {m: c for m, c in seen.items() if c}
+        if len(used) < 2:
+            continue
+        locs = []
+        for m in used:
+            hit = re.search(m, masked)
+            if hit:
+                locs.append({"line": masked.count("\n", 0, hit.start()) + 1, "match": m})
+        out.append({"rule": "KOH21", "name": f"용어 표류({label})", "severity": "yellow",
+                    "count": sum(used.values()), "locations": locs,
+                    "note": "rules.md §8 🟡 — " + " / ".join(f"{m}×{c}" for m, c in used.items()) + " → 하나로 통일"})
+    return out
 
 
 def main() -> int:
@@ -185,6 +221,21 @@ def main() -> int:
     if not files:
         print("usage: detect_ko.py <file...|-> [--genre 장르] [--json] [--min red]", file=sys.stderr)
         return 3
+
+    # 장르 미지정 + 코드/메시지 파일 = 판정 불가. **0을 반환하면 안 된다.**
+    # 기본 장르는 큰따옴표 안을 '인용'으로 마스킹하는데 i18n·TS·JSON 카피는 100%가 거기 있다.
+    # 그래서 장르를 빠뜨린 호출은 언제나 🔴0 exit 0 — "깨끗함"과 구분되지 않는 거짓 통과였고,
+    # 이 스킬을 만든 사고의 원인이 정확히 이것이다. 침묵 대신 거절한다(change_rate.py의 exit 2와 같은 규약).
+    if not genre:
+        code = [f for f in files if f.lower().endswith(CODE_EXT)]
+        if code:
+            print("error: 장르 미지정 — 판정하지 않는다(exit 2).\n"
+                  f"  대상: {', '.join(code)}\n"
+                  "  이 파일들의 카피는 큰따옴표 안에 있고, 기본 장르는 그걸 인용으로 보고 지운다.\n"
+                  "  결과가 '🔴 0'으로 나와도 깨끗한 게 아니라 아무것도 안 본 것이다.\n"
+                  "  마케팅 카피면 --genre 랜딩, 앱 기능 화면이면 --genre UI 를 넘겨라.",
+                  file=sys.stderr)
+            return 2
 
     out, total_red, total_yellow = [], 0, 0
     for f in files:
