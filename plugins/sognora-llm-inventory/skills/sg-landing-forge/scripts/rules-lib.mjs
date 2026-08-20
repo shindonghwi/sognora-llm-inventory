@@ -3,12 +3,13 @@
  * **룰 ID의 SSOT는 이 파일이다** — forge-rules.md의 서술과 어긋나면 이 파일이 맞다.
  */
 
+// 코퍼스 판정(v1.6.0) — `corpus.mjs`가 프리미엄 레퍼런스 16종에 detect를 돌린 결과
+// **과반에서 발동한 규칙 4건(TS1·CO2·IC3·QF6)은 삭제했다.** 레퍼런스는 정의상 슬롭이
+// 아니므로 거기서 켜지는 규칙은 슬롭이 아니라 취향을 잰다. 근거: references/corpus-baseline.json
 export const RULES = {
-  TS1: { sev: "red", layer: "surface", judge: "det", scope: "page" },
   TS2: { sev: "yellow", layer: "surface", judge: "det", scope: "page" },
   TS3: { sev: "yellow", layer: "surface", judge: "det", scope: "page" },
   CO1: { sev: "red", layer: "surface", judge: "det", scope: "section" },
-  CO2: { sev: "yellow", layer: "surface", judge: "det", scope: "page" },
   CO3: { sev: "yellow", layer: "surface", judge: "det", scope: "section" },
   CO4: { sev: "yellow", layer: "surface", judge: "det", scope: "page" },
   LA1: { sev: "red", layer: "structural", judge: "det", scope: "section" },
@@ -19,7 +20,6 @@ export const RULES = {
   CP3: { sev: "yellow", layer: "surface", judge: "det", scope: "page" },
   IC1: { sev: "red", layer: "structural", judge: "suspect", scope: "section" },
   IC2: { sev: "red", layer: "surface", judge: "det", scope: "section" },
-  IC3: { sev: "yellow", layer: "surface", judge: "suspect", scope: "section" },
   IC4: { sev: "yellow", layer: "surface", judge: "suspect", scope: "section" },
   DE1: { sev: "red", layer: "structural", judge: "det", scope: "section" },
   DE2: { sev: "yellow", layer: "structural", judge: "det", scope: "section" },
@@ -33,7 +33,6 @@ export const RULES = {
   QF3: { sev: "yellow", layer: "surface", judge: "det", scope: "page" },
   QF4: { sev: "yellow", layer: "surface", judge: "det", scope: "page" },
   QF5: { sev: "yellow", layer: "surface", judge: "det", scope: "page" },
-  QF6: { sev: "yellow", layer: "surface", judge: "det", scope: "page" },
   TS4: { sev: "yellow", layer: "surface", judge: "suspect", scope: "section" },
   IC5: { sev: "yellow", layer: "surface", judge: "det", scope: "page" },
   IC6: { sev: "red", layer: "structural", judge: "det", scope: "section" },

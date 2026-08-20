@@ -7,3 +7,7 @@ eval-*.png
 plugins/**/skills/*/references/bundles/
 __pycache__/
 *.pyc
+
+# 계기 실행 산출물
+.corpus-tmp/
+evals/**/.runs/

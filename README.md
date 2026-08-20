@@ -46,7 +46,20 @@ git clone https://github.com/shindonghwi/sognora-llm-inventory.git && cd sognora
 
 **판정자 없는 규칙은 두지 않는다.** 문서가 시키는 것은 스크립트가 판정하거나, 판정자가 없으면 그렇다고 적는다 — 막지 못하는 것을 막는 척하는 게 가장 나쁜 실패다. 그래서 각 스킬은 산문 룰북(`references/`)과 그것을 집행하는 계기(`scripts/`)를 짝으로 갖는다.
 
-**이 원칙은 레포 자신에게도 적용된다.** `./tools/check.sh` (push 전):
+**재는 자는 세 층이다.** 산출물을 재는 계기(각 스킬의 `scripts/`)는 처음부터 있었고, 나머지 둘을 나중에 세웠다:
+
+| 층 | 재는 것 | 계기 |
+|---|---|---|
+| 1 | **산출물** — 만든 사이트가 살아 있고 규범을 지키는가 | 각 스킬 `scripts/` |
+| 2 | **규칙** — 그 규칙이 판별력이 있는가 | `sg-landing-forge/scripts/corpus.mjs` — 프리미엄 레퍼런스에서 켜지는 AI 티 규칙은 규칙이 아니다 |
+| 3 | **스킬** — 스킬을 붙이면 결과가 나아지는가 | `tools/eval.mjs` — 같은 과제를 스킬 있음/없음으로 N회 돌려 통과율 델타와 분산 |
+
+```bash
+node tools/eval.mjs --list
+node tools/eval.mjs --case evals/<스킬>/<과제> --runs 3
+```
+
+**그리고 레포 자신도 판정 대상이다.** `./tools/check.sh` (push 전):
 
 | 계기 | 판정하는 것 |
 |---|---|

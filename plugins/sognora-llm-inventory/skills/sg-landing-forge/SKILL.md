@@ -73,7 +73,8 @@ description: 랜딩을 레퍼런스급 품질로 단조한다 — v1 변환 아�
 | `ir.mjs` | 번들→IR 증류 → `references/ir/<이름>.json`(커밋되는 측정 사실): 섹션 기하·리듬·타입·슬롯·모션 어휘. 재현 스탬프 필드 |
 | `conform.mjs` | 토큰 준수: 소스 린트+렌더 전수 검사, 어휘 예산, 해시 대조. alpha 정책 rgb-in-set-alpha-free |
 | `behavior.mjs` | engineering.json 선언 실측 검증 + no-JS/reduced-motion 가시성 |
-| `detect.mjs` / `probe.mjs` | AI 티 42룰 / 호버·리빌·모션 실측 (구세대에서 계승) |
+| `detect.mjs` / `probe.mjs` | AI 티 38룰 / 호버·리빌·모션 실측 (구세대에서 계승) |
+| `corpus.mjs` | **규칙을 판정하는 자**(§1d) — 프리미엄 레퍼런스 18종에 `detect`를 돌린다. **레퍼런스에서 켜지는 규칙은 슬롭이 아니라 취향을 잰다.** 1차 판정으로 4룰 삭제(TS1·CO2·IC3·QF6), 근거는 `references/corpus-baseline.json` |
 | `capture.mjs` (sg-web-replicate) | 자기 diff 측정 |
 | `audit.mjs` | **P6 배터리 러너** — 캡처+detect+conform+behavior+장면 예산+깊이 대조를 한 명령으로, 판정표와 패널 입력까지 생성. 누락 게이트를 '미제공'으로 명시 |
 

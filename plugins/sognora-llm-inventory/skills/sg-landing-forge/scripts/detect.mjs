@@ -410,8 +410,10 @@ function evaluateTells(raw, viewport, theme, isDesktop) {
 
   // 1. 타이포·스케일
   const sizes = raw.fontSizes;
-  if (sizes.length >= 9) add("TS1", null, `폰트 사이즈 고유값 ${sizes.length}개: ${sizes.join(", ")}`);
-  else if (sizes.length >= 4) {
+  // TS1 삭제(v1.6.0 코퍼스 판정) — "폰트 사이즈 고유값 9개 이상 = AI 티"는 프리미엄 레퍼런스
+  // 16종 중 9종에서 발동했다(stripe 15개·apple 등). 스케일이 없는 것과 스케일이 넓은 것을
+  // 개수로 구분할 수 없다 — 판별력이 없으면 규칙이 아니다. 관심사는 forge-rules 산문으로.
+  if (sizes.length >= 4) {
     const ratios = sizes.slice(1).map((s, i) => s / sizes[i]);
     const med = [...ratios].sort()[Math.floor(ratios.length / 2)];
     const irregular = ratios.filter((r) => Math.abs(r - med) / med > 0.05).length;
@@ -424,7 +426,8 @@ function evaluateTells(raw, viewport, theme, isDesktop) {
   const gradEls = els.filter((e) => e.bgImage.includes("gradient") && e.w * e.h >= 0.01 * vw * vh);
   for (const sec of new Set(gradEls.filter((e) => purpleGradient(e.bgImage)).map((e) => e.sec)))
     add("CO1", sec, "hue 240–290 보라 그라데이션 배경");
-  if (gradEls.length >= 3) add("CO2", null, `그라데이션 배경 ${gradEls.length}곳`);
+  // CO2 삭제(v1.6.0 코퍼스 판정) — 11/16 발동(linear 9곳·stripe 11곳). 그라데이션의 개수는
+  // 취향이지 슬롭이 아니다. 보라 그라데이션(CO1)만 남긴다 — 그건 특정 색상대 지목이라 다르다.
   for (const s of sections) {
     const body = textEls.filter((e) => e.sec === s.index && e.fs <= 20 && e.textLen >= 40 && e.effBg);
     if (body.length < 2) continue;
@@ -539,7 +542,9 @@ function evaluateTells(raw, viewport, theme, isDesktop) {
   if (emojiIcons.length >= 2)
     for (const sec of new Set(emojiIcons.map((e) => e.sec))) add("IC2", sec, `이모지 아이콘 ${emojiIcons.filter((e) => e.sec === sec).length}곳`);
   const mute = els.filter((e) => (e.tag === "svg" || e.tag === "img") && !e.alt && !e.aria && e.parentText === 0 && e.w <= 64);
-  if (mute.length >= 3) for (const sec of new Set(mute.map((e) => e.sec))) add("IC3", sec, `텍스트·aria 없는 아이콘 ${mute.filter((e) => e.sec === sec).length}개`);
+  // IC3 삭제(v1.6.0 코퍼스 판정) — 13/16 발동. 최고 발동률이었다(linear 71개). 장식 아이콘은
+  // `aria-hidden`이 정답인데 이 규칙은 그것도 위반으로 셌다 — 접근성을 재는 척하며 반대로 셌다.
+  // 접근성은 axe-core 같은 전용 도구의 관할이다. 어설프게 재느니 안 잰다고 적는다.
   const blobs = els.filter((e) => e.pos === "absolute" && e.textLen === 0 && Math.min(e.w, e.h) >= 80 && e.br >= Math.min(e.w, e.h) / 2 && (e.hasOwnBg || e.bgImage.includes("gradient")));
   for (const sec of new Set(blobs.map((e) => e.sec))) add("IC4", sec, `장식 블롭(absolute 원형) ${blobs.filter((e) => e.sec === sec).length}개`);
   // 번호 텍스트 목록·스테퍼 — 시각 실체(건물·제품·공간)를 "01/02/03" 텍스트로 대체. 주변에 실미디어가 있으면 정당.
@@ -615,7 +620,8 @@ function evaluateTells(raw, viewport, theme, isDesktop) {
     if (smallTap.length >= 3) add("QF5", null, `44px 미만 탭 타깃 ${smallTap.length}개 (모바일)`);
   }
   const unsized = els.filter((e) => e.tag === "img" && e.sized === false);
-  if (unsized.length >= 2) add("QF6", null, `width/height 미지정 이미지 ${unsized.length}개 (CLS 위험)`);
+  // QF6 삭제(v1.6.0 코퍼스 판정) — 10/16 발동. CLS는 실측 지표(Web Vitals)이고 Lighthouse가
+  // HTTP Archive 백분위로 판정한다. 속성 유무로 대리 측정하면 프리미엄 사이트가 전부 걸린다.
 
   // 6b. 자산 빈곤 — 같은 이미지를 돌려쓰는 것은 "채울 자산이 없다"는 신호
   const assetKey = (src) => {
