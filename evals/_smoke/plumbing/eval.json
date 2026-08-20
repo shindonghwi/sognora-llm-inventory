@@ -1,9 +1,0 @@
-{
-  "$comment": "하네스 배관 검증용. 스킬과 무관한 최소 과제 — eval.mjs가 에이전트를 띄우고 작업공간에 채점기를 돌리는지만 본다.",
-  "prompt": "이 디렉터리에 answer.txt 파일을 만들고 그 안에 42 라고만 써라. 다른 것은 하지 마라.",
-  "timeoutSec": 180,
-  "assert": [
-    { "name": "answer.txt 존재", "cmd": "test -f answer.txt" },
-    { "name": "내용이 42", "cmd": "grep -qx '42' answer.txt" }
-  ]
-}

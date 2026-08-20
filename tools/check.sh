@@ -8,6 +8,9 @@ fail=0
 echo "── 스킬 간 공유 파일 동일성 ──────────────────────────────"
 node tools/check-shared.mjs || fail=1
 echo
+echo "── 매니페스트 버전 정합 ──────────────────────────────────"
+node tools/check-version.mjs || fail=1
+echo
 echo "── 판정을 가르는 숫자의 근거(래칫) ───────────────────────"
 node tools/consts.mjs || fail=1
 

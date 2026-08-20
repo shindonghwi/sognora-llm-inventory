@@ -38,8 +38,6 @@ sg — sognora 스킬 무기고
   sg check                  레포 자체 점검 — push 전
   sg corpus                 AI 티 규칙이 판별력 있는지 (프리미엄 레퍼런스 18종)
   sg corpus report          재실행 없이 지난 판정만
-  sg eval [과제] [횟수]       스킬을 붙이면 결과가 나아지는지
-  sg eval list              과제 목록
 
   sg help                   이 화면
 
@@ -65,12 +63,6 @@ case "$cmd" in
     node "$PC/preflight.mjs" >/dev/null 2>&1 || node "$PC/preflight.mjs" --install
     exec node "$LF/corpus.mjs" --run "$@" ;;
 
-  eval)
-    [ "${1:-}" = "list" ] && exec node "$REPO_ROOT/tools/eval.mjs" --list
-    case_="${1:-}"; runs="${2:-3}"
-    [ -z "$case_" ] && { node "$REPO_ROOT/tools/eval.mjs" --list; echo; echo "usage: sg eval <과제> [횟수]"; exit 2; }
-    [ -d "$case_" ] || case_="$REPO_ROOT/evals/$case_"
-    exec node "$REPO_ROOT/tools/eval.mjs" --case "$case_" --runs "$runs" ;;
 
   path)
     # 스킬이 자기 계기를 찾는 자리. SKILL.md의 모든 명령이 `$S/<계기>.mjs`로 그대로 돌게 한다.
