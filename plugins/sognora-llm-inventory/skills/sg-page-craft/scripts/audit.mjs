@@ -43,6 +43,15 @@ if (contract.todos.length) {
   exit(2);
 }
 
+// facts(콘텐츠 조달)는 **빌드 의무**다. 진단은 있는 화면을 재기만 하므로 요구하지 않는다.
+if (args.diagnose !== true && contract.buildTodos?.length) {
+  console.error(
+    `🔴 콘텐츠 조달 미기입 ${contract.buildTodos.length}건 — 이게 비면 구조만 갖춘 빈 틀이 나온다(§0g).\n  - ` +
+    contract.buildTodos.join("\n  - ") +
+    `\n\n진단만 할 거면 --diagnose 로 돌려라(그때는 요구하지 않는다).`);
+  exit(2);
+}
+
 const viewports = String(args.viewports ?? "1440x900,390x844");
 const outDir = args.out ? String(args.out) : null;
 const onlyRoute = typeof args.only === "string" ? args.only : null;

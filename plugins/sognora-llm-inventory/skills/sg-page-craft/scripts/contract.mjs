@@ -49,6 +49,8 @@ export async function loadContract(path) {
 
   const errs = [];
   const todos = [];
+  // 빌드 의무는 따로 센다 — 진단(§P0-a)은 있는 화면을 재기만 하므로 콘텐츠 조달을 요구하지 않는다.
+  const buildTodos = [];
   if (!c.baseUrl) errs.push("baseUrl 없음");
   if (!Array.isArray(c.pages) || !c.pages.length) errs.push("pages가 비었다");
   const locales = Array.isArray(c.locales) && c.locales.length ? c.locales : [""];
@@ -64,6 +66,10 @@ export async function loadContract(path) {
       else errs.push(`${at}: 알 수 없는 유형 "${p.type}" — ${TYPES.join("|")} 또는 read:<라벨>·do:<라벨>`);
     }
     if (!p.decision || p.decision === TODO) todos.push(`${at}: decision 미기입(이 화면이 돕는 결정 한 문장)`);
+    // **콘텐츠 조달**(§0g) — 이 화면에 실제로 들어갈 것. 이게 비면 구조만 갖춘 빈 틀이 나온다.
+    // 실측: 이 스킬로 만든 사이트에서 하는 화면 12/24가 첫 화면의 10~20%만 일로 덮었다(WORK-STARVED).
+    const facts = Array.isArray(p.facts) ? p.facts.filter((x) => typeof x === "string" && x.trim() && x !== TODO) : [];
+    if (!facts.length) buildTodos.push(`${at}: facts 미기입(이 화면에 실제로 들어갈 것 — 제품에서 전수 추출, 지어내지 않는다)`);
     for (const k of ["must", "mustNot"]) {
       if (p[k] != null && !Array.isArray(p[k])) errs.push(`${at}: ${k}는 배열이어야 한다`);
     }
@@ -71,6 +77,7 @@ export async function loadContract(path) {
       route: p.route,
       type,
       decision: p.decision ?? null,
+      facts,
       must: (p.must ?? []).filter((x) => typeof x === "string" && x !== TODO),
       mustNot: (p.mustNot ?? []).filter((x) => typeof x === "string" && x !== TODO),
       skip: p.skip === true,
@@ -83,7 +90,7 @@ export async function loadContract(path) {
     baseUrl: String(c.baseUrl).replace(/\/$/, ""),
     tokens: c.tokens && c.tokens !== TODO ? c.tokens : null,
     src: c.src && c.src !== TODO ? String(c.src) : null, // 컴포넌트 층 검사 대상
-    locales, pages, todos,
+    locales, pages, todos, buildTodos,
   };
 }
 
@@ -115,6 +122,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     try {
       const c = await loadContract(String(args.check));
       console.log(`✅ 스키마 이상 없음 — 페이지 ${c.pages.length}개 · 로케일 ${c.locales.length}개`);
+      if (c.buildTodos.length) console.log(`\n🟡 빌드 전 미기입 ${c.buildTodos.length}건(진단에는 불필요):\n  - ${c.buildTodos.join("\n  - ")}`);
       if (c.todos.length) {
         console.log(`\n🟡 미기입 ${c.todos.length}건 — 사람이 채워야 한다(기계가 지어내지 않는다):\n  - ${c.todos.join("\n  - ")}`);
         exit(1);
@@ -139,6 +147,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
         route,
         type: TODO,
         decision: TODO,
+        facts: [TODO],
         must: [],
         mustNot: [],
       })),
@@ -150,6 +159,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
       `이제 각 항목을 채워라(기계가 지어내지 않는다):\n` +
       `  type      ${TYPES.join("|")} 또는 read:<라벨>·do:<라벨>\n` +
       `  decision  이 화면이 돕는 결정 한 문장\n` +
+      `  facts     이 화면에 실제로 들어갈 것 — 항목·수치·상태·컨트롤을 제품에서 전수 추출(빌드 전 필수, 진단에는 불필요)\n` +
       `  must      반드시 있어야 하는 것 — "css:input[type=file]" 또는 "사진 업로드"(본문 텍스트)\n` +
       `  mustNot   있으면 안 되는 것 — 예: "월 [0-9,]+원"\n\n` +
       `채운 뒤: node contract.mjs --check ${out}`);
