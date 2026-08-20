@@ -44,6 +44,7 @@ sg — sognora 스킬 무기고
   sg eval [과제] [횟수]       스킬을 붙이면 결과가 나아지는지
   sg eval list              과제 목록
 
+  sg path [스킬]             그 스킬의 scripts 경로 (스킬이 자기 계기를 찾을 때)
   sg help                   이 화면
 
 첫 진단은 이 두 줄이면 끝난다:
@@ -107,6 +108,10 @@ case "$cmd" in
     [ -z "$case_" ] && { node "$REPO_ROOT/tools/eval.mjs" --list; echo; echo "usage: sg eval <과제> [횟수]"; exit 2; }
     [ -d "$case_" ] || case_="$REPO_ROOT/evals/$case_"
     exec node "$REPO_ROOT/tools/eval.mjs" --case "$case_" --runs "$runs" ;;
+
+  path)
+    # 스킬이 자기 계기를 찾는 자리. SKILL.md의 모든 명령이 `$S/<계기>.mjs`로 그대로 돌게 한다.
+    exec echo "$SKILLS/${1:-sg-page-craft}/scripts" ;;
 
   help|-h|--help) usage ;;
   *) echo "알 수 없는 명령: $cmd" >&2; echo >&2; usage >&2; exit 2 ;;

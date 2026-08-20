@@ -33,30 +33,32 @@ git clone https://github.com/shindonghwi/sognora-llm-inventory.git && cd sognora
 
 ## 쓰는 법
 
-설치하면 `sg` 한 단어로 전부 됩니다. **첫 진단은 두 줄입니다.**
+**스킬 이름을 부르면 끝입니다.** 나머지는 스킬이 알아서 합니다 — 브라우저 준비도, 라우트 수집도, 감사도.
 
-```bash
-cd <내 프로젝트>
-sg preflight && sg diagnose      # 브라우저 갖추고 → 있는 페이지 전수 진단
+```
+/sg-page-craft 하위 페이지들 진단해줘
+/sg-landing-forge 랜딩 다시 만들어줘
+/sg-biz-validate 이 아이디어 되는지 봐줘
 ```
 
-계약(`_page/contract.json`)이 없으면 만드는 법을 알려주고 멈춥니다 — 무엇을 재야 하는지는 기계가 지어내지 않습니다.
+Codex에서는 `$sg-page-craft`, 자연어 트리거(“요금제 페이지 만들어줘”)로도 발동합니다. 각 스킬의 트리거 문구는 아래 표의 `description`에 있습니다.
 
-| 프로젝트에서 | |
+되묻는 것은 스킬의 실패로 봅니다. 의도가 필요한 자리(페이지 유형·이 화면이 돕는 결정)는 **한 번만 받아 파일로 굳히고**(`_page/contract.json`), 이후 실행은 그 파일을 읽어 무인 완주합니다.
+
+<details>
+<summary>내부 계기 — 스킬이 부르는 것들 (사람이 외울 필요 없음)</summary>
+
+설치 시 `sg`가 PATH에 놓입니다. **스킬이 이걸 부릅니다.** 직접 칠 일은 디버깅할 때뿐입니다.
+
+| | |
 |---|---|
-| `sg preflight` | 브라우저를 갖춘다 (없으면 설치) |
+| `sg preflight` | 브라우저를 갖춘다 |
 | `sg contract "/,/pricing"` | 라우트를 계약에 올린다 |
-| `sg diagnose` | 있는 페이지 전수 진단 — 갈아엎을 대상을 기계가 고른다 |
-| `sg audit` | 빌드 후 정식 감사 (시안 검사 포함) |
-| `sg alive <URL> <유형>` | 화면 하나만 빠르게 |
+| `sg diagnose` / `sg audit` | 전수 진단 / 정식 감사 |
+| `sg alive <URL> <유형>` | 화면 하나만 |
+| `sg check` · `sg corpus` · `sg eval` | **레포 정비용** — 스킬을 고칠 때만 |
 
-| 스킬을 고칠 때 | |
-|---|---|
-| `sg check` | 레포 자체 점검 — push 전 |
-| `sg corpus` | AI 티 규칙이 판별력 있는지 (프리미엄 레퍼런스 18종) |
-| `sg eval <과제>` | 스킬을 붙이면 결과가 나아지는지 |
-
-만드는 것 자체는 여전히 자연어입니다 — `/sg-page-craft 요금제 페이지 만들어줘`. `sg`는 **재는 자리**를 한 단어로 만든 것입니다.
+</details>
 
 ## 스킬
 

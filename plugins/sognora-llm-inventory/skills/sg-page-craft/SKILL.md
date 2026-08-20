@@ -40,31 +40,34 @@ description: 랜딩 말고 **나머지 페이지**를 같은 제품처럼 만든
 
 ## 공정
 
-- **P0-a 진단(이미 페이지가 있을 때) — 갈아엎을 대상을 눈이 아니라 계기로 고른다.** "전부 AI 템플릿 같다"는 인상은 대상을 못 정해준다. 라우트를 전수로 계약에 올리고(`contract.mjs --init`, 유형·`decision`은 사람이 기입) **`--diagnose`로** 한 번 돌린다:
+- **P0-a 진단(이미 페이지가 있을 때) — 갈아엎을 대상을 눈이 아니라 계기로 고른다.** "전부 AI 템플릿 같다"는 인상은 대상을 못 정해준다. **사람은 부르기만 했다 — 라우트 수집부터 계약 작성까지 네가 한다:**
+  1. 라우트를 전수로 모은다(라우터 파일·사이트맵·내비를 읽는다. 동적 경로는 제외하고 계약에 `skip`으로 남긴다).
+  2. `contract.mjs --init`으로 발판을 만든다.
+  3. **각 화면을 실제로 열어보고** `type`·`decision`을 채운다. 이것은 지어내기가 아니라 **관측**이다 — 비교표가 있으면 `pricing`, 입력과 실행 버튼이 있으면 `tool`. 열어봐도 동사가 안 잡히는 화면만 `TODO`로 남기고 **그 목록만 한 번 사람에게 확인받는다**(가격·플랜·제약 같은 사실은 여전히 지어내지 않는다).
+  4. `--diagnose`로 돌린다:
   ```
-  node scripts/preflight.mjs --install                      # 브라우저를 갖춘다(부트스트랩 절)
-  node scripts/audit.mjs --contract _page/contract.json --diagnose --src src --out _page/qa
+  node "$S/audit.mjs" --contract _page/contract.json --diagnose --src src --out _page/qa   # 또는: sg diagnose
   ```
   화면별 판정과 **일 점유율 표**(§0f)가 나온다. **읽는 화면(정책·소개)을 반드시 포함시켜라** — 일 점유율 임계의 자가 보정 눈금이 그 페이지들이다. `--diagnose`는 **시안 검사(§1c)를 생략한다** — 시안은 빌드 의무이지 진단 의무가 아니고, 무엇을 다시 만들지 정하기도 전에 전 페이지에 `NO-COMP` 🔴을 찍으면 정작 찾으려던 신호가 그 밑에 묻힌다. 그다음 🔴이 붙은 화면부터 P1b(시안)로 들어간다 — 그때는 `--diagnose` 없이 돌린다. 통과한 화면을 인상만으로 갈아엎지 않는다.
-- **P0 계약 — 말로 하지 말고 `_page/contract.json`에 굳힌다(§0e).** 계약이 이미 있으면 **읽고 그대로 진행한다 — 되묻지 않는다.** 없으면 그때 한 번 받아 파일로 쓴다(`node scripts/contract.mjs --init …` → 사람이 `type`·`decision`·`must`·`mustNot` 기입 → `--check`). 미기입 `TODO`가 남으면 감사가 멈춘다 — **빈칸을 추측으로 메우지 않는다.** 이후 모든 실행은 이 파일 대비로 무인 완주한다.
+- **P0 계약 — 말로 하지 말고 `_page/contract.json`에 굳힌다(§0e).** 계약이 이미 있으면 **읽고 그대로 진행한다 — 되묻지 않는다.** 없으면 그때 한 번 받아 파일로 쓴다(`node "$S/contract.mjs" --init …` → 사람이 `type`·`decision`·`must`·`mustNot` 기입 → `--check`). 미기입 `TODO`가 남으면 감사가 멈춘다 — **빈칸을 추측으로 메우지 않는다.** 이후 모든 실행은 이 파일 대비로 무인 완주한다.
 - **P0-b 동사** — **먼저 동사를 정한다**: 이 페이지에서 사용자가 읽는가·고르는가·쓰는가·정하는가·적는가·보는가. 동사가 유형을 결정한다(page-rules §0b). **소개문으로 열 수 있는 건 '읽는다'뿐이다**(랜딩·소개·문서). §0b 표에 없는 화면이면 **거기서 동사를 선언한다**(`read:`·`do:`) — 목록에 없다고 랜딩으로 회귀하는 것이 이 스킬 최대 사고다. 그다음 랜딩 tokens.json 위치와 이 페이지가 돕는 결정을 한 문장으로. 사실 재고는 프로젝트 문서·실제 제품에서 전수 추출한다(가격·플랜·제약은 지어내지 않는다).
 - **P1 유형 규칙 적재** — `references/page-rules.md`에서 해당 유형 절만 읽는다. 치수가 필요하면 §1 토큰 소스에서 인용(추측 금지).
 - **P1b 시안 — 코드를 짜기 전에 보고 만들 목표물을 만든다(§1c).** 디자이너와 대화해 화면의 방향을 정하고, 계약·토큰에서 컴파일한 브리프로 시안을 뽑는다:
   ```
-  node scripts/comp.mjs --contract _page/contract.json --all --out _page/comps
+  node "$S/comp.mjs" --contract _page/contract.json --all --out _page/comps
   ```
   Codex 내장 `imagegen` 스킬을 `codex exec` 서브에이전트로 호출한다(스킬 이름은 `imagen`이 아니라 **`imagegen`**). 시안이 없으면 감사가 🔴로 막는다 — **시각 목표물 없이 CSS부터 짜면 문단으로 수렴한다.** 시안이 좋은지는 사람이 보고 판단하고, 마음에 안 들면 프롬프트(`_page/comps/<slug>.prompt.md`)를 고쳐 다시 뽑는다.
-- **P2 빌드** — **시안을 띄워놓고 만든다.** 먼저 컴포넌트 층부터 확인한다(§1b): `node scripts/primitives.mjs --src <소스>`. 프리미티브가 없으면 페이지 CSS를 짜기 전에 그 화면들이 실제로 쓰는 것(Button·Input·Table·EmptyState 등)을 먼저 세운다 — 직접 만들든 라이브러리를 쓰든 무방하다. **이 순서를 건너뛰면 화면마다 CSS를 다시 짜게 되고, 결과는 문단만 남은 페이지다.** 그다음 랜딩 토큰만 사용. 요금제면 **열=플랜·행=속성** 구조로, 카드 노출 차별 속성은 2~3개. 폼이면 GOV.UK 규범(라벨 위·제출 시 검증·입력값 보존).
+- **P2 빌드** — **시안을 띄워놓고 만든다.** 먼저 컴포넌트 층부터 확인한다(§1b): `node "$S/primitives.mjs" --src <소스>`. 프리미티브가 없으면 페이지 CSS를 짜기 전에 그 화면들이 실제로 쓰는 것(Button·Input·Table·EmptyState 등)을 먼저 세운다 — 직접 만들든 라이브러리를 쓰든 무방하다. **이 순서를 건너뛰면 화면마다 CSS를 다시 짜게 되고, 결과는 문단만 남은 페이지다.** 그다음 랜딩 토큰만 사용. 요금제면 **열=플랜·행=속성** 구조로, 카드 노출 차별 속성은 2~3개. 폼이면 GOV.UK 규범(라벨 위·제출 시 검증·입력값 보존).
 - **P3 검사 — 계약이 있으면 한 줄이다**(전 페이지 alive + 교차 sameness + 보고서):
   ```
-  node scripts/audit.mjs --contract _page/contract.json --src src --out _page/qa
+  node "$S/audit.mjs" --contract _page/contract.json --src src --out _page/qa
   ```
   아래는 계약 없이 화면 하나만 볼 때:
   ```
-  node scripts/alive.mjs --url <URL> --type <catalog|tool|pricing|form|dashboard|document|about|landing> --src <컴포넌트 디렉터리> --out _page/qa
-  node scripts/copylint.mjs --url <URL> --out _page/qa
-  node scripts/conform.mjs --tokens <랜딩 tokens.json> --url <URL>   # 토큰 상속 검증(forge 계기 심)
-  node scripts/detect.mjs --url <URL> --out _page/qa/detect          # 시각 AI 티(forge 계기 심)
+  node "$S/alive.mjs" --url <URL> --type <catalog|tool|pricing|form|dashboard|document|about|landing> --src <컴포넌트 디렉터리> --out _page/qa
+  node "$S/copylint.mjs" --url <URL> --out _page/qa
+  node "$S/conform.mjs" --tokens <랜딩 tokens.json> --url <URL>   # 토큰 상속 검증(forge 계기 심)
+  node "$S/detect.mjs" --url <URL> --out _page/qa/detect          # 시각 AI 티(forge 계기 심)
   # 카피 AI 티 — 내부 기획 용어·능력 서술 도배·용어 표류
   # GENRE: --type landing 이면 랜딩, 그 외(catalog/tool/pricing/form/dashboard)는 UI
   GENRE=$([ "<TYPE>" = "landing" ] && echo 랜딩 || echo UI)
@@ -75,7 +78,7 @@ description: 랜딩 말고 **나머지 페이지**를 같은 제품처럼 만든
 
 - **P3b 교차 검사 — 페이지를 2장 이상 만들었으면 반드시** (한 장씩 보면 절대 안 보이는 축):
   ```
-  node scripts/sameness.mjs --out _page/qa \
+  node "$S/sameness.mjs" --out _page/qa \
     --pages <url1,url2,url3,...> \
     --types <유형1,유형2,유형3,...>     # 순서대로 1:1. §0b에 없는 화면은 read:<라벨>·do:<라벨>
   ```
@@ -98,18 +101,28 @@ description: 랜딩 말고 **나머지 페이지**를 같은 제품처럼 만든
 | `conform.mjs`·`detect.mjs` | sg-landing-forge 계기를 자기 위치 기준으로 찾아 실행하는 심 — 토큰 상속 검증·**시각** AI 티. 상대경로에 의존하지 않는다 |
 | `detect_ko.py`(sg-ko-humanize) | **카피** AI 티 — 내부 기획 용어(§8)·능력 서술 도배. `detect.mjs`가 `scan.json`에 실은 실제 렌더 카피를 받는다. `copylint.mjs`(마케팅 상투어·주어 시점)와는 다른 축이다 |
 
-## 부트스트랩 — 첫 실행에 **스킬이 직접 갖춘다**
+## 부트스트랩 — **에이전트가 스스로 갖춘다** (사람은 스킬 이름만 부른다)
 
-검사는 실제 브라우저로 한다. 없으면 **여기서 갖추고 진행한다 — 사람에게 넘기고 멈추지 않는다.**
+사용자는 `/sg-page-craft …`만 친다. 아래는 **네가 실행할 것**이지 사람에게 시킬 것이 아니다.
 
+**첫 줄: 계기 위치를 잡는다.** 이 스킬은 사용자 프로젝트에서 도는데 계기는 플러그인 안에 있다 — 상대경로 `scripts/…`는 거기서 존재하지 않는다.
+
+```bash
+S=$(sg path 2>/dev/null) || S=$(dirname "$(find ~/.claude ~/.codex -name alive.mjs -path '*sg-page-craft*' 2>/dev/null | head -1)")
+echo "$S"   # 비었으면 여기서 멈추고 설치 상태를 보고하라
 ```
-node scripts/preflight.mjs            # 점검(exit 0이면 바로 P0로)
-node scripts/preflight.mjs --install  # 빠진 것을 설치한다(프로젝트 devDependency를 건드린다)
+
+이후 이 문서의 모든 명령에서 `$S`는 그 경로다.
+
+**둘째 줄: 브라우저를 갖춘다.** 검사는 실제 브라우저로 한다. 없으면 **여기서 갖추고 진행한다 — 사람에게 넘기고 멈추지 않는다.**
+
+```bash
+node "$S/preflight.mjs" --install     # 또는: sg preflight
 ```
 
 모듈과 브라우저 바이너리를 **따로** 본다 — 버전을 올리면 모듈은 있는데 `chromium_headless_shell-XXXX`가 없어 첫 페이지에서 죽는다(실측). 다른 곳에 있는 것을 쓰려면 `SG_PLAYWRIGHT=<모듈 경로>`.
 
-> **왜 본문인가** — 검사 스킬은 브라우저 없이 아무 말도 못 한다. 준비를 각주로 두었더니 실사이트 감사가 통째로 죽었고, **사람이 대신 `SG_PLAYWRIGHT`를 손으로 지정하며 뛰었다.** 같은 목적의 공개 스킬(`colbymchenry/frontend-audit-skill`)도 SKILL.md 첫 절이 통째로 부트스트랩이다.
+> **왜 본문인가** — 검사 스킬은 브라우저 없이 아무 말도 못 한다. 준비를 각주로 두었더니 실사이트 감사가 통째로 죽었고, **사람이 대신 경로를 손으로 지정하며 뛰었다.** 같은 목적의 공개 스킬(`colbymchenry/frontend-audit-skill`)도 SKILL.md 첫 절이 통째로 부트스트랩이다.
 
 ## 옵션
 
