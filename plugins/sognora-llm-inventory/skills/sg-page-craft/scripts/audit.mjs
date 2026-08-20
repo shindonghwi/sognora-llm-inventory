@@ -1,7 +1,7 @@
 /**
  * audit.mjs — 계약 하나로 전 페이지를 무인 감사한다
  *
- * usage: audit.mjs --contract _page/contract.json [--src src] [--out _page/qa]
+ * usage: audit.mjs --contract _page/contract.json [--diagnose] [--src src] [--out _page/qa]
  *                  [--viewports 1440x900,390x844] [--locale ""] [--only /pricing]
  *
  * 왜 있나 — 실전 사고: 29개 라우트를 감사하면서 **URL과 유형을 손으로 짝지어** 명령을
@@ -20,12 +20,14 @@ import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawn } from "node:child_process";
 import { argv, exit } from "node:process";
-import { loadContract } from "./contract.mjs";
+import { loadContract, pageUrl } from "./contract.mjs";
+import { load, missing } from "./_deps.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const args = parseArgs(argv.slice(2));
 if (!args.contract) {
-  console.error("usage: audit.mjs --contract <계약파일> [--src <소스 디렉터리>] [--out <dir>] [--viewports 1440x900,390x844] [--locale <접두사>] [--only <route>]");
+  console.error("usage: audit.mjs --contract <계약파일> [--diagnose] [--src <소스 디렉터리>] [--out <dir>] [--viewports 1440x900,390x844] [--locale <접두사>] [--only <route>]");
+  console.error("  --diagnose  이미 있는 사이트를 재는 모드(§P0-a) — 시안 검사를 생략한다");
   console.error("계약이 없으면 먼저: node contract.mjs --init --base <URL> --routes </a,/b,...>");
   exit(2);
 }
@@ -50,11 +52,30 @@ const crossLocale = typeof args.locale === "string" ? args.locale : contract.loc
 const targets = contract.pages.filter((p) => !p.skip && (!onlyRoute || p.route === onlyRoute));
 if (!targets.length) { console.error("대상 페이지가 없다(--only 오타이거나 전부 skip)"); exit(2); }
 
-const urlOf = (route, loc) => contract.baseUrl + (loc || "") + (route === "/" ? "/" : route);
+const urlOf = (route, loc) => pageUrl(contract.baseUrl, loc, route);
+
+// ── 0) 사전 점검 — **브라우저 없이 48개 URL을 돌지 않는다** ────────────────
+// 실전 사고: playwright가 없는 프로젝트에서 24페이지×2로케일을 전부 돌고 **6분 50초 뒤에**
+// "모듈을 찾지 못했다"가 나왔다. 화면별 판정은 하나도 안 나왔는데 시간만 태운 것이다.
+// 못 할 검사는 시작 전에 못 한다고 말한다 — 여기서 멈추는 것이 48번 실패하는 것보다 낫다.
+if (!(await load("playwright"))) {
+  missing(["playwright"]);
+  console.error(`감사를 시작하지 않았다 — 화면 ${targets.length}개는 하나도 판정되지 않았다.`);
+  console.error(`검사 대상 프로젝트에 설치하거나, 이미 다른 곳에 있으면 SG_PLAYWRIGHT로 가리켜라.`);
+  exit(2);
+}
+
+// 진단 모드 — **이미 있는 사이트를 재는 경우**(§P0-a). 시안(§1c)은 빌드 의무이지
+// 진단 의무가 아니다. 아직 무엇을 다시 만들지 정하지도 않았는데 24장 전부에
+// `NO-COMP` 🔴을 찍으면, 정작 찾으려던 신호가 그 밑에 묻힌다.
+const diagnose = args.diagnose === true;
 
 // ── 0a) 시안 존재 — 코드를 짜기 전에 보고 만들 목표물이 있어야 한다(§1c) ──
 let compOut = "", compCode = 0;
-{
+if (diagnose) {
+  compOut = "- (진단 모드 — 시안 검사 생략. §1c는 **빌드** 의무다. 다시 만들 화면을 정한 뒤 `--diagnose` 없이 다시 돌려라)\n";
+  process.stderr.write("⏭  시안 (진단 모드 — 생략)\n");
+} else {
   const r = await run([join(here, "comp.mjs"), "--contract", String(args.contract), "--check",
     ...(args["comps"] ? ["--out", String(args["comps"])] : [])]);
   compOut = r.out; compCode = r.code;
@@ -118,10 +139,10 @@ const md =
     ? "- ✅ 구조·계약 이상 없음(의도 부합은 미판정)\n"
     : rows.filter((r) => r.findings.length).map((r) => `### \`${r.loc || "/"}${r.route === "/" ? "" : r.route}\` (${r.type.name})\n\n${r.findings.join("\n")}\n`).join("\n")) +
   `\n## 교차 검사 — 서로 같은 화면인가\n\n${crossOut}\n` +
-  `\n## 시안 (§1c · 빌드 전 목표물)\n\n${compOut}\n` +
+  `\n## 시안 (§1c · 빌드 전 목표물)${diagnose ? " — 진단 모드에서는 미판정" : ""}\n\n${compOut}\n` +
   `\n## 컴포넌트 층 (프로젝트 단위 · 1회)\n\n${primOut}\n` +
   `\n---\n\n**화면 ${rows.length}개 중 실패 ${failed.length}개**${errored.length ? ` · 실행 실패 ${errored.length}개` : ""}` +
-  ` · 교차 검사 ${crossCode === 0 ? "통과" : "실패"} · 시안 ${compCode === 0 ? "통과" : "실패"}` +
+  ` · 교차 검사 ${crossCode === 0 ? "통과" : "실패"} · 시안 ${diagnose ? "미판정(진단 모드)" : compCode === 0 ? "통과" : "실패"}` +
   `${srcDir ? ` · 컴포넌트 층 ${primCode === 0 ? "통과" : "실패"}` : ""}\n`;
 
 if (outDir) { await mkdir(outDir, { recursive: true }); await writeFile(join(outDir, "audit.md"), md); }

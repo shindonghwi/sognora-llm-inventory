@@ -87,8 +87,22 @@ export async function loadContract(path) {
   };
 }
 
+/**
+ * baseUrl·로케일·라우트를 **슬래시 중복 없이** 잇는다.
+ *
+ * 이 규칙이 `audit.mjs`와 여기에 각자 복사돼 있었다. 두 벌은 결과도 미묘하게 달랐다
+ * (루트에서 한쪽은 `…:3010/`, 다른 쪽은 `…:3010`). 로케일을 `""` 대신 `"/"`로 적으면
+ * `//product`가 나오는 것도 그 복사본들의 공통 구멍이다 — **결합 규칙은 한 벌만 둔다.**
+ */
+export function pageUrl(baseUrl, loc, route) {
+  const b = String(baseUrl).replace(/\/+$/, "");
+  const l = loc && loc !== "/" ? "/" + String(loc).replace(/^\/+|\/+$/g, "") : "";
+  const r = !route || route === "/" ? "" : "/" + String(route).replace(/^\/+/, "");
+  return l || r ? b + l + r : b + "/";
+}
+
 export function urlsOf(contract, page) {
-  return page.locales.map((loc) => contract.baseUrl + (loc || "") + (page.route === "/" ? "" : page.route) || contract.baseUrl + "/");
+  return page.locales.map((loc) => pageUrl(contract.baseUrl, loc, page.route));
 }
 
 // ── CLI ──────────────────────────────────────────────────────────────────
