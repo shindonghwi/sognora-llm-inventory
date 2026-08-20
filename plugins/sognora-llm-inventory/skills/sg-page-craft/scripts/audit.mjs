@@ -66,7 +66,8 @@ const shownPath = (r) => { try { return new URL(r.url).pathname; } catch { retur
 if (!(await load("playwright"))) {
   missing(["playwright"]);
   console.error(`감사를 시작하지 않았다 — 화면 ${targets.length}개는 하나도 판정되지 않았다.`);
-  console.error(`검사 대상 프로젝트에 설치하거나, 이미 다른 곳에 있으면 SG_PLAYWRIGHT로 가리켜라.`);
+  console.error(`갖추고 다시 돌려라:  node ${join(here, "preflight.mjs")} --install`);
+  console.error(`이미 다른 곳에 있으면: SG_PLAYWRIGHT=<모듈 경로>`);
   exit(2);
 }
 

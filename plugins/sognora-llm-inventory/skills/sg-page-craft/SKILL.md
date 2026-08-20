@@ -42,7 +42,7 @@ description: 랜딩 말고 **나머지 페이지**를 같은 제품처럼 만든
 
 - **P0-a 진단(이미 페이지가 있을 때) — 갈아엎을 대상을 눈이 아니라 계기로 고른다.** "전부 AI 템플릿 같다"는 인상은 대상을 못 정해준다. 라우트를 전수로 계약에 올리고(`contract.mjs --init`, 유형·`decision`은 사람이 기입) **`--diagnose`로** 한 번 돌린다:
   ```
-  npm i -D playwright && npx playwright install chromium   # 없으면 감사가 시작조차 하지 않는다
+  node scripts/preflight.mjs --install                      # 브라우저를 갖춘다(부트스트랩 절)
   node scripts/audit.mjs --contract _page/contract.json --diagnose --src src --out _page/qa
   ```
   화면별 판정과 **일 점유율 표**(§0f)가 나온다. **읽는 화면(정책·소개)을 반드시 포함시켜라** — 일 점유율 임계의 자가 보정 눈금이 그 페이지들이다. `--diagnose`는 **시안 검사(§1c)를 생략한다** — 시안은 빌드 의무이지 진단 의무가 아니고, 무엇을 다시 만들지 정하기도 전에 전 페이지에 `NO-COMP` 🔴을 찍으면 정작 찾으려던 신호가 그 밑에 묻힌다. 그다음 🔴이 붙은 화면부터 P1b(시안)로 들어간다 — 그때는 `--diagnose` 없이 돌린다. 통과한 화면을 인상만으로 갈아엎지 않는다.
@@ -87,6 +87,7 @@ description: 랜딩 말고 **나머지 페이지**를 같은 제품처럼 만든
 
 | 계기 | 역할 |
 |---|---|
+| `preflight.mjs` | **부트스트랩** — playwright 모듈과 chromium 바이너리를 따로 확인하고 `--install`로 갖춘다. 검사 스킬의 준비는 각주가 아니라 본문이다 |
 | `contract.mjs` | **의도의 자리** — `_page/contract.json` 발판 생성·검증. 미기입은 지어내지 않고 멈춘다 |
 | `comp.mjs` | **시안 우선**(§1c) — 계약+토큰을 프롬프트로 컴파일해 `codex exec` → Codex 내장 **`imagegen`** 스킬로 시안 PNG 생성. 프롬프트 전문을 남겨 기준이 흔들리지 않게 한다. **시안이 좋은지는 판정하지 않는다** |
 | `primitives.mjs` | **컴포넌트 층이 있는가**(§1b) — 같은 프리미티브를 여러 CSS 모듈이 각자 정의하는지. 특정 라이브러리를 강요하지 않는다. 프로젝트 단위라 `audit`이 1회만 돌린다 |
@@ -97,11 +98,18 @@ description: 랜딩 말고 **나머지 페이지**를 같은 제품처럼 만든
 | `conform.mjs`·`detect.mjs` | sg-landing-forge 계기를 자기 위치 기준으로 찾아 실행하는 심 — 토큰 상속 검증·**시각** AI 티. 상대경로에 의존하지 않는다 |
 | `detect_ko.py`(sg-ko-humanize) | **카피** AI 티 — 내부 기획 용어(§8)·능력 서술 도배. `detect.mjs`가 `scan.json`에 실은 실제 렌더 카피를 받는다. `copylint.mjs`(마케팅 상투어·주어 시점)와는 다른 축이다 |
 
-## 사전 준비
+## 부트스트랩 — 첫 실행에 **스킬이 직접 갖춘다**
+
+검사는 실제 브라우저로 한다. 없으면 **여기서 갖추고 진행한다 — 사람에게 넘기고 멈추지 않는다.**
 
 ```
-npm i -D playwright && npx playwright install chromium
+node scripts/preflight.mjs            # 점검(exit 0이면 바로 P0로)
+node scripts/preflight.mjs --install  # 빠진 것을 설치한다(프로젝트 devDependency를 건드린다)
 ```
+
+모듈과 브라우저 바이너리를 **따로** 본다 — 버전을 올리면 모듈은 있는데 `chromium_headless_shell-XXXX`가 없어 첫 페이지에서 죽는다(실측). 다른 곳에 있는 것을 쓰려면 `SG_PLAYWRIGHT=<모듈 경로>`.
+
+> **왜 본문인가** — 검사 스킬은 브라우저 없이 아무 말도 못 한다. 준비를 각주로 두었더니 실사이트 감사가 통째로 죽었고, **사람이 대신 `SG_PLAYWRIGHT`를 손으로 지정하며 뛰었다.** 같은 목적의 공개 스킬(`colbymchenry/frontend-audit-skill`)도 SKILL.md 첫 절이 통째로 부트스트랩이다.
 
 ## 옵션
 
