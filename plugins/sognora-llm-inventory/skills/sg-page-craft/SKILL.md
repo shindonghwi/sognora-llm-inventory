@@ -47,40 +47,40 @@ description: 랜딩 말고 **나머지 페이지**를 같은 제품처럼 만든
   3. **각 화면을 실제로 열어보고** `type`·`decision`을 채운다. 이것은 지어내기가 아니라 **관측**이다 — 비교표가 있으면 `pricing`, 입력과 실행 버튼이 있으면 `tool`. 열어봐도 동사가 안 잡히는 화면만 `TODO`로 남기고 **그 목록만 한 번 사람에게 확인받는다**(가격·플랜·제약 같은 사실은 여전히 지어내지 않는다).
   4. `--diagnose`로 돌린다:
   ```
-  node "$S/audit.mjs" --contract _page/contract.json --diagnose --src src --out _page/qa
+  node "$S/audit.mjs" --contract .sognora/page/contract.json --diagnose --src src --out .sognora/page/qa
   ```
   화면별 판정과 **일 점유율 표**(§0f)가 나온다. **읽는 화면(정책·소개)을 반드시 포함시켜라** — 일 점유율 임계의 자가 보정 눈금이 그 페이지들이다. `--diagnose`는 **시안 검사(§1c)를 생략한다** — 시안은 빌드 의무이지 진단 의무가 아니고, 무엇을 다시 만들지 정하기도 전에 전 페이지에 `NO-COMP` 🔴을 찍으면 정작 찾으려던 신호가 그 밑에 묻힌다. 그다음 🔴이 붙은 화면부터 P1b(시안)로 들어간다 — 그때는 `--diagnose` 없이 돌린다. 통과한 화면을 인상만으로 갈아엎지 않는다.
-- **P0 계약 — 말로 하지 말고 `_page/contract.json`에 굳힌다(§0e).** 계약이 이미 있으면 **읽고 그대로 진행한다 — 되묻지 않는다.** 없으면 그때 한 번 받아 파일로 쓴다(`node "$S/contract.mjs" --init …` → 사람이 `type`·`decision`·`must`·`mustNot` 기입 → `--check`). 미기입 `TODO`가 남으면 감사가 멈춘다 — **빈칸을 추측으로 메우지 않는다.** 이후 모든 실행은 이 파일 대비로 무인 완주한다.
+- **P0 계약 — 말로 하지 말고 `.sognora/page/contract.json`에 굳힌다(§0e).** 계약이 이미 있으면 **읽고 그대로 진행한다 — 되묻지 않는다.** 없으면 그때 한 번 받아 파일로 쓴다(`node "$S/contract.mjs" --init …` → 사람이 `type`·`decision`·`must`·`mustNot` 기입 → `--check`). 미기입 `TODO`가 남으면 감사가 멈춘다 — **빈칸을 추측으로 메우지 않는다.** 이후 모든 실행은 이 파일 대비로 무인 완주한다.
 - **P0-b 동사** — **먼저 동사를 정한다**: 이 페이지에서 사용자가 읽는가·고르는가·쓰는가·정하는가·적는가·보는가. 동사가 유형을 결정한다(page-rules §0b). **소개문으로 열 수 있는 건 '읽는다'뿐이다**(랜딩·소개·문서). §0b 표에 없는 화면이면 **거기서 동사를 선언한다**(`read:`·`do:`) — 목록에 없다고 랜딩으로 회귀하는 것이 이 스킬 최대 사고다. 그다음 랜딩 tokens.json 위치와 이 페이지가 돕는 결정을 한 문장으로. 사실 재고는 프로젝트 문서·실제 제품에서 전수 추출한다(가격·플랜·제약은 지어내지 않는다).
 - **P1a 콘텐츠 조달 — 무엇이 들어가는지 먼저 정한다(§0g).** 계약의 `facts`에 화면마다 실제로 들어갈 것을 적는다(항목·수치·상태·컨트롤). **제품에서 전수 추출한다 — 지어내지 않는다.** 비어 있으면 빌드 감사가 막는다. 실측: 이 단계가 없어서 하는 화면 12/24가 첫 화면의 10~20%만 일로 덮었다. **채울 게 없으면 "콘텐츠가 부족하다"고 보고하고 멈춘다 — 장식으로 채우지 않는다.**
 - **P1 유형 규칙 적재** — `references/page-rules.md`에서 해당 유형 절만 읽는다. 치수가 필요하면 §1 토큰 소스에서 인용(추측 금지).
 - **P1b 시안 — 코드를 짜기 전에 보고 만들 목표물을 만든다(§1c).** 디자이너와 대화해 화면의 방향을 정하고, 계약·토큰에서 컴파일한 브리프로 시안을 뽑는다:
   ```
-  node "$S/comp.mjs" --contract _page/contract.json --all --out _page/comps
+  node "$S/comp.mjs" --contract .sognora/page/contract.json --all --out .sognora/page/comps
   ```
-  Codex 내장 `imagegen` 스킬을 `codex exec` 서브에이전트로 호출한다(스킬 이름은 `imagen`이 아니라 **`imagegen`**). **facts(§0g)가 빈 페이지는 생성을 거부한다** — 무엇이 들어가는지 모르는 화면의 시안은 빈 틀이 되고, 빌드는 그 틀을 베낀다. 브리프에는 facts가 "이걸로 화면을 채워라"로 실리고, 하는 화면(`do`)에는 **소개문 도입 금지**(아이브로>제목>리드 금지 — SAME-OPENING의 상류 차단)가 붙는다. 시안이 없으면 감사가 🔴로 막는다 — **시각 목표물 없이 CSS부터 짜면 문단으로 수렴한다.** 시안이 좋은지는 사람이 보고 판단하고, 마음에 안 들면 프롬프트(`_page/comps/<slug>.prompt.md`)를 고쳐 다시 뽑는다.
+  Codex 내장 `imagegen` 스킬을 `codex exec` 서브에이전트로 호출한다(스킬 이름은 `imagen`이 아니라 **`imagegen`**). **facts(§0g)가 빈 페이지는 생성을 거부한다** — 무엇이 들어가는지 모르는 화면의 시안은 빈 틀이 되고, 빌드는 그 틀을 베낀다. 브리프에는 facts가 "이걸로 화면을 채워라"로 실리고, 하는 화면(`do`)에는 **소개문 도입 금지**(아이브로>제목>리드 금지 — SAME-OPENING의 상류 차단)가 붙는다. 시안이 없으면 감사가 🔴로 막는다 — **시각 목표물 없이 CSS부터 짜면 문단으로 수렴한다.** 시안이 좋은지는 사람이 보고 판단하고, 마음에 안 들면 프롬프트(`.sognora/page/comps/<slug>.prompt.md`)를 고쳐 다시 뽑는다.
 - **P2 빌드** — **시안을 띄워놓고 만든다.** 먼저 컴포넌트 층부터 확인한다(§1b): `node "$S/primitives.mjs" --src <소스>`. 프리미티브가 없으면 페이지 CSS를 짜기 전에 그 화면들이 실제로 쓰는 것(Button·Input·Table·EmptyState 등)을 먼저 세운다 — 직접 만들든 라이브러리를 쓰든 무방하다. **이 순서를 건너뛰면 화면마다 CSS를 다시 짜게 되고, 결과는 문단만 남은 페이지다.** 그다음 랜딩 토큰만 사용. 요금제면 **열=플랜·행=속성** 구조로, 카드 노출 차별 속성은 2~3개. 폼이면 GOV.UK 규범(라벨 위·제출 시 검증·입력값 보존).
 - **P3 검사 — 계약이 있으면 한 줄이다**(전 페이지 alive + 교차 sameness + 보고서):
   ```
-  node "$S/audit.mjs" --contract _page/contract.json --src src --out _page/qa
+  node "$S/audit.mjs" --contract .sognora/page/contract.json --src src --out .sognora/page/qa
   ```
   아래는 계약 없이 화면 하나만 볼 때:
   ```
-  node "$S/alive.mjs" --url <URL> --type <catalog|tool|pricing|form|dashboard|document|about|landing> --src <컴포넌트 디렉터리> --out _page/qa
-  node "$S/copylint.mjs" --url <URL> --out _page/qa
+  node "$S/alive.mjs" --url <URL> --type <catalog|tool|pricing|form|dashboard|document|about|landing> --src <컴포넌트 디렉터리> --out .sognora/page/qa
+  node "$S/copylint.mjs" --url <URL> --out .sognora/page/qa
   node "$S/conform.mjs" --tokens <랜딩 tokens.json> --url <URL>   # 토큰 상속 검증(forge 계기 심)
-  node "$S/detect.mjs" --url <URL> --out _page/qa/detect          # 시각 AI 티(forge 계기 심)
+  node "$S/detect.mjs" --url <URL> --out .sognora/page/qa/detect          # 시각 AI 티(forge 계기 심)
   # 카피 AI 티 — 내부 기획 용어·능력 서술 도배·용어 표류
   # GENRE: --type landing 이면 랜딩, 그 외(catalog/tool/pricing/form/dashboard)는 UI
   GENRE=$([ "<TYPE>" = "landing" ] && echo 랜딩 || echo UI)
   node -e 'const j=JSON.parse(require("fs").readFileSync(process.argv[1],"utf8"));process.stdout.write((j.desktop?.copy||[]).join("\n"))' \
-    _page/qa/detect/scan.json | python3 ../sg-ko-humanize/scripts/detect_ko.py - --genre "$GENRE"
+    .sognora/page/qa/detect/scan.json | python3 ../sg-ko-humanize/scripts/detect_ko.py - --genre "$GENRE"
   ```
   마지막 줄이 exit 1이면 실패다. **`detect.mjs`는 보더·레이아웃만 본다 — 카피는 한 글자도 읽지 않는다.** 두 계기는 다른 축이고, 카피 축은 v1.6.4까지 판정자가 없었다.
 
 - **P3b 교차 검사 — 페이지를 2장 이상 만들었으면 반드시** (한 장씩 보면 절대 안 보이는 축):
   ```
-  node "$S/sameness.mjs" --out _page/qa \
+  node "$S/sameness.mjs" --out .sognora/page/qa \
     --pages <url1,url2,url3,...> \
     --types <유형1,유형2,유형3,...>     # 순서대로 1:1. §0b에 없는 화면은 read:<라벨>·do:<라벨>
   ```
@@ -93,7 +93,7 @@ description: 랜딩 말고 **나머지 페이지**를 같은 제품처럼 만든
 | 계기 | 역할 |
 |---|---|
 | `preflight.mjs` | **부트스트랩** — playwright 모듈과 chromium 바이너리를 따로 확인하고 `--install`로 갖춘다. 검사 스킬의 준비는 각주가 아니라 본문이다 |
-| `contract.mjs` | **의도의 자리** — `_page/contract.json` 발판 생성·검증. 미기입은 지어내지 않고 멈춘다 |
+| `contract.mjs` | **의도의 자리** — `.sognora/page/contract.json` 발판 생성·검증. 미기입은 지어내지 않고 멈춘다 |
 | `comp.mjs` | **시안 우선**(§1c) — 계약(**facts 필수** §0g)+토큰을 프롬프트로 컴파일해 `codex exec` → Codex 내장 **`imagegen`** 스킬로 시안 PNG 생성. facts 없으면 거부, `do` 화면 브리프에 소개문 도입 금지. 프롬프트 전문을 남겨 기준이 흔들리지 않게 한다. **시안이 좋은지는 판정하지 않는다** |
 | `primitives.mjs` | **컴포넌트 층이 있는가**(§1b) — 같은 프리미티브를 여러 CSS 모듈이 각자 정의하는지. 특정 라이브러리를 강요하지 않는다. 프로젝트 단위라 `audit`이 1회만 돌린다 |
 | `audit.mjs` | **무인 러너** — 계약을 읽어 전 페이지 `alive` + 교차 `sameness`를 돌리고 한 장으로 보고. URL·유형을 손으로 짝지을 필요가 없다. **playwright는 시작 전에 한 번 확인한다**(없으면 즉시 멈춘다 — 48개 URL을 돌고 7분 뒤에 "모듈 없음"을 내던 사고). `--diagnose`는 기존 사이트 진단용(§P0-a) |

@@ -73,7 +73,7 @@
 - **QF 이원화**: 차단(QF1·2·4·5 — 콘텐츠·조작 파손) / 보고(QF3·6). **QF6은 속성 프록시라 CSS로 치수 고정한 이미지를 오탐**하므로 바닥으로 승격하지 않는다.
 - **audit이 QF를 통과시키던 것 수정** — 통과 조건이 "🔴 0 · QF 0"인데 red만 봤다.
 - **재현 스탬프 제도 격하** — 커밋된 IR 16종 **전부에서 `reproduction` 필드가 사라져 있었다**(스키마 진화). 제도가 사문화된 채 "리드 자격 없음"만 선언 중이었다. `completeness` 기계 스탬프 + 자기 diff 게이트 2층으로 대체.
-- **스테일 포인터 정리**: `gate.mjs`·`plan.md`·`borrow.md`·`craft-rules.md`·`direction.md` 제거, `_forge/history.json` → `references/history.json` 통일(반복 금지는 프로젝트를 가로지르는 제약이므로 스킬이 기억해야 한다), 룰 ID SSOT를 rules-lib으로 자기선언.
+- **스테일 포인터 정리**: `gate.mjs`·`plan.md`·`borrow.md`·`craft-rules.md`·`direction.md` 제거, `.sognora/forge/history.json` → `references/history.json` 통일(반복 금지는 프로젝트를 가로지르는 제약이므로 스킬이 기억해야 한다), 룰 ID SSOT를 rules-lib으로 자기선언.
 
 - **`isColumnRow` 신설 — "열"의 정의를 기하로 명시.** row 멤버는 **가로로 서로소**여야 한다(x-겹침 ≤ min(w)의 20%). `rowGroups`가 y-겹침만 봐서 "나란한 3열"과 **"같은 자리에 포개진 3층"**(크로스페이드 스크롤텔링·캐러셀의 표준 구조)을 구분하지 못했다 — toss 실측: x=0·w=1440 전폭 absolute 레이어 3장이 "3열 여백 지배"로 잡혔다. **임계 조정이 아니라 정의 명시**이고, 이걸로 toss DE4가 0이 됐다(4→1→0).
 - **MO1에 WAAPI/JS 경로 추가** — `document.getAnimations()` 병용. CSS animation만 보면 **framer-motion·GSAP 같은 JS 구동 루프가 통째로 안 잡혔다**(현대 스택의 기본값). detect 컨텍스트가 `reducedMotion:"reduce"`라 JS 루프가 아예 안 도는 문제도 있어, 스냅샷 직전에만 해제하고 복원한다.

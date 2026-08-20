@@ -1,7 +1,7 @@
 /**
  * audit.mjs — 계약 하나로 전 페이지를 무인 감사한다
  *
- * usage: audit.mjs --contract _page/contract.json [--diagnose] [--src src] [--out _page/qa]
+ * usage: audit.mjs --contract .sognora/page/contract.json [--diagnose] [--src src] [--out .sognora/page/qa]
  *                  [--viewports 1440x900,390x844] [--locale ""] [--only /pricing]
  *
  * 왜 있나 — 실전 사고: 29개 라우트를 감사하면서 **URL과 유형을 손으로 짝지어** 명령을

@@ -9,7 +9,7 @@
 
 1. `references/library/INDEX.md`에서 대상과 같은 장르·단위의 문서 2~3개를 고른다 — 있으면 §1~2를 전부 건너뛴다.
 2. 라이브러리에 맞는 장르가 없거나 사용자가 특정 URL을 줬을 때만 §1~2(스캔+프로브)를 1회 수행하고, **분석 문서를 라이브러리에 저장 + INDEX에 한 줄 등록**한다. 실행할수록 라이브러리가 두꺼워지는 구조다.
-3. 프로젝트별 `_forge/bench/`에는 **자기 페이지 측정만** 남긴다. 레퍼런스 지식은 전부 라이브러리로.
+3. 프로젝트별 `.sognora/forge/bench/`에는 **자기 페이지 측정만** 남긴다. 레퍼런스 지식은 전부 라이브러리로.
 4. 라이브러리 문서에 "인터랙션: 미채움" 표시가 있으면 여유 있을 때 probe 1회로 채운다 — 실행을 막지는 않는다.
 
 ## 0b. Tier-R 승격 (v1 변환 아키텍처의 리드 자격)
@@ -49,7 +49,7 @@ node scripts/ir.mjs --bundle references/bundles/<이름> --out references/ir/<�
 
 **페이지 단위** — 레퍼런스당 1회:
 ```
-node scripts/detect.mjs --url <레퍼런스> --out _forge/bench/<이름> --viewports 1440x900
+node scripts/detect.mjs --url <레퍼런스> --out .sognora/forge/bench/<이름> --viewports 1440x900
 ```
 갭 지표 5개:
 | 지표 | 계산 |
@@ -67,7 +67,7 @@ node scripts/detect.mjs --url <레퍼런스> --out _forge/bench/<이름> --viewp
 ## 2b. 인터랙션·구조 프로브 (레퍼런스당 1회 — 수치만 재고 끝내면 절반이다)
 
 ```
-node scripts/probe.mjs --url <레퍼런스> --out _forge/bench/<이름>
+node scripts/probe.mjs --url <레퍼런스> --out .sognora/forge/bench/<이름>
 ```
 
 `interactions.json`이 기록하는 것: **호버 전후 computed diff**(어떤 속성이 얼마나 변하나, 무반응 요소는 몇 개인가) · **스크롤 리빌**(정지 시 숨김 → 등장 요소 수·표본) · **모션 언어**(transition duration·easing·property 분포 — 잘 만든 사이트는 duration이 1~2개 값으로 수렴한다) · 고정 내비 거동 · 미디어 사용.

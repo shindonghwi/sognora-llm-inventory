@@ -22,18 +22,18 @@ description: 레퍼런스 웹사이트의 화면(프론트)을 눈대중이 아�
 2. **측정 없는 수치 금지** — 원본에서 측정하지 않은 `max-width`·`padding`·`clamp()`를 임의로 넣지 않는다.
 3. **자산은 원본 그대로** — 폰트·이미지·아이콘은 받은 파일을 쓴다. 유사 폰트로 바꾸거나 아이콘을 직접 그리지 않는다(폰트가 다르면 글자 폭이 달라져 모든 치수가 어긋난다).
 4. **시각적 동작은 관찰로 재현** — 원본 JS를 복원하려 들지 않는다. 관찰 가능한 상태 전이(hover 전후, 열림/닫힘, 스크롤 반응)를 상태표로 적고 그대로 구현한다.
-5. **의도적 차이는 선언** — 원본과 다르게 갈 항목은 `_replica/override.json`에 기록한다. 선언 안 된 차이는 전부 결함이다.
+5. **의도적 차이는 선언** — 원본과 다르게 갈 항목은 `.sognora/replica/override.json`에 기록한다. 선언 안 된 차이는 전부 결함이다.
 6. **안전 경계** — 원본에서 상태를 바꾸는 조작(결제·가입·삭제·전송) 실행 금지. 캡처의 개인정보는 마스킹. 브랜드 자산 사용 책임은 보고에 고지.
 7. **무인 완주 (예외 둘)** — 되묻지 않고 기본값(rules.md)으로 진행한다. 예외는 **사용자만 답할 수 있는 것** 둘: ① **인증**(자격증명) ② **범위**(고유 페이지 20개 초과 또는 이질적 하위 사이트 혼재). 답을 기다리는 동안 확실한 부분은 계속 진행한다.
 
 ## 절차
 
 ### 1. 계약 확정 (LLM 콜 0)
-대상 URL·범위·뷰포트·의도적 변경을 `_replica/contract.json`에 확정한다. 기본값은 rules.md.
+대상 URL·범위·뷰포트·의도적 변경을 `.sognora/replica/contract.json`에 확정한다. 기본값은 rules.md.
 
 ### 2. 라우트 탐색 (브라우저 1회)
 ```
-node "$S/discover.mjs" --url <URL> --out _replica/routes.json   # 기본 depth 3 · max 1000
+node "$S/discover.mjs" --url <URL> --out .sognora/replica/routes.json   # 기본 depth 3 · max 1000
 ```
 - sitemap·robots(가장 싸고 정확) + 링크 크롤을 합쳐 원장을 만들고 `status`·`title`·`auth`를 기록한다.
 - **탐색된 라우트가 전부 대상이다.** `--max`는 폭주 방지 장치이지 작업 범위가 아니다 — 걸리면 올려서 재탐색한다.
@@ -43,8 +43,8 @@ node "$S/discover.mjs" --url <URL> --out _replica/routes.json   # 기본 depth 3
 
 ### 3. 캡처 + 자산 (라우트당 브라우저 1회, 두 스크립트 동시 실행)
 ```
-node "$S/capture.mjs"      --url <URL> --out _replica/ref/<라우트> [--viewports …] [--storage …] &
-node "$S/fetch-assets.mjs" --url <URL> --out _replica/assets       [--storage …]
+node "$S/capture.mjs"      --url <URL> --out .sognora/replica/ref/<라우트> [--viewports …] [--storage …] &
+node "$S/fetch-assets.mjs" --url <URL> --out .sognora/replica/assets       [--storage …]
 ```
 - capture: 한 번의 기동으로 뷰포트별 × (스크롤 지점·hover·전체)를 훑고 `measure.json`(요소별 x/y/w/h·폰트·여백·색)·`meta.json`을 남긴다. **실측 뷰포트가 요청값과 다르면 그 캡처는 기준으로 쓰지 않는다.**
 - fetch-assets: 폰트·이미지·인라인 SVG 원본 + `@font-face`·CSS 변수를 확보한다. CSS 변수는 디자인 토큰을 추측하지 않게 해주므로 명세 작성 전에 반드시 받는다.
@@ -52,7 +52,7 @@ node "$S/fetch-assets.mjs" --url <URL> --out _replica/assets       [--storage �
 - **레이아웃에 영향 주는 임베드를 인벤토리에 남긴다** — iframe·위젯·서드파티 스크립트는 높이를 바꾸므로, 빠뜨리면 그 아래 전 구간이 통째로 밀린다(실측에서 가장 흔한 오차 원인).
 
 ### 4. 명세 작성 (LLM 콜 1)
-`measure.json`·`assets.json`을 근거로 `spec-template.md` 양식대로 `_replica/spec.md`를 쓴다. 토큰 → 공통 셸 → 섹션 치수 → 상호작용 상태표 순. **모든 수치에 근거**(어느 캡처의 어느 요소)를 단다.
+`measure.json`·`assets.json`을 근거로 `spec-template.md` 양식대로 `.sognora/replica/spec.md`를 쓴다. 토큰 → 공통 셸 → 섹션 치수 → 상호작용 상태표 순. **모든 수치에 근거**(어느 캡처의 어느 요소)를 단다.
 
 ### 5. 구현 — 대표 페이지 먼저
 
@@ -62,8 +62,8 @@ node "$S/fetch-assets.mjs" --url <URL> --out _replica/assets       [--storage �
 3. 둘 다 없으면(빈 레포·새 프로젝트) **`references/layout-presets.md`의 프리셋을 적용한다 — 묻지 않는다.** 스택에 맞는 프리셋을 고르고 그대로 폴더를 잡는다.
 4. 스택이 프리셋 어느 것과도 맞지 않을 때만 선택지로 확인한다.
 
-- 확정한 배치 규칙(따른 문서 또는 적용한 프리셋 이름)을 `_replica/contract.json`의 `layout` 필드에 적고 **전 페이지에 일관 적용**한다. 최종 보고에도 한 줄 남긴다.
-- **자산 경로**: 받은 폰트·이미지는 프로젝트 정적 폴더 관례(`public/fonts`·`public/images` 등)에 넣는다. `_replica/`는 작업 산출물 보관소이지 배포 경로가 아니다.
+- 확정한 배치 규칙(따른 문서 또는 적용한 프리셋 이름)을 `.sognora/replica/contract.json`의 `layout` 필드에 적고 **전 페이지에 일관 적용**한다. 최종 보고에도 한 줄 남긴다.
+- **자산 경로**: 받은 폰트·이미지는 프로젝트 정적 폴더 관례(`public/fonts`·`public/images` 등)에 넣는다. `.sognora/replica/`는 작업 산출물 보관소이지 배포 경로가 아니다.
 - **다국어 프로젝트면 문구를 하드코딩하지 않는다.** 메시지 파일(`messages/{locale}.json` 등)에 키로 넣고 컴포넌트는 번역 훅으로 읽는다. 원본 텍스트는 기본 로케일 값으로 넣는다.
 
 1. **공통 셸 + 대표 페이지 1개만 먼저 만들고 §6 게이트를 통과시킨다.** 헤더·푸터·토큰·타이포는 전 페이지 공용이라, 여기서 수렴하면 나머지 페이지는 대부분 이미 맞다. 전 페이지를 만들어놓고 한꺼번에 고치면 같은 오차를 페이지 수만큼 반복해 고치게 된다.
@@ -72,7 +72,7 @@ node "$S/fetch-assets.mjs" --url <URL> --out _replica/assets       [--storage �
 
 ### 6. 비교 게이트 (반복)
 ```
-node "$S/diff.mjs" --ref _replica/ref/<라우트> --local <로컬URL> --out _replica/diff/<라우트> [--strict] [--override _replica/override.json]
+node "$S/diff.mjs" --ref .sognora/replica/ref/<라우트> --local <로컬URL> --out .sognora/replica/diff/<라우트> [--strict] [--override .sognora/replica/override.json]
 ```
 - 원본·로컬을 **동일 조건**(뷰포트·DPR·스크롤 지점·순서)에서 비교. exit 0 통과 / 1 오차 초과 / 2 실행 불가.
 - **오차 상위 항목부터** 고친다. 오차가 여러 요소에 같은 값으로 퍼져 있으면 개별 요소가 아니라 **그 위쪽의 높이 차이 하나**가 원인이다 — 위에서부터 컨테이너 높이를 대조해 근원을 찾는다(개별 요소를 하나씩 고치는 것은 낭비다).
@@ -94,7 +94,7 @@ node "$S/diff.mjs" --ref _replica/ref/<라우트> --local <로컬URL> --out _rep
 ```
 npm i -D playwright pixelmatch pngjs && npx playwright install chromium
 ```
-**클록 도입(v1.6.3) 이전에 만든 `_replica/ref/`는 재캡처해야 한다** — 캡처 조건이 다르고, diff가 이를 감지해 exit 2로 막는다.
+**클록 도입(v1.6.3) 이전에 만든 `.sognora/replica/ref/`는 재캡처해야 한다** — 캡처 조건이 다르고, diff가 이를 감지해 exit 2로 막는다.
 
 없으면 스크립트가 exit 2와 함께 안내한다. **pixelmatch·pngjs가 없으면 `diff.mjs`는 판정을 거부한다(exit 2)** — 통과가 아니라 "판정되지 않음"이다.
 

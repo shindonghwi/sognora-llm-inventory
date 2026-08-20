@@ -2,9 +2,9 @@
  * comp.mjs — 시안 우선(comp-first): 코드를 짜기 전에 **보고 만들 목표물**을 만든다
  *
  * usage:
- *   comp.mjs --contract _page/contract.json --route /app/settings/profile [--out _page/comps]
- *   comp.mjs --contract _page/contract.json --all            # comp 없는 페이지 전부
- *   comp.mjs --contract _page/contract.json --check          # 생성 없이 누락만 확인
+ *   comp.mjs --contract .sognora/page/contract.json --route /app/settings/profile [--out .sognora/page/comps]
+ *   comp.mjs --contract .sognora/page/contract.json --all            # comp 없는 페이지 전부
+ *   comp.mjs --contract .sognora/page/contract.json --check          # 생성 없이 누락만 확인
  *
  * 왜 있나 — 사용자 지시: *"디자이너 서브에이전트를 두고 대화해서 페이지 프롬프트 시안을 뽑고,
  * codex `$imagen` 스킬로 먼저 실제 프리미엄 운영급 시안을 뽑은 뒤에 그걸 보고 작업하라."*
@@ -33,14 +33,14 @@ import { loadContract } from "./contract.mjs";
 
 const args = parseArgs(argv.slice(2));
 if (!args.contract) {
-  console.error("usage: comp.mjs --contract <계약파일> (--route <경로> | --all | --check) [--out _page/comps] [--tokens <tokens.json>]");
+  console.error("usage: comp.mjs --contract <계약파일> (--route <경로> | --all | --check) [--out .sognora/page/comps] [--tokens <tokens.json>]");
   exit(2);
 }
 let contract;
 try { contract = await loadContract(String(args.contract)); }
 catch (e) { console.error("🔴 " + e.message); exit(2); }
 
-const outDir = String(args.out ?? "_page/comps");
+const outDir = String(args.out ?? ".sognora/page/comps");
 const slug = (route) => (route === "/" ? "home" : route.replace(/^\//, "").replace(/[\/]/g, "-"));
 const compPath = (route) => join(outDir, `${slug(route)}.png`);
 const promptPath = (route) => join(outDir, `${slug(route)}.prompt.md`);

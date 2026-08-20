@@ -68,7 +68,7 @@
 
 ## 실행 순서 (권장)
 
-1. `node scripts/audit.mjs --url <URL> --out _forge/qa [--tokens _forge/tokens.json --engineering _forge/engineering.json --ir <리드 IR> --lint src]`
+1. `node scripts/audit.mjs --url <URL> --out .sognora/forge/qa [--tokens .sognora/forge/tokens.json --engineering .sognora/forge/engineering.json --ir <리드 IR> --lint src]`
 2. audit.md의 실패·미제공 게이트를 먼저 해소(기계 실패를 안고 패널에 보내면 패널 시간이 낭비된다)
-3. §A·§B·§C·§D를 **동시에** 신선한 컨텍스트 4인에 전달 → 결과를 `_forge/qa/`에 기록(ai-score.md · desire-score.md · persona.md · gatekeeper.md)
+3. §A·§B·§C·§D를 **동시에** 신선한 컨텍스트 4인에 전달 → 결과를 `.sognora/forge/qa/`에 기록(ai-score.md · desire-score.md · persona.md · gatekeeper.md)
 4. 철거 목록(§A)과 버릴 것 목록(§B)을 합쳐 P8 처리: **철거는 재단조, 그 외는 정밀 수리** → audit.mjs 재실행 + §A 재채점

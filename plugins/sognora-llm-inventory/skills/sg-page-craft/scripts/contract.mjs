@@ -1,11 +1,11 @@
 /**
- * contract.mjs — 페이지 계약(`_page/contract.json`)의 스키마·로더·발판 생성기
+ * contract.mjs — 페이지 계약(`.sognora/page/contract.json`)의 스키마·로더·발판 생성기
  *
  * 왜 있나 — 실전 사고: 감사에서 도구 화면을 "제일 잘 만들어졌다"고 보고했는데
  * **기획 의도와 다른 화면**이었다. 그다음 사고는 더 나쁘다 — 그래서 "의도가 뭐였냐"고
  * 사람에게 되물었다. **매번 되묻는 것은 스킬의 실패다.**
  *
- * 원인은 예의가 아니라 구조였다. sg-landing-forge는 `_forge/contract.md`·`tokens.json`을
+ * 원인은 예의가 아니라 구조였다. sg-landing-forge는 `.sognora/forge/contract.md`·`tokens.json`을
  * 남겨서 다음 실행이 그걸 읽고 무인으로 간다. page-craft는 P0 계약을 **말로만** 하고
  * 어디에도 남기지 않았다. 그러니 실행마다 유형을 추측하고, 추측이 막히면 사람을 부른다.
  *
@@ -18,8 +18,8 @@
  * **존재만 확인한다** — 그것이 잘 만들어졌는지는 여전히 사람의 일이고, 보고서에 그렇게 새긴다.
  *
  * usage:
- *   node contract.mjs --init --base http://localhost:3010 --routes /,/pricing,/contact [--locales "",/ko] [--out _page/contract.json]
- *   node contract.mjs --check _page/contract.json      # 스키마·미기입(TODO) 검사
+ *   node contract.mjs --init --base http://localhost:3010 --routes /,/pricing,/contact [--locales "",/ko] [--out .sognora/page/contract.json]
+ *   node contract.mjs --check .sognora/page/contract.json      # 스키마·미기입(TODO) 검사
  */
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { dirname } from "node:path";
@@ -42,7 +42,15 @@ export function parseType(raw) {
 export async function loadContract(path) {
   let raw;
   try { raw = await readFile(path, "utf8"); }
-  catch { throw new Error(`계약 파일을 못 읽었다: ${path}\n먼저 만들어라: node contract.mjs --init --base <URL> --routes <라우트들>`); }
+  catch {
+    // 산출물 경로 통일(v1.13.0) 전의 프로젝트는 _page/에 계약이 있다 — 지어내지 말고 옮기라고 알린다.
+    const legacy = path.replace(/\.sognora\/page/, "_page");
+    let hasLegacy = false;
+    if (legacy !== path) { try { await readFile(legacy, "utf8"); hasLegacy = true; } catch { /* 구 경로도 없음 */ } }
+    throw new Error(hasLegacy
+      ? `계약이 구 경로에 있다: ${legacy}\n산출물 규칙이 .sognora/ 아래로 통일됐다(v1.13.0). 옮겨라:\n  mkdir -p .sognora && git mv _page .sognora/page 2>/dev/null || mv _page .sognora/page`
+      : `계약 파일을 못 읽었다: ${path}\n먼저 만들어라: node contract.mjs --init --base <URL> --routes <라우트들>`);
+  }
   let c;
   try { c = JSON.parse(raw); }
   catch (e) { throw new Error(`계약 파일이 JSON이 아니다: ${path} — ${e.message}`); }
@@ -132,10 +140,10 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   }
 
   if (args.init) {
-    if (!args.base || !args.routes) { console.error("usage: contract.mjs --init --base <URL> --routes </a,/b,...> [--locales \"\",/ko] [--out _page/contract.json]"); exit(2); }
+    if (!args.base || !args.routes) { console.error("usage: contract.mjs --init --base <URL> --routes </a,/b,...> [--locales \"\",/ko] [--out .sognora/page/contract.json]"); exit(2); }
     const routes = String(args.routes).split(",").map((s) => s.trim()).filter(Boolean);
     const locales = args.locales === true || args.locales == null ? [""] : String(args.locales).split(",").map((s) => s.trim());
-    const out = String(args.out ?? "_page/contract.json");
+    const out = String(args.out ?? ".sognora/page/contract.json");
     const doc = {
       version: 1,
       $comment: "sg-page-craft 페이지 계약. 사람이 한 번 채우면 이후 검사는 이 파일 대비로 무인 수행된다. TODO는 기계가 지어내지 않는다.",
