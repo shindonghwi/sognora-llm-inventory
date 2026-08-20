@@ -25,101 +25,6 @@
   ],
   "rules": [
     {
-      "rule": "IC3",
-      "sev": "yellow",
-      "firedOn": 13,
-      "sites": [
-        "apple-com",
-        "channel-io",
-        "framer-com",
-        "linear-app",
-        "meshy-ai",
-        "netflix-com-kr",
-        "notion-com",
-        "omneky-com",
-        "plai-io",
-        "stripe-com",
-        "toss-im",
-        "vercel-com",
-        "youtube-about"
-      ],
-      "samples": [
-        "apple-com: 텍스트·aria 없는 아이콘 1개",
-        "apple-com: 텍스트·aria 없는 아이콘 22개",
-        "apple-com: 텍스트·aria 없는 아이콘 4개",
-        "channel-io: 텍스트·aria 없는 아이콘 6개"
-      ]
-    },
-    {
-      "rule": "CO2",
-      "sev": "yellow",
-      "firedOn": 11,
-      "sites": [
-        "apple-com",
-        "channel-io",
-        "framer-com",
-        "linear-app",
-        "meshy-ai",
-        "netflix-com-kr",
-        "notion-com",
-        "omneky-com",
-        "stripe-com",
-        "toss-im",
-        "vercel-com"
-      ],
-      "samples": [
-        "apple-com: 그라데이션 배경 18곳",
-        "channel-io: 그라데이션 배경 12곳",
-        "framer-com: 그라데이션 배경 4곳",
-        "linear-app: 그라데이션 배경 9곳"
-      ]
-    },
-    {
-      "rule": "QF6",
-      "sev": "yellow",
-      "firedOn": 10,
-      "sites": [
-        "apple-com",
-        "channel-io",
-        "framer-com",
-        "hyundai-com",
-        "meshy-ai",
-        "netflix-com-kr",
-        "omneky-com",
-        "plai-io",
-        "toss-im",
-        "youtube-about"
-      ],
-      "samples": [
-        "apple-com: width/height 미지정 이미지 31개 (CLS 위험)",
-        "channel-io: width/height 미지정 이미지 19개 (CLS 위험)",
-        "framer-com: width/height 미지정 이미지 8개 (CLS 위험)",
-        "hyundai-com: width/height 미지정 이미지 51개 (CLS 위험)"
-      ]
-    },
-    {
-      "rule": "TS1",
-      "sev": "red",
-      "firedOn": 9,
-      "sites": [
-        "channel-io",
-        "framer-com",
-        "hyundai-com",
-        "linear-app",
-        "meshy-ai",
-        "notion-com",
-        "omneky-com",
-        "stripe-com",
-        "toss-im"
-      ],
-      "samples": [
-        "channel-io: 폰트 사이즈 고유값 14개: 12, 13, 14, 15, 15.5, 16, 18, 19, 22, 25, 35, 44, 54, 65",
-        "framer-com: 폰트 사이즈 고유값 12개: 9, 10, 12, 13, 14, 15, 16, 18, 20, 22, 44, 54",
-        "hyundai-com: 폰트 사이즈 고유값 16개: 12, 13.5, 14, 15, 16, 17, 18, 20, 21, 22, 24, 26, 30, 37, 44, 72",
-        "linear-app: 폰트 사이즈 고유값 11개: 10, 11, 12, 13, 14, 15, 16, 20, 24, 48, 64"
-      ]
-    },
-    {
       "rule": "IC1",
       "sev": "red",
       "firedOn": 8,
@@ -203,6 +108,25 @@
       ]
     },
     {
+      "rule": "CO3",
+      "sev": "yellow",
+      "firedOn": 6,
+      "sites": [
+        "channel-io",
+        "hyundai-com",
+        "mayoclinic-org",
+        "notion-com",
+        "ohou-se",
+        "toss-im"
+      ],
+      "samples": [
+        "channel-io: 본문 대비 중앙값 1.00:1 < 4.5:1",
+        "channel-io: 본문 대비 중앙값 1.85:1 < 4.5:1",
+        "channel-io: 본문 대비 중앙값 1.07:1 < 4.5:1",
+        "hyundai-com: 본문 대비 중앙값 3.66:1 < 4.5:1"
+      ]
+    },
+    {
       "rule": "CO5",
       "sev": "red",
       "firedOn": 6,
@@ -236,7 +160,7 @@
         "apple-com: 동일 이미지 재사용: 980x522sr.jpg×9, 417x234.jpg×6",
         "hyundai-com: 동일 이미지 재사용: car-bg-w.jpg×4, hqdefault.jpg×4",
         "linear-app: 동일 이미지 재사용: f=auto,fit=scale-down,metadata=none×24, ><g filter='url(#a×4",
-        "meshy-ai: 동일 이미지 재사용: ic_arrow_l_landingassets.svg×8, ACg8ocKzhQSRu-paN5-TQq1IOhhpmzv4VM50weZCJABEOtkEodU=s96-c×10, 01978b98-5371-76bf-96fc-923fc242515d.jpg×4"
+        "meshy-ai: 동일 이미지 재사용: ic_arrow_l_landingassets.svg×8, meshy.png×12, 0197108a-8dec-7056-83f8-f8bd09386fcc.jpg×4"
       ]
     },
     {
@@ -258,24 +182,6 @@
       ]
     },
     {
-      "rule": "CO3",
-      "sev": "yellow",
-      "firedOn": 5,
-      "sites": [
-        "channel-io",
-        "hyundai-com",
-        "mayoclinic-org",
-        "notion-com",
-        "toss-im"
-      ],
-      "samples": [
-        "channel-io: 본문 대비 중앙값 1.00:1 < 4.5:1",
-        "channel-io: 본문 대비 중앙값 1.85:1 < 4.5:1",
-        "channel-io: 본문 대비 중앙값 1.07:1 < 4.5:1",
-        "hyundai-com: 본문 대비 중앙값 3.66:1 < 4.5:1"
-      ]
-    },
-    {
       "rule": "IC4",
       "sev": "yellow",
       "firedOn": 5,
@@ -291,23 +197,6 @@
         "netflix-com-kr: 장식 블롭(absolute 원형) 1개",
         "omneky-com: 장식 블롭(absolute 원형) 2개",
         "omneky-com: 장식 블롭(absolute 원형) 2개"
-      ]
-    },
-    {
-      "rule": "TS2",
-      "sev": "yellow",
-      "firedOn": 4,
-      "sites": [
-        "apple-com",
-        "netflix-com-kr",
-        "plai-io",
-        "vercel-com"
-      ],
-      "samples": [
-        "apple-com: 스케일 인접비 불규칙 4쌍 (사이즈: 12, 14, 17, 21, 28, 40, 56)",
-        "netflix-com-kr: 스케일 인접비 불규칙 4쌍 (사이즈: 12, 13, 14, 16, 20, 24, 56, 100)",
-        "plai-io: 스케일 인접비 불규칙 5쌍 (사이즈: 16, 18, 22, 24, 27, 48, 60, 115)",
-        "vercel-com: 스케일 인접비 불규칙 3쌍 (사이즈: 11, 12, 14, 16, 24, 56, 64)"
       ]
     },
     {

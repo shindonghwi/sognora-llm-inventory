@@ -31,6 +31,33 @@ git clone https://github.com/shindonghwi/sognora-llm-inventory.git && cd sognora
 
 </details>
 
+## 쓰는 법
+
+설치하면 `sg` 한 단어로 전부 됩니다. **첫 진단은 두 줄입니다.**
+
+```bash
+cd <내 프로젝트>
+sg preflight && sg diagnose      # 브라우저 갖추고 → 있는 페이지 전수 진단
+```
+
+계약(`_page/contract.json`)이 없으면 만드는 법을 알려주고 멈춥니다 — 무엇을 재야 하는지는 기계가 지어내지 않습니다.
+
+| 프로젝트에서 | |
+|---|---|
+| `sg preflight` | 브라우저를 갖춘다 (없으면 설치) |
+| `sg contract "/,/pricing"` | 라우트를 계약에 올린다 |
+| `sg diagnose` | 있는 페이지 전수 진단 — 갈아엎을 대상을 기계가 고른다 |
+| `sg audit` | 빌드 후 정식 감사 (시안 검사 포함) |
+| `sg alive <URL> <유형>` | 화면 하나만 빠르게 |
+
+| 스킬을 고칠 때 | |
+|---|---|
+| `sg check` | 레포 자체 점검 — push 전 |
+| `sg corpus` | AI 티 규칙이 판별력 있는지 (프리미엄 레퍼런스 18종) |
+| `sg eval <과제>` | 스킬을 붙이면 결과가 나아지는지 |
+
+만드는 것 자체는 여전히 자연어입니다 — `/sg-page-craft 요금제 페이지 만들어줘`. `sg`는 **재는 자리**를 한 단어로 만든 것입니다.
+
 ## 스킬
 
 | 스킬 | 하는 일 |

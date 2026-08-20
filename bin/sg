@@ -1,0 +1,113 @@
+#!/usr/bin/env bash
+# sg — 이 무기고의 단일 진입점.
+#
+# 왜 있나 — 계기는 늘었는데 쓰는 법이 경로 외우기였다:
+#   node plugins/sognora-llm-inventory/skills/sg-landing-forge/scripts/corpus.mjs --run
+#   node <플러그인캐시>/skills/sg-page-craft/scripts/preflight.mjs --install
+# 사람이 경로를 외워야 하는 계기는 안 쓰인다. 한 단어로 되게 한다.
+set -euo pipefail
+
+# ── 스킬 위치 해석 — 레포에서 돌리든 설치본에서 돌리든 같게 동작한다 ──────
+resolve_skills() {
+  [ -n "${SG_HOME:-}" ] && [ -d "$SG_HOME" ] && { echo "$SG_HOME"; return; }
+  local here repo
+  here="$(cd "$(dirname "$(readlink "${BASH_SOURCE[0]}" 2>/dev/null || echo "${BASH_SOURCE[0]}")")" && pwd)"
+  repo="$(cd "$here/.." && pwd)"
+  [ -d "$repo/plugins/sognora-llm-inventory/skills" ] && { echo "$repo/plugins/sognora-llm-inventory/skills"; return; }
+  [ -d "${CLAUDE_HOME:-$HOME/.claude}/skills/sg-page-craft" ] && { echo "${CLAUDE_HOME:-$HOME/.claude}/skills"; return; }
+  local cache
+  cache="$(find "${CLAUDE_HOME:-$HOME/.claude}" -maxdepth 6 -type d -name sg-page-craft 2>/dev/null | head -1)"
+  [ -n "$cache" ] && { dirname "$cache"; return; }
+  echo ""
+}
+SKILLS="$(resolve_skills)"
+REPO_ROOT="$(cd "$(dirname "$(readlink "${BASH_SOURCE[0]}" 2>/dev/null || echo "${BASH_SOURCE[0]}")")/.." && pwd)"
+[ -z "$SKILLS" ] && { echo "🔴 스킬을 못 찾았다. SG_HOME=<skills 디렉터리> 로 지정하거나 setup.sh 로 설치하라." >&2; exit 2; }
+
+PC="$SKILLS/sg-page-craft/scripts"
+LF="$SKILLS/sg-landing-forge/scripts"
+
+usage() {
+cat <<'H'
+sg — sognora 스킬 무기고
+
+프로젝트에서 (지금 있는 사이트를 재고 고칠 때)
+  sg preflight              브라우저를 갖춘다 (없으면 설치)
+  sg diagnose               있는 페이지 전수 진단 — 갈아엎을 대상을 기계가 고른다
+  sg audit                  빌드 후 정식 감사 (시안 검사 포함)
+  sg alive <URL> <유형>      화면 하나만 빠르게
+
+스킬을 고칠 때 (이 레포에서)
+  sg check                  레포 자체 점검 — push 전
+  sg corpus                 AI 티 규칙이 판별력 있는지 (프리미엄 레퍼런스 18종)
+  sg corpus report          재실행 없이 지난 판정만
+  sg eval [과제] [횟수]       스킬을 붙이면 결과가 나아지는지
+  sg eval list              과제 목록
+
+  sg help                   이 화면
+
+첫 진단은 이 두 줄이면 끝난다:
+  sg preflight && sg diagnose
+H
+}
+
+need_contract() {
+  [ -f "_page/contract.json" ] && return 0
+  cat >&2 <<'H'
+🔴 _page/contract.json 이 없다 — 무엇을 재야 하는지 아직 아무도 안 정했다.
+
+  라우트를 올린다:
+    sg contract "/,/pricing,/contact"        # 로케일이 있으면: sg contract "/,/pricing" "" /ko
+
+  그다음 파일을 열어 페이지마다 채운다(기계가 지어내지 않는다):
+    type      landing|catalog|tool|pricing|form|dashboard|document|about  또는 read:<라벨>·do:<라벨>
+    decision  이 화면이 돕는 결정 한 문장
+H
+  return 1
+}
+
+cmd="${1:-help}"; shift || true
+case "$cmd" in
+  preflight) exec node "$PC/preflight.mjs" --install "$@" ;;
+
+  contract)
+    routes="${1:?usage: sg contract \"/,/pricing,/contact\" [로케일...]}"; shift || true
+    base="${SG_BASE:-http://localhost:3010}"
+    if [ $# -gt 0 ]; then exec node "$PC/contract.mjs" --init --base "$base" --routes "$routes" --locales "$(IFS=,; echo "$*")"
+    else exec node "$PC/contract.mjs" --init --base "$base" --routes "$routes"; fi ;;
+
+  diagnose)
+    need_contract || exit 2
+    node "$PC/preflight.mjs" >/dev/null 2>&1 || node "$PC/preflight.mjs" --install
+    exec node "$PC/audit.mjs" --contract _page/contract.json --diagnose --out _page/qa "$@" ;;
+
+  audit)
+    need_contract || exit 2
+    node "$PC/preflight.mjs" >/dev/null 2>&1 || node "$PC/preflight.mjs" --install
+    exec node "$PC/audit.mjs" --contract _page/contract.json --out _page/qa "$@" ;;
+
+  alive)
+    url="${1:?usage: sg alive <URL> <유형>}"; type="${2:?유형: catalog|tool|pricing|form|dashboard|document|about|landing}"
+    node "$PC/preflight.mjs" >/dev/null 2>&1 || node "$PC/preflight.mjs" --install
+    exec node "$PC/alive.mjs" --url "$url" --type "$type" --out _page/qa ;;
+
+  check)  exec "$REPO_ROOT/tools/check.sh" ;;
+
+  corpus)
+    # report는 저장된 기준선을 읽기만 한다 — 브라우저가 필요 없다.
+    # 실측 사고: 여기서도 preflight를 돌렸더니 **스킬 레포에 playwright를 설치**했다.
+    # 준비는 필요한 명령에서만 한다.
+    if [ "${1:-}" = "report" ]; then exec node "$LF/corpus.mjs" --report; fi
+    node "$PC/preflight.mjs" >/dev/null 2>&1 || node "$PC/preflight.mjs" --install
+    exec node "$LF/corpus.mjs" --run "$@" ;;
+
+  eval)
+    [ "${1:-}" = "list" ] && exec node "$REPO_ROOT/tools/eval.mjs" --list
+    case_="${1:-}"; runs="${2:-3}"
+    [ -z "$case_" ] && { node "$REPO_ROOT/tools/eval.mjs" --list; echo; echo "usage: sg eval <과제> [횟수]"; exit 2; }
+    [ -d "$case_" ] || case_="$REPO_ROOT/evals/$case_"
+    exec node "$REPO_ROOT/tools/eval.mjs" --case "$case_" --runs "$runs" ;;
+
+  help|-h|--help) usage ;;
+  *) echo "알 수 없는 명령: $cmd" >&2; echo >&2; usage >&2; exit 2 ;;
+esac

@@ -413,12 +413,13 @@ function evaluateTells(raw, viewport, theme, isDesktop) {
   // TS1 삭제(v1.6.0 코퍼스 판정) — "폰트 사이즈 고유값 9개 이상 = AI 티"는 프리미엄 레퍼런스
   // 16종 중 9종에서 발동했다(stripe 15개·apple 등). 스케일이 없는 것과 스케일이 넓은 것을
   // 개수로 구분할 수 없다 — 판별력이 없으면 규칙이 아니다. 관심사는 forge-rules 산문으로.
-  if (sizes.length >= 4) {
-    const ratios = sizes.slice(1).map((s, i) => s / sizes[i]);
-    const med = [...ratios].sort()[Math.floor(ratios.length / 2)];
-    const irregular = ratios.filter((r) => Math.abs(r - med) / med > 0.05).length;
-    if (irregular >= 3) add("TS2", null, `스케일 인접비 불규칙 ${irregular}쌍 (사이즈: ${sizes.join(", ")})`);
-  }
+  // TS2도 삭제(v1.6.1) — **TS1을 지웠더니 TS2가 4/16 → 13/16으로 뛰었다.** 둘은 else-if
+  // 사슬이라 사이즈 9종 이상인 페이지는 TS2에 도달한 적이 없었고, TS1이 사라지자 전부
+  // 흘러들었다. 규칙 자체도 구조가 깨져 있다 — "불규칙 3쌍 이상"은 절대 개수라서
+  // 사이즈가 많을수록 자동으로 켜진다(15종이면 인접비가 14개다).
+  //
+  // **교훈: 규칙을 지우면 남은 규칙의 모집단이 바뀐다. 삭제 후에는 반드시 재측정한다.**
+  // 타입 스케일의 규칙성은 패널(§7)이 캡처를 보고 판정한다.
   const fams = raw.bodyFont.split(",").map((f) => f.replace(/["']/g, "").trim());
   if (!fams.some((f) => !DEFAULT_STACK_RE.test(f))) add("TS3", null, `본문 스택이 기본값뿐: ${raw.bodyFont.slice(0, 80)}`);
 

@@ -111,8 +111,23 @@ else
   echo "== Codex: 건너뜀 =="
 fi
 
+# ---- sg CLI (단일 진입점) ----
+BIN_DIR="${SG_BIN:-$HOME/.local/bin}"
+mkdir -p "$BIN_DIR"
+if [ -e "$BIN_DIR/sg" ] && [ ! -L "$BIN_DIR/sg" ]; then
+  echo "== sg: 건너뜀 ($BIN_DIR/sg 가 이미 있음 — SG_BIN 으로 다른 위치 지정 가능) =="
+else
+  ln -sf "$REPO/bin/sg" "$BIN_DIR/sg"
+  echo "installed: $BIN_DIR/sg"
+  case ":$PATH:" in
+    *":$BIN_DIR:"*) ;;
+    *) echo "  ⚠ PATH에 $BIN_DIR 가 없다. 셸 rc에 추가하라:  export PATH=\"$BIN_DIR:\$PATH\"" ;;
+  esac
+fi
+
 echo ""
 echo "완료 (mode=$MODE)."
 echo "  Claude: 새 세션에서 /<스킬명> 또는 자연어 트리거"
 echo "  Codex : \$<스킬명> 또는 /skills 메뉴"
 echo "  업데이트: ./update.sh · 제거: ./uninstall.sh"
+echo "  계기 실행: sg help  (프로젝트에서 sg preflight && sg diagnose)"

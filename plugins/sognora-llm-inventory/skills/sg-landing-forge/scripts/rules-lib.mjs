@@ -7,7 +7,6 @@
 // **과반에서 발동한 규칙 4건(TS1·CO2·IC3·QF6)은 삭제했다.** 레퍼런스는 정의상 슬롭이
 // 아니므로 거기서 켜지는 규칙은 슬롭이 아니라 취향을 잰다. 근거: references/corpus-baseline.json
 export const RULES = {
-  TS2: { sev: "yellow", layer: "surface", judge: "det", scope: "page" },
   TS3: { sev: "yellow", layer: "surface", judge: "det", scope: "page" },
   CO1: { sev: "red", layer: "surface", judge: "det", scope: "section" },
   CO3: { sev: "yellow", layer: "surface", judge: "det", scope: "section" },
