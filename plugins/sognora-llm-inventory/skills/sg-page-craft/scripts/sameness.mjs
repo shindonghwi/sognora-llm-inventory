@@ -277,17 +277,35 @@ let workBar = null;
       ? `이 프로젝트 읽는 화면의 본문 점유율 중앙값 ${pct(readBar)}(${reading.length}개)`
       : `읽는 화면 중앙값은 ${pct(readBar)}지만 보정은 엄격해지는 방향으로만 쓴다(폴백 ${pct(FALLBACK_WORK)} 하한)`;
 
-  const starved = withWork
-    .filter((m) => m.type.verb === "do" && m.workShare < bar)
-    .sort((a, b) => a.workShare - b.workShare);
+  const doing = withWork.filter((m) => m.type.verb === "do");
+  // **분류하지 못한 화면에 "0%만 덮는다"고 쓰지 않는다.** 그건 잰 게 아니라 못 잰 것이고,
+  // 관측 불가 영역에 도장을 찍지 않는 것이 이 스킬의 원칙이다. 실전 사고: 도구 화면의
+  // 업로드가 숨은 file input + 커스텀 드롭존이라 분류가 안 됐는데 계기는 "일이 없다"고
+  // 단정했다 — 화면에는 380px 설정 패널과 1200px 작업 영역이 멀쩡히 있었다.
+  const unmeasured = doing.filter((m) => !m.work);
+  const starved = doing.filter((m) => m.work && m.workShare < bar).sort((a, b) => a.workShare - b.workShare);
   if (starved.length) {
     add("red", "WORK-STARVED",
       `하는 화면 ${starved.length}개가 자기 일로 첫 화면을 못 덮는다 (기준 ${pct(bar)} — ${barFrom})\n` +
-      starved.map((m) =>
-        `    · ${short(m.url)}(${m.type.name}) — ${m.work ? `주 행위 요소 "${m.work}"가` : "조작할 덩어리가 첫 화면에 없고"} ` +
-        `${pct(m.workShare)}만 덮는다${m.blocks.length < 2 ? " ※ 골격이 얇다 — 빈 상태면 데이터를 넣고 다시 재라" : ""}`).join("\n") +
-      `\n    나머지 면적은 제목·라벨·설명이다. 화면의 일(입력·비교표·데이터 행·조작 컨트롤)을 첫 화면의 주인공으로 올려라(§0f).` +
-      `\n    ※ 패딩만 줄여 비율을 맞추는 것은 금지다 — 실체를 넣어 올려야 한다(§0-4 DE4와 같은 처분).`);
+      // 남는 면적이 **글인지 여백인지**는 잰 값으로 구분한다. 둘 다 실패지만 처방이 다르다 —
+      // 글이 밀어냈으면 소개문을 걷어내는 것이고, 여백이면 실체를 넣는 것이다.
+      // 실측 사고: "나머지 면적은 제목·라벨·설명이다"를 무조건 붙였더니, 폼 하나가
+      // 빈 화면 한가운데 떠 있는 로그인 화면에도 그 문장이 나갔다 — 거기 나머지는 여백이었다.
+      starved.map((m) => {
+        const rest = m.foldInk > m.workShare ? `나머지는 대체로 글(잉크 ${pct(m.foldInk)}) — 소개문을 걷어내라` : `나머지는 대체로 여백(잉크 ${pct(m.foldInk)}) — 실체를 넣어라`;
+        return `    · ${short(m.url)}(${m.type.name}) — 주 행위 요소 "${m.work}"가 ${pct(m.workShare)}만 덮는다. ${rest}` +
+          `${m.blocks.length < 2 ? " ※ 골격이 얇다 — 빈 상태면 데이터를 넣고 다시 재라" : ""}`;
+      }).join("\n") +
+      `\n    화면의 일(입력·비교표·데이터 행·조작 컨트롤)을 첫 화면의 주인공으로 올려라(§0f).` +
+      `\n    ※ 패딩만 줄여 비율을 맞추는 것은 금지다 — 실체를 넣어 올려야 한다(§0-4 DE4와 같은 처분).` +
+      `\n    ※ 분류된 요소가 그 화면의 일이 아니면 계기의 오분류다 — 그때는 이 건이 아니라 §0f 관측 한계를 보라.`);
+  }
+  if (unmeasured.length) {
+    add("yellow", "WORK-UNMEASURED",
+      `하는 화면 ${unmeasured.length}개의 주 행위 요소를 분류하지 못했다 — **일이 없다는 뜻이 아니다**(§0f 관측 한계)\n` +
+      unmeasured.map((m) => `    · ${short(m.url)}(${m.type.name}) — 잉크율 ${pct(m.foldInk)}` +
+        `${m.blocks.length < 2 ? " · 골격 블록 1개(빈 상태 의심 — alive.mjs로 확인하라)" : ""}`).join("\n") +
+      `\n    커스텀 컨트롤(숨은 file input+드롭존·가상 스크롤·캔버스 대체)은 이 계기가 못 본다. 사람이 열어보고 판정하라.`);
   }
   workBar = { bar, barFrom };
 }
@@ -489,6 +507,11 @@ function probeFn({ fold }) {
     if (["canvas", "video"].includes(tag)) return "캔버스";
     const inputs = [...el.querySelectorAll("input,textarea,select,[contenteditable=true]")]
       .filter((i) => (i.getAttribute("type") || "text").toLowerCase() !== "hidden" && vis(i));
+    // `<form>`은 필드가 하나여도 일이다. 실전 사고: 비밀번호 재설정(이메일 1칸)에서
+    // "조작할 덩어리가 첫 화면에 없다"고 신고했는데 **화면 한가운데 폼이 있었다** —
+    // 입력 2개 하한이 1칸짜리 폼을 통째로 안 보이게 만든 것이다.
+    // form은 경계가 명확해서 상위 컨테이너로 번지지 않는다.
+    if (tag === "form" && inputs.length >= 1) return "입력 폼";
     const kids = [...el.children].filter(vis);
     if (kids.length >= 3) {
       const rs = kids.map((k) => k.getBoundingClientRect());

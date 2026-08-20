@@ -53,6 +53,11 @@ const targets = contract.pages.filter((p) => !p.skip && (!onlyRoute || p.route =
 if (!targets.length) { console.error("대상 페이지가 없다(--only 오타이거나 전부 skip)"); exit(2); }
 
 const urlOf = (route, loc) => pageUrl(contract.baseUrl, loc, route);
+// 보고서의 화면 열은 **실제로 요청한 URL의 경로**를 그대로 쓴다.
+// 실전 사고: 로케일과 라우트를 여기서 또 이어붙이다가 영문(로케일 "")에서
+// `//product`가 찍혔다. URL 생성은 멀쩡했는데 **표만 틀렸고**, 그걸 본 사람은
+// URL 결합 버그로 읽었다 — 결합 규칙을 세 번째로 복사한 대가다(v1.8.4).
+const shownPath = (r) => { try { return new URL(r.url).pathname; } catch { return r.url; } };
 
 // ── 0) 사전 점검 — **브라우저 없이 48개 URL을 돌지 않는다** ────────────────
 // 실전 사고: playwright가 없는 프로젝트에서 24페이지×2로케일을 전부 돌고 **6분 50초 뒤에**
@@ -133,11 +138,11 @@ const md =
   `> 이 감사는 **구조·렌더와 계약에 선언된 항목의 존재**만 본다. ` +
   `"이 화면이 잘 만들어졌는가"는 판정하지 않는다 — 그건 P0에서 의도를 선언한 사람의 일이다.\n\n` +
   `| 화면 | 유형 | 이 화면이 돕는 결정 | 결과 |\n|---|---|---|---|\n` +
-  rows.map((r) => `| \`${r.loc || "/"}${r.route === "/" ? "" : r.route}\` | ${r.type.name}${r.declared ? " (계약 선언)" : ""} | ${r.decision ?? "—"} | ${r.code === 0 ? "통과" : r.code === 1 ? `🔴 ${r.findings.filter((f) => f.includes("🔴")).length}건` : "⚠️ 실행 실패"} |`).join("\n") +
+  rows.map((r) => `| \`${shownPath(r)}\` | ${r.type.name}${r.declared ? " (계약 선언)" : ""} | ${r.decision ?? "—"} | ${r.code === 0 ? "통과" : r.code === 1 ? `🔴 ${r.findings.filter((f) => f.includes("🔴")).length}건` : "⚠️ 실행 실패"} |`).join("\n") +
   `\n\n## 화면별 지적\n\n` +
   (rows.every((r) => !r.findings.length)
     ? "- ✅ 구조·계약 이상 없음(의도 부합은 미판정)\n"
-    : rows.filter((r) => r.findings.length).map((r) => `### \`${r.loc || "/"}${r.route === "/" ? "" : r.route}\` (${r.type.name})\n\n${r.findings.join("\n")}\n`).join("\n")) +
+    : rows.filter((r) => r.findings.length).map((r) => `### \`${shownPath(r)}\` (${r.type.name})\n\n${r.findings.join("\n")}\n`).join("\n")) +
   `\n## 교차 검사 — 서로 같은 화면인가\n\n${crossOut}\n` +
   `\n## 시안 (§1c · 빌드 전 목표물)${diagnose ? " — 진단 모드에서는 미판정" : ""}\n\n${compOut}\n` +
   `\n## 컴포넌트 층 (프로젝트 단위 · 1회)\n\n${primOut}\n` +
