@@ -46,7 +46,7 @@ description: 랜딩 말고 **나머지 페이지**를 같은 제품처럼 만든
   3. **각 화면을 실제로 열어보고** `type`·`decision`을 채운다. 이것은 지어내기가 아니라 **관측**이다 — 비교표가 있으면 `pricing`, 입력과 실행 버튼이 있으면 `tool`. 열어봐도 동사가 안 잡히는 화면만 `TODO`로 남기고 **그 목록만 한 번 사람에게 확인받는다**(가격·플랜·제약 같은 사실은 여전히 지어내지 않는다).
   4. `--diagnose`로 돌린다:
   ```
-  node "$S/audit.mjs" --contract _page/contract.json --diagnose --src src --out _page/qa   # 또는: sg diagnose
+  node "$S/audit.mjs" --contract _page/contract.json --diagnose --src src --out _page/qa
   ```
   화면별 판정과 **일 점유율 표**(§0f)가 나온다. **읽는 화면(정책·소개)을 반드시 포함시켜라** — 일 점유율 임계의 자가 보정 눈금이 그 페이지들이다. `--diagnose`는 **시안 검사(§1c)를 생략한다** — 시안은 빌드 의무이지 진단 의무가 아니고, 무엇을 다시 만들지 정하기도 전에 전 페이지에 `NO-COMP` 🔴을 찍으면 정작 찾으려던 신호가 그 밑에 묻힌다. 그다음 🔴이 붙은 화면부터 P1b(시안)로 들어간다 — 그때는 `--diagnose` 없이 돌린다. 통과한 화면을 인상만으로 갈아엎지 않는다.
 - **P0 계약 — 말로 하지 말고 `_page/contract.json`에 굳힌다(§0e).** 계약이 이미 있으면 **읽고 그대로 진행한다 — 되묻지 않는다.** 없으면 그때 한 번 받아 파일로 쓴다(`node "$S/contract.mjs" --init …` → 사람이 `type`·`decision`·`must`·`mustNot` 기입 → `--check`). 미기입 `TODO`가 남으면 감사가 멈춘다 — **빈칸을 추측으로 메우지 않는다.** 이후 모든 실행은 이 파일 대비로 무인 완주한다.
@@ -117,7 +117,7 @@ echo "$S"   # 비었으면 여기서 멈추고 설치 상태를 보고하라
 **둘째 줄: 브라우저를 갖춘다.** 검사는 실제 브라우저로 한다. 없으면 **여기서 갖추고 진행한다 — 사람에게 넘기고 멈추지 않는다.**
 
 ```bash
-node "$S/preflight.mjs" --install     # 또는: sg preflight
+node "$S/preflight.mjs" --install
 ```
 
 모듈과 브라우저 바이너리를 **따로** 본다 — 버전을 올리면 모듈은 있는데 `chromium_headless_shell-XXXX`가 없어 첫 페이지에서 죽는다(실측). 다른 곳에 있는 것을 쓰려면 `SG_PLAYWRIGHT=<모듈 경로>`.

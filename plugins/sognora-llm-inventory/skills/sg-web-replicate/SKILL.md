@@ -10,6 +10,12 @@ description: 레퍼런스 웹사이트의 화면(프론트)을 눈대중이 아�
 
 **범위: 화면만.** 보이는 것(레이아웃·타이포·자산·반응형·시각적 상호작용)을 복제한다. 서버 로직·DB·API 구현은 대상이 아니며, 서버 데이터로 채워지는 영역은 같은 모양의 로컬 fixture로 채운다.
 
+
+> **계기 위치** — 이 스킬은 사용자 프로젝트에서 도는데 계기는 플러그인 안에 있다. 상대경로 `scripts/…`는 거기 존재하지 않는다. 첫 실행에 한 번 잡고, 이후 모든 명령의 `$S`는 이 경로다:
+> ```bash
+> S=$(sg path sg-web-replicate 2>/dev/null) || S=$(dirname "$(find ~/.claude ~/.codex -name capture.mjs -path '*sg-web-replicate*' 2>/dev/null | head -1)")
+> ```
+
 ## 철칙
 
 1. **눈대중 금지** — "비슷해 보인다"는 판정 근거가 아니다. 판정은 `scripts/`가 뽑은 수치와 diff만 인정한다.
@@ -27,7 +33,7 @@ description: 레퍼런스 웹사이트의 화면(프론트)을 눈대중이 아�
 
 ### 2. 라우트 탐색 (브라우저 1회)
 ```
-node scripts/discover.mjs --url <URL> --out _replica/routes.json   # 기본 depth 3 · max 1000
+node "$S/discover.mjs" --url <URL> --out _replica/routes.json   # 기본 depth 3 · max 1000
 ```
 - sitemap·robots(가장 싸고 정확) + 링크 크롤을 합쳐 원장을 만들고 `status`·`title`·`auth`를 기록한다.
 - **탐색된 라우트가 전부 대상이다.** `--max`는 폭주 방지 장치이지 작업 범위가 아니다 — 걸리면 올려서 재탐색한다.
@@ -37,8 +43,8 @@ node scripts/discover.mjs --url <URL> --out _replica/routes.json   # 기본 dept
 
 ### 3. 캡처 + 자산 (라우트당 브라우저 1회, 두 스크립트 동시 실행)
 ```
-node scripts/capture.mjs      --url <URL> --out _replica/ref/<라우트> [--viewports …] [--storage …] &
-node scripts/fetch-assets.mjs --url <URL> --out _replica/assets       [--storage …]
+node "$S/capture.mjs"      --url <URL> --out _replica/ref/<라우트> [--viewports …] [--storage …] &
+node "$S/fetch-assets.mjs" --url <URL> --out _replica/assets       [--storage …]
 ```
 - capture: 한 번의 기동으로 뷰포트별 × (스크롤 지점·hover·전체)를 훑고 `measure.json`(요소별 x/y/w/h·폰트·여백·색)·`meta.json`을 남긴다. **실측 뷰포트가 요청값과 다르면 그 캡처는 기준으로 쓰지 않는다.**
 - fetch-assets: 폰트·이미지·인라인 SVG 원본 + `@font-face`·CSS 변수를 확보한다. CSS 변수는 디자인 토큰을 추측하지 않게 해주므로 명세 작성 전에 반드시 받는다.
@@ -66,7 +72,7 @@ node scripts/fetch-assets.mjs --url <URL> --out _replica/assets       [--storage
 
 ### 6. 비교 게이트 (반복)
 ```
-node scripts/diff.mjs --ref _replica/ref/<라우트> --local <로컬URL> --out _replica/diff/<라우트> [--strict] [--override _replica/override.json]
+node "$S/diff.mjs" --ref _replica/ref/<라우트> --local <로컬URL> --out _replica/diff/<라우트> [--strict] [--override _replica/override.json]
 ```
 - 원본·로컬을 **동일 조건**(뷰포트·DPR·스크롤 지점·순서)에서 비교. exit 0 통과 / 1 오차 초과 / 2 실행 불가.
 - **오차 상위 항목부터** 고친다. 오차가 여러 요소에 같은 값으로 퍼져 있으면 개별 요소가 아니라 **그 위쪽의 높이 차이 하나**가 원인이다 — 위에서부터 컨테이너 높이를 대조해 근원을 찾는다(개별 요소를 하나씩 고치는 것은 낭비다).

@@ -8,6 +8,12 @@ description: 서비스의 검색·스토어·AI 답변 노출을 올린다. 웹/
 > 이 파일 하나가 Claude Code와 Codex 양쪽에서 동작한다.
 > 감사 체크리스트·리스팅 규격·금지 전술·판정 한계는 `references/rules.md`(SSOT).
 
+
+> **계기 위치** — 이 스킬은 사용자 프로젝트에서 도는데 계기는 플러그인 안에 있다. 상대경로 `scripts/…`는 거기 존재하지 않는다. 첫 실행에 한 번 잡고, 이후 모든 명령의 `$S`는 이 경로다:
+> ```bash
+> S=$(sg path sg-growth-expose 2>/dev/null) || S=$(dirname "$(find ~/.claude ~/.codex -name audit.mjs -path '*sg-growth-expose*' 2>/dev/null | head -1)")
+> ```
+
 ## 철칙
 
 1. **실행 = 적용 완료가 기본.** 단 **복원 지점을 먼저 만든다** — "git이 안전망"은 클린 트리일 때만 참이다. 더티 트리에서 수정하면 사용자의 미커밋 변경과 스킬 수정이 뒤섞여 되돌릴 수 없다.
@@ -36,13 +42,13 @@ cwd에서 신호를 읽어 판정한다. 근거는 rules.md §대상 판별.
 
 ### 2. 웹 — SEO+GEO 감사 후 적용
 
-**계기가 먼저다.** 이 스킬은 오래 산문뿐이었고, 그래서 낡은 사실과 무단 수정이 문장으로만 막혀 있었다. 이제 `scripts/audit.mjs`가 판정한다(의존성 0 — Node 내장 fetch·fs):
+**계기가 먼저다.** 이 스킬은 오래 산문뿐이었고, 그래서 낡은 사실과 무단 수정이 문장으로만 막혀 있었다. 이제 `$S/audit.mjs`가 판정한다(의존성 0 — Node 내장 fetch·fs):
 
 ```
-node scripts/audit.mjs --preflight .                     # 철칙 1 — 더티면 exit 2, 스냅샷 먼저
-node scripts/audit.mjs --origin <URL> [--locales en,ko]  # 감사 → audit.json
+node "$S/audit.mjs" --preflight .                     # 철칙 1 — 더티면 exit 2, 스냅샷 먼저
+node "$S/audit.mjs" --origin <URL> [--locales en,ko]  # 감사 → audit.json
 # … 수정 …
-node scripts/audit.mjs --origin <URL>                    # 재감사: H1이 green인지 확인하고 보고
+node "$S/audit.mjs" --origin <URL>                    # 재감사: H1이 green인지 확인하고 보고
 ```
 
 - 판정 `red|yellow|intent|note` × **처분 `fix`가 코드로 강제된다**: `auto`(수정) · `report-only`(보고만 — 렌더링 아키텍처 등) · `forbidden`(**훈련 봇 불가침**) · `intent`(코드에 명시된 제외 — 의도 확인 전 수정 금지).

@@ -46,17 +46,16 @@ Codex에서는 `$sg-page-craft`, 자연어 트리거(“요금제 페이지 만�
 되묻는 것은 스킬의 실패로 봅니다. 의도가 필요한 자리(페이지 유형·이 화면이 돕는 결정)는 **한 번만 받아 파일로 굳히고**(`_page/contract.json`), 이후 실행은 그 파일을 읽어 무인 완주합니다.
 
 <details>
-<summary>내부 계기 — 스킬이 부르는 것들 (사람이 외울 필요 없음)</summary>
+<summary>내부 계기 — 스킬과 레포가 쓰는 것 (사람이 외울 필요 없음)</summary>
 
-설치 시 `sg`가 PATH에 놓입니다. **스킬이 이걸 부릅니다.** 직접 칠 일은 디버깅할 때뿐입니다.
+설치 시 `sg`가 PATH에 놓입니다. **사용자 인터페이스가 아닙니다** — 스킬이 자기 계기를 찾을 때, 그리고 스킬을 고칠 때 씁니다.
 
 | | |
 |---|---|
-| `sg preflight` | 브라우저를 갖춘다 |
-| `sg contract "/,/pricing"` | 라우트를 계약에 올린다 |
-| `sg diagnose` / `sg audit` | 전수 진단 / 정식 감사 |
-| `sg alive <URL> <유형>` | 화면 하나만 |
-| `sg check` · `sg corpus` · `sg eval` | **레포 정비용** — 스킬을 고칠 때만 |
+| `sg path [스킬]` | 그 스킬의 `scripts` 경로 — SKILL.md의 `$S`가 이걸 씁니다 |
+| `sg check` | 레포 자체 점검 — push 전 |
+| `sg corpus` · `sg corpus report` | AI 티 규칙이 판별력 있는지 (프리미엄 레퍼런스 18종) |
+| `sg eval <과제>` | 스킬을 붙이면 결과가 나아지는지 |
 
 </details>
 
