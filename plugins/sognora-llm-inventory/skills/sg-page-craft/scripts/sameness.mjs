@@ -24,6 +24,11 @@
  *      다른 유형 3개+가 같은 도입부로 시작하면 모든 페이지가 소개문으로 시작한다는 뜻.
  *   3) 첫 화면 잉크율 — 밀도가 유형을 말하는가(§0c). 다른 유형인데 전부 같은 밀도면
  *      밀도 토큰을 유형이 정한 게 아니라 한 값을 물려받은 것이다.
+ *   4) **일 점유율** — 하는 화면의 주 행위 요소가 첫 화면을 얼마나 덮는가(§0f).
+ *      실측 사고: 계정 6종이 전부 "AI 템플릿 느낌"이라는 지적을 받았는데 `alive`도
+ *      이 계기도 전부 초록이었다. 골격은 갈렸고(1~3번 통과) 구조도 있었지만,
+ *      **화면의 대부분이 제목·라벨·설명이고 정작 조작할 것은 10~20%뿐**이었다.
+ *      "같은가"만 재는 축으로는 이 병이 안 잡힌다 — 각자 다르게 헐거울 수 있기 때문이다.
  */
 import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
@@ -48,7 +53,7 @@ const parseType = (raw) => {
 };
 
 const args = parseArgs(argv.slice(2));
-const usage = `usage: sameness.mjs --pages <url1,url2,...> [--types <${Object.keys(KNOWN).join("|")}|read:<라벨>|do:<라벨>>,...] [--out <dir>] [--viewport 1440x900] [--threshold <0~1>]`;
+const usage = `usage: sameness.mjs --pages <url1,url2,...> [--types <${Object.keys(KNOWN).join("|")}|read:<라벨>|do:<라벨>>,...] [--out <dir>] [--viewport 1440x900] [--threshold <0~1>] [--work <0~1>]`;
 
 const pages = String(args.pages ?? "").split(",").map((s) => s.trim()).filter(Boolean);
 if (pages.length < 2) { console.error("최소 2개 URL이 필요하다 — 교차 검사다.\n" + usage); exit(2); }
@@ -78,6 +83,13 @@ const FALLBACK = args.threshold ? Number(args.threshold) : 0.6;
 if (!(FALLBACK > 0 && FALLBACK <= 1)) { console.error("--threshold는 0<t<=1"); exit(2); }
 const [vw, vh] = String(args.viewport ?? "1440x900").split("x").map(Number);
 if (!vw || !vh) { console.error("--viewport 형식 오류 (예: 1440x900)"); exit(2); }
+
+// 일 점유율의 하한(§0f). 여기도 그 프로젝트의 **읽는 화면**으로 자가 보정하고,
+// 이 값은 읽는 화면이 없거나 그마저 헐거울 때의 하한이다. 실측 사다리에 근거한다:
+// 읽는 화면의 본문(정책·약관) 23~25% / 진짜 일하는 화면(카탈로그·문의 폼) 59~69% /
+// 굶은 화면(계정 개요·보안·결제내역·프로젝트 목록) 10~20%. 23%와 59% 사이가 비어 있다.
+const FALLBACK_WORK = args.work ? Number(args.work) : 0.25;
+if (!(FALLBACK_WORK > 0 && FALLBACK_WORK <= 1)) { console.error("--work는 0<w<=1"); exit(2); }
 
 const findings = [];
 const add = (sev, rule, detail) => findings.push({ sev, rule, detail });
@@ -241,12 +253,51 @@ const thinNote = (p) => (Math.min(p.a.blocks.length, p.b.blocks.length) < 2
   }
 }
 
+// 5) 하는 화면인데 그 일이 첫 화면을 못 덮는가(§0f) — "규격화된 템플릿"의 계측 형태
+//
+// 이 규칙이 왜 1~4번과 별개인가: 앞의 축은 전부 **"서로 같은가"**를 잰다. 그런데 실측 사고에서
+// 계정 6종은 골격도 갈렸고(다른 유형 복제 아님) 구조도 있었는데(alive 통과) 사람 눈에는
+// 전부 한 템플릿이었다. 원인은 닮음이 아니라 **헐거움**이었다 — 각자 다른 모양으로 헐거우면
+// 닮음 축에는 잡히지 않는다. 화면의 80~90%가 제목·라벨·설명이면 무엇을 하는 화면이든
+// "정보를 규격에 담아 늘어놓은 것"으로 읽힌다.
+//
+// 임계는 여기서도 **그 프로젝트 자신의 읽는 화면**이 자다. 읽는 화면의 본문이 첫 화면을
+// 덮는 비율은 "이 사이트가 콘텐츠를 얼마나 빽빽하게 놓는가"의 자연 눈금이고,
+// **하는 화면의 일이 읽는 화면의 본문보다도 화면을 덜 덮는다면 그건 하는 화면이 아니다.**
+let workBar = null;
+{
+  const withWork = measured.filter((m) => m.type && m.blocks.length && m.status >= 200 && m.status < 400);
+  const reading = withWork.filter((m) => m.type.verb === "read").map((m) => m.workShare);
+  const med = (xs) => [...xs].sort((a, b) => a - b)[Math.floor(xs.length / 2)];
+  const readBar = reading.length ? med(reading) : null;
+  const bar = Math.max(readBar ?? 0, FALLBACK_WORK);
+  const barFrom = readBar === null
+    ? `읽는 화면이 없어 폴백 ${pct(FALLBACK_WORK)} 사용 — --work로 조정`
+    : readBar >= FALLBACK_WORK
+      ? `이 프로젝트 읽는 화면의 본문 점유율 중앙값 ${pct(readBar)}(${reading.length}개)`
+      : `읽는 화면 중앙값은 ${pct(readBar)}지만 보정은 엄격해지는 방향으로만 쓴다(폴백 ${pct(FALLBACK_WORK)} 하한)`;
+
+  const starved = withWork
+    .filter((m) => m.type.verb === "do" && m.workShare < bar)
+    .sort((a, b) => a.workShare - b.workShare);
+  if (starved.length) {
+    add("red", "WORK-STARVED",
+      `하는 화면 ${starved.length}개가 자기 일로 첫 화면을 못 덮는다 (기준 ${pct(bar)} — ${barFrom})\n` +
+      starved.map((m) =>
+        `    · ${short(m.url)}(${m.type.name}) — ${m.work ? `주 행위 요소 "${m.work}"가` : "조작할 덩어리가 첫 화면에 없고"} ` +
+        `${pct(m.workShare)}만 덮는다${m.blocks.length < 2 ? " ※ 골격이 얇다 — 빈 상태면 데이터를 넣고 다시 재라" : ""}`).join("\n") +
+      `\n    나머지 면적은 제목·라벨·설명이다. 화면의 일(입력·비교표·데이터 행·조작 컨트롤)을 첫 화면의 주인공으로 올려라(§0f).` +
+      `\n    ※ 패딩만 줄여 비율을 맞추는 것은 금지다 — 실체를 넣어 올려야 한다(§0-4 DE4와 같은 처분).`);
+  }
+  workBar = { bar, barFrom };
+}
+
 // ── 보고 ────────────────────────────────────────────────────────────────
 const red = findings.filter((f) => f.sev === "red");
 const table = [
-  "| 페이지 | 유형(동사) | 블록 | 도입부 | 첫 화면 잉크율 | 스크롤 |",
-  "|---|---|---|---|---|---|",
-  ...measured.map((m) => `| ${short(m.url)} | ${m.type ? `${m.type.name}(${m.type.verb === "read" ? "읽는다" : "한다"})` : "—"} | ${m.blocks.length} | ${m.preamble ?? "—"} | ${(m.foldInk * 100).toFixed(0)}% | ${m.scrollH}px |`),
+  "| 페이지 | 유형(동사) | 블록 | 도입부 | 첫 화면 잉크율 | 주 행위 요소 | 일 점유율 | 스크롤 |",
+  "|---|---|---|---|---|---|---|---|",
+  ...measured.map((m) => `| ${short(m.url)} | ${m.type ? `${m.type.name}(${m.type.verb === "read" ? "읽는다" : "한다"})` : "—"} | ${m.blocks.length} | ${m.preamble ?? "—"} | ${(m.foldInk * 100).toFixed(0)}% | ${m.work ?? "없음"} | ${pct(m.workShare ?? 0)}${workBar && m.type?.verb === "do" && (m.workShare ?? 0) < workBar.bar ? " 🔴" : ""} | ${m.scrollH}px |`),
 ].join("\n");
 // 쌍은 N(N-1)/2로 불어난다(15페이지 = 105쌍). 닮은 쪽부터 보여주고, 자른 것은 밝힌다.
 const MATRIX_MAX = 20;
@@ -262,9 +313,9 @@ const note = sameType.filter((p) => p.jac >= baseline.value).length
   ? `\n> 같은 유형끼리의 높은 일치 ${sameType.filter((p) => p.jac >= baseline.value).length}쌍은 **정상**이다 — 같은 장르는 한 틀을 쓰는 것이 옳다. 이 계기는 그것을 벌하지 않는다.\n`
   : "";
 
-const md = `# 서로 같은 화면인가 — ${measured.length}개 페이지 (${vw}x${vh})\n\n> 기준 ${pct(baseline.value)} — ${baseline.from}\n\n${table}\n${matrix}\n${note}\n${
-  findings.length ? findings.map((f) => `- ${f.sev === "red" ? "🔴" : "🟡"} **${f.rule}** — ${f.detail}`).join("\n") : "- ✅ 유형이 다른 페이지끼리 골격이 갈렸다"
-}\n\n**${red.length ? `실패 ${red.length}건` : "통과"}** · 경고 ${findings.length - red.length}건\n\n> 이 계기는 **골격이 서로 다른가**만 본다. 갈렸다는 것이 각 화면이 **의도대로 만들어졌다는 뜻은 아니다** — 유형별 내용은 \`alive.mjs\`가, 의도 부합은 기획자가 판정한다.\n`;
+const md = `# 서로 같은 화면인가 — ${measured.length}개 페이지 (${vw}x${vh})\n\n> 골격 기준 ${pct(baseline.value)} — ${baseline.from}\n${workBar ? `> 일 점유율 기준 ${pct(workBar.bar)} — ${workBar.barFrom}\n` : ""}\n${table}\n${matrix}\n${note}\n${
+  findings.length ? findings.map((f) => `- ${f.sev === "red" ? "🔴" : "🟡"} **${f.rule}** — ${f.detail}`).join("\n") : "- ✅ 유형이 다른 페이지끼리 골격이 갈렸고, 하는 화면은 자기 일로 첫 화면을 덮었다"
+}\n\n**${red.length ? `실패 ${red.length}건` : "통과"}** · 경고 ${findings.length - red.length}건\n\n> 이 계기는 **골격이 서로 다른가**와 **하는 화면이 자기 일을 앞세우는가**를 본다. 둘 다 통과했다는 것이 각 화면이 **의도대로 만들어졌다는 뜻은 아니다** — 유형별 내용은 \`alive.mjs\`가, 의도 부합은 기획자가 판정한다.\n`;
 
 if (args.out) { await mkdir(args.out, { recursive: true }); await writeFile(join(args.out, "sameness.md"), md); }
 console.log(md);
@@ -421,10 +472,56 @@ function probeFn({ fold }) {
     inkH += e - s;
   }
 
+  // ── 주 행위 요소와 일 점유율(§0f) ────────────────────────────────────
+  // 잉크율과 다른 축이다. 잉크율은 **글자면 다 센다** — 제목·라벨·설명이 화면을 채우면
+  // 잉크는 높게 나온다. 여기서 재는 것은 **사용자가 실제로 조작하거나 훑는 덩어리**가
+  // 첫 화면을 얼마나 덮는가다. 하는 화면인데 이게 작으면 나머지는 전부 설명문이다.
+  const clientW = document.documentElement.clientWidth || 1440;
+  const areaInFold = (el) => {
+    const r = el.getBoundingClientRect();
+    const top = Math.max(0, r.top), bot = Math.min(fold, r.bottom);
+    const w = Math.min(r.width, clientW);
+    return bot <= top || w <= 0 ? 0 : (bot - top) * w;
+  };
+  const kindOf = (el) => {
+    const tag = el.tagName.toLowerCase();
+    if (tag === "table") return "표";
+    if (["canvas", "video"].includes(tag)) return "캔버스";
+    const inputs = [...el.querySelectorAll("input,textarea,select,[contenteditable=true]")]
+      .filter((i) => (i.getAttribute("type") || "text").toLowerCase() !== "hidden" && vis(i));
+    const kids = [...el.children].filter(vis);
+    if (kids.length >= 3) {
+      const rs = kids.map((k) => k.getBoundingClientRect());
+      const hs = rs.map((r) => r.height);
+      // 크기가 고르면 반복 단위다. 제각각이면 문서의 절(節)이지 반복 항목이 아니다
+      // — 도입부 그리드 판정과 같은 잣대를 쓴다.
+      if (Math.min(...hs) > 0 && Math.max(...hs) <= Math.min(...hs) * 2) {
+        const cols = new Set(rs.map((r) => Math.round(r.left / 20))).size;
+        // 반복 단위마다 입력이 들어 있으면 "설정"이지 "카드"가 아니다
+        const settings = inputs.length >= kids.length * 0.5;
+        return cols >= 2 ? (settings ? "설정 격자" : "카드 격자") : (settings ? "설정 목록" : "행 목록");
+      }
+    }
+    if (inputs.length >= 2) return "입력 폼";
+    return null;
+  };
+  let workArea = 0, workKind = null;
+  for (const el of root.querySelectorAll("*")) {
+    if (!vis(el) || !chromeless(el)) continue;
+    const a = areaInFold(el);
+    if (a < 100 * 100) continue; // 100x100 미만은 화면의 일이 아니다
+    if (a <= workArea) continue;
+    const k = kindOf(el);
+    if (!k) continue;
+    workArea = a; workKind = k;
+  }
+
   return {
     blocks,
     preamble: seq.length ? seq.join(">") : null,
     foldInk: Math.min(1, inkH / fold),
+    work: workKind,
+    workShare: Math.min(1, workArea / (fold * clientW)),
     scrollH: document.documentElement.scrollHeight,
   };
 }
