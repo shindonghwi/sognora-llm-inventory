@@ -1,0 +1,13 @@
+{
+  "$comment": "판정을 가르는 미근거 숫자의 상한. tools/consts.mjs가 판정한다. 늘릴 수 없고 줄일 수만 있다.",
+  "total": 72,
+  "files": {
+    "plugins/sognora-llm-inventory/skills/sg-landing-forge/scripts/audit.mjs": 2,
+    "plugins/sognora-llm-inventory/skills/sg-landing-forge/scripts/conform.mjs": 6,
+    "plugins/sognora-llm-inventory/skills/sg-landing-forge/scripts/detect.mjs": 60,
+    "plugins/sognora-llm-inventory/skills/sg-page-craft/scripts/alive.mjs": 1,
+    "plugins/sognora-llm-inventory/skills/sg-page-craft/scripts/copylint.mjs": 1,
+    "plugins/sognora-llm-inventory/skills/sg-page-craft/scripts/primitives.mjs": 1,
+    "plugins/sognora-llm-inventory/skills/sg-page-craft/scripts/sameness.mjs": 1
+  }
+}
