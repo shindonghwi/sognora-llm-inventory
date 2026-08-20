@@ -1,0 +1,635 @@
+{
+  "irVersion": 1,
+  "source": {
+    "url": "https://altia.skdefine.com/",
+    "collectedAt": "2026-08-20T03:15:22.071Z"
+  },
+  "page": {
+    "scrollHeight1440": 900,
+    "scrollHeight390": 19393,
+    "sectionCount": 4
+  },
+  "rhythm": {
+    "bgSequence": [
+      "rgb(0, 0, 0)",
+      "rgb(0, 0, 0)",
+      "rgb(255, 255, 255)",
+      "rgb(13, 13, 13)"
+    ],
+    "heights": [
+      243,
+      221,
+      414,
+      429
+    ],
+    "containers": [
+      1296
+    ]
+  },
+  "typeScale": [
+    {
+      "px": 120,
+      "weight": "400",
+      "count": 1
+    },
+    {
+      "px": 82.5,
+      "weight": "700",
+      "count": 2
+    },
+    {
+      "px": 79.6875,
+      "weight": "700",
+      "count": 1
+    },
+    {
+      "px": 75,
+      "weight": "700",
+      "count": 4
+    },
+    {
+      "px": 72.1875,
+      "weight": "700",
+      "count": 2
+    },
+    {
+      "px": 71.25,
+      "weight": "700",
+      "count": 1
+    },
+    {
+      "px": 56.25,
+      "weight": "700",
+      "count": 2
+    },
+    {
+      "px": 39.375,
+      "weight": "600",
+      "count": 1
+    },
+    {
+      "px": 37.5,
+      "weight": "400",
+      "count": 3
+    },
+    {
+      "px": 35.625,
+      "weight": "400",
+      "count": 1
+    },
+    {
+      "px": 30.9375,
+      "weight": "400",
+      "count": 1
+    },
+    {
+      "px": 30,
+      "weight": "500",
+      "count": 1
+    },
+    {
+      "px": 30,
+      "weight": "400",
+      "count": 4
+    },
+    {
+      "px": 28.125,
+      "weight": "700",
+      "count": 12
+    }
+  ],
+  "motion": {
+    "durationsMs": [
+      {
+        "ms": 800,
+        "count": 154
+      },
+      {
+        "ms": 1200,
+        "count": 119
+      },
+      {
+        "ms": 300,
+        "count": 102
+      },
+      {
+        "ms": 200,
+        "count": 102
+      },
+      {
+        "ms": 1600,
+        "count": 65
+      },
+      {
+        "ms": 2000,
+        "count": 50
+      }
+    ],
+    "keyframesCount": 49,
+    "keyframesNamed": [
+      "pop",
+      "swiper-preloader-spin",
+      "swiper-preloader-spin",
+      "visual-obj",
+      "visual-obj",
+      "visual-obj1",
+      "visual-obj1",
+      "visual-bg",
+      "visual-bg",
+      "mobileVisual",
+      "mobileVisual",
+      "vr-hide",
+      "vr-hide",
+      "vr-loading",
+      "vr-loading",
+      "building-text",
+      "building-text",
+      "building-popup-image",
+      "building-popup-image",
+      "building-popup-txt"
+    ],
+    "runningAnimations": [],
+    "hoverTimelines": [],
+    "revealTimelines": [],
+    "listenerProfile": {}
+  },
+  "assetStats": {
+    "count": 149,
+    "images": 94,
+    "withRect": 38,
+    "totalBytes": 11744069
+  },
+  "layers": [
+    {
+      "y": 0,
+      "h": 900,
+      "position": "fixed",
+      "cls": "site_bg",
+      "bg": "rgb(0, 0, 0)",
+      "bgImage": null,
+      "blend": null
+    },
+    {
+      "y": 121,
+      "h": 648,
+      "position": "absolute",
+      "cls": "iframe",
+      "bg": "rgb(0, 0, 0)",
+      "bgImage": null,
+      "blend": null
+    },
+    {
+      "y": 0,
+      "h": 900,
+      "position": "absolute",
+      "cls": "black_overlay",
+      "bg": "rgb(0, 0, 0)",
+      "bgImage": null,
+      "blend": null
+    },
+    {
+      "y": -900,
+      "h": 900,
+      "position": "absolute",
+      "cls": "black_overlay",
+      "bg": "rgb(0, 0, 0)",
+      "bgImage": null,
+      "blend": null
+    },
+    {
+      "y": 0,
+      "h": 900,
+      "position": "absolute",
+      "cls": "main_vd_box",
+      "bg": "rgb(0, 0, 0)",
+      "bgImage": null,
+      "blend": null
+    },
+    {
+      "y": 4500,
+      "h": 900,
+      "position": "absolute",
+      "cls": "complex_vd_box",
+      "bg": "rgb(0, 0, 0)",
+      "bgImage": null,
+      "blend": null
+    },
+    {
+      "y": 6300,
+      "h": 900,
+      "position": "absolute",
+      "cls": "unit_bg",
+      "bg": "rgb(0, 0, 0)",
+      "bgImage": null,
+      "blend": null
+    },
+    {
+      "y": 7200,
+      "h": 900,
+      "position": "absolute",
+      "cls": "premium_bg_box",
+      "bg": "rgb(255, 255, 255)",
+      "bgImage": null,
+      "blend": null
+    }
+  ],
+  "sections": [
+    {
+      "y": 3797,
+      "h": 243,
+      "bg": "rgb(0, 0, 0)",
+      "tag": "div",
+      "cls": null,
+      "container": 1296,
+      "columns": 1,
+      "type": [
+        {
+          "fontSize": 30.9375,
+          "weight": "400",
+          "lineHeight": "36.5062px",
+          "count": 1,
+          "sample": "모든 가치가 결합된 완전무결한 삶의 지형"
+        },
+        {
+          "fontSize": 20.625,
+          "weight": "400",
+          "lineHeight": "20.625px",
+          "count": 1,
+          "sample": "#인프라"
+        },
+        {
+          "fontSize": 20.625,
+          "weight": "400",
+          "lineHeight": "28.05px",
+          "count": 1,
+          "sample": "어디를 가든, 무엇을 하든 완벽한 하루를 선사합니다.”"
+        },
+        {
+          "fontSize": 14.0625,
+          "weight": "400",
+          "lineHeight": "28.125px",
+          "count": 1,
+          "sample": "물리적 거리부터 일상의 공간까지 완벽한 균형을 잡은 가장 이상적인 삶의 "
+        }
+      ],
+      "headline": {
+        "fontSize": 30.9375,
+        "weight": "400",
+        "lineHeight": "36.5062px",
+        "count": 1,
+        "sample": "모든 가치가 결합된 완전무결한 삶의 지형"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "anim:none 0s ease 0s 1 normal none running"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 4172,
+      "h": 221,
+      "bg": "rgb(0, 0, 0)",
+      "tag": "div",
+      "cls": null,
+      "container": 1296,
+      "columns": 2,
+      "type": [
+        {
+          "fontSize": 16.875,
+          "weight": "600",
+          "lineHeight": "16.875px",
+          "count": 4,
+          "sample": "TRAFFIC"
+        },
+        {
+          "fontSize": 15,
+          "weight": "400",
+          "lineHeight": "15px",
+          "count": 2,
+          "sample": "필요한 건 다 갖춘 일상의 기반"
+        },
+        {
+          "fontSize": 13.125,
+          "weight": "400",
+          "lineHeight": "23.3625px",
+          "count": 5,
+          "sample": "1·7·9호선 서울 핵심 노선 이용 가능한 장승배기역, 노량진역 더블역세"
+        }
+      ],
+      "headline": {
+        "fontSize": 16.875,
+        "weight": "600",
+        "lineHeight": "16.875px",
+        "count": 4,
+        "sample": "TRAFFIC"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "anim:none 0s ease 0s 1 normal none running"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 9243,
+      "h": 414,
+      "bg": "rgb(255, 255, 255)",
+      "tag": "div",
+      "cls": "out_txt_box",
+      "container": 1296,
+      "columns": 1,
+      "type": [
+        {
+          "fontSize": 35.625,
+          "weight": "400",
+          "lineHeight": "35.625px",
+          "count": 1,
+          "sample": "경계 너머의 미학"
+        },
+        {
+          "fontSize": 15,
+          "weight": "400",
+          "lineHeight": "32.7px",
+          "count": 1,
+          "sample": "서울의 기대를 넘어선 당신의 기준을 넘어선"
+        },
+        {
+          "fontSize": 14.0625,
+          "weight": "400",
+          "lineHeight": "28.125px",
+          "count": 1,
+          "sample": "모두의 시선이 향하는 노량진의 거대한 변화 위에 새로운 삶의 기준을 남다"
+        }
+      ],
+      "headline": {
+        "fontSize": 35.625,
+        "weight": "400",
+        "lineHeight": "35.625px",
+        "count": 1,
+        "sample": "경계 너머의 미학"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 174,
+          "h": 60,
+          "aspect": 2.9,
+          "radius": null,
+          "objectFit": "fill"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "anim:none 0s ease 0s 1 normal none running"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 9900,
+      "h": 429,
+      "bg": "rgb(13, 13, 13)",
+      "tag": "div",
+      "cls": "footer",
+      "container": 1296,
+      "columns": 2,
+      "type": [
+        {
+          "fontSize": 39.375,
+          "weight": "600",
+          "lineHeight": "27.5625px",
+          "count": 1,
+          "sample": "1644.4041"
+        },
+        {
+          "fontSize": 15.9375,
+          "weight": "400",
+          "lineHeight": "12.1875px",
+          "count": 1,
+          "sample": "노량진2재정비촉진구역주택재개발정비사업조합"
+        },
+        {
+          "fontSize": 15,
+          "weight": "400",
+          "lineHeight": "15px",
+          "count": 3,
+          "sample": "개인정보처리방침"
+        },
+        {
+          "fontSize": 13.125,
+          "weight": "400",
+          "lineHeight": "25.2px",
+          "count": 1,
+          "sample": "문의하기"
+        },
+        {
+          "fontSize": 12.1875,
+          "weight": "400",
+          "lineHeight": "12.1875px",
+          "count": 12,
+          "sample": "시행."
+        },
+        {
+          "fontSize": 12.1875,
+          "weight": "400",
+          "lineHeight": "23.4px",
+          "count": 1,
+          "sample": "ⓘ 본 홈페이지에 사용된 CG 및 일러스트, 이미지 등은 소비자의 이해를"
+        },
+        {
+          "fontSize": 11.25,
+          "weight": "500",
+          "lineHeight": "11.25px",
+          "count": 1,
+          "sample": "TOP"
+        }
+      ],
+      "headline": {
+        "fontSize": 39.375,
+        "weight": "600",
+        "lineHeight": "27.5625px",
+        "count": 1,
+        "sample": "1644.4041"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "anim:none 0s ease 0s 1 normal none running",
+        "1s"
+      ],
+      "padding": {
+        "top": "69.375px",
+        "bottom": "73.125px"
+      }
+    }
+  ],
+  "sectionsMobile": [
+    {
+      "y": 0,
+      "h": 844,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 844,
+      "h": 815,
+      "container": null,
+      "columns": 2
+    },
+    {
+      "y": 1659,
+      "h": 633,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 2291,
+      "h": 720,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 3011,
+      "h": 499,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 3570,
+      "h": 1165,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 4831,
+      "h": 541,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 5433,
+      "h": 818,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 6347,
+      "h": 520,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 6939,
+      "h": 802,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 7836,
+      "h": 1038,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 8874,
+      "h": 240,
+      "container": null,
+      "columns": 2
+    },
+    {
+      "y": 9198,
+      "h": 288,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 9486,
+      "h": 1411,
+      "container": null,
+      "columns": 2
+    },
+    {
+      "y": 10981,
+      "h": 600,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 11665,
+      "h": 240,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 11941,
+      "h": 1103,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 13128,
+      "h": 1056,
+      "container": null,
+      "columns": 6
+    },
+    {
+      "y": 14184,
+      "h": 519,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 14702,
+      "h": 1393,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 16095,
+      "h": 978,
+      "container": null,
+      "columns": 6
+    },
+    {
+      "y": 17073,
+      "h": 480,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 17553,
+      "h": 600,
+      "container": null,
+      "columns": 2
+    },
+    {
+      "y": 18153,
+      "h": 622,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 18775,
+      "h": 618,
+      "container": null,
+      "columns": 1
+    }
+  ],
+  "reproduction": {
+    "stamp": null,
+    "note": "IR만으로 원본을 오차 밴드 내 재건축→capture 대조 통과 시 스탬프. 스탬프 없는 IR은 리드 자격 없음."
+  }
+}

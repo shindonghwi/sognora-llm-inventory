@@ -1,0 +1,424 @@
+{
+  "irVersion": 1,
+  "source": {
+    "url": "https://g-hyuplus.co.kr/",
+    "collectedAt": "2026-08-20T03:15:59.378Z"
+  },
+  "page": {
+    "scrollHeight1440": 19806,
+    "scrollHeight390": 9686,
+    "sectionCount": 4
+  },
+  "rhythm": {
+    "bgSequence": [
+      "rgb(255, 255, 255)",
+      "rgb(255, 255, 255)",
+      "rgb(255, 255, 255)",
+      "rgb(13, 13, 13)"
+    ],
+    "heights": [
+      900,
+      249,
+      550,
+      360
+    ],
+    "containers": [
+      1200,
+      600
+    ]
+  },
+  "typeScale": [
+    {
+      "px": 62,
+      "weight": "700",
+      "count": 2
+    },
+    {
+      "px": 62,
+      "weight": "900",
+      "count": 1
+    },
+    {
+      "px": 30,
+      "weight": "700",
+      "count": 7
+    },
+    {
+      "px": 30,
+      "weight": "600",
+      "count": 1
+    },
+    {
+      "px": 25,
+      "weight": "700",
+      "count": 3
+    },
+    {
+      "px": 24,
+      "weight": "700",
+      "count": 3
+    },
+    {
+      "px": 24,
+      "weight": "400",
+      "count": 1
+    },
+    {
+      "px": 20,
+      "weight": "400",
+      "count": 1
+    },
+    {
+      "px": 20,
+      "weight": "700",
+      "count": 3
+    },
+    {
+      "px": 18,
+      "weight": "600",
+      "count": 1
+    },
+    {
+      "px": 18,
+      "weight": "700",
+      "count": 2
+    },
+    {
+      "px": 16,
+      "weight": "400",
+      "count": 3
+    },
+    {
+      "px": 15,
+      "weight": "400",
+      "count": 9
+    },
+    {
+      "px": 15,
+      "weight": "600",
+      "count": 9
+    }
+  ],
+  "motion": {
+    "durationsMs": [
+      {
+        "ms": 300,
+        "count": 23
+      },
+      {
+        "ms": 400,
+        "count": 2
+      }
+    ],
+    "keyframesCount": 13,
+    "keyframesNamed": [
+      "fa-spin",
+      "fa-spin",
+      "fadeOut",
+      "rightEnd",
+      "rightEnd",
+      "topEnd",
+      "topEnd",
+      "leftEnd",
+      "leftEnd",
+      "bottomEnd",
+      "bottomEnd",
+      "xi-spin",
+      "xi-spin"
+    ],
+    "runningAnimations": [],
+    "hoverTimelines": [],
+    "revealTimelines": [],
+    "listenerProfile": {}
+  },
+  "assetStats": {
+    "count": 46,
+    "images": 32,
+    "withRect": 29,
+    "totalBytes": 10495346
+  },
+  "layers": [],
+  "sections": [
+    {
+      "y": 0,
+      "h": 900,
+      "bg": "rgb(255, 255, 255)",
+      "tag": "div",
+      "cls": "li",
+      "container": null,
+      "columns": 1,
+      "type": [
+        {
+          "fontSize": 62,
+          "weight": "700",
+          "lineHeight": "80.6px",
+          "count": 2,
+          "sample": "더 써밋"
+        },
+        {
+          "fontSize": 62,
+          "weight": "900",
+          "lineHeight": "80.6px",
+          "count": 1,
+          "sample": "이수"
+        },
+        {
+          "fontSize": 24,
+          "weight": "700",
+          "lineHeight": "72px",
+          "count": 1,
+          "sample": "1599-4019"
+        },
+        {
+          "fontSize": 24,
+          "weight": "400",
+          "lineHeight": "24px",
+          "count": 1,
+          "sample": "arrow_upward",
+          "floating": true
+        },
+        {
+          "fontSize": 18,
+          "weight": "700",
+          "lineHeight": null,
+          "count": 2,
+          "sample": "이수역 지역주택조합"
+        },
+        {
+          "fontSize": 18,
+          "weight": "600",
+          "lineHeight": "18px",
+          "count": 1,
+          "sample": "1599-4019",
+          "floating": true
+        },
+        {
+          "fontSize": 15,
+          "weight": "400",
+          "lineHeight": "57px",
+          "count": 1,
+          "sample": "사업개요",
+          "floating": true
+        },
+        {
+          "fontSize": 15,
+          "weight": "600",
+          "lineHeight": "15px",
+          "count": 1,
+          "sample": "사업개요",
+          "floating": true
+        }
+      ],
+      "headline": {
+        "fontSize": 62,
+        "weight": "700",
+        "lineHeight": "80.6px",
+        "count": 2,
+        "sample": "더 써밋"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "anim:none 0s ease 0s 1 normal none running"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 3147,
+      "h": 249,
+      "bg": "rgb(255, 255, 255)",
+      "tag": "span",
+      "cls": null,
+      "container": 1200,
+      "columns": 1,
+      "type": [
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": null,
+          "count": 1,
+          "sample": "'이수더써밋'은 초고층 스카이라인을 기반으로 지역 랜드마크 단지로 자리할"
+        }
+      ],
+      "headline": {
+        "fontSize": 16,
+        "weight": "400",
+        "lineHeight": null,
+        "count": 1,
+        "sample": "'이수더써밋'은 초고층 스카이라인을 기반으로 지역 랜드마크 단지로 자리할"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "anim:none 0s ease 0s 1 normal none running"
+      ],
+      "padding": {
+        "top": "20px",
+        "bottom": "20px"
+      }
+    },
+    {
+      "y": 18780,
+      "h": 550,
+      "bg": "rgb(255, 255, 255)",
+      "tag": "section",
+      "cls": "tl_contact_box_wrap",
+      "container": 600,
+      "columns": 1,
+      "type": [
+        {
+          "fontSize": 30,
+          "weight": "600",
+          "lineHeight": "48px",
+          "count": 1,
+          "sample": "관심 고객 등록"
+        },
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": "25.6px",
+          "count": 1,
+          "sample": "상담문의는 1599-4019로 전화주세요!"
+        },
+        {
+          "fontSize": 15,
+          "weight": "700",
+          "lineHeight": "41px",
+          "count": 1,
+          "sample": "SEND"
+        }
+      ],
+      "headline": {
+        "fontSize": 30,
+        "weight": "600",
+        "lineHeight": "48px",
+        "count": 1,
+        "sample": "관심 고객 등록"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "anim:none 0s ease 0s 1 normal none running",
+        "opacity 0.4s, transform 0.4s",
+        "0.3s ease-in-out",
+        "anim:2s linear 0s infinite normal none running fa-spin"
+      ],
+      "padding": {
+        "top": "100px",
+        "bottom": "100px"
+      }
+    },
+    {
+      "y": 19446,
+      "h": 360,
+      "bg": "rgb(13, 13, 13)",
+      "tag": "div",
+      "cls": null,
+      "container": 1200,
+      "columns": 1,
+      "type": [
+        {
+          "fontSize": 24,
+          "weight": "400",
+          "lineHeight": "24px",
+          "count": 1,
+          "sample": "arrow_upward"
+        },
+        {
+          "fontSize": 20,
+          "weight": "400",
+          "lineHeight": null,
+          "count": 1,
+          "sample": ": 사당2동 지역주택조합 추진위원회 / : (주)더인파트너스 / : 한국"
+        },
+        {
+          "fontSize": 20,
+          "weight": "700",
+          "lineHeight": null,
+          "count": 3,
+          "sample": "시행사"
+        },
+        {
+          "fontSize": 14,
+          "weight": "700",
+          "lineHeight": null,
+          "count": 7,
+          "sample": "사업개요"
+        },
+        {
+          "fontSize": 14,
+          "weight": "400",
+          "lineHeight": null,
+          "count": 4,
+          "sample": ": 서울시 동작구 사당동 79-1번지 일원"
+        },
+        {
+          "fontSize": 11,
+          "weight": "400",
+          "lineHeight": null,
+          "count": 1,
+          "sample": "COPYRIGHT © 2025 이수 더써밋. ALL RIGHTS RESE"
+        }
+      ],
+      "headline": {
+        "fontSize": 24,
+        "weight": "400",
+        "lineHeight": "24px",
+        "count": 1,
+        "sample": "arrow_upward"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "anim:none 0s ease 0s 1 normal none running"
+      ],
+      "padding": {
+        "top": "30px",
+        "bottom": "30px"
+      }
+    }
+  ],
+  "sectionsMobile": [
+    {
+      "y": 0,
+      "h": 844,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 1036,
+      "h": 230,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 2014,
+      "h": 534,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 8645,
+      "h": 550,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 9326,
+      "h": 360,
+      "container": null,
+      "columns": 1
+    }
+  ],
+  "reproduction": {
+    "stamp": null,
+    "note": "IR만으로 원본을 오차 밴드 내 재건축→capture 대조 통과 시 스탬프. 스탬프 없는 IR은 리드 자격 없음."
+  }
+}

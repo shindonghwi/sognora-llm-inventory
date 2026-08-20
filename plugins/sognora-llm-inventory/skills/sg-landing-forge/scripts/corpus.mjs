@@ -46,9 +46,14 @@ if (!args.run) {
 
 // ── 코퍼스 목록 — 번들의 meta.json이 원본 URL을 들고 있다 ────────────────
 const only = args.only ? String(args.only).split(",").map((s) => s.trim()) : null;
+// 장르 표본·차단 페이지는 코퍼스가 아니다 — "레퍼런스는 정의상 슬롭이 아니다"는
+// 품질 기준 레퍼런스에만 성립한다. 목록은 커밋되는 파일에 둔다(번들은 gitignore).
+let excluded = {};
+try { excluded = JSON.parse(await readFile(join(SKILL, "references", "corpus-exclude.json"), "utf8")).exclude ?? {}; } catch { /* 없으면 전량 */ }
 const refs = [];
 for (const name of (await readdir(BUNDLES)).sort()) {
   if (only && !only.includes(name)) continue;
+  if (excluded[name]) { process.stderr.write(`⏭  ${name} — 코퍼스 제외: ${excluded[name]}\n`); continue; }
   try {
     const meta = JSON.parse(await readFile(join(BUNDLES, name, "meta.json"), "utf8"));
     if (meta.url) refs.push({ name, url: meta.url });

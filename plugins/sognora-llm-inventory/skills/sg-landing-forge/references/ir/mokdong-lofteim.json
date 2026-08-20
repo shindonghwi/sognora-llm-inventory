@@ -1,0 +1,754 @@
+{
+  "irVersion": 1,
+  "source": {
+    "url": "https://xn--2q1bp9fp4bgywytn1hd3qa.com/",
+    "collectedAt": "2026-08-20T03:13:46.345Z"
+  },
+  "page": {
+    "scrollHeight1440": 7468,
+    "scrollHeight390": 8412,
+    "sectionCount": 7
+  },
+  "rhythm": {
+    "bgSequence": [
+      "rgba(0, 0, 0, 0.19)",
+      "rgb(255, 255, 255)",
+      "rgb(245, 245, 245)",
+      "rgb(245, 245, 245)",
+      "rgb(75, 66, 58)",
+      "rgb(255, 255, 255)",
+      "rgb(43, 51, 53)"
+    ],
+    "heights": [
+      865,
+      1367,
+      1274,
+      605,
+      1623,
+      1054,
+      592
+    ],
+    "containers": [
+      1180
+    ]
+  },
+  "typeScale": [
+    {
+      "px": 72,
+      "weight": "700",
+      "count": 6
+    },
+    {
+      "px": 48,
+      "weight": "700",
+      "count": 4
+    },
+    {
+      "px": 36,
+      "weight": "700",
+      "count": 1
+    },
+    {
+      "px": 32,
+      "weight": "400",
+      "count": 1
+    },
+    {
+      "px": 30,
+      "weight": "400",
+      "count": 15
+    },
+    {
+      "px": 26,
+      "weight": "700",
+      "count": 8
+    },
+    {
+      "px": 22,
+      "weight": "700",
+      "count": 6
+    },
+    {
+      "px": 22,
+      "weight": "400",
+      "count": 1
+    },
+    {
+      "px": 20,
+      "weight": "400",
+      "count": 4
+    },
+    {
+      "px": 20,
+      "weight": "700",
+      "count": 1
+    },
+    {
+      "px": 18,
+      "weight": "400",
+      "count": 50
+    },
+    {
+      "px": 18,
+      "weight": "700",
+      "count": 3
+    },
+    {
+      "px": 18,
+      "weight": "500",
+      "count": 1
+    },
+    {
+      "px": 16,
+      "weight": "700",
+      "count": 11
+    }
+  ],
+  "motion": {
+    "durationsMs": [
+      {
+        "ms": 300,
+        "count": 162
+      },
+      {
+        "ms": 150,
+        "count": 21
+      },
+      {
+        "ms": 200,
+        "count": 8
+      },
+      {
+        "ms": 420,
+        "count": 2
+      },
+      {
+        "ms": 700,
+        "count": 2
+      },
+      {
+        "ms": 250,
+        "count": 2
+      }
+    ],
+    "keyframesCount": 365,
+    "keyframesNamed": [
+      "progress-bar-stripes",
+      "progress-bar-stripes",
+      "bounce",
+      "bounce",
+      "flash",
+      "flash",
+      "pulse",
+      "pulse",
+      "rubberBand",
+      "rubberBand",
+      "shake",
+      "shake",
+      "headShake",
+      "headShake",
+      "swing",
+      "swing",
+      "tada",
+      "tada",
+      "wobble",
+      "wobble"
+    ],
+    "runningAnimations": [],
+    "hoverTimelines": [],
+    "revealTimelines": [],
+    "listenerProfile": {}
+  },
+  "assetStats": {
+    "count": 52,
+    "images": 18,
+    "withRect": 13,
+    "totalBytes": 15048345
+  },
+  "layers": [
+    {
+      "y": 944,
+      "h": 1367,
+      "position": "absolute",
+      "cls": "section_bg_color",
+      "bg": "rgb(255, 255, 255)",
+      "bgImage": null,
+      "blend": null
+    },
+    {
+      "y": 2311,
+      "h": 1879,
+      "position": "absolute",
+      "cls": "section_bg_color",
+      "bg": "rgb(245, 245, 245)",
+      "bgImage": null,
+      "blend": null
+    },
+    {
+      "y": 4190,
+      "h": 1623,
+      "position": "absolute",
+      "cls": "section_bg_color",
+      "bg": "rgb(75, 66, 58)",
+      "bgImage": null,
+      "blend": null
+    },
+    {
+      "y": 5823,
+      "h": 1054,
+      "position": "absolute",
+      "cls": "section_bg_color",
+      "bg": "rgb(255, 255, 255)",
+      "bgImage": null,
+      "blend": null
+    }
+  ],
+  "sections": [
+    {
+      "y": 79,
+      "h": 865,
+      "bg": "rgba(0, 0, 0, 0.19)",
+      "tag": "div",
+      "cls": "text",
+      "container": null,
+      "columns": 1,
+      "type": [
+        {
+          "fontSize": 72,
+          "weight": "700",
+          "lineHeight": "79.2px",
+          "count": 1,
+          "sample": "목동의 놀라운 변화는 당신의 몫이 됩니다."
+        },
+        {
+          "fontSize": 30,
+          "weight": "400",
+          "lineHeight": "36px",
+          "count": 2,
+          "sample": "목동 14개 단지 재건축이 가져올 거대한 변화 완성된 생활 인프라를 가장"
+        },
+        {
+          "fontSize": 22,
+          "weight": "700",
+          "lineHeight": "26.4px",
+          "count": 1,
+          "sample": "관심고객 등록"
+        },
+        {
+          "fontSize": 16,
+          "weight": "700",
+          "lineHeight": "24px",
+          "count": 1,
+          "sample": "방문신청",
+          "floating": true
+        },
+        {
+          "fontSize": 15,
+          "weight": "700",
+          "lineHeight": "22.5px",
+          "count": 1,
+          "sample": "이름",
+          "floating": true
+        },
+        {
+          "fontSize": 13.5,
+          "weight": "400",
+          "lineHeight": "13.5px",
+          "count": 1,
+          "sample": "개인정보 동의",
+          "floating": true
+        },
+        {
+          "fontSize": 12,
+          "weight": "400",
+          "lineHeight": "18px",
+          "count": 1,
+          "sample": "[보기]",
+          "floating": true
+        }
+      ],
+      "headline": {
+        "fontSize": 72,
+        "weight": "700",
+        "lineHeight": "79.2px",
+        "count": 1,
+        "sample": "목동의 놀라운 변화는 당신의 몫이 됩니다."
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "anim:none 0s ease 0s 1 normal none running",
+        "0.2s"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 944,
+      "h": 1367,
+      "bg": "rgb(255, 255, 255)",
+      "tag": "div",
+      "cls": "inside",
+      "container": 1180,
+      "columns": 2,
+      "type": [
+        {
+          "fontSize": 48,
+          "weight": "700",
+          "lineHeight": "57.6px",
+          "count": 1,
+          "sample": "30년의 기다림, 이제 거대한 변화가 시작됩니다."
+        },
+        {
+          "fontSize": 26,
+          "weight": "700",
+          "lineHeight": "31.2px",
+          "count": 1,
+          "sample": "사업개요"
+        },
+        {
+          "fontSize": 18,
+          "weight": "400",
+          "lineHeight": "27px",
+          "count": 1,
+          "sample": "목동 14개 단지 재건축이 만들어갈 새로운 주거 중심. 완성된 인프라 위"
+        },
+        {
+          "fontSize": 18,
+          "weight": "700",
+          "lineHeight": "27px",
+          "count": 1,
+          "sample": "로프트하임 목동"
+        },
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": "22.4px",
+          "count": 10,
+          "sample": "사업명: 목동 로프트하임 오피스텔 신축 사업"
+        }
+      ],
+      "headline": {
+        "fontSize": 48,
+        "weight": "700",
+        "lineHeight": "57.6px",
+        "count": 1,
+        "sample": "30년의 기다림, 이제 거대한 변화가 시작됩니다."
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 472,
+          "h": 661,
+          "aspect": 0.71,
+          "radius": null,
+          "objectFit": "cover"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "anim:none 0s ease 0s 1 normal none running",
+        "anim:0.9s ease 0s 1 normal both running none",
+        "anim:0.7s ease 0s 1 normal both running none",
+        "opacity 0.3s, background-color 0.3s",
+        "opacity 0.3s"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 2311,
+      "h": 1274,
+      "bg": "rgb(245, 245, 245)",
+      "tag": "div",
+      "cls": "inside",
+      "container": 1180,
+      "columns": 2,
+      "type": [
+        {
+          "fontSize": 48,
+          "weight": "700",
+          "lineHeight": "57.6px",
+          "count": 1,
+          "sample": "이미 완성된 오늘, 더 기대되는 내일"
+        },
+        {
+          "fontSize": 26,
+          "weight": "700",
+          "lineHeight": "31.2px",
+          "count": 4,
+          "sample": "일상을 채우는 생활 인프라"
+        },
+        {
+          "fontSize": 20,
+          "weight": "400",
+          "lineHeight": "24px",
+          "count": 1,
+          "sample": "목동이 가진 검증된 생활 인프라에 교육·의료·교통의 가치를 더했습니다."
+        },
+        {
+          "fontSize": 18,
+          "weight": "700",
+          "lineHeight": "21.6px",
+          "count": 1,
+          "sample": "완성된 입지"
+        },
+        {
+          "fontSize": 18,
+          "weight": "400",
+          "lineHeight": "27px",
+          "count": 4,
+          "sample": "현대백화점, 이마트 등 쇼핑시설부터 양천구청, 남부지방법원 등 행정 인프"
+        },
+        {
+          "fontSize": 16,
+          "weight": "700",
+          "lineHeight": "24px",
+          "count": 5,
+          "sample": "LIFE"
+        },
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": null,
+          "count": 2,
+          "sample": "​"
+        }
+      ],
+      "headline": {
+        "fontSize": 48,
+        "weight": "700",
+        "lineHeight": "57.6px",
+        "count": 1,
+        "sample": "이미 완성된 오늘, 더 기대되는 내일"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "anim:none 0s ease 0s 1 normal none running",
+        "anim:0.9s ease 0s 1 normal both running none",
+        "anim:0.7s ease 0s 1 normal both running none"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 3585,
+      "h": 605,
+      "bg": "rgb(245, 245, 245)",
+      "tag": "div",
+      "cls": "_img_box",
+      "container": null,
+      "columns": 3,
+      "type": [],
+      "headline": null,
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 1440,
+          "h": 605,
+          "aspect": 2.38,
+          "radius": null,
+          "objectFit": "cover"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "anim:none 0s ease 0s 1 normal none running",
+        "opacity 0.3s, background-color 0.3s",
+        "opacity 0.3s"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 4190,
+      "h": 1623,
+      "bg": "rgb(75, 66, 58)",
+      "tag": "div",
+      "cls": "inside",
+      "container": null,
+      "columns": 2,
+      "type": [
+        {
+          "fontSize": 48,
+          "weight": "700",
+          "lineHeight": "57.6px",
+          "count": 1,
+          "sample": "목동의 기준을 넘어선 하이엔드 공간"
+        },
+        {
+          "fontSize": 26,
+          "weight": "700",
+          "lineHeight": "31.2px",
+          "count": 3,
+          "sample": "HIGH CEILING"
+        },
+        {
+          "fontSize": 18,
+          "weight": "700",
+          "lineHeight": "21.6px",
+          "count": 1,
+          "sample": "로프트하임목동의 프리미엄"
+        },
+        {
+          "fontSize": 18,
+          "weight": "400",
+          "lineHeight": "27px",
+          "count": 6,
+          "sample": "높은 층고가 만드는 압도적인 개방감. 복층 설계가 완성하는 특별한 공간감"
+        },
+        {
+          "fontSize": 18,
+          "weight": "500",
+          "lineHeight": "27px",
+          "count": 1,
+          "sample": "방문예약 신청하기"
+        },
+        {
+          "fontSize": 16,
+          "weight": "700",
+          "lineHeight": "32px",
+          "count": 3,
+          "sample": "PREMIUM 01"
+        }
+      ],
+      "headline": {
+        "fontSize": 48,
+        "weight": "700",
+        "lineHeight": "57.6px",
+        "count": 1,
+        "sample": "목동의 기준을 넘어선 하이엔드 공간"
+      },
+      "assetSlots": [
+        {
+          "kind": "img",
+          "w": 360,
+          "h": 873,
+          "aspect": 0.41,
+          "radius": null,
+          "objectFit": "cover"
+        },
+        {
+          "kind": "img",
+          "w": 360,
+          "h": 240,
+          "aspect": 1.5,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 360,
+          "h": 240,
+          "aspect": 1.5,
+          "radius": null,
+          "objectFit": "fill"
+        },
+        {
+          "kind": "img",
+          "w": 360,
+          "h": 240,
+          "aspect": 1.5,
+          "radius": null,
+          "objectFit": "fill"
+        }
+      ],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "anim:none 0s ease 0s 1 normal none running",
+        "anim:0.9s ease 0s 1 normal both running none",
+        "anim:0.7s ease 0s 1 normal both running none",
+        "opacity 0.3s, background-color 0.3s",
+        "opacity 0.3s",
+        "0.3s",
+        "color 0.3s",
+        "transform 0.3s, color 0.3s"
+      ],
+      "padding": {
+        "top": null,
+        "bottom": null
+      }
+    },
+    {
+      "y": 5823,
+      "h": 1054,
+      "bg": "rgb(255, 255, 255)",
+      "tag": "div",
+      "cls": "section_wrap",
+      "container": 1180,
+      "columns": 3,
+      "type": [
+        {
+          "fontSize": 48,
+          "weight": "700",
+          "lineHeight": "57.6px",
+          "count": 1,
+          "sample": "목동의 미래를 직접 확인하십시오."
+        },
+        {
+          "fontSize": 20,
+          "weight": "700",
+          "lineHeight": "28.5714px",
+          "count": 1,
+          "sample": "방문예약 신청하기"
+        },
+        {
+          "fontSize": 18,
+          "weight": "400",
+          "lineHeight": "27px",
+          "count": 12,
+          "sample": "완성된 목동의 오늘과 변화할 목동의 내일"
+        },
+        {
+          "fontSize": 18,
+          "weight": "400",
+          "lineHeight": "25.7143px",
+          "count": 1,
+          "sample": "■ 개인정보 수집, 이용, 위탁, 양도 동의 고객님의 원활한 서비스 이용"
+        },
+        {
+          "fontSize": 12,
+          "weight": "700",
+          "lineHeight": "17.1429px",
+          "count": 1,
+          "sample": "확인"
+        }
+      ],
+      "headline": {
+        "fontSize": 48,
+        "weight": "700",
+        "lineHeight": "57.6px",
+        "count": 1,
+        "sample": "목동의 미래를 직접 확인하십시오."
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "anim:none 0s ease 0s 1 normal none running",
+        "anim:0.9s ease 0s 1 normal both running none",
+        "anim:0.7s ease 0s 1 normal both running none",
+        "border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow",
+        "0.3s",
+        "left 0.7s"
+      ],
+      "padding": {
+        "top": "5px",
+        "bottom": "5px"
+      }
+    },
+    {
+      "y": 6877,
+      "h": 592,
+      "bg": "rgb(43, 51, 53)",
+      "tag": "div",
+      "cls": "footer-section",
+      "container": 1180,
+      "columns": 1,
+      "type": [
+        {
+          "fontSize": 36,
+          "weight": "700",
+          "lineHeight": "54px",
+          "count": 1,
+          "sample": "1666-8384"
+        },
+        {
+          "fontSize": 22,
+          "weight": "400",
+          "lineHeight": "33px",
+          "count": 1,
+          "sample": "로프트하임 목동 대표번호"
+        },
+        {
+          "fontSize": 16,
+          "weight": "400",
+          "lineHeight": "28.8px",
+          "count": 2,
+          "sample": "AM 09:00 - PM 18:00 주말 및 공휴일 상담 가능"
+        },
+        {
+          "fontSize": 13,
+          "weight": "400",
+          "lineHeight": "19.5px",
+          "count": 1,
+          "sample": "© 2026 LOFTHEIM 목동. All Rights Reserved."
+        }
+      ],
+      "headline": {
+        "fontSize": 36,
+        "weight": "700",
+        "lineHeight": "54px",
+        "count": 1,
+        "sample": "1666-8384"
+      },
+      "assetSlots": [],
+      "glassNodes": 0,
+      "motionDecls": [
+        "all",
+        "anim:none 0s ease 0s 1 normal none running",
+        "0.3s"
+      ],
+      "padding": {
+        "top": "80px",
+        "bottom": "80px"
+      }
+    }
+  ],
+  "sectionsMobile": [
+    {
+      "y": 0,
+      "h": 462,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 462,
+      "h": 1509,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 1971,
+      "h": 1530,
+      "container": null,
+      "columns": 2
+    },
+    {
+      "y": 3665,
+      "h": 2879,
+      "container": null,
+      "columns": 1
+    },
+    {
+      "y": 6554,
+      "h": 1247,
+      "container": null,
+      "columns": 3
+    },
+    {
+      "y": 7801,
+      "h": 611,
+      "container": null,
+      "columns": 1
+    }
+  ],
+  "reproduction": {
+    "stamp": null,
+    "note": "IR만으로 원본을 오차 밴드 내 재건축→capture 대조 통과 시 스탬프. 스탬프 없는 IR은 리드 자격 없음."
+  }
+}
