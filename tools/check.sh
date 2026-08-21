@@ -13,6 +13,16 @@ node tools/check-version.mjs || fail=1
 echo
 echo "── 판정을 가르는 숫자의 근거(래칫) ───────────────────────"
 node tools/consts.mjs || fail=1
+echo
+echo "── sg-ko-humanize 회귀 테스트 ──────────────────────────"
+python3 -m unittest discover \
+  -s plugins/sognora-llm-inventory/skills/sg-ko-humanize/tests \
+  -p 'test_*.py' || fail=1
+echo
+echo "── sg-en-humanize 회귀 테스트 ──────────────────────────"
+python3 -m unittest discover \
+  -s plugins/sognora-llm-inventory/skills/sg-en-humanize/tests \
+  -p 'test_*.py' || fail=1
 
 echo
 if [ "$fail" -ne 0 ]; then echo "🔴 자체 점검 실패"; exit 1; fi

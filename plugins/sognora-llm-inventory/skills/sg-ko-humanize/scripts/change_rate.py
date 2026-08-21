@@ -38,8 +38,8 @@ from collections import Counter
 
 WARN = 0.30
 ABORT = 0.50
-SHORT_TEXT = 200      # 이보다 짧으면 변경률 대신 공유 2-gram 비율로 본다
-MIN_BIGRAM_KEEP = 0.30  # 짧은 텍스트가 원문과 공유해야 할 최소 2-gram 비율(미달 = WARN, 하드 중단 아님)
+SHORT_TEXT = 200      # 이보다 짧으면 변경률 게이트 뒤에 공유 2-gram 보조 경고도 적용한다
+MIN_BIGRAM_KEEP = 0.30  # 짧은 텍스트가 원문과 공유해야 할 최소 2-gram 비율(미달 = WARN)
 
 # ── 부정 표지 ────────────────────────────────────────────────────────────────
 # 개별 표기가 아니라 **의미 단위 개수**를 센다. "하지 않습니다"→"안 합니다"는 1개 유지(정당),
@@ -425,17 +425,17 @@ def main() -> int:
 
     if broken:
         verdict, code = "ABORT — 내용 변조·롤백", 2
+    elif rate > ABORT:
+        # 짧은 문구도 예외가 아니다. 2-gram은 보조 신호이고 SKILL.md의 50% 하드 라인을
+        # 우회시키지 않는다. 이전 구현은 short 분기가 먼저라 90% 재작성도 WARN으로 끝났다.
+        verdict, code = "ABORT — 과윤문·롤백", 2
+    elif rate > WARN:
+        verdict, code = "WARN — 과윤문 경고", 1
     elif short and keep < MIN_BIGRAM_KEEP:
-        # 짧은 텍스트의 '변경량'은 경고까지다. 하드 중단으로 두면 한 줄 카피의 정당한 교정
-        # ("혁신적인 솔루션을 경험하세요" → "직접 써 보세요")이 막혀 애초에 고치려던 문제가 되살아난다.
-        # 하드 라인은 불변식(내용)이고, 분량은 사람이 본다.
+        # 30% 이하여도 원문 흔적이 거의 없으면 보조 경고한다. 변경률 하드 라인은 위에서 이미 적용했다.
         verdict, code = f"WARN — 짧은 텍스트 전면 재작성(원문 2-gram {keep * 100:.0f}% 유지) · 사람 확인", 1
     elif short:
         verdict, code = f"OK — 짧은 텍스트({len(before)}자, 2-gram {keep * 100:.0f}% 유지)", 0
-    elif rate >= ABORT:
-        verdict, code = "ABORT — 과윤문·롤백", 2
-    elif rate >= WARN:
-        verdict, code = "WARN — 과윤문 경고", 1
     else:
         verdict, code = "OK — 수렴", 0
 
@@ -446,7 +446,7 @@ def main() -> int:
 
     if code_note:
         print(code_note)
-    print(f"change_rate: {pct:.1f}%  gate: {verdict} (경고 30% / 중단 50% · 불변식 위반은 즉시 중단)")
+    print(f"change_rate: {pct:.1f}%  gate: {verdict} (경고 30% 초과 / 중단 50% 초과 · 불변식 위반은 즉시 중단)")
     for b in broken[:12]:
         print(f"  🔴 {b['종류']} 불일치 — 사라짐 {b['사라짐'] or '없음'} / 생김 {b['생김'] or '없음'}")
         if b["원문"] != "(문서 전체)":

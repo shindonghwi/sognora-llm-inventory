@@ -1,0 +1,1 @@
+Projects stay organized in one workspace.

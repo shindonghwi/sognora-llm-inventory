@@ -1,7 +1,7 @@
 /**
  * copylint.mjs — 페이지 카피 린터 (GOV.UK 규범 + 이 저장소의 실전 규칙)
  *
- * usage: copylint.mjs --url <URL> [--out <dir>]
+ * usage: copylint.mjs --url <URL> [--genre landing|UI] [--out <dir>]
  *
  * 근거: GOV.UK 콘텐츠 가이드(OGL v3.0, 상업적 재사용 허용)의 수치화된 규칙과
  * NN/G 열람 실측(79%가 스캔 / 111단어 이하일 때만 절반이 읽는다 / 간결·스캔가능·객관 문체 조합 +124%).
@@ -15,12 +15,16 @@
  *   W2 제작자 시점 서술(랜딩 규칙 KO5 계승) — "~해 두었습니다" 류
  */
 import { mkdir, writeFile } from "node:fs/promises";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
 import { argv, exit } from "node:process";
+import { spawn } from "node:child_process";
+import { fileURLToPath } from "node:url";
 import { load } from "./_deps.mjs";
 
 const args = parseArgs(argv.slice(2));
-if (!args.url) { console.error("usage: copylint.mjs --url <URL> [--out <dir>]"); exit(2); }
+if (!args.url) { console.error("usage: copylint.mjs --url <URL> [--genre landing|UI] [--out <dir>]"); exit(2); }
+const here = dirname(fileURLToPath(import.meta.url));
+const genre = args.genre === "landing" ? "landing" : "UI";
 
 // GOV.UK 금칙어(원문) + 한국어 대응 상투어
 const BANNED_EN = ["deliver", "leverage", "robust", "streamline", "empower", "facilitate", "foster", "transform",
@@ -47,6 +51,13 @@ const blocks = await page.evaluate(() => {
 });
 await browser.close();
 
+// 길이·금칙어와 별개로 한·영 AI 문체의 **알려진 패턴**을 함께 본다.
+// 이 결과는 자연스러움 도장이 아니다 — 두 언어 모두 의미 검토가 별도라는 scope를 그대로 남긴다.
+const detector = join(here, "..", "..", "sg-en-humanize", "scripts", "detect_bilingual.py");
+const patternRun = await pipePython(detector, ["-", "--genre", genre, "--json"], blocks.map((b) => b.text).join("\n"));
+let patternReport = null;
+try { patternReport = JSON.parse(patternRun.out); } catch { /* 아래에서 판정 안 됨으로 처리 */ }
+
 const findings = [];
 const add = (rule, detail) => findings.push({ rule, detail });
 const words = (s) => s.trim().split(/\s+/).filter(Boolean).length;
@@ -72,18 +83,42 @@ for (const b of blocks) {
 
 const byRule = {};
 for (const f of findings) (byRule[f.rule] ??= []).push(f.detail);
+const patternRed = patternReport?.total?.red ?? 0;
+const patternYellow = patternReport?.total?.yellow ?? 0;
+const patternHits = (patternReport?.files?.[0]?.findings ?? [])
+  .map((f) => `${f.language}:${f.rule}(${f.name})×${f.count}`).join(", ");
+const patternSection = patternReport
+  ? `## 한·영 알려진 패턴\n\n🔴 ${patternRed} · 🟡 ${patternYellow}${patternHits ? ` — ${patternHits}` : ""}\n\n> ${patternReport.scope}\n`
+  : `## 한·영 알려진 패턴\n\n- ⛔ 판정되지 않음 — ${tail(patternRun.err || patternRun.out, 3) || "detect_bilingual.py 실행 불가"}\n`;
 const md = `# 카피 린트 — ${args.url}
 
-검사 블록 ${blocks.length}개 · 지적 ${findings.length}건
+검사 블록 ${blocks.length}개 · 길이/어휘 지적 ${findings.length}건 · 알려진 패턴 🔴${patternRed} 🟡${patternYellow}
 
 ${Object.keys(byRule).length ? Object.entries(byRule).map(([r, ds]) => `## ${r} (${ds.length}건)\n${ds.slice(0, 8).map((d) => `- ${d}`).join("\n")}${ds.length > 8 ? `\n- … 외 ${ds.length - 8}건` : ""}`).join("\n\n") : "- ✅ 이상 없음"}
 
+${patternSection}
+
 > 근거: GOV.UK 콘텐츠 가이드(문장 25단어·문단 5문장·제목 65자·금칙어), NN/G 열람 실측(79% 스캔).
-> 규칙은 길이와 어휘만 본다. **무엇을 말할지는 사람이 정한다.**
+> 기계 규칙은 길이·어휘·알려진 패턴만 본다. **무엇을 말할지와 자연스러움은 사람이 정한다.**
 `;
 if (args.out) { await mkdir(args.out, { recursive: true }); await writeFile(join(args.out, "copylint.md"), md); }
 console.log(md);
-exit(findings.filter((f) => f.rule === "W1" || f.rule === "W2").length ? 1 : 0);
+if (!patternReport) exit(2);
+exit(findings.some((f) => f.rule === "W1" || f.rule === "W2") || patternRed ? 1 : 0);
+
+function pipePython(script, pythonArgs, input) {
+  return new Promise((resolve) => {
+    const child = spawn("python3", [script, ...pythonArgs], { stdio: ["pipe", "pipe", "pipe"] });
+    let out = "", err = "";
+    child.stdout.on("data", (data) => (out += data));
+    child.stderr.on("data", (data) => (err += data));
+    child.on("error", (error) => resolve({ code: 2, out: "", err: String(error) }));
+    child.on("close", (code) => resolve({ code, out: out.trim(), err: err.trim() }));
+    child.stdin.end(input);
+  });
+}
+
+function tail(text, count = 3) { return String(text).split("\n").filter(Boolean).slice(-count).join(" / "); }
 
 function parseArgs(a) {
   const o = {};

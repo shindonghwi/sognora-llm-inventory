@@ -9,7 +9,8 @@
 
 ## 무엇을 보나 (전부 언어 중립적으로 결정 가능한 것만)
 - **키 누락**: base에 있는 키가 target에 없다(또는 그 반대)
-- **숫자**: "최대 10MB"가 한쪽에서 5MB가 되거나 사라지면 잡는다
+- **숫자**: "최대 10MB"가 한쪽에서 5MB가 되거나 사라지면 잡는다. 영어의 `eight`
+  같은 0~99 숫자 단어는 상대 로케일의 아라비아 숫자와 대조할 때 같은 값으로 정규화한다.
 - **보간 토큰**: {count} · {{name}} · %s · $1 — 깨지면 런타임에서 티가 안 나고 문장만 망가진다
 - **URL**
 - **약어·확장자**: 연속 대문자 2자 이상(JPG·PNG·API)
@@ -28,6 +29,19 @@ import re
 import sys
 
 NUM_RE = re.compile(r"\d[\d,]*(?:\.\d+)?")
+EN_UNITS = {"zero": 0, "one": 1, "two": 2, "three": 3, "four": 4,
+            "five": 5, "six": 6, "seven": 7, "eight": 8, "nine": 9,
+            "ten": 10, "eleven": 11, "twelve": 12, "thirteen": 13,
+            "fourteen": 14, "fifteen": 15, "sixteen": 16,
+            "seventeen": 17, "eighteen": 18, "nineteen": 19}
+EN_TENS = {"twenty": 20, "thirty": 30, "forty": 40, "fifty": 50,
+           "sixty": 60, "seventy": 70, "eighty": 80, "ninety": 90}
+_EN_ONES = "one|two|three|four|five|six|seven|eight|nine"
+_EN_SMALL = "|".join(EN_UNITS)
+_EN_TENS = "|".join(EN_TENS)
+EN_NUM_WORD_RE = re.compile(
+    rf"\b(?:(?:{_EN_TENS})(?:[- ](?:{_EN_ONES}))?|(?:{_EN_SMALL}))\b", re.I
+)
 # 통화 표지 — 가격은 로케일마다 **정당하게 다르다**($19 ↔ 19,000원). 실코퍼스에서
 # 이걸 안 빼면 요금제 파일이 통째로 오탐이 된다.
 CUR_RE = re.compile(r"[$₩€¥£]|원\b|USD|KRW|EUR|JPY")
@@ -126,6 +140,19 @@ def parse_strings(src: str):
     return out
 
 
+def english_number_values(v: str) -> list:
+    """영어 0~99 숫자 단어를 아라비아 숫자 문자열로 바꾼다."""
+    out = []
+    for m in EN_NUM_WORD_RE.finditer(v):
+        parts = re.split(r"[- ]", m.group(0).lower())
+        if parts[0] in EN_TENS:
+            n = EN_TENS[parts[0]] + (EN_UNITS[parts[1]] if len(parts) > 1 else 0)
+        else:
+            n = EN_UNITS[parts[0]]
+        out.append(str(n))
+    return out
+
+
 def facts(v: str) -> dict:
     return {"숫자": sorted(NUM_RE.findall(v.replace(" ", ""))),
             "보간": sorted(PH_RE.findall(v)),
@@ -157,6 +184,13 @@ def compare_locale(strings: dict, base: str, target: str) -> list:
         out.append({"키": k, "종류": "키 잉여", "상세": f"{base}에 없다 ({target}: \"{t[k][:40]}\")"})
     for k in sorted(set(b) & set(t)):
         fb, ft = facts(b[k]), facts(t[k])
+        # 숫자가 이미 같으면 영어의 일반 단어 "one" 등을 굳이 숫자로 해석하지 않는다.
+        # 서로 다를 때만 영어 숫자 단어를 보충해 `eight characters` ↔ `8자`를 맞춘다.
+        if fb["숫자"] != ft["숫자"]:
+            if base.lower().startswith("en"):
+                fb["숫자"] = sorted(fb["숫자"] + english_number_values(b[k]))
+            if target.lower().startswith("en"):
+                ft["숫자"] = sorted(ft["숫자"] + english_number_values(t[k]))
         # 통화가 걸린 값은 숫자·보간을 비교하지 않는다 — 로케일별 가격은 정당한 차이다.
         money = bool(CUR_RE.search(b[k])) or bool(CUR_RE.search(t[k]))
         for kind in fb:

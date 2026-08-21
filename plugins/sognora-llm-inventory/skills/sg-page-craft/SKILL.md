@@ -60,21 +60,21 @@ description: 랜딩 말고 **나머지 페이지**를 같은 제품처럼 만든
   ```
   Codex 내장 `imagegen` 스킬을 `codex exec` 서브에이전트로 호출한다(스킬 이름은 `imagen`이 아니라 **`imagegen`**). **facts(§0g)가 빈 페이지는 생성을 거부한다** — 무엇이 들어가는지 모르는 화면의 시안은 빈 틀이 되고, 빌드는 그 틀을 베낀다. 브리프에는 facts가 "이걸로 화면을 채워라"로 실리고, 하는 화면(`do`)에는 **소개문 도입 금지**(아이브로>제목>리드 금지 — SAME-OPENING의 상류 차단)가 붙는다. 시안이 없으면 감사가 🔴로 막는다 — **시각 목표물 없이 CSS부터 짜면 문단으로 수렴한다.** 시안이 좋은지는 사람이 보고 판단하고, 마음에 안 들면 프롬프트(`.sognora/page/comps/<slug>.prompt.md`)를 고쳐 다시 뽑는다.
 - **P2 빌드** — **시안을 띄워놓고 만든다.** 먼저 컴포넌트 층부터 확인한다(§1b): `node "$S/primitives.mjs" --src <소스>`. 프리미티브가 없으면 페이지 CSS를 짜기 전에 그 화면들이 실제로 쓰는 것(Button·Input·Table·EmptyState 등)을 먼저 세운다 — 직접 만들든 라이브러리를 쓰든 무방하다. **이 순서를 건너뛰면 화면마다 CSS를 다시 짜게 되고, 결과는 문단만 남은 페이지다.** 그다음 랜딩 토큰만 사용. 요금제면 **열=플랜·행=속성** 구조로, 카드 노출 차별 속성은 2~3개. 폼이면 GOV.UK 규범(라벨 위·제출 시 검증·입력값 보존).
-- **P3 검사 — 계약이 있으면 한 줄이다**(전 페이지 alive + 교차 sameness + 보고서):
+- **P3 검사 — 계약이 있으면 한 줄이다**(전 페이지 alive + 한·영 카피 + 교차 sameness + 보고서):
   ```
   node "$S/audit.mjs" --contract .sognora/page/contract.json --src src --out .sognora/page/qa
   ```
   아래는 계약 없이 화면 하나만 볼 때:
   ```
   node "$S/alive.mjs" --url <URL> --type <catalog|tool|pricing|form|dashboard|document|about|landing> --src <컴포넌트 디렉터리> --out .sognora/page/qa
-  node "$S/copylint.mjs" --url <URL> --out .sognora/page/qa
+  node "$S/copylint.mjs" --url <URL> --genre <landing|UI> --out .sognora/page/qa
   node "$S/conform.mjs" --tokens <랜딩 tokens.json> --url <URL>   # 토큰 상속 검증(forge 계기 심)
   node "$S/detect.mjs" --url <URL> --out .sognora/page/qa/detect          # 시각 AI 티(forge 계기 심)
-  # 카피 AI 티 — 내부 기획 용어·능력 서술 도배·용어 표류
-  # GENRE: --type landing 이면 랜딩, 그 외(catalog/tool/pricing/form/dashboard)는 UI
-  GENRE=$([ "<TYPE>" = "landing" ] && echo 랜딩 || echo UI)
+  # 한·영 카피 AI 티 — 알려진 패턴만. 자연스러움·문맥 적합성은 별도 의미 검토
+  # GENRE: --type landing 이면 landing, 그 외(catalog/tool/pricing/form/dashboard)는 UI
+  GENRE=$([ "<TYPE>" = "landing" ] && echo landing || echo UI)
   node -e 'const j=JSON.parse(require("fs").readFileSync(process.argv[1],"utf8"));process.stdout.write((j.desktop?.copy||[]).join("\n"))' \
-    .sognora/page/qa/detect/scan.json | python3 ../sg-ko-humanize/scripts/detect_ko.py - --genre "$GENRE"
+    .sognora/page/qa/detect/scan.json | python3 "$(dirname "$S")/../sg-en-humanize/scripts/detect_bilingual.py" - --genre "$GENRE"
   ```
   마지막 줄이 exit 1이면 실패다. **`detect.mjs`는 보더·레이아웃만 본다 — 카피는 한 글자도 읽지 않는다.** 두 계기는 다른 축이고, 카피 축은 v1.6.4까지 판정자가 없었다.
 
@@ -96,12 +96,12 @@ description: 랜딩 말고 **나머지 페이지**를 같은 제품처럼 만든
 | `contract.mjs` | **의도의 자리** — `.sognora/page/contract.json` 발판 생성·검증. 미기입은 지어내지 않고 멈춘다 |
 | `comp.mjs` | **시안 우선**(§1c) — 계약(**facts 필수** §0g)+토큰을 프롬프트로 컴파일해 `codex exec` → Codex 내장 **`imagegen`** 스킬로 시안 PNG 생성. facts 없으면 거부, `do` 화면 브리프에 소개문 도입 금지. 프롬프트 전문을 남겨 기준이 흔들리지 않게 한다. **시안이 좋은지는 판정하지 않는다** |
 | `primitives.mjs` | **컴포넌트 층이 있는가**(§1b) — 같은 프리미티브를 여러 CSS 모듈이 각자 정의하는지. 특정 라이브러리를 강요하지 않는다. 프로젝트 단위라 `audit`이 1회만 돌린다 |
-| `audit.mjs` | **무인 러너** — 계약을 읽어 전 페이지 `alive` + 교차 `sameness`를 돌리고 한 장으로 보고. URL·유형을 손으로 짝지을 필요가 없다. **playwright는 시작 전에 한 번 확인한다**(없으면 즉시 멈춘다 — 48개 URL을 돌고 7분 뒤에 "모듈 없음"을 내던 사고). `--diagnose`는 기존 사이트 진단용(§P0-a) |
+| `audit.mjs` | **무인 러너** — 계약을 읽어 전 페이지 `alive` + 한·영 `copylint` + 교차 `sameness`를 돌리고 한 장으로 보고. URL·유형을 손으로 짝지을 필요가 없다. **playwright는 시작 전에 한 번 확인한다**(없으면 즉시 멈춘다 — 48개 URL을 돌고 7분 뒤에 "모듈 없음"을 내던 사고). `--diagnose`는 기존 사이트 진단용(§P0-a) |
 | `alive.mjs` | 살아있는가 — 런타임·콘솔·빈 화면·CSS 클래스 불일치·좌단 밀착·빈 상태 분기 |
 | `sameness.mjs` | **서로 같은 화면인가** + **일이 화면의 주인공인가**. 앞은 한 장씩 보면 안 보이는 축(같은 유형끼리 닮은 것은 **정상**, 다른 유형이 같은 틀에서 나온 것만 잡는다), 뒤는 `WORK-STARVED`(§0f) — 닮음이 다 통과해도 화면 대부분이 제목·라벨·설명이면 잡는다. 임계는 둘 다 **그 프로젝트 자신**으로 자가 보정(엄격해지는 방향으로만) |
-| `copylint.mjs` | 카피 길이·금칙어(GOV.UK 규범 + 한글 상투어 + 제작자 시점 서술) |
+| `copylint.mjs` | 카피 길이·금칙어(GOV.UK 규범 + 한글 상투어 + 제작자 시점 서술) + `detect_bilingual.py` 한·영 알려진 패턴. `audit.mjs`가 모든 화면·로케일에서 자동 실행한다 |
 | `conform.mjs`·`detect.mjs` | sg-landing-forge 계기를 자기 위치 기준으로 찾아 실행하는 심 — 토큰 상속 검증·**시각** AI 티. 상대경로에 의존하지 않는다 |
-| `detect_ko.py`(sg-ko-humanize) | **카피** AI 티 — 내부 기획 용어(§8)·능력 서술 도배. `detect.mjs`가 `scan.json`에 실은 실제 렌더 카피를 받는다. `copylint.mjs`(마케팅 상투어·주어 시점)와는 다른 축이다 |
+| `detect_bilingual.py`(sg-en-humanize) | **한·영 카피**의 알려진 AI 문체 — 한국어 내부 기획 용어·추상 연결과 영어 빈 흐름·상투 광고 공식. 자연스러움·문맥 적합성은 별도 의미 검토다 |
 
 ## 부트스트랩 — **에이전트가 스스로 갖춘다** (사람은 스킬 이름만 부른다)
 

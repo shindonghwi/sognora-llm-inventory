@@ -1,0 +1,48 @@
+[
+  {
+    "name": "site photos and concepts connected abstractly",
+    "text": "From site photos to repaint concepts, everything connects seamlessly in one place.",
+    "expect_rule": "ENH01",
+    "severity": "yellow"
+  },
+  {
+    "name": "planning and deployment flow abstractly",
+    "text": "From planning to deployment, everything flows naturally in one platform.",
+    "expect_rule": "ENH01",
+    "severity": "yellow"
+  },
+  {
+    "name": "concrete sequence",
+    "text": "Upload site photos, compare repaint concepts, and share the selected option.",
+    "expect_rule": null
+  },
+  {
+    "name": "concrete next screen",
+    "text": "After approval, the app opens the deployment screen.",
+    "expect_rule": null
+  },
+  {
+    "name": "concrete connect verb",
+    "text": "The API connects Salesforce to Stripe.",
+    "expect_rule": null
+  },
+  {
+    "name": "formulaic opening",
+    "text": "In today's fast-paced world, teams need better tools.",
+    "expect_rule": "ENH05",
+    "severity": "red"
+  },
+  {
+    "name": "report conclusion marker",
+    "text": "In conclusion, the trial did not meet its primary endpoint.",
+    "genre": "report",
+    "expect_rule": null
+  },
+  {
+    "name": "report does not exempt generic opening",
+    "text": "In today's fast-paced world, teams need better tools.",
+    "genre": "report",
+    "expect_rule": "ENH05",
+    "severity": "red"
+  }
+]

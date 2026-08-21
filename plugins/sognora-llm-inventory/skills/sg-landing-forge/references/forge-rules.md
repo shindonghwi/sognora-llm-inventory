@@ -168,15 +168,15 @@ node scripts/corpus.mjs --report     # 기준선을 읽어 규칙별 판정만 �
 
 - 모든 주장·수치가 `facts.md`의 출처와 1:1 대응 — 대응 없는 문장은 삭제
 - 법적·정직성 고지(예: "시안은 실제 색과 다를 수 있음") 누락 여부 — facts의 "제약·고지" 항목 전수 반영
-- 카피에 sg-ko-humanize 🔴 패턴 0 — **판정자가 붙었다.** `detect.mjs`가 `scan.json`에 실제 렌더 카피(`desktop.copy`)를 싣고, 그걸 humanize 검출기에 파이프한다. exit 1이면 이 게이트는 실패다.
+- 한·영 카피에 알려진 🔴 패턴 0 — `detect.mjs`가 `scan.json`에 실제 렌더 카피(`desktop.copy`)를 싣고, `detect_bilingual.py`가 sg-ko-humanize와 sg-en-humanize의 정규식 판정자를 함께 실행한다. exit 1이면 실패다. exit 0은 자연스러움의 증명이 아니며 의미·문맥은 별도 검토한다.
 
   ```sh
   node -e 'const j=JSON.parse(require("fs").readFileSync(process.argv[1],"utf8"));process.stdout.write((j.desktop?.copy||[]).join("\n"))' \
     .sognora/forge/qa/detect/scan.json \
-    | python3 "$(dirname "$0")/../sg-ko-humanize/scripts/detect_ko.py" - --genre 랜딩
+    | python3 "$(dirname "$S")/../sg-en-humanize/scripts/detect_bilingual.py" - --genre landing
   ```
 
-  > **v1.6.4 이전까지 이 줄은 판정자가 없었다.** `detect_ko.py`는 바로 이 요구를 위해 만들어졌다고 자기 문서에 적어두고도 **어느 파이프라인에도 연결되지 않았다** — forge의 `detect.mjs`는 보더·레이아웃을 보는 *시각* 스캐너라 카피는 한 글자도 읽지 않았다. "판정자 없는 규칙은 없다"를 이 스킬 자신의 §5가 위반하고 있었다. 장르는 `랜딩`이다(마케팅 카피 — "읽기 전용/편집 화면"류가 🔴로 승격된다).
+  > **v1.6.4 이전까지 이 줄은 판정자가 없었다.** forge의 `detect.mjs`는 보더·레이아웃을 보는 *시각* 스캐너라 카피는 한 글자도 읽지 않았다. v1.14.0부터 한국어만 보던 계기를 한·영 통합 계기로 바꿨다. 장르는 `landing`이며 한국어 검출기에는 내부적으로 `랜딩`으로 매핑된다.
 - 금지: 제품이 안 하는 것(로드맵·미출시 기능)을 하는 것처럼 쓰기
 
 ## 6. 같은 형태 반복 금지

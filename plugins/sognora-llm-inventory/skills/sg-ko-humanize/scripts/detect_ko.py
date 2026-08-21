@@ -10,6 +10,8 @@ sg-landing-forge의 콘텐츠 검수(forge-rules §5)는 "카피에 sg-ko-humani
 - 문맥 판단이 필요한 룰은 여기 없다 — 무생물 의인화(수사와 구분 불가), 따옴표 강조
   도배(실인용과 구분 불가), "~할 것이다"(단순 미래와 구분 불가)는 LLM/사람 몫이다.
 - "에 대해"가 목적어 노릇인지는 기계가 판정 못 한다 — 밀도 초과 시 🟡 후보로만 올린다.
+- KOH23도 모호한 수식어+빈 동사의 좁은 결합만 🟡 후보로 올린다. 독자의 행동과 결과가
+  실제로 구체적인지는 rules.md의 의미 검토 3문항으로 따로 판단한다.
 - rules.md에 없는 패턴을 여기서 창설하지 않는다(SSOT는 rules.md).
 
 ## 오탐 캘리브레이션 (1987년 대한민국헌법 51KB = AI 이전 사람 격식문 실측)
@@ -91,6 +93,12 @@ RULES = [
     ("KOH20", "명세어(문맥 의존)", r"읽기 전용|쓰기 전용|편집 화면|작업 화면|관리 화면"
      r"|지원 범위|적용 대상|적용 위치|워크스페이스|온보딩|플로우|트리거|케이스",
      1, None, {"스펙", "법률", "공적", "리포트"}, "rules.md §8 — `랜딩`에서 🔴 승격, `UI`에서는 🟡"),
+    # 단어 자체가 아니라 **모호한 수식어+빈 동사** 결합만 후보로 올린다.
+    # "인증이 끝나면 결제 화면으로 이어집니다"처럼 조건·결과가 구체적인 문장은 잡지 않는다.
+    ("KOH23", "추상 연결·빈 동사",
+     r"(?:한\s+곳에서|하나로|자연스럽게|처음부터\s+끝까지)[^.!?\n]{0,16}"
+     r"(?:이어(?:집니다|진다|져요)|연결(?:됩니다|된다|돼요)|함께(?:합니다|한다|해요))",
+     1, None, set(), "rules.md §9 🟡 — 행동·결과가 있는지 의미 검토 필요"),
 ]
 
 # UI 계열(제품 카피) — 산문 규칙을 끄고 §8 어휘 규칙을 켜는 장르들.
@@ -298,7 +306,10 @@ def main() -> int:
         o.pop("_clusters", None)
 
     if as_json:
-        print(json.dumps({"genre": genre or "(기본)", "files": out, "crossFile": cross,
+        print(json.dumps({"genre": genre or "(기본)",
+                          "scope": "알려진 패턴 검사만 수행함. 자연스러움과 문맥 적합성은 별도 의미 검토가 필요함.",
+                          "requiresSemanticReview": True,
+                          "files": out, "crossFile": cross,
                           "total": {"red": total_red, "yellow": total_yellow},
                           "exit": 1 if total_red else 0}, ensure_ascii=False, indent=1))
         return 1 if total_red else 0
@@ -314,6 +325,7 @@ def main() -> int:
         print(f"── (파일 간)\n  {icon} {x['rule']} {x['name']} — " +
               "; ".join(l["match"] for l in x["locations"]))
     print(f"합계: 🔴{total_red} 🟡{total_yellow} — exit {1 if total_red else 0}")
+    print("※ 알려진 패턴 검사 결과만 표시했다. 자연스러움과 문맥 적합성은 별도 의미 검토가 필요하다.")
     return 1 if total_red else 0
 
 

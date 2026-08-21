@@ -9,11 +9,12 @@
  * **매번 되묻는 것은 스킬의 실패다** — 의도는 P0에서 한 번 받아 계약에 굳히고(§0e),
  * 그다음부터는 이 러너가 계약을 읽어 무인으로 완주한다.
  *
- * 하는 일: 계약의 모든 페이지 × 로케일에 대해 `alive.mjs`(유형·must·mustNot 포함)를 돌리고,
- * 이어서 `sameness.mjs`로 교차 검사를 한 뒤, 한 장짜리 보고서로 합친다.
+ * 하는 일: 계약의 모든 페이지 × 로케일에 대해 `alive.mjs`(유형·must·mustNot 포함)와
+ * `copylint.mjs`(길이·어휘 + 한·영 알려진 패턴)를 돌리고, 이어서 `sameness.mjs`로
+ * 교차 검사한 뒤 한 장짜리 보고서로 합친다.
  *
- * 도장의 범위: 이 감사는 **구조·렌더와 계약에 선언된 항목의 존재**만 본다.
- * "이 화면이 잘 만들어졌는가"는 판정하지 않는다 — 관측 불가 영역에 도장을 찍지 않는다.
+ * 도장의 범위: 이 감사는 **구조·렌더·계약 항목의 존재와 결정 가능한 카피 규칙**만 본다.
+ * 자연스러움·문맥 적합성과 "이 화면이 잘 만들어졌는가"는 판정하지 않는다.
  */
 import { mkdir, writeFile } from "node:fs/promises";
 import { join, dirname } from "node:path";
@@ -121,8 +122,12 @@ for (const p of targets) {
     if (p.mustNot.length) a.push("--must-not", p.mustNot.join("||"));
     const { code, out } = await run(a);
     const findings = out.split("\n").filter((l) => /^- (🔴|🟡)/.test(l));
-    rows.push({ route: p.route, loc, url, type: p.type, decision: p.decision, code, findings, declared: p.type.declared });
+    const copyGenre = p.type.name === "landing" ? "landing" : "UI";
+    const copy = await run([join(here, "copylint.mjs"), "--url", url, "--genre", copyGenre]);
+    rows.push({ route: p.route, loc, url, type: p.type, decision: p.decision, code, findings,
+      copyCode: copy.code, copyOut: copy.out.trim(), declared: p.type.declared });
     process.stderr.write(`${code === 0 ? "✅" : code === 1 ? "🔴" : "⚠️ "} ${url}\n`);
+    process.stderr.write(`${copy.code === 0 ? "✅" : copy.code === 1 ? "🔴" : "⚠️ "} 카피 ${url}\n`);
   }
 }
 
@@ -141,22 +146,24 @@ if (crossPages.length >= 2) {
 }
 
 // ── 3) 보고 ──────────────────────────────────────────────────────────────
-const failed = rows.filter((r) => r.code === 1);
-const errored = rows.filter((r) => r.code !== 0 && r.code !== 1);
+const failed = rows.filter((r) => r.code === 1 || r.copyCode === 1);
+const errored = rows.filter((r) => ![0, 1].includes(r.code) || ![0, 1].includes(r.copyCode));
 const md =
   `# 페이지 감사 — ${contract.baseUrl} · ${rows.length}개 화면\n\n` +
-  `> 이 감사는 **구조·렌더와 계약에 선언된 항목의 존재**만 본다. ` +
-  `"이 화면이 잘 만들어졌는가"는 판정하지 않는다 — 그건 P0에서 의도를 선언한 사람의 일이다.\n\n` +
+  `> 이 감사는 **구조·렌더·계약 항목의 존재와 결정 가능한 카피 규칙**만 본다. ` +
+  `자연스러움·문맥 적합성과 "이 화면이 잘 만들어졌는가"는 판정하지 않는다 — 그건 사람의 일이다.\n\n` +
   `| 화면 | 유형 | 이 화면이 돕는 결정 | 결과 |\n|---|---|---|---|\n` +
-  rows.map((r) => `| \`${shownPath(r)}\` | ${r.type.name}${r.declared ? " (계약 선언)" : ""} | ${r.decision ?? "—"} | ${r.code === 0 ? "통과" : r.code === 1 ? `🔴 ${r.findings.filter((f) => f.includes("🔴")).length}건` : "⚠️ 실행 실패"} |`).join("\n") +
+  rows.map((r) => `| \`${shownPath(r)}\` | ${r.type.name}${r.declared ? " (계약 선언)" : ""} | ${r.decision ?? "—"} | 구조 ${r.code === 0 ? "통과" : r.code === 1 ? `🔴 ${r.findings.filter((f) => f.includes("🔴")).length}건` : "⚠️ 실행 실패"} · 카피 ${r.copyCode === 0 ? "통과" : r.copyCode === 1 ? "🔴 실패" : "⚠️ 판정 실패"} |`).join("\n") +
   `\n\n## 화면별 지적\n\n` +
   (rows.every((r) => !r.findings.length)
     ? "- ✅ 구조·계약 이상 없음(의도 부합은 미판정)\n"
     : rows.filter((r) => r.findings.length).map((r) => `### \`${shownPath(r)}\` (${r.type.name})\n\n${r.findings.join("\n")}\n`).join("\n")) +
+  `\n## 카피 검사 — 길이·어휘 + 한·영 알려진 패턴\n\n` +
+  rows.map((r) => `### \`${shownPath(r)}\`\n\n${r.copyOut || "- 판정 출력 없음"}\n`).join("\n") +
   `\n## 교차 검사 — 서로 같은 화면인가\n\n${crossOut}\n` +
   `\n## 시안 (§1c · 빌드 전 목표물)${diagnose ? " — 진단 모드에서는 미판정" : ""}\n\n${compOut}\n` +
   `\n## 컴포넌트 층 (프로젝트 단위 · 1회)\n\n${primOut}\n` +
-  `\n---\n\n**화면 ${rows.length}개 중 실패 ${failed.length}개**${errored.length ? ` · 실행 실패 ${errored.length}개` : ""}` +
+  `\n---\n\n**화면 ${rows.length}개 중 구조·카피 실패 ${failed.length}개**${errored.length ? ` · 실행 실패 ${errored.length}개` : ""}` +
   ` · 교차 검사 ${crossCode === 0 ? "통과" : "실패"} · 시안 ${diagnose ? "미판정(진단 모드)" : compCode === 0 ? "통과" : "실패"}` +
   `${srcDir ? ` · 컴포넌트 층 ${primCode === 0 ? "통과" : "실패"}` : ""}\n`;
 
