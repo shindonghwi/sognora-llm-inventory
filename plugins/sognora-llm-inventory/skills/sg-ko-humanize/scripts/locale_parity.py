@@ -47,10 +47,12 @@ EN_NUM_WORD_RE = re.compile(
 CUR_RE = re.compile(r"[$₩€¥£]|원\b|USD|KRW|EUR|JPY")
 PH_RE = re.compile(r"\{\{?\s*[\w.]+\s*\}?\}|%[sd]|\$\d+|:[a-z][\w]*(?=\W|$)")
 URL_RE = re.compile(r"https?://[^\s)\]\"']+")
-# 약어는 **기술 용어 화이트리스트로만** 본다.
+# 약어는 **원문에서 대문자로 표기된 기술 용어 화이트리스트로만** 본다.
 # 첫 구현은 연속 대문자를 전부 약어로 셌다가 실코퍼스에서 터졌다 — 영문 eyebrow는
 # "SHARE WITH CLIENTS"처럼 대문자가 **장식**이고, 한글에는 대응물이 없는 게 정상이다.
 # 우리가 실제로 지키려던 건 "JPG, PNG 최대 10MB"가 양쪽에서 같은가였다.
+# 문장 전체를 upper로 바꾸면 문장 첫 동사 "Pin"도 기술 약어 "PIN"이 되므로
+# 약어 추출에서는 원문의 대소문자를 보존한다.
 TECH = {"JPG", "JPEG", "PNG", "WEBP", "GIF", "SVG", "PDF", "HEIC", "MP4", "MOV",
         "KB", "MB", "GB", "TB", "API", "URL", "CSV", "XLS", "XLSX", "ZIP",
         "HTML", "CSS", "SDK", "OTP", "SMS", "PIN", "ID", "QR", "AI", "RGB", "CMYK"}
@@ -157,7 +159,7 @@ def facts(v: str) -> dict:
     return {"숫자": sorted(NUM_RE.findall(v.replace(" ", ""))),
             "보간": sorted(PH_RE.findall(v)),
             "URL": sorted(URL_RE.findall(v)),
-            "약어": sorted({a for a in ACRO_RE.findall(v.upper()) if a in TECH})}
+            "약어": sorted({a for a in ACRO_RE.findall(v) if a in TECH})}
 
 
 def compare_locale(strings: dict, base: str, target: str) -> list:

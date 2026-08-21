@@ -49,6 +49,17 @@ class HumanizeRegressions(unittest.TestCase):
         issues = json.loads(proc.stdout)["files"][0]["issues"]
         self.assertTrue(any(issue["종류"] == "숫자" for issue in issues))
 
+    def test_titlecase_pin_is_not_treated_as_technical_acronym(self):
+        proc = run_script("locale_parity.py", FIXTURES / "locale_titlecase_pin.ts", "--json")
+        self.assertEqual(proc.returncode, 0, proc.stderr or proc.stdout)
+        self.assertEqual(json.loads(proc.stdout)["total"], 0)
+
+    def test_uppercase_pin_is_still_checked_as_technical_acronym(self):
+        proc = run_script("locale_parity.py", FIXTURES / "locale_uppercase_pin_mismatch.ts", "--json")
+        self.assertEqual(proc.returncode, 1, proc.stderr or proc.stdout)
+        issues = json.loads(proc.stdout)["files"][0]["issues"]
+        self.assertTrue(any(issue["종류"] == "약어" for issue in issues))
+
     def test_short_text_over_fifty_percent_is_rejected(self):
         proc = run_script(
             "change_rate.py",
