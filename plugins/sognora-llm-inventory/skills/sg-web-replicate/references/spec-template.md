@@ -5,7 +5,8 @@
 
 ## 0. 계약 요약
 
-- 원본 URL / 캡처 일시 / 뷰포트 세트 / DPR
+- 원본 URL / route(status·redirect·canonical 포함) / 캡처 일시 / 뷰포트 세트 / DPR
+- `routes.json`·`states.json`·증거 `conditionsSha256` / script fingerprint
 - 의도적 차이(override.json 요약)
 
 ## 1. 디자인 토큰
@@ -34,8 +35,8 @@
 
 ## 5. 상호작용 상태표
 
-| 트리거 | 대상 | 변화 | 지속시간 | 근거 |
-|---|---|---|---|---|
+| 상태 ID | 트리거 | 관찰 대상 | before → mid → after | duration/easing | 근거 |
+|---|---|---|---|---|---|
 
 ## 6. 반응형
 
@@ -46,3 +47,5 @@
 
 - 측정 못 한 항목과 이유
 - 원본의 의도된 결함(그대로 복제할지 여부)
+- interaction inventory의 exclusion과 representativeReason
+- 대체 자산·mask(있으면 완전 복제 미달로 표시)

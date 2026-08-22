@@ -1,154 +1,261 @@
 #!/usr/bin/env node
 /**
- * 원본 캡처 + 측정 — 브라우저 1회 기동으로 한 페이지의 전 상태를 훑는다.
- *
- * node capture.mjs --url <URL> --out <dir> [--viewports 1440x900,768x1024,390x844]
- *                  [--headed] [--dpr 1] [--scrolls 0,50,100] [--force] [--storage <state.json>]
- * --scrolls 기본값은 자동: 페이지 높이에 비례해 창이 연속 타일이 되도록 증설(_shared.mjs, 상한 12지점).
- * --no-clock: 가상 시계 동결 해제(기본은 동결 — 타이핑·위젯 부트가 매 런 같은 상태로 결정화된다).
- *
- * 산출: <out>/<viewport>/<state>.png + measure.json + meta.json
- * exit 0 성공 / 1 캡처 실패 / 2 playwright 미설치
+ * 원본 한 라우트의 정적 화면 + 선언된 상호작용/모션 상태를 캡처한다.
+ * 정적 모드는 애니메이션을 끄고, 상태 모드는 정상 모션에서 before/mid/after를 보존한다.
+ * exit 0 완전 캡처 / 1 누락·불완전 / 2 실행 불가
  */
-import { mkdir, writeFile, access } from "node:fs/promises";
-import { join } from "node:path";
+import { mkdir, writeFile } from "node:fs/promises";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { argv, exit } from "node:process";
 import { load, missing } from "./_deps.mjs";
-import { autoScrollPoints, coveragePct, normalizeConsoleError, CLOCK_DEFAULTS, installFrozenClock } from "./_shared.mjs";
+import {
+  advance, autoScrollPositions, canonicalTarget, captureClock, coveragePct,
+  evaluateScenarioAssertions, installFrozenClock, loadStateContract, normalizeConsoleError, rendererMeta,
+  routeTarget, runScenarioSetup, runTrigger, scenariosFor, scriptFingerprint, scrollFile, sha256,
+  stateStyle, verifyEvidence, writeEvidence,
+} from "./_shared.mjs";
 
 const args = parseArgs(argv.slice(2));
 if (!args.url || !args.out) {
-  console.error("usage: capture.mjs --url <URL> --out <dir> [--viewports WxH,...] [--headed]");
+  console.error("usage: capture.mjs --url <URL> --out <dir> [--states states.json] [--viewports WxH,...] [--force]");
   exit(2);
 }
 
 const pw = await load("playwright");
-if (!pw) {
-  missing(["playwright"]);
-  exit(2);
-}
+if (!pw) { missing(["playwright"]); exit(2); }
 const { chromium } = pw;
 
-const viewports = (args.viewports ?? "1440x900,768x1024,390x844")
-  .split(",")
-  .map((v) => {
-    const [w, h] = v.trim().split("x").map(Number);
-    return { label: v.trim(), width: w, height: h };
-  });
-// 스크롤 지점: 명시하지 않으면 페이지 높이에 비례해 자동 증설한다(_shared.mjs).
-// 고정 0/50/100은 3×뷰포트보다 긴 페이지에서 밴드 사각지대를 만들었다(실측).
-const scrollsArg = args.scrolls ? String(args.scrolls).split(",").map(Number) : null;
+let stateContract;
+try { stateContract = await loadStateContract(args.states); }
+catch (error) { console.error(`상태 계약 오류: ${error.message}`); exit(2); }
+
+const viewports = parseViewports(args.viewports ?? "1440x900,768x1024,390x844");
 const dpr = Number(args.dpr ?? 1);
-
-// 측정 대상: 의미 있는 블록만. 모든 노드를 재는 것은 낭비다(rules.md).
-const MEASURE_SELECTOR =
-  "header, nav, main, footer, section, h1, h2, h3, [class*=hero], [class*=container], " +
-  "[class*=card], button, a[class*=btn], a[class*=button]";
-
+const clock = args["no-clock"] ? null : captureClock(args.clock);
+const route = routeTarget(args.route ?? args.url);
+const scripts = await scriptFingerprint(dirname(fileURLToPath(import.meta.url)));
 const browser = await chromium.launch({ headless: !args.headed });
-// 가상 시계(기본 on, --no-clock으로 해제) — 타이머 구동 비결정을 결정화한다(_shared.mjs 참조).
-// clock은 컨텍스트마다 새로 설치해야 하므로 뷰포트마다 컨텍스트를 새로 만든다.
-// 부수 효과로 diff.mjs(원래 뷰포트별 새 컨텍스트)와 캐시·클록 조건이 대칭이 된다.
-const clock = args["no-clock"] ? null : { ...CLOCK_DEFAULTS };
-const written = []; // 이번 런에 캡처한 measure — 콘솔 baseline을 뷰포트 합집합으로 만들어 마지막에 쓴다
+const written = [];
+let failures = 0;
 
-let failed = 0;
 for (const vp of viewports) {
   const dir = join(args.out, vp.label);
   await mkdir(dir, { recursive: true });
-  if (!args.force && (await exists(join(dir, "measure.json")))) {
-    console.log(`skip (이미 있음): ${vp.label} — 다시 찍으려면 --force`);
+  if (!args.force && await evidenceIsValid(dir)) {
+    console.log(`skip (검증된 증거 있음): ${vp.label} — 다시 찍으려면 --force`);
     continue;
   }
 
-  const context = await browser.newContext({
-    deviceScaleFactor: dpr,
-    reducedMotion: "reduce", // 애니메이션 정지 — 같은 페이지가 매번 다르게 찍히는 것 방지
-    storageState: args.storage || undefined,
-  });
-  const page = await context.newPage();
-  // 원본이 스스로 뿜는 콘솔 오류를 baseline으로 기록한다 — diff는 "원본에 없던 새 오류"만 센다.
-  // (aside.com 실측: 원본이 오류 2~4건을 뿜어 "콘솔 오류 0건" 게이트를 원본 자신이 통과 못 했다.)
-  const consoleErrors = [];
-  page.on("console", (m) => m.type() === "error" && consoleErrors.push(m.text().slice(0, 200)));
-
-  await page.setViewportSize({ width: vp.width, height: vp.height });
-  if (clock) await installFrozenClock(page, clock.epoch); // 로드 "전" 동결이어야 결정적이다(실측)
+  const allConsoleErrors = [];
+  let opened;
   try {
-    await page.goto(args.url, { waitUntil: "networkidle", timeout: 45000 });
-  } catch (e) {
-    console.error(`goto 실패 (${vp.label}): ${e.message}`);
-    failed++;
-    await context.close();
+    opened = await openPage(vp, "static", allConsoleErrors);
+  } catch (error) {
+    console.error(`goto 실패 (${vp.label}): ${error.message}`);
+    failures++;
     continue;
   }
-  await page.addStyleTag({
-    content: `*,*::before,*::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}`,
-  });
-  // 동결된 타이머를 고정 예산만큼 가상으로 진행 — 위젯 부트·타이핑이 매 런 같은 상태에서 멈춘다.
-  if (clock) await page.clock.runFor(clock.runFor);
-  await page.waitForTimeout(300); // robots 예의 + 폰트 안정화
+  const { context, page, response } = opened;
 
-  // 실측 뷰포트 — 요청값과 다르면 이 캡처는 기준으로 쓰지 않는다(rules.md)
   const measured = await page.evaluate(() => [window.innerWidth, window.innerHeight]);
+  const trustworthy = measured[0] === vp.width && measured[1] === vp.height;
+  const render = await rendererMeta(page);
+  const redirectChain = response ? requestRedirectChain(response.request()) : [];
   const meta = {
+    evidenceVersion: 3,
     url: args.url,
+    route,
+    status: response?.status() ?? null,
+    finalRoute: routeTarget(page.url()),
+    redirectChain,
+    canonical: canonicalTarget(render.canonical),
+    renderer: render.framework,
+    renderSignature: sha256(`${render.text}\0${render.structure}`),
     viewportRequested: [vp.width, vp.height],
     viewportMeasured: measured,
     dpr,
-    trustworthy: measured[0] === vp.width && measured[1] === vp.height,
+    trustworthy,
     capturedAt: new Date().toISOString(),
     headless: !args.headed,
-    clock, // {epoch, runFor} 또는 null — diff는 이 값 그대로 재현해야 동일 조건이다
+    clock,
+    modes: { static: "reduced-motion+css-disabled", interaction: "normal-motion" },
   };
 
-  // 상태별 캡처 — 한 번의 기동 안에서 전부 처리
-  const pageHeight = await page.evaluate(() => document.body.scrollHeight);
-  const scrolls = scrollsArg ?? autoScrollPoints(pageHeight, vp.height);
-  const pixelCoveragePct = coveragePct(scrolls, pageHeight, vp.height);
-  for (const pct of scrolls) {
-    await page.evaluate((p) => window.scrollTo(0, (document.body.scrollHeight - window.innerHeight) * (p / 100)), pct);
-    await page.waitForTimeout(150);
-    await page.screenshot({ path: join(dir, `scroll-${pct}.png`) });
+  const pageHeight = await page.evaluate(() => Math.max(
+    document.body?.scrollHeight ?? 0, document.documentElement?.scrollHeight ?? 0
+  ));
+  let scrollPositions;
+  try {
+    if (args["scroll-y"]) scrollPositions = String(args["scroll-y"]).split(",").map(Number);
+    else if (args.scrolls) {
+      scrollPositions = String(args.scrolls).split(",").map((p) =>
+        Math.round(Math.max(0, pageHeight - vp.height) * (Number(p) / 100))
+      );
+    } else scrollPositions = autoScrollPositions(pageHeight, vp.height);
+  } catch (error) {
+    console.error(`${vp.label}: ${error.message}`);
+    failures++;
+    await context.close();
+    continue;
+  }
+  scrollPositions = [...new Set(scrollPositions.map((y) => Math.max(0, Math.round(y))))].sort((a, b) => a - b);
+  const pixelCoveragePct = coveragePct(scrollPositions, pageHeight, vp.height);
+  const states = [];
+  for (const y of scrollPositions) {
+    await page.evaluate((top) => window.scrollTo(0, top), y);
+    await advance(page, 150, clock);
+    const file = scrollFile(y);
+    await page.screenshot({ path: join(dir, file) });
+    states.push({ id: `static-scroll-${y}`, kind: "static", file, shotTop: y, fullPage: false });
   }
   await page.evaluate(() => window.scrollTo(0, 0));
-  await page.waitForTimeout(150);
+  await advance(page, 150, clock);
   await page.screenshot({ path: join(dir, "full.png"), fullPage: true });
+  states.push({ id: "static-full", kind: "static", file: "full.png", shotTop: 0, fullPage: true });
 
-  // hover 상태 — 첫 번째 주요 CTA
-  const cta = page.locator("button, a[class*=btn], a[class*=button]").first();
-  let hoverDelta = null;
-  if (await cta.count()) {
-    const before = await boxOf(cta);
-    await cta.hover({ timeout: 3000 }).catch(() => {});
-    await page.waitForTimeout(200);
-    await page.screenshot({ path: join(dir, "hover-cta.png") });
-    hoverDelta = { before, after: await boxOf(cta) };
-    await page.mouse.move(0, 0);
+  const elements = await measureElements(page);
+  const horizontalOverflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 1);
+  const scenarios = scenariosFor(stateContract, route, vp.label);
+  const interactionInventory = await inventoryInteractions(page, scenarios, stateContract.exclusions, route, vp.label);
+  for (const item of interactionInventory) item.discoveredIn = ["baseline"];
+  await context.close();
+
+  const scenarioReports = [];
+  for (const scenario of scenarios) {
+    let motion;
+    try {
+      motion = await openPage(vp, "motion", allConsoleErrors);
+      await runScenarioSetup(motion.page, scenario, clock);
+      const target = scenario.trigger.selector ? motion.page.locator(scenario.trigger.selector) : null;
+      const count = target ? await target.count() : 1;
+      if (count === 0) throw new Error(`대상 없음: ${scenario.trigger.selector}`);
+      if (count > 1 && !scenario.representativeReason) {
+        throw new Error(`대상이 ${count}개입니다. 하나로 좁히거나 representativeReason을 기록하세요`);
+      }
+      if (target) await target.first().scrollIntoViewIfNeeded().catch(() => {});
+      const frames = [];
+      const assertions = [];
+      const before = scenario.frames.find((f) => f.phase === "before" || f.name === "before");
+      const beforeName = before?.name ?? "before";
+      const beforeFile = `state-${scenario.id}-${beforeName}.png`;
+      await motion.page.screenshot({ path: join(dir, beforeFile) });
+      frames.push({ name: beforeName, phase: "before", atMs: 0, file: beforeFile,
+        style: await stateStyle(motion.page, scenario.observe ?? scenario.trigger.selector) });
+      states.push({ id: `${scenario.id}:${beforeName}`, kind: "interaction", scenario: scenario.id,
+        frame: beforeName, phase: "before", atMs: 0, file: beforeFile, shotTop: await scrollTop(motion.page) });
+      assertions.push(...await evaluateScenarioAssertions(motion.page, scenario, beforeName));
+
+      await runTrigger(motion.page, scenario.trigger);
+      let elapsed = 0;
+      for (const frame of scenario.frames.filter((f) => f.phase !== "before" && f.name !== "before")) {
+        await advance(motion.page, frame.atMs - elapsed, clock);
+        elapsed = frame.atMs;
+        const file = `state-${scenario.id}-${frame.name}.png`;
+        await motion.page.screenshot({ path: join(dir, file) });
+        frames.push({ name: frame.name, phase: "after", atMs: frame.atMs, file,
+          style: await stateStyle(motion.page, scenario.observe ?? scenario.trigger.selector) });
+        states.push({ id: `${scenario.id}:${frame.name}`, kind: "interaction", scenario: scenario.id,
+          frame: frame.name, phase: "after", atMs: frame.atMs, file, shotTop: await scrollTop(motion.page) });
+        assertions.push(...await evaluateScenarioAssertions(motion.page, scenario, frame.name));
+      }
+      const exposed = await inventoryInteractions(motion.page, scenarios, stateContract.exclusions, route, vp.label);
+      mergeInteractionInventory(interactionInventory, exposed, scenario.id);
+      const assertionFailures = assertions.filter((item) => !item.pass);
+      if (assertionFailures.length) failures++;
+      scenarioReports.push({ id: scenario.id, setup: scenario.setup, trigger: scenario.trigger, observe: scenario.observe,
+        representativeReason: scenario.representativeReason, frames, assertions,
+        pass: assertionFailures.length === 0,
+        error: assertionFailures.length ? `상태 assertion 실패: ${assertionFailures.map((item) => `${item.frame}:${item.selector}=${item.actual}, expected ${item.state}`).join("; ")}` : undefined });
+      if (assertionFailures.length) {
+        console.error(`${vp.label}/${scenario.id}: ${scenarioReports.at(-1).error}`);
+      }
+    } catch (error) {
+      failures++;
+      scenarioReports.push({ id: scenario.id, setup: scenario.setup, trigger: scenario.trigger, observe: scenario.observe,
+        representativeReason: scenario.representativeReason, pass: false, error: error.message });
+      console.error(`${vp.label}/${scenario.id}: 상태 캡처 실패 — ${error.message}`);
+    } finally {
+      await motion?.context.close().catch(() => {});
+    }
   }
 
-  const elements = await page.evaluate((sel) => {
-    // 첫 지정 family가 "실제로 그 폰트로 그려지는가" — 선언 문자열만 비교하면 @font-face가
-    // 빠진 복제본이 "폰트 일치"로 통과한다(실측). document.fonts.check는 매칭 face가 없는
-    // 미지 family에 true를 주는 스펙 특성이 있어(실측) 못 쓴다 — 캔버스 measureText로
-    // "family+폴백"과 "폴백 단독"의 글자 폭을 대조한다. 둘 다 같으면 폴백으로 그려진 것이다.
+  const uncontracted = interactionInventory.filter((item) => !item.covered && !item.excluded);
+  if (uncontracted.length) {
+    failures++;
+    console.error(`${vp.label}: 상태 계약/제외 사유가 없는 인터랙티브 요소 ${uncontracted.length}개`);
+  }
+  if (!trustworthy || pixelCoveragePct !== 100) failures++;
+
+  const consoleBaseline = [...new Set(allConsoleErrors.map(normalizeConsoleError))];
+  const measure = {
+    meta, pageHeight, horizontalOverflow, scrollPositions, pixelCoveragePct,
+    consoleBaseline, consoleErrorsSample: allConsoleErrors.slice(0, 8),
+    elements, interactionInventory, uncontractedInteractions: uncontracted,
+    scenarios: scenarioReports,
+  };
+  await writeFile(join(dir, "meta.json"), JSON.stringify(meta, null, 2));
+  await writeFile(join(dir, "measure.json"), JSON.stringify(measure, null, 2));
+  await writeFile(join(dir, "state-manifest.json"), JSON.stringify({ version: 3, route, viewport: vp.label, states }, null, 2));
+  written.push({ dir, vp, measure, states });
+  console.log(`${vp.label}: 정적 ${scrollPositions.length + 1} · 상호작용 ${states.filter((s) => s.kind === "interaction").length} · 커버리지 ${pixelCoveragePct}%`);
+}
+
+// 원본 콘솔 baseline은 전 뷰포트 합집합으로 저장한다.
+const baselineUnion = [...new Set(written.flatMap((w) => w.measure.consoleBaseline))];
+for (const item of written) {
+  item.measure.consoleBaseline = baselineUnion;
+  await writeFile(join(item.dir, "measure.json"), JSON.stringify(item.measure, null, 2));
+  const conditions = {
+    route, viewport: item.vp.label, dpr, clock,
+    modes: item.measure.meta.modes,
+    scrollPositions: item.measure.scrollPositions,
+    stateIds: item.states.map((s) => s.id),
+    stateContractSha256: sha256(JSON.stringify(stateContract)),
+  };
+  await writeEvidence(item.dir, conditions, { scriptFingerprint: scripts });
+}
+
+await browser.close();
+exit(failures ? 1 : 0);
+
+async function openPage(vp, mode, consoleErrors) {
+  const context = await browser.newContext({
+    viewport: { width: vp.width, height: vp.height },
+    deviceScaleFactor: dpr,
+    reducedMotion: mode === "static" ? "reduce" : "no-preference",
+    storageState: args.storage || undefined,
+    hasTouch: vp.width <= 500,
+  });
+  const page = await context.newPage();
+  page.on("console", (m) => m.type() === "error" && consoleErrors.push(m.text().slice(0, 240)));
+  if (clock) await installFrozenClock(page, clock.epoch);
+  let response;
+  try {
+    response = await page.goto(args.url, { waitUntil: "networkidle", timeout: 45000 });
+    if (mode === "static") {
+      await page.addStyleTag({ content: "*,*::before,*::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}" });
+    }
+    await advance(page, clock?.runFor ?? 3000, clock);
+    return { context, page, response };
+  } catch (error) {
+    await context.close();
+    throw error;
+  }
+}
+
+async function measureElements(page) {
+  return page.evaluate((sel) => {
     const ctx = document.createElement("canvas").getContext("2d");
-    const SAMPLE = "abgWQM한글힣 0123ilI.,";
-    const famCache = {};
-    const famRendered = (fam) => {
-      if (fam in famCache) return famCache[fam];
-      try {
-        ctx.font = `32px ${fam}, monospace`;
-        const wm = ctx.measureText(SAMPLE).width;
-        ctx.font = "32px monospace";
-        const m = ctx.measureText(SAMPLE).width;
-        ctx.font = `32px ${fam}, serif`;
-        const ws = ctx.measureText(SAMPLE).width;
-        ctx.font = "32px serif";
-        const sr = ctx.measureText(SAMPLE).width;
-        // 두 폴백 모두와 폭이 같으면 그 family는 렌더에 참여하지 않는다(미로드/미존재)
-        return (famCache[fam] = wm !== m || ws !== sr);
-      } catch { return (famCache[fam] = true); }
+    const sample = "abgWQM한글힣 0123ilI.,";
+    const cache = {};
+    const rendered = (fam) => {
+      if (fam in cache) return cache[fam];
+      ctx.font = `32px ${fam}, monospace`; const wm = ctx.measureText(sample).width;
+      ctx.font = "32px monospace"; const m = ctx.measureText(sample).width;
+      ctx.font = `32px ${fam}, serif`; const ws = ctx.measureText(sample).width;
+      ctx.font = "32px serif"; const s = ctx.measureText(sample).width;
+      return (cache[fam] = wm !== m || ws !== s);
     };
     const out = [];
     for (const el of document.querySelectorAll(sel)) {
@@ -157,83 +264,91 @@ for (const vp of viewports) {
       const cs = getComputedStyle(el);
       const fam = cs.fontFamily.split(",")[0].trim();
       out.push({
-        tag: el.tagName.toLowerCase(),
-        id: el.id || null,
-        cls: (el.className && String(el.className).slice(0, 60)) || null,
+        tag: el.tagName.toLowerCase(), id: el.id || null,
+        cls: (el.className && String(el.className).slice(0, 80)) || null,
         box: { x: +r.x.toFixed(1), y: +r.y.toFixed(1), w: +r.width.toFixed(1), h: +r.height.toFixed(1) },
         font: `${fam} ${cs.fontSize}/${cs.lineHeight} ${cs.fontWeight}`,
-        fontLoaded: /^(serif|sans-serif|monospace|system-ui|ui-\w+|cursive|fantasy|math)$/i.test(fam) ? true : famRendered(fam),
-        color: cs.color,
-        bg: cs.backgroundColor,
-        pad: cs.padding,
-        margin: cs.margin,
-        radius: cs.borderRadius,
-        shadow: cs.boxShadow === "none" ? null : cs.boxShadow,
+        fontLoaded: /^(serif|sans-serif|monospace|system-ui|ui-\w+|cursive|fantasy|math)$/i.test(fam) || rendered(fam),
+        color: cs.color, bg: cs.backgroundColor, pad: cs.padding, margin: cs.margin,
+        radius: cs.borderRadius, shadow: cs.boxShadow === "none" ? null : cs.boxShadow,
         position: cs.position,
       });
-      if (out.length >= 250) break; // 상한 — 측정은 의미 있는 블록까지만
+      if (out.length >= 1000) break;
     }
     return out;
-  }, MEASURE_SELECTOR);
+  }, "header,nav,main,footer,section,h1,h2,h3,[class*=hero],[class*=container],[class*=card],button,a,input,select,textarea,[role=button],[role=tab],[role=dialog]");
+}
 
-  const horizontalOverflow = await page.evaluate(
-    () => document.documentElement.scrollWidth > window.innerWidth + 1
-  );
-
-  // 원본의 콘솔 오류 baseline — diff가 "원본에 없던 새 오류"만 세도록 정규화 키로 저장.
-  // 원본 오류는 런마다 흔들린다(aside 실측: 3~5종) — 뷰포트 합집합으로 과소 수집을 완화하므로
-  // measure.json은 전 뷰포트 캡처가 끝난 뒤에 쓴다.
-  const consoleBaseline = [...new Set(consoleErrors.map(normalizeConsoleError))];
-
-  await writeFile(join(dir, "meta.json"), JSON.stringify(meta, null, 2));
-  written.push({
-    dir,
-    measure: {
-      meta, pageHeight, horizontalOverflow, hoverDelta,
-      scrollPoints: scrolls, pixelCoveragePct,
-      consoleBaseline, consoleErrorsSample: consoleErrors.slice(0, 5),
-      elements,
-    },
+async function inventoryInteractions(page, scenarios, exclusions, currentRoute, viewport) {
+  const scenarioSelectors = scenarios.flatMap((scenario) => [
+    scenario.trigger?.selector,
+    ...(scenario.assertions ?? []).map((assertion) => assertion.selector),
+  ].filter(Boolean).map((selector) => ({ id: scenario.id, selector })));
+  const relevantExclusions = (exclusions ?? []).filter((e) => {
+    const routes = e.routes ?? ["*"]; const vps = e.viewports ?? ["*"];
+    return (routes.includes("*") || routes.map(routeTarget).includes(currentRoute)) &&
+      (vps.includes("*") || vps.includes(viewport));
   });
-  console.log(
-    `captured ${vp.label}: 요소 ${elements.length}개 · 스크롤 ${scrolls.length}지점 · 커버리지 ${pixelCoveragePct}%` +
-      (clock ? "" : " · ⚠클록 없음") +
-      (consoleBaseline.length ? ` · 원본 콘솔오류 ${consoleBaseline.length}종(baseline)` : "") +
-      (meta.trustworthy ? "" : `  ⚠ 뷰포트 불일치 ${measured.join("x")} — 기준 자료로 쓰지 말 것`) +
-      (horizontalOverflow ? "  ⚠ 가로 스크롤 발생" : "")
-  );
-  await context.close();
+  return page.evaluate(({ scenarioSelectors, exclusions }) => {
+    const matches = (el, selector) => { try { return el.matches(selector); } catch { return false; } };
+    return [...document.querySelectorAll('a[href],button,input,select,textarea,[role="button"],[role="tab"],[draggable="true"]')]
+      .filter((el) => {
+        const r = el.getBoundingClientRect(); const cs = getComputedStyle(el);
+        return r.width > 0 && r.height > 0 && cs.visibility !== "hidden" && cs.display !== "none";
+      })
+      .slice(0, 1000)
+      .map((el, index) => {
+        const coveredBy = scenarioSelectors.filter((s) => matches(el, s.selector)).map((s) => s.id);
+        const exclusion = exclusions.find((e) => e.reason && matches(el, e.selector));
+        return {
+          index, tag: el.tagName.toLowerCase(), id: el.id || null, role: el.getAttribute("role"),
+          type: el.getAttribute("type"), href: el.getAttribute("href"),
+          label: el.getAttribute("aria-label") || (el.textContent || "").trim().slice(0, 80),
+          covered: coveredBy.length > 0, coveredBy,
+          excluded: Boolean(exclusion), exclusionReason: exclusion?.reason ?? null,
+        };
+      });
+  }, { scenarioSelectors, exclusions: relevantExclusions });
 }
 
-// 콘솔 baseline 합집합 — 이번 런에 캡처된 전 뷰포트의 오류를 합쳐서 각 measure.json에 쓴다
-const baselineUnion = [...new Set(written.flatMap((w) => w.measure.consoleBaseline))];
-for (const w of written) {
-  w.measure.consoleBaseline = baselineUnion;
-  await writeFile(join(w.dir, "measure.json"), JSON.stringify(w.measure, null, 2));
-}
-
-await browser.close();
-exit(failed ? 1 : 0);
-
-async function boxOf(loc) {
-  const b = await loc.boundingBox().catch(() => null);
-  return b ? { x: +b.x.toFixed(1), y: +b.y.toFixed(1), w: +b.width.toFixed(1), h: +b.height.toFixed(1) } : null;
-}
-async function exists(p) {
-  try {
-    await access(p);
-    return true;
-  } catch {
-    return false;
+function mergeInteractionInventory(current, incoming, stateId) {
+  for (const item of incoming) {
+    const key = JSON.stringify([item.tag, item.id, item.role, item.type, item.href, item.label]);
+    const existing = current.find((candidate) =>
+      JSON.stringify([candidate.tag, candidate.id, candidate.role, candidate.type, candidate.href, candidate.label]) === key
+    );
+    if (existing) {
+      existing.discoveredIn ??= ["baseline"];
+      if (!existing.discoveredIn.includes(stateId)) existing.discoveredIn.push(stateId);
+      existing.covered ||= item.covered;
+      existing.excluded ||= item.excluded;
+    } else current.push({ ...item, discoveredIn: [stateId] });
   }
 }
-function parseArgs(a) {
-  const o = {};
-  for (let i = 0; i < a.length; i++) {
-    if (!a[i].startsWith("--")) continue;
-    const k = a[i].slice(2);
-    const v = a[i + 1] && !a[i + 1].startsWith("--") ? a[++i] : true;
-    o[k] = v;
+
+function requestRedirectChain(request) {
+  const chain = [];
+  for (let r = request; r; r = r.redirectedFrom()) chain.unshift(routeTarget(r.url()));
+  return chain;
+}
+
+async function scrollTop(page) { return page.evaluate(() => window.scrollY); }
+async function evidenceIsValid(dir) {
+  try { return (await verifyEvidence(dir)).ok; } catch { return false; }
+}
+function parseViewports(value) {
+  return String(value).split(",").map((label) => {
+    const match = /^(\d+)x(\d+)$/.exec(label.trim());
+    if (!match) throw new Error(`잘못된 viewport: ${label}`);
+    return { label: label.trim(), width: Number(match[1]), height: Number(match[2]) };
+  });
+}
+function parseArgs(values) {
+  const out = {};
+  for (let i = 0; i < values.length; i++) {
+    if (!values[i].startsWith("--")) continue;
+    const key = values[i].slice(2);
+    out[key] = values[i + 1] && !values[i + 1].startsWith("--") ? values[++i] : true;
   }
-  return o;
+  return out;
 }

@@ -25,5 +25,14 @@ python3 -m unittest discover \
   -p 'test_*.py' || fail=1
 
 echo
+echo "── sg-web-replicate 악성 회귀 테스트 ───────────────────"
+node --test plugins/sognora-llm-inventory/skills/sg-web-replicate/tests/*.test.mjs || fail=1
+
+echo
+echo "── 양쪽 런타임 동기화 계기 문법 ────────────────────────"
+bash -n setup.sh install.sh update.sh tools/sync-runtimes.sh || fail=1
+node --check tools/verify-runtime-sync.mjs || fail=1
+
+echo
 if [ "$fail" -ne 0 ]; then echo "🔴 자체 점검 실패"; exit 1; fi
 echo "✅ 자체 점검 통과"

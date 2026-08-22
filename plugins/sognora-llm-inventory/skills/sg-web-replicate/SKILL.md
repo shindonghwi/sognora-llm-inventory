@@ -1,118 +1,141 @@
 ---
 name: sg-web-replicate
-description: 레퍼런스 웹사이트의 화면(프론트)을 눈대중이 아니라 측정값으로 복제한다. 실제 크롬으로 상태별 캡처·요소 측정 후 원본과 동일 조건에서 비교해 오차 게이트 통과까지 반복. 폰트·이미지는 원본 파일 그대로. 트리거 — "이 사이트 똑같이 만들어줘", "레퍼런스 복제", "이 페이지 클론", "디자인 그대로 구현", "원본이랑 비교해서 차이 잡아줘", "픽셀 단위로 맞춰줘", "replicate this site", "clone this page". 비대상 — 랜딩 창작·재제작은 sg-landing-forge 담당, 텍스트만 복사, 백엔드·기능 구현은 아님.
+description: 레퍼런스 웹사이트의 프론트를 첫 진입 팝업·저장상태·전 라우트·반응형·상호작용·모션까지 측정값과 원본 자산으로 완전 복제하고 route×viewport×state strict 게이트로 검증한다. 트리거 — "이 사이트 똑같이 만들어줘", "완전 복제", "레퍼런스 복제", "이 페이지 클론", "원본이랑 비교", "픽셀 단위로 맞춰줘", "replicate this site", "clone this page". 비대상 — 새 디자인 창작은 sg-landing-forge, 백엔드·서버 기능 구현은 아님.
 ---
 
-# sg-web-replicate — 측정 기반 화면 복제
+# sg-web-replicate — 완전 복제 게이트
 
-> 이 파일 하나가 Claude Code와 Codex 양쪽에서 동작한다.
-> 측정 항목·게이트 기준·안전 경계는 `references/rules.md`(SSOT). 명세 양식은 `references/spec-template.md`.
+목표는 정적 스크린샷 유사가 아니다. 대상 프론트의 **탐색된 모든 라우트 × 모든 계약 viewport × 모든 관찰 가능한 상태**를 같은 조건에서 재현하고, 기계 집계가 모두 통과한 경우에만 완료다. 서버 데이터 영역은 같은 화면의 로컬 fixture로 채우며 서버 로직·DB·실결제 같은 기능은 구현하지 않는다.
 
-**범위: 화면만.** 보이는 것(레이아웃·타이포·자산·반응형·시각적 상호작용)을 복제한다. 서버 로직·DB·API 구현은 대상이 아니며, 서버 데이터로 채워지는 영역은 같은 모양의 로컬 fixture로 채운다.
+측정값·게이트·안전 경계는 [rules.md](references/rules.md)가 SSOT다. 상호작용 형식은 [state-contract.md](references/state-contract.md), 명세는 [spec-template.md](references/spec-template.md), 빈 프로젝트 배치는 [layout-presets.md](references/layout-presets.md)를 필요할 때 읽는다.
 
+## 계기 경로
 
-> **계기 위치** — 이 스킬은 사용자 프로젝트에서 도는데 계기는 플러그인 안에 있다. 상대경로 `scripts/…`는 거기 존재하지 않는다. 첫 실행에 한 번 잡고, 이후 모든 명령의 `$S`는 이 경로다:
-> ```bash
-> S=$(sg path sg-web-replicate 2>/dev/null) || S=$(dirname "$(find ~/.claude ~/.codex -name capture.mjs -path '*sg-web-replicate*' 2>/dev/null | head -1)")
-> ```
+플러그인 경로는 결정적으로 해석한다. 임의 `find … | head -1` 폴백으로 다른 버전을 고르지 않는다. `sg`가 없는 Codex 플러그인 환경은 설치 목록의 정확한 plugin id로 찾고, Claude 플러그인은 제공된 root를 쓴다.
 
-## 철칙
+```bash
+if command -v sg >/dev/null 2>&1; then
+  S=$(sg path sg-web-replicate 2>/dev/null)
+elif [ -n "${CLAUDE_PLUGIN_ROOT:-}" ]; then
+  S="$CLAUDE_PLUGIN_ROOT/skills/sg-web-replicate/scripts"
+elif command -v codex >/dev/null 2>&1; then
+  S=$(codex plugin list --json | node -e '
+    let s=""; process.stdin.on("data",d=>s+=d).on("end",()=>{
+      const p=JSON.parse(s).installed.find(x=>x.pluginId==="sognora-llm-inventory@sognora-llm-inventory");
+      if(p?.source?.path) process.stdout.write(p.source.path+"/skills/sg-web-replicate/scripts");
+    })')
+fi
+test -d "$S" || exit 2
+```
 
-1. **눈대중 금지** — "비슷해 보인다"는 판정 근거가 아니다. 판정은 `scripts/`가 뽑은 수치와 diff만 인정한다.
-2. **측정 없는 수치 금지** — 원본에서 측정하지 않은 `max-width`·`padding`·`clamp()`를 임의로 넣지 않는다.
-3. **자산은 원본 그대로** — 폰트·이미지·아이콘은 받은 파일을 쓴다. 유사 폰트로 바꾸거나 아이콘을 직접 그리지 않는다(폰트가 다르면 글자 폭이 달라져 모든 치수가 어긋난다).
-4. **시각적 동작은 관찰로 재현** — 원본 JS를 복원하려 들지 않는다. 관찰 가능한 상태 전이(hover 전후, 열림/닫힘, 스크롤 반응)를 상태표로 적고 그대로 구현한다.
-5. **의도적 차이는 선언** — 원본과 다르게 갈 항목은 `.sognora/replica/override.json`에 기록한다. 선언 안 된 차이는 전부 결함이다.
-6. **안전 경계** — 원본에서 상태를 바꾸는 조작(결제·가입·삭제·전송) 실행 금지. 캡처의 개인정보는 마스킹. 브랜드 자산 사용 책임은 보고에 고지.
-7. **무인 완주 (예외 둘)** — 되묻지 않고 기본값(rules.md)으로 진행한다. 예외는 **사용자만 답할 수 있는 것** 둘: ① **인증**(자격증명) ② **범위**(고유 페이지 20개 초과 또는 이질적 하위 사이트 혼재). 답을 기다리는 동안 확실한 부분은 계속 진행한다.
+## 불변식
+
+1. 눈대중이나 캡처 장수는 완료 근거가 아니다. 완료 근거는 `verify-site.mjs` exit 0과 `completion.json.pass=true`뿐이다.
+2. 원본에서 측정하지 않은 치수·브레이크포인트·duration·easing을 지어내지 않는다.
+3. 폰트·이미지·아이콘·영상은 원본 파일을 쓴다. 불가피한 대체는 `override.json`에 사유와 함께 남기며 strict 완료는 대체 자산 0건이다.
+4. 정적 모드와 정상 모션 모드를 섞지 않는다. 정적 레이아웃은 모션을 끄고, 상호작용은 정상 모션에서 before/mid/after를 캡처한다.
+5. `full.png`, 모든 연속 스크롤 타일, 모든 선언 상태를 실제로 diff한다. 캡처만 하고 비교하지 않은 상태는 누락이다.
+6. 페이지 커버리지 100%, 이미지 크기 정확 일치, 상태별 diff 성공이 필수다. 한 장의 깨진 PNG도 전체 실패다.
+7. query 상태·canonical·alias·redirect·HTTP status·renderer 증거·catch-all fallback·404를 전 라우트 집계에서 검증한다.
+8. 기준/로컬 증거의 개별 SHA-256, 실행 조건 해시, 모든 스크립트(`_shared.mjs`, `_deps.mjs` 포함) 지문을 보존한다.
+9. 결제·가입·삭제·전송처럼 원본 상태를 바꾸는 조작은 실행하지 않는다. 상태 계약의 click·press·drag·swipe는 `safe:true`가 없으면 계기가 거부한다.
+10. 임의의 고정 날짜를 기본값으로 쓰지 않는다. 기준 캡처가 실제로 시작된 시각을 기록해 같은 증거의 원본/로컬 재현에만 공유한다.
 
 ## 절차
 
-### 1. 계약 확정 (LLM 콜 0)
-대상 URL·범위·뷰포트·의도적 변경을 `.sognora/replica/contract.json`에 확정한다. 기본값은 rules.md.
+### 1. 계약과 라우트 원장
 
-### 2. 라우트 탐색 (브라우저 1회)
+`.sognora/replica/contract.json`에 대상 URL·viewport·DPR·의도적 차이·배치 규칙을 기록한다. 사용자가 범위를 줄이지 않았다면 사이트 전체가 범위다.
+
+```bash
+node "$S/discover.mjs" --url <원본URL> --out .sognora/replica/routes.json
 ```
-node "$S/discover.mjs" --url <URL> --out .sognora/replica/routes.json   # 기본 depth 3 · max 1000
+
+`discover.mjs`는 sitemap·robots·desktop/mobile DOM·동일 origin JS 번들 후보를 합치고 **모든 후보를 실제 방문**한다. pathname+query, status, redirect chain, canonical, renderer와 404 probe를 기록한다. `limitReached`, `skipped`, 미방문 후보가 있으면 원장이 불완전하므로 다음 단계로 완료할 수 없다.
+
+고유 화면이 20개를 넘거나 이질적 하위 사이트가 섞인 경우에만 그룹별 실제 개수와 함께 범위를 사용자에게 확인한다. 인증 벽은 guest 구간을 계속 진행하면서 세션/테스트 계정/guest 한정 중 하나를 요청한다. 자격증명은 산출물에 남기지 않는다.
+
+### 2. 상태 계약
+
+먼저 깨끗한 브라우저 상태로 전 라우트·viewport의 첫 진입 레이어를 탐색한다. 탐색은 브라우저의 실제 현재 시각을 사용하며 달력 날짜를 덮어쓰지 않는다.
+
+```bash
+node "$S/probe-states.mjs" \
+  --routes .sognora/replica/routes.json \
+  --out .sognora/replica/states.json
 ```
-- sitemap·robots(가장 싸고 정확) + 링크 크롤을 합쳐 원장을 만들고 `status`·`title`·`auth`를 기록한다.
-- **탐색된 라우트가 전부 대상이다.** `--max`는 폭주 방지 장치이지 작업 범위가 아니다 — 걸리면 올려서 재탐색한다.
-- **범위 제안**: ① 같은 내용의 별칭(`/post/001`과 `/post/001.html`)을 하나로 접고 ② 템플릿·경로가 같은 것끼리 그룹으로 묶는다. 고유 페이지 20개 초과이거나 이질적 그룹이 섞였으면 **그룹별 실제 페이지 수와 함께 선택지로 확인**한다(Claude은 AskUserQuestion, 없으면 번호 목록).
-- **인증 벽 탐지 시**: 목록을 제시하고 ① 세션 파일(`--storage`) ② 테스트 계정 ③ guest만 진행 중 택일을 요청한다. 응답 전까지 guest 라우트를 계속 진행하고 인증 구간은 "보류"로 표시한다. 자격증명은 저장소·보고서에 남기지 않는다.
-- 사용자가 라우트를 명시했으면 이 단계를 건너뛴다.
 
-### 3. 캡처 + 자산 (라우트당 브라우저 1회, 두 스크립트 동시 실행)
+`popupProbe.failed`와 `popupProbe.unresolved`가 모두 0이어야 한다. 계기는 `role=dialog`·`aria-modal`·positioned popup/overlay와 닫기·오늘 하루 보지 않기 제어를 찾아 열림, 닫힘 before/mid/after, 체크 전후, 닫은 뒤 reload 미노출을 자동 계약한다. 닫기 제어를 안전하게 식별하지 못하면 추측하지 않고 exit 1이다.
+
+[state-contract.md](references/state-contract.md)에 따라 자동 생성 계약에 나머지 상태를 보충한다. DOM의 인터랙티브 요소는 시나리오 selector로 덮거나 `exclusions`에 구체적 사유를 기록한다. 자동 hover 한 건으로 전체 인터랙션을 대신하지 않는다.
+
+- hover, click, focus, keyboard, wheel/scroll, drag/swipe, reload, 메뉴·모달·탭·캐러셀·autoplay를 관찰한다.
+- 모션은 before/mid/after 프레임과 `atMs`를 선언한다. 계기는 transition/animation duration·easing도 함께 기록하고 비교한다.
+- 여러 요소를 하나의 대표 상태로 검증할 때는 `representativeReason`이 필요하다. 구조·스타일이 다른 요소를 한 대표로 접지 않는다.
+
+상태 계약 뒤에는 메뉴·탭·버튼으로만 드러나는 링크까지 원장에 합치도록 최종 탐색을 다시 실행한다. 이 두 번째 원장이 캡처 범위의 SSOT다.
+
+```bash
+node "$S/discover.mjs" --url <원본URL> --states .sognora/replica/states.json --out .sognora/replica/routes.json
 ```
-node "$S/capture.mjs"      --url <URL> --out .sognora/replica/ref/<라우트> [--viewports …] [--storage …] &
-node "$S/fetch-assets.mjs" --url <URL> --out .sognora/replica/assets       [--storage …]
+
+최종 원장에 새 라우트가 합쳐졌으면 그 라우트의 첫 진입 팝업도 빠지지 않도록 같은 계약에 다시 probe한다.
+
+```bash
+node "$S/probe-states.mjs" \
+  --routes .sognora/replica/routes.json \
+  --base .sognora/replica/states.json \
+  --out .sognora/replica/states.json \
+  --force
 ```
-- capture: 한 번의 기동으로 뷰포트별 × (스크롤 지점·hover·전체)를 훑고 `measure.json`(요소별 x/y/w/h·폰트·여백·색)·`meta.json`을 남긴다. **실측 뷰포트가 요청값과 다르면 그 캡처는 기준으로 쓰지 않는다.**
-- fetch-assets: 폰트·이미지·인라인 SVG 원본 + `@font-face`·CSS 변수를 확보한다. CSS 변수는 디자인 토큰을 추측하지 않게 해주므로 명세 작성 전에 반드시 받는다.
-- 두 스크립트는 의존이 없으므로 **동시에 돌린다**. 캡처 실패 시 `--headed`로 1회 재시도(봇 차단 대응).
-- **레이아웃에 영향 주는 임베드를 인벤토리에 남긴다** — iframe·위젯·서드파티 스크립트는 높이를 바꾸므로, 빠뜨리면 그 아래 전 구간이 통째로 밀린다(실측에서 가장 흔한 오차 원인).
 
-### 4. 명세 작성 (LLM 콜 1)
-`measure.json`·`assets.json`을 근거로 `spec-template.md` 양식대로 `.sognora/replica/spec.md`를 쓴다. 토큰 → 공통 셸 → 섹션 치수 → 상호작용 상태표 순. **모든 수치에 근거**(어느 캡처의 어느 요소)를 단다.
+`capture-site.mjs`는 최종 route×viewport 전부가 `popupProbe.probed`에 없거나 route 원장 해시가 달라지면 실행을 거부한다.
 
-### 5. 구현 — 대표 페이지 먼저
+### 3. 전 라우트 기준 증거와 자산
 
-**0) 배치 규칙부터 확정한다 (코드 작성 전).** 파일을 어디에 둘지 즉흥적으로 정하지 않는다. 순서대로:
-1. 대상 프로젝트의 규칙 문서를 읽는다: `CLAUDE.md`·`AGENTS.md`·`docs/*.md`·`README`. 구조가 문서화돼 있으면 **그대로 따른다**(그 문서가 SSOT다).
-2. 문서가 없으면 **기존 코드에서 관례를 추론**한다: 라우팅 방식, 화면 구현이 라우트 파일 안인지 별도 계층인지, 공용 컴포넌트·정적 자산 위치, 스타일 방식.
-3. 둘 다 없으면(빈 레포·새 프로젝트) **`references/layout-presets.md`의 프리셋을 적용한다 — 묻지 않는다.** 스택에 맞는 프리셋을 고르고 그대로 폴더를 잡는다.
-4. 스택이 프리셋 어느 것과도 맞지 않을 때만 선택지로 확인한다.
+두 명령은 같은 원장/상태 계약을 읽으므로 동시에 실행할 수 있다.
 
-- 확정한 배치 규칙(따른 문서 또는 적용한 프리셋 이름)을 `.sognora/replica/contract.json`의 `layout` 필드에 적고 **전 페이지에 일관 적용**한다. 최종 보고에도 한 줄 남긴다.
-- **자산 경로**: 받은 폰트·이미지는 프로젝트 정적 폴더 관례(`public/fonts`·`public/images` 등)에 넣는다. `.sognora/replica/`는 작업 산출물 보관소이지 배포 경로가 아니다.
-- **다국어 프로젝트면 문구를 하드코딩하지 않는다.** 메시지 파일(`messages/{locale}.json` 등)에 키로 넣고 컴포넌트는 번역 훅으로 읽는다. 원본 텍스트는 기본 로케일 값으로 넣는다.
-
-1. **공통 셸 + 대표 페이지 1개만 먼저 만들고 §6 게이트를 통과시킨다.** 헤더·푸터·토큰·타이포는 전 페이지 공용이라, 여기서 수렴하면 나머지 페이지는 대부분 이미 맞다. 전 페이지를 만들어놓고 한꺼번에 고치면 같은 오차를 페이지 수만큼 반복해 고치게 된다.
-2. 대표 페이지 통과 후 **같은 템플릿 그룹을 일괄 생성**하고, 그룹마다 1개씩 표본 게이트를 돌린다. 표본이 통과하면 그룹 전체를 통과로 보되, 마지막에 전 라우트 게이트로 확정한다.
-3. 자산은 §3에서 받은 원본을 로컬 경로로 참조한다. **대체는 최후 수단** — 자산을 못 받았거나(403·CORS, 재시도 후 실패) 사용자가 교체를 지시한 경우만. 이때만 측정된 크기·종횡비로 대체물을 만들고(비트맵은 Codex `imagegen` 등), `override.json`에 기록해 "원본 미달성 항목"으로 보고한다.
-
-### 6. 비교 게이트 (반복)
+```bash
+node "$S/capture-site.mjs" --routes .sognora/replica/routes.json --states .sognora/replica/states.json --out .sognora/replica/ref &
+node "$S/fetch-assets.mjs" --routes .sognora/replica/routes.json --states .sognora/replica/states.json --out .sognora/replica/assets
+wait
 ```
-node "$S/diff.mjs" --ref .sognora/replica/ref/<라우트> --local <로컬URL> --out .sognora/replica/diff/<라우트> [--strict] [--override .sognora/replica/override.json]
+
+`capture-site.mjs`는 결정적 routeId 아래에 전 viewport 증거를 만들고 하나라도 빠지면 실패한다. `fetch-assets.mjs`는 전 라우트·viewport·상태를 방문해 폰트·이미지·영상·Lottie JSON 후보·모든 inline SVG를 수집하며 비동기 response 저장을 모두 기다린다.
+
+기준 캡처는 실행 시작 순간을 `clock.source=observed-at-capture`로 기록·동결한다. 이는 날짜 기반 노출을 바꾸기 위한 가짜 시각이 아니라, 그 순간 관찰한 원본을 로컬에서 같은 조건으로 재현하기 위한 증거다.
+
+### 4. 명세와 구현
+
+`measure.json`, `state-manifest.json`, `assets.json`을 근거로 [spec-template.md](references/spec-template.md) 형식의 `.sognora/replica/spec.md`를 쓴다. 수치마다 근거 파일·요소·상태를 단다.
+
+대상 프로젝트의 `AGENTS.md`·`CLAUDE.md`·문서 → 기존 관례 → layout preset 순으로 배치를 확정한다. 대표 페이지와 공통 셸을 먼저 수렴시킨 뒤 같은 템플릿 그룹을 구현한다. 자산은 프로젝트 정적 폴더에 놓고, i18n 프로젝트는 기본 locale 메시지로 연결한다.
+
+### 5. 전 사이트 완료 게이트
+
+개별 라우트 진단에는 `diff.mjs`를 쓸 수 있지만 완료 판정은 반드시 집계 명령으로 한다.
+
+```bash
+node "$S/verify-site.mjs" \
+  --routes .sognora/replica/routes.json \
+  --ref .sognora/replica/ref \
+  --local http://localhost:3000 \
+  --out .sognora/replica/diff \
+  --override .sognora/replica/override.json
 ```
-- 원본·로컬을 **동일 조건**(뷰포트·DPR·스크롤 지점·순서)에서 비교. exit 0 통과 / 1 오차 초과 / 2 실행 불가.
-- **오차 상위 항목부터** 고친다. 오차가 여러 요소에 같은 값으로 퍼져 있으면 개별 요소가 아니라 **그 위쪽의 높이 차이 하나**가 원인이다 — 위에서부터 컨테이너 높이를 대조해 근원을 찾는다(개별 요소를 하나씩 고치는 것은 낭비다).
-- 수치는 맞는데 pixel만 어긋나면 **조건 불일치를 먼저 의심**한다(스크롤 순서·애니메이션 상태·지연 로딩).
 
-### 7. 완료 보고 1회
-라우트 원장(탐색·처리·보류), 게이트 수치, 미달 항목, 선언된 의도적 차이, 미처리 항목을 표로 보고한다. 게이트 미통과인데 완료로 선언하지 않는다.
+strict는 기본이며 완화할 수 없다. `diff.mjs --relaxed`와 `--no-pixel`은 진단용 exit 3이라 완료 집계가 거부한다. 오차는 위쪽 공통 컨테이너 → 글꼴/자산 → 개별 상태 순으로 고치고 `verify-site.mjs`가 exit 0이 될 때까지 반복한다.
 
-## 완주 장치 (goal 모드) — 범위 확정 직후 1회
+### 6. 완료 보고
 
-게이트 수렴까지 여러 턴이 걸리므로 중간에 멈추지 않도록 런타임의 goal을 건다. 활성 goal이 이미 있으면 그대로 둔다.
+`completion.json`을 근거로 라우트 원장, viewport/state 수, 게이트 수치, renderer/fallback/404 결과, override·대체 자산, 미처리 항목을 한 번 보고한다. `pass=false`, 보류 라우트, 선언되지 않은 상태, 대체 자산이 있으면 완료라고 쓰지 않는다.
 
-- **Codex**: `create_goal` — objective를 **산문으로**(대상 URL, 확정 라우트 수, 자산 원본 원칙, 완료 정의=전 라우트 게이트 exit 0). `update_goal`은 게이트 통과 전에 complete로 만들지 않는다.
-- **Claude Code**: `ProposeGoal` — 조건을 **검증 가능한 술어 한 줄**로(별도 평가자가 판정하므로 산문형은 부적합). 쓸 수 없는 환경이면(서브에이전트·비대화형·설정 비활성) 조용히 건너뛴다.
-- **goal이 게이트를 대신하지 않는다.** 완료 근거는 언제나 `diff.mjs`의 exit code다.
+## 사전 준비와 구버전 증거
 
-## 사전 준비 (첫 실행 시 1회)
-
-```
+```bash
 npm i -D playwright pixelmatch pngjs && npx playwright install chromium
 ```
-**클록 도입(v1.6.3) 이전에 만든 `.sognora/replica/ref/`는 재캡처해야 한다** — 캡처 조건이 다르고, diff가 이를 감지해 exit 2로 막는다.
 
-없으면 스크립트가 exit 2와 함께 안내한다. **pixelmatch·pngjs가 없으면 `diff.mjs`는 판정을 거부한다(exit 2)** — 통과가 아니라 "판정되지 않음"이다.
+증거 v3 이전의 `.sognora/replica/ref/`는 재캡처한다. `popupProbe`, 실제 관찰 시작 시각, frame assertion, `evidence.json`, `state-manifest.json`, y좌표 기반 100% 스크롤 타일이 없는 기준은 새 집계 게이트가 거부한다.
 
-> 예전 문면은 "pixel diff만 건너뛰고 수치 게이트는 계속 작동한다"였는데 **거짓이었다.** 그 상태의 수치 게이트는 box·font만 보므로 실측에서 **빈 페이지·다크 반전·전 텍스트 굵게·문구 전면 교체가 모두 exit 0으로 통과**했다. 수치만으로는 화면이 같은지 판정할 수 없다.
-> 수치 비교만 하고 싶으면 `--no-pixel`을 명시해야 하고, 그 런은 보고서에 **"픽셀 미판정"**으로 남으며 완료 선언의 근거가 될 수 없다.
-
-## 최적화 규칙
-
-- **브라우저 기동 최소화** — 페이지당 1회로 전 상태를 훑는다. 상태마다 새로 띄우지 않는다. capture와 fetch-assets는 동시에 돌린다.
-- **headless 기본** — 창 장식으로 뷰포트가 어긋나는 것을 막고 재현성을 확보한다. `--headed`는 사람 검수·봇 차단 폴백일 때만.
-- **캡처 증분** — 이미 있는 캡처는 `--force` 없이 다시 찍지 않는다.
-- **LLM 콜 최소** — 캡처·측정·자산·diff는 전부 스크립트(콜 0). LLM은 명세와 구현에만 쓴다. **스크린샷을 LLM에 넣어 "비교해줘" 하지 않는다** — 비싸고 부정확하며, 판정은 diff.mjs가 한다.
-- **템플릿 재사용** — 같은 템플릿 페이지는 하나만 수렴시키고 나머지는 생성 후 표본 검증한다. 페이지마다 처음부터 만들지 않는다.
-- **라우트 병렬** — 3개 이상이고 서브에이전트를 쓸 수 있으면 라우트당 1개(동시 최대 3 — 브라우저 동시 기동 부담)로 캡처·구현을 분배하고, 메인은 게이트만 확정한다.
-
-## 옵션
-
-- `뷰포트: 1440x900,390x844` — 기본 3종 대신 지정
-- `라우트: /, /about` — 범위를 이 목록으로 한정 (기본: 탐색된 전부)
-- `--headed` — 크롬 창을 실제로 띄워 눈으로 확인
-- `--strict` — 오차 허용치를 rules.md의 엄격 기준으로
+범위 확정 직후 goal 기능이 있으면 목표를 “확정된 전 라우트에서 `verify-site.mjs` exit 0”으로 건다. goal은 게이트를 대신하지 않으며 통과 전 complete로 바꾸지 않는다.

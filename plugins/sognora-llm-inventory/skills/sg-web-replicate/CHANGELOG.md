@@ -1,5 +1,27 @@
 # sg-web-replicate — CHANGELOG
 
+## 1.14.2 — 2026-08-22 (전 사이트 완전 복제 게이트와 첫 진입 팝업)
+
+- 전역 `2026-01-01` 기본 시각을 제거했다. 기준 캡처가 실제로 시작된 순간을 기록해 같은 증거의 원본/로컬 재현에만 동결한다.
+- `probe-states.mjs`를 추가했다. 깨끗한 context에서 전 라우트·viewport를 방문해 dialog/aria-modal/positioned popup·overlay와 닫기·오늘 하루 보지 않기 제어를 자동 탐색한다.
+- 팝업 닫기 before/mid/after, suppress 체크 전후, close→reload 뒤 미노출을 자동 상태 계약으로 만든다. 닫기 제어 미식별은 fail-closed다.
+- frame assertion(`visible`, `hidden`, `exists`, `absent`, `checked`, `unchecked`)과 `reload` trigger를 capture/diff 양쪽에 추가했다.
+- 자산 수집도 상태마다 새 context를 사용해 앞 시나리오의 cookie/localStorage가 다음 시나리오를 오염시키지 않게 했다.
+- 증거를 v3로 올리고 시간 조건·popup assertion·새 계기 지문이 없는 구버전 증거를 거부한다.
+
+- `strict`를 기본·완료 필수로 전환. `--relaxed`, `--no-pixel`은 exit 3 진단 런이라 완료 집계가 거부한다.
+- `capture-site.mjs`·`verify-site.mjs` 추가: `routes.json` 전 라우트 × viewport × state를 실행·집계하고 일부 report만으로 완료할 수 없게 했다.
+- 정적 레이아웃 모드와 정상 모션 모드 분리. `states.json` 계약으로 hover/click/focus/keyboard/wheel/scroll/drag/swipe/wait의 before/mid/after와 duration/easing을 원본·로컬에서 재현한다.
+- 첫 CTA 자동 hover를 제거하고 visible interactive inventory 전부를 상태 시나리오 또는 사유 있는 exclusion으로 분류하게 했다.
+- `full.png`, 연속 스크롤 타일, 모든 선언 상태를 실제 diff한다. 크기 불일치 crop, 깨진 PNG 결과 제외, 개별 상태 누락을 모두 fail-closed로 바꿨다.
+- 12장 스크롤 상한과 정수 퍼센트 좌표를 제거하고 문서 y좌표 연속 타일로 긴 페이지도 100%를 덮는다. 100% 미만은 즉시 실패한다.
+- route 원장을 pathname+query 기준으로 확장하고 sitemap-only 후보 실제 방문, desktop/mobile DOM, 동일 origin JS bundle 후보, 상태 계약의 안전한 setup/trigger 뒤에만 드러나는 링크·navigation, exact status·redirect chain·canonical·renderer·404 probe를 기록한다.
+- 서로 다른 원본 라우트가 로컬의 동일 render signature로 합쳐지면 catch-all/fallback 결함으로 판정한다.
+- 증거 v2: 파일별 SHA-256·bytes, 실행 조건 해시, scripts 전체(`_shared.mjs`, `_deps.mjs` 포함) 지문을 기준/로컬에 기록하고 비교 전에 검증한다.
+- `fetch-assets.mjs`를 전 라우트·viewport·상태 수집기로 확장. font/image 외 media·Lottie JSON 후보·전체 inline SVG·canvas/embed inventory를 다루고 response 저장 Promise를 모두 기다린다.
+- 긴 페이지·크기 불일치·깨진 PNG·빈 페이지·누락 상태·누락 route·잘못된 redirect·fallback·404를 이용한 악성 회귀 테스트 9개를 추가하고 저장소 자체 점검에 연결했다.
+- 설치 경로의 비결정적 `find … | head -1` 폴백을 제거하고 `sg path sg-web-replicate` 실패 시 중단한다.
+
 ## 1.6.3 — 2026-08-19 (게이트가 실제로 판정하게 — 감사에서 드러난 치명 결함 대응)
 
 감사 실측: **pixelmatch 없이 도는 "수치 게이트"가 빈 페이지·다크 반전·전 텍스트 굵게·문구 전면 교체를 전부 exit 0으로 통과**시켰다. 그리고 지시받은 환경(nolpop)이 실제로 pixelmatch 미설치 상태였다 — 가정이 아니라 운영 상태였다. "눈대중 금지, 판정은 수치와 diff만"이 SKILL.md의 한 문장으로 무너져 있었다.

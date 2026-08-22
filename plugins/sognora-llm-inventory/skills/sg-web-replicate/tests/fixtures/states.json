@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "scenarios": [
+    {
+      "id": "home-hover",
+      "routes": ["*"],
+      "viewports": ["390x844"],
+      "trigger": {"type": "hover", "selector": "a.nav-home"},
+      "frames": [{"name": "before", "phase": "before"}, {"name": "after", "atMs": 120}]
+    },
+    {
+      "id": "about-hover",
+      "routes": ["*"],
+      "viewports": ["390x844"],
+      "trigger": {"type": "hover", "selector": "a.nav-about"},
+      "frames": [{"name": "before", "phase": "before"}, {"name": "after", "atMs": 120}]
+    },
+    {
+      "id": "tab-hover",
+      "routes": ["*"],
+      "viewports": ["390x844"],
+      "trigger": {"type": "hover", "selector": "a.nav-tab"},
+      "frames": [{"name": "before", "phase": "before"}, {"name": "after", "atMs": 120}]
+    },
+    {
+      "id": "menu-open",
+      "routes": ["*"],
+      "viewports": ["390x844"],
+      "safe": true,
+      "trigger": {"type": "click", "selector": "button.menu-button"},
+      "observe": ".panel",
+      "frames": [{"name": "before", "phase": "before"}, {"name": "mid", "atMs": 100}, {"name": "after", "atMs": 200}]
+    },
+    {
+      "id": "revealed-link-hover",
+      "routes": ["*"],
+      "viewports": ["390x844"],
+      "safe": true,
+      "setup": [{"type": "click", "selector": "button.menu-button", "waitMs": 200}],
+      "trigger": {"type": "hover", "selector": "a.revealed"},
+      "frames": [{"name": "before", "phase": "before"}, {"name": "after", "atMs": 120}]
+    }
+  ],
+  "exclusions": []
+}
