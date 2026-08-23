@@ -1,121 +1,124 @@
-# sg-web-replicate 룰북 (SSOT)
+# sg-web-replicate 룰북
 
 ## 기본 계약
 
-- viewport: `1440x900`, `768x1024`, `390x844`; DPR 1.
-- 범위: 발견 후 실제 방문 검증된 전 라우트. pathname과 query를 별개 상태로 보존한다.
+- viewport: `1440x900`, `768x1024`, `390x844`; DPR 1. 원본에서 별도 breakpoint가 관찰되면 추가한다.
+- 범위: 브라우저에서 발견하고 실제 방문한 전 라우트. pathname과 query를 별개 상태로 보존한다.
 - 테마/locale: 원본 기본 상태. 사용자가 지정하면 계약에 추가한다.
-- 인증: guest 기본. 제공받은 storage state는 저장소·보고서에 복사하지 않는다.
-- 시각: 임의 고정 날짜를 쓰지 않는다. 원본 캡처 시작 순간을 기록해 해당 증거의 로컬 재현에만 사용한다.
-- 안정화: 기본 최소 관찰 3000ms·quiet 500ms·전체 상한 15000ms. 관찰 중 시작된 document/script/font/image/xhr/fetch를 완료하고 DOM이 quiet가 된 뒤 읽는다. 3초 뒤 시작하는 지연 UI가 실제 관찰되면 `--settle`을 늘리고 원장·기준 증거·자산 수집에 같은 값을 기록한다.
-- 스크롤: 문서 y좌표 기준 연속 viewport 타일. 마지막 타일은 문서 끝에 맞추며 커버리지 100%가 아니면 실패한다.
-- 게이트: strict 한 종류만 완료 판정에 사용한다. relaxed/no-pixel은 진단일 뿐이다.
+- 인증: guest 기본. 제공받은 로그인 상태나 개인정보는 산출물에 복사하지 않는다.
+- 시각: 원본과 로컬을 가능한 한 가까운 시점과 같은 viewport·state에서 비교한다. 날짜 기반 레이어를 임의 시각으로 숨기지 않는다.
+- 준비 판정: 핵심 본문·폰트·이미지·상태가 보이고 사용자 입력에 정상 반응하면 관찰을 시작한다. 끝나지 않는 Cloudflare·광고·분석·iframe 요청만으로 페이지를 실패시키지 않는다.
+- 안전: 결제·가입·삭제·작성·전송·장바구니 등 외부 상태를 바꾸는 입력은 실행하지 않는다.
 
-## 측정과 strict 게이트
+## 브라우저 비교 기준
 
 | 대상 | 완료 조건 |
 |---|---|
-| 주요 블록 x/y/w/h | 오차 ≤ 1px |
-| font family/weight | 정확 일치, 실제 로드 |
-| font size/line-height | 오차 0px |
-| 색 | 정규화 RGBA 채널 오차 ≤ 3 |
-| radius/shadow 수치 | 오차 ≤ 1px |
-| 상태별 pixel diff | ≤ 0.5% |
-| full/scroll/interaction 이미지 크기 | 정확 일치 |
-| 문서 pixel 커버리지 | ref/local 모두 100% |
-| route × viewport × state 캡처·diff | 100% |
-| 동적 인벤토리 → scenario/exclusion 분류 | 100% |
-| 선언 interaction before/mid/after | 100% |
-| transition/animation duration·easing | 문자열 정확 일치 |
-| HTTP status·redirect·canonical | 원본 route 기준과 정확 일치 |
-| 가로 overflow·신규 console error·누락 asset | 0건 |
-| catch-all fallback·404 오동작 | 0건 |
-| 대체 자산 | 0건 |
+| 주요 블록 x/y/w/h | 같은 viewport에서 오차 ≤ 1px |
+| font family/weight/size/line-height | 원본 computed style과 일치 |
+| 색·radius·shadow | 원본 computed style과 시각적으로 일치 |
+| responsive 구조·overflow | 원본과 동일, 의도하지 않은 가로 overflow 0건 |
+| route × viewport × state | 원본/로컬 증거와 QA 판정 100% |
+| 동적 인벤토리 | scenario/exclusion/근거 있는 `none observed` 분류 100% |
+| interaction/motion | before/mid/after·복귀·저장상태 재현 100% |
+| visual slot | imagegen asset/variant 연결·검증 100% |
+| 이미지 내부 문구·브랜드 매핑 | 오탈자·원본 브랜드 잔존 0건 |
+| status·redirect·canonical·404 | 원본에서 관찰한 동작과 일치 |
+| console·링크·asset·runtime | 신규 오류·깨짐·누락 0건 |
+| 원본·stock·placeholder 자산 | 최종 앱 잔존 0건 |
 
-pixel diff는 안티앨리어싱을 흡수하기 위한 비율일 뿐 상태 누락·크기 불일치·디코드 실패를 면제하지 않는다. 비교 실패 상태를 결과에서 제외하지 않는다.
+수치 오차는 인앱 브라우저의 DOM box와 computed style로 확인한다. 생성 이미지 내부는 원본 pixel equality 대상이 아니지만 slot 경계·위치·크기·aspect·crop과 주변 UI는 정확히 맞춘다. 주제·구도·색감·정보 밀도·문구 정확성은 확대된 원본/생성 결과를 나란히 보고 판정한다.
 
-## 두 캡처 모드
+## 증거 원장
 
-1. **정적 레이아웃 모드**: `reducedMotion: reduce`와 CSS transition/animation 비활성화. full page와 y좌표 타일, 요소 치수를 결정적으로 측정한다.
-2. **정상 모션 상태 모드**: `reducedMotion: no-preference`, CSS 비활성화 없음. 상태마다 새 context에서 before → trigger → 선언된 `atMs` 순으로 캡처한다.
+`.sognora/replica/`에 다음 파일을 유지한다.
 
-두 모드는 실제 관찰 시작 시각, elapsed settle budget, quiet/timeout, viewport, DPR, storage 조건을 증거에 기록한다. 기준과 로컬 조건이 다르면 비교하지 않는다. 날짜 기반 팝업을 억지로 켜거나 끄는 전역 기본 시각은 금지한다.
+- `contract.json`: URL, viewport, DPR, locale/theme, 범위와 의도적 차이
+- `routes.json`: route/query, 발견 근거, 실제 방문, status/redirect/canonical/404
+- `states.json`: 안전한 입력, before/mid/after, duration/easing, 복귀와 저장상태
+- `spec.md`: 디자인·동작·visual slot과 각 값의 브라우저 근거
+- `qa-ledger.json`: route×viewport×state별 reference/local 증거, 판정, 미해결 항목
+- `evidence/reference/`, `evidence/local/`: route·viewport·state가 드러나는 screenshot과 조사 메모
+
+증거 파일 이름과 원장 항목이 서로 연결되어야 한다. screenshot이 없는 상태, 실행하지 않은 입력, 이유 없는 `pass`는 인정하지 않는다. 원본이 외부 요청 때문에 완전한 network idle에 도달하지 않아도 화면과 입력이 정상이라면 `externalNoise`에 요청과 영향을 기록하고 계속한다.
+
+`qa-ledger.json`의 최소 셀 형식은 다음과 같다.
+
+```json
+{
+  "route": "/pricing?plan=pro",
+  "viewport": "390x844",
+  "stateId": "mobile-menu-open",
+  "referenceEvidence": ["evidence/reference/pricing/390x844/mobile-menu-open.png"],
+  "localEvidence": ["evidence/local/pricing/390x844/mobile-menu-open.png"],
+  "checks": {
+    "layout": "pass",
+    "behavior": "pass",
+    "responsive": "pass",
+    "visualSlots": "pass",
+    "content": "pass"
+  },
+  "measurements": [
+    {"selector": "header", "field": "height", "reference": 72, "local": 72, "unit": "px"}
+  ],
+  "externalNoise": [],
+  "status": "pass",
+  "notes": ""
+}
+```
+
+`status: pass`는 모든 `checks`가 pass이고 reference/local 증거가 모두 있을 때만 쓴다. 한 항목이라도 미확인·미달이면 `fail` 또는 `pending`으로 남긴다.
+
+## 브랜드·시각 자산
+
+[visual-adaptation.md](visual-adaptation.md)를 전부 적용한다. DOM 영역과 source pixel 규격을 먼저 확정한 뒤 사진·배경·아이콘·문구 포함 배너·지도·평면도·차트·QR·로고를 모두 imagegen으로 생성한다. 이미지 내부 내용을 HTML/CSS/SVG/canvas로 다시 그리지 않는다.
+
+고유 자산과 필요한 responsive variant 수가 visual slot 계약과 정확히 맞아야 한다. 원본 파일은 reference evidence로만 보존하며 최종 앱의 import, public/static 파일, CSS URL, runtime request에 들어가면 실패다. 자산 수가 많다는 이유로 대표 이미지·stock·placeholder로 축약하지 않는다.
 
 ## 동적 범위 선확정
 
-레퍼런스를 정적 페이지로 가정하지 않는다. 구현 전에 route/template×viewport별로 수동 입력 없는 관찰과 안전한 입력 관찰을 모두 수행하고, 결과를 `states.json`과 `spec.md`에 연결한다.
+레퍼런스를 정적 페이지로 가정하지 않는다. 구현 전에 route/template×viewport별로 입력 없는 관찰과 안전한 입력 관찰을 모두 수행한다.
 
-- 수동 입력 없음: 최초 로드, 지연 등장, 인트로, autoplay, 영상·오디오, timer, sticky/header, 자동 캐러셀.
+- 입력 없음: 최초 로드, 지연 등장, 인트로, autoplay, 영상·오디오, timer, sticky/header, 자동 캐러셀.
 - 포인터·키보드: hover, focus, click, press, escape, tab 이동.
 - 스크롤·제스처: wheel, scroll, snap, drag, swipe, touch, 문서/window 전역 입력.
 - 상태 복원: reload, 뒤로가기, query/deep link, cookie/localStorage/sessionStorage.
 - 비DOM 렌더링: canvas, WebGL, Lottie, SVG animation, 배경 미디어.
 
-각 관찰 항목은 trigger, before/mid/after, duration/easing, 역방향·복귀·잠금, URL/storage 변화, viewport 차이를 기록한다. 관찰된 항목은 scenario 또는 구체적 사유가 있는 exclusion으로 전부 분류한다. 원본 기술 스택과 같은 라이브러리를 쓸 의무는 없지만 사용자에게 보이는 동작 계약은 같아야 한다.
+각 항목에 trigger, before/mid/after, duration/easing, 역방향·복귀·입력 잠금, URL/storage 변화와 viewport 차이를 기록한다. 공통 템플릿 대표 조사는 가능하지만 `representativeReason`을 남기고 각 route에 별도 동작이 없는지 확인한다. 빈 계약, `pending`, `TODO`, 원인을 모르는 exclusion은 완료 근거가 아니다.
 
-공통 템플릿 대표 조사는 가능하되 `representativeReason`을 남기고 각 route에 별도 동작이 없음을 확인한다. 동적 요소가 없다고 판정한 셀은 관찰 시간과 실행한 입력을 `spec.md`에 `none observed` 근거로 남긴다. 빈 계약, `pending`, `TODO`, 미분류 동작은 strict 입력으로 인정하지 않는다.
+## 첫 진입 레이어와 저장상태
 
-## 첫 진입 팝업과 저장상태
-
-- 전 라우트·viewport를 각각 새 context로 방문해 `dialog`, `aria-modal`, positioned popup/modal/overlay/cookie layer를 elapsed checkpoint별로 탐색한다.
-- 탐색에는 브라우저의 실제 달력 시각을 사용한다. checkpoint는 지연 등장 관찰 시간이지 달력 날짜가 아니다.
-- 닫기 전 open, 닫기 transition의 before/mid/after, 닫힌 본문을 모두 캡처한다.
-- 오늘 하루 보지 않기·다시 보지 않기처럼 checkable 제어가 있으면 unchecked/checked와 close→reload 후 미노출 assertion을 모두 통과해야 한다.
-- 닫기 제어를 식별하지 못한 surface, assertion 실패, popup probe 방문 실패는 완료 불가다.
-- 팝업 내부 링크·캐러셀·탭·페이지 인디케이터도 일반 interaction inventory와 같은 계약을 적용한다.
+- 전 라우트·viewport를 깨끗한 브라우저 상태로 방문해 dialog, modal, popup, cookie layer, intro를 관찰한다.
+- 닫기 전, 닫기 중, 닫힌 뒤와 다시 열기 가능 여부를 기록한다.
+- 오늘 하루 보지 않기·다시 보지 않기는 체크 전후와 close→reload 뒤 미노출을 확인한다.
+- 팝업 내부 링크·탭·캐러셀·페이지 인디케이터도 일반 interaction과 같은 범위로 다룬다.
+- 닫기 제어를 안전하게 식별하지 못하면 추측해서 누르지 말고 미해결로 남긴다.
 
 ## 상호작용 완전성
 
-화면에 보이는 `a[href]`, `button`, 입력 컨트롤, role button/tab, draggable 요소는 다음 중 하나여야 한다.
+화면에 보이는 링크·버튼·입력·탭·draggable 요소와 전역 입력 동작은 다음 중 하나여야 한다.
 
-- `states.json` 시나리오 selector가 덮는다.
-- `exclusions`의 selector와 구체적 사유가 덮는다.
+- `states.json` scenario가 덮는다.
+- `exclusions`에 구체적인 시각/안전 사유가 있다.
 
-미분류 요소는 capture 실패다. 클릭·press·drag·swipe는 조회성 조작임을 확인하고 `safe:true`를 선언해야 한다. 결제·가입·삭제·작성·전송·장바구니 등 외부 상태를 바꾸는 조작은 계약에 넣지 않는다.
+열기/닫기, 다음/이전, 진입/이탈, 양방향 drag/swipe, autoplay pause/resume, 마지막 장면 뒤 초기화처럼 사용자에게 보이는 복귀 경로를 한쪽만 확인하지 않는다.
 
 ## 라우트 완전성
 
-- desktop/mobile 링크 수집은 각 viewport를 지정한 새 context/page를 만든 뒤 URL을 방문한다. 로드된 page에서 `setViewportSize()`를 호출하면 resize→reload 원본의 실행 context가 파괴되므로 금지한다.
-- sitemap-only·bundle 후보도 실제 방문하지 않으면 원장 완료가 아니다. 상태 계약 뒤 `discover --states`를 다시 실행해 모바일 메뉴·탭·안전한 버튼 조작으로 드러나는 링크와 navigation도 원장에 합친다.
-- alias와 redirect는 요청 route, redirect chain, final route, canonical을 각각 보존한다.
-- 원본에서 서로 다른 render signature인 라우트들이 로컬에서 하나의 동일 signature가 되면 catch-all/fallback 결함이다.
-- 원장 생성 시 무작위성이 없는 전용 missing path를 방문해 404 status/final/canonical 기준을 남기고 로컬과 비교한다.
-- `--max` 도달, skipped, 미방문 후보가 있으면 exit 1이다. 상한을 올려 원장을 완성한다.
+- desktop/mobile은 각각 새 브라우저 상태로 열고, 로드된 한 페이지의 viewport만 바꿔 조사하지 않는다.
+- sitemap/robots, desktop/mobile DOM, 메뉴·팝업·탭·안전한 버튼, 필요한 경우 원본 번들에서 발견한 후보를 합친다.
+- 모든 후보를 실제 방문하고 방문 여부와 발견 근거를 `routes.json`에 남긴다.
+- 사실상 무한한 날짜·검색어·ID URL만 같은 화면 템플릿과 동작 계약임을 확인한 뒤 route family로 묶고, 대표 URL·파라미터 규칙·근거·예외를 남긴다. 원본이 유한 목록으로 노출한 URL은 전부 방문한다.
+- alias, redirect, final route, canonical과 실제 404 화면을 각각 보존한다.
+- 서로 달라야 하는 원본 라우트가 로컬에서 같은 catch-all 화면으로 합쳐지지 않았는지 확인한다.
 
-## 증거 무결성
+## 구현 배치와 검증
 
-각 viewport 증거 v3는 다음을 가진다.
+배치는 프로젝트 문서 → 기존 코드 관례 → [layout-presets.md](layout-presets.md) 순이다. 자동 생성 구역은 수정하지 않는다. i18n 프로젝트는 기본 locale 메시지 파일을 사용한다.
 
-- `meta.json`, `measure.json`, `state-manifest.json`
-- `full.png`, 모든 `scroll-y-*.png`, 모든 `state-*.png`
-- `evidence.json`: 개별 파일 bytes/SHA-256, 실행 조건 해시, scripts 폴더의 모든 `.mjs` 파일명과 합성 SHA-256
-- `measure.json.scenarios[].assertions`: 팝업 open/hidden/checked/reload 결과
-
-한 파일의 누락·변조·깨진 PNG·크기 불일치는 fail-closed다. `_shared.mjs`, `_deps.mjs`, 검증 집계기도 지문에서 제외하지 않는다.
-
-## override와 마스크
-
-```json
-{
-  "ignore": ["img.logo"],
-  "masks": {
-    "1440x900": [{"x": 0, "y": 200, "w": 300, "h": 160, "reason": "실시간 영상 프레임"}]
-  },
-  "substituted_assets": [{"file": "images/hero.jpg", "reason": "원본 403"}],
-  "notes": "사용자 지시 로고 교체"
-}
-```
-
-- `ignore`는 요소 수치, `masks`는 픽셀 영역 면제다. 기본 mask y는 문서 좌표이며 fixed/sticky만 `space:"viewport"`를 쓴다.
-- reason 없는 mask는 실행 불가다. 한 상태에서 mask 면적 20% 초과는 실패다.
-- override는 미달성 사실을 숨기지 않는다. `substituted_assets`가 있으면 완전 복제 strict 완료로 선언하지 않는다.
-
-## 구현 배치와 안전
-
-배치는 프로젝트 문서 → 기존 코드 관례 → `layout-presets.md` 순이다. 자동 생성 구역은 수정하지 않는다. i18n 프로젝트는 기본 locale 메시지 파일을 사용한다.
-
-개인정보는 저장 전에 마스킹하고 robots 정책과 최소 300ms 요청 간격을 지킨다. 원본 브랜드·유료 폰트를 공개 배포할 권리는 사용자 책임이며, 이 스킬은 자사 리뉴얼·승인된 프로토타입에 사용한다.
+대상 프로젝트가 이미 제공하는 lint·type-check·build·test는 실행한다. 이 스킬 자체나 대상 프로젝트에 범용 crawler/capture/diff/완료 게이트를 새로 만들지 않는다. 사이트별 차이는 인앱 브라우저 관찰과 담당 에이전트의 증거 판정으로 처리한다.
 
 ## 완료 정의
 
-동적 인벤토리가 전부 scenario/exclusion/근거 있는 `none observed`로 분류된 상태에서 `verify-site.mjs` exit 0, `completion.json.pass=true`, 대체 자산 0건이 동시에 성립해야 한다. 캡처 장수, console error 0건, 일부 라우트 report, 사람이 본 유사성은 완료 정의가 아니다. interaction/motion 계약이 비어 있거나 `pending`이면 정적 골격일 뿐 완전 복제가 아니다.
+`qa-ledger.json`의 전 route×viewport×state가 증거와 함께 `pass`이고, 동적 인벤토리·visual slot·브랜드 교체가 모두 완결되며, 원본/stock/placeholder 자산과 `pending`·`TODO`가 0건일 때만 완전 복제다. 일부 캡처, 정적 골격, console error 0건, 사람이 한 번 본 유사성만으로 완료라고 하지 않는다.

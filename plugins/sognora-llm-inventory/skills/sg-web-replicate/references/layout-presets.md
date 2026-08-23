@@ -30,7 +30,7 @@ src/
 messages/{locale}.json        # i18n 문구
 public/
 ├── fonts/                    # 원본 폰트 파일
-└── images/                   # 원본 이미지
+└── images/                   # imagegen으로 생성·검증한 시각 자산
 ```
 
 **규칙**

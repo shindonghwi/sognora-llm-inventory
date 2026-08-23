@@ -1,5 +1,19 @@
 # sg-web-replicate — CHANGELOG
 
+## 1.15.3 — 2026-08-24 (브라우저 우선 전환과 범용 MJS 제거)
+
+- `scripts/*.mjs`와 그 전용 회귀 테스트를 전부 삭제했다. 범용 crawler·settle·capture·diff·strict gate 통과를 작업 시작이나 완료 조건으로 쓰지 않는다.
+- 인앱 브라우저와 서브에이전트가 route×viewport×state를 직접 조사하고, `routes.json`·`states.json`·`qa-ledger.json`에 원본/로컬 증거와 판정을 연결하도록 바꿨다.
+- Cloudflare·광고·분석·iframe의 끝나지 않는 외부 요청은 화면과 입력이 정상이라면 `externalNoise`로 기록하고 탐색을 계속한다.
+- 대상 프로젝트가 이미 가진 lint·type-check·build·test만 실행한다. 사이트마다 달라지는 동작을 위해 범용 완료 스크립트를 새로 만들지 않는다.
+
+## 1.15.2 — 2026-08-24 (영역 우선 imagegen 자산과 가상 브랜드)
+
+- 이미지 영역·렌더 규격·crop을 먼저 구현하고 visual slot 계약이 끝난 뒤 자산을 생성하도록 순서를 고정했다.
+- 원본 브랜드와 이미지 자산은 reference evidence로만 사용하며 최종 앱에는 넣지 않는다. 업종·톤·길이가 유사한 가상 브랜드와 로고를 새로 만든다.
+- 사진·배경·아이콘·이미지 내부 문구·지도·평면도·차트·QR·로고를 고유 asset/variant별 built-in imagegen 호출로 전부 생성한다. HTML/CSS/SVG/canvas 재제작과 자산 수에 따른 축약을 금지했다.
+- `visual-adaptation.md`에 prompt 구조, 정확한 문구·QR 검증, workspace 저장과 생성 자산 QA를 계약했다.
+
 ## 1.14.3 — 2026-08-23 (resize reload와 지연 API 안정화)
 
 - `discover.mjs`가 로드된 단일 page에서 viewport를 바꾸던 구조를 제거했다. viewport별 새 context/page에 크기를 먼저 지정한 뒤 방문해 resize 시 현재 URL을 reload하는 사이트에서도 execution context가 파괴되지 않는다.
