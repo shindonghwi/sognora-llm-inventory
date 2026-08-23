@@ -8,10 +8,11 @@ import { dirname } from "node:path";
 import { argv, exit } from "node:process";
 import { load, missing } from "./_deps.mjs";
 import { advance, canonicalTarget, loadStateContract, rendererMeta, routeTarget, runScenarioSetup, runTrigger, scenariosFor, sha256 } from "./_shared.mjs";
+import { parseSettleOptions, settlePage, trackPageActivity } from "./_settle.mjs";
 
 const args = parseArgs(argv.slice(2));
 if (!args.url || !args.out) {
-  console.error("usage: discover.mjs --url <URL> --out <routes.json> [--depth 3] [--max 1000]");
+  console.error("usage: discover.mjs --url <URL> --out <routes.json> [--depth 3] [--max 1000] [--settle 3000] [--settle-timeout 15000]");
   exit(2);
 }
 const pw = await load("playwright");
@@ -22,6 +23,10 @@ const start = new URL(args.url);
 const origin = start.origin;
 const maxDepth = Number(args.depth ?? 3);
 const maxRoutes = Number(args.max ?? 1000);
+let settleOptions;
+try { settleOptions = parseSettleOptions(args); }
+catch (error) { console.error(`안정화 옵션 오류: ${error.message}`); exit(2); }
+const viewports = [{ label: "1440x900", width: 1440, height: 900 }, { label: "390x844", width: 390, height: 844 }];
 let stateContract;
 try { stateContract = await loadStateContract(args.states); }
 catch (error) { console.error(`상태 계약 오류: ${error.message}`); exit(2); }
@@ -59,65 +64,47 @@ await ingestSitemap(`${origin}/sitemap.xml`);
 enqueue(start.href, "seed", 0);
 
 const browser = await chromium.launch({ headless: !args.headed });
-const context = await browser.newContext({ storageState: args.storage || undefined });
-const page = await context.newPage();
 
 while (queue.length) {
   if (visited.size >= maxRoutes) { limitReached = true; break; }
   const { route, depth } = queue.shift();
   if (visited.has(route)) continue;
   visited.add(route);
-  let response;
-  try {
-    response = await page.goto(new URL(route, origin).href, { waitUntil: "domcontentloaded", timeout: 30000 });
-    await page.waitForTimeout(300);
-  } catch (error) {
-    failures++;
-    skipped.push({ route, reason: error.message.slice(0, 120) });
-    continue;
-  }
-  const render = await rendererMeta(page);
-  const auth = await page.evaluate(() => {
-    const top = (document.body?.innerText ?? "").slice(0, 2000).split("\n").slice(0, 6).join(" ");
-    return document.querySelector('input[type="password"]') || /로그인|sign in|log in/i.test(top) ? "required" : "guest";
-  }).catch(() => "unknown");
   const entry = found.get(route);
-  Object.assign(entry, {
-    status: response?.status() ?? null,
-    finalRoute: routeTarget(page.url()),
-    redirectChain: response ? requestRedirectChain(response.request()) : [],
-    canonical: canonicalTarget(render.canonical),
-    title: render.title,
-    auth,
-    renderer: render.framework,
-    renderSignature: sha256(`${render.text}\0${render.structure}`),
-    visited: true,
-  });
+  entry.viewportObservations ??= {};
+  const routeViewports = depth < maxDepth ? viewports : [viewports[0]];
+  for (const viewport of routeViewports) {
+    let observed;
+    try {
+      observed = await observeRoute(route, viewport, !entry.visited);
+    } catch (error) {
+      failures++;
+      skipped.push({ route, viewport: viewport.label, reason: error.message.slice(0, 160) });
+      continue;
+    }
+    if (observed.metadata && !entry.visited) Object.assign(entry, observed.metadata, { visited: true });
+    entry.viewportObservations[viewport.label] = {
+      elapsedMs: observed.inventory.elapsedMs,
+      reason: observed.inventory.reason,
+      links: observed.inventory.links.length,
+      scripts: observed.inventory.scripts.length,
+    };
+    if (depth >= maxDepth) continue;
+    for (const href of observed.inventory.links) {
+      enqueue(href, viewport.width < 500 ? "mobile-dom" : "desktop-dom", depth + 1);
+    }
+    for (const script of observed.inventory.scripts) await ingestBundle(script, depth + 1);
 
-  if (depth < maxDepth) {
-    for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 }]) {
-      await page.setViewportSize(viewport);
-      const links = await page.evaluate(() => [...document.querySelectorAll("a[href],area[href]")].map((a) => a.href));
-      for (const href of links) enqueue(href, viewport.width < 500 ? "mobile-dom" : "desktop-dom", depth + 1);
-      const label = `${viewport.width}x${viewport.height}`;
-      for (const scenario of scenariosFor(stateContract, route, label)) {
-        try {
-          await page.goto(new URL(route, origin).href, { waitUntil:"domcontentloaded", timeout:30000 });
-          await page.waitForTimeout(300);
-          await runScenarioSetup(page, scenario, null);
-          await runTrigger(page, scenario.trigger);
-          await advance(page, Math.max(0, ...scenario.frames.map((f)=>Number(f.atMs??0))), null);
-          const revealed = await page.evaluate(() => [...document.querySelectorAll("a[href],area[href]")].map((a)=>a.href));
-          for (const href of revealed) enqueue(href, `interaction:${scenario.id}`, depth + 1);
-          if (routeTarget(page.url()) !== route) enqueue(page.url(), `interaction-navigation:${scenario.id}`, depth + 1);
-        } catch (error) {
-          failures++;
-          skipped.push({ route, scenario:scenario.id, reason:`interaction discovery: ${error.message.slice(0,100)}` });
-        }
+    for (const scenario of scenariosFor(stateContract, route, viewport.label)) {
+      try {
+        const revealed = await observeScenario(route, viewport, scenario);
+        for (const href of revealed.links) enqueue(href, `interaction:${scenario.id}`, depth + 1);
+        if (routeTarget(revealed.finalUrl) !== route) enqueue(revealed.finalUrl, `interaction-navigation:${scenario.id}`, depth + 1);
+      } catch (error) {
+        failures++;
+        skipped.push({ route, viewport:viewport.label, scenario:scenario.id, reason:`interaction discovery: ${error.message.slice(0,120)}` });
       }
     }
-    const scripts = await page.evaluate(() => [...document.scripts].map((s) => s.src).filter(Boolean));
-    for (const script of scripts) await ingestBundle(script, depth + 1);
   }
 }
 
@@ -125,16 +112,16 @@ while (queue.length) {
 const notFoundRoute = `/.sognora-replica-not-found-${sha256(origin).slice(0, 12)}`;
 let notFoundProbe = null;
 try {
-  const response = await page.goto(origin + notFoundRoute, { waitUntil: "domcontentloaded", timeout: 30000 });
-  const render = await rendererMeta(page);
+  const observed = await observeRoute(notFoundRoute, viewports[0], true);
   notFoundProbe = {
     route: notFoundRoute,
-    status: response?.status() ?? null,
-    finalRoute: routeTarget(page.url()),
-    redirectChain: response ? requestRedirectChain(response.request()) : [],
-    canonical: canonicalTarget(render.canonical),
-    renderer: render.framework,
-    renderSignature: sha256(`${render.text}\0${render.structure}`),
+    status: observed.metadata.status,
+    finalRoute: observed.metadata.finalRoute,
+    redirectChain: observed.metadata.redirectChain,
+    canonical: observed.metadata.canonical,
+    renderer: observed.metadata.renderer,
+    renderSignature: observed.metadata.renderSignature,
+    settle: { elapsedMs: observed.inventory.elapsedMs, reason: observed.inventory.reason },
   };
 } catch (error) {
   failures++;
@@ -148,6 +135,7 @@ if (unvisited.length) failures++;
 await mkdir(dirname(args.out), { recursive: true });
 await writeFile(args.out, JSON.stringify({
   version: 2, origin, routes, notFoundProbe, skipped, limitReached,
+  settle: settleOptions,
   discoveredAt: new Date().toISOString(),
 }, null, 2));
 
@@ -157,6 +145,69 @@ if (unvisited.length) console.error(`미방문(sitemap/bundle 후보) ${unvisite
 const authRoutes = routes.filter((r) => r.auth === "required");
 if (authRoutes.length) console.log(`인증 필요 ${authRoutes.length}개: ${authRoutes.slice(0,5).map((r) => r.route).join(", ")}`);
 exit(failures || limitReached || unvisited.length ? 1 : 0);
+
+async function observeRoute(route, viewport, includeMetadata) {
+  const context = await browser.newContext({
+    viewport: { width: viewport.width, height: viewport.height },
+    storageState: args.storage || undefined,
+    hasTouch: viewport.width <= 500,
+  });
+  const page = await context.newPage();
+  const tracker = trackPageActivity(page);
+  try {
+    const response = await page.goto(new URL(route, origin).href, { waitUntil: "domcontentloaded", timeout: 45000 });
+    const inventory = await settlePage(page, tracker, settleOptions, { routesOnly: true });
+    let metadata = null;
+    if (includeMetadata) {
+      const render = await rendererMeta(page);
+      const auth = await page.evaluate(() => {
+        const top = (document.body?.innerText ?? "").slice(0, 2000).split("\n").slice(0, 6).join(" ");
+        return document.querySelector('input[type="password"]') || /로그인|sign in|log in/i.test(top) ? "required" : "guest";
+      }).catch(() => "unknown");
+      metadata = {
+        status: response?.status() ?? null,
+        finalRoute: routeTarget(page.url()),
+        redirectChain: response ? requestRedirectChain(response.request()) : [],
+        canonical: canonicalTarget(render.canonical),
+        title: render.title,
+        auth,
+        renderer: render.framework,
+        renderSignature: sha256(`${render.text}\0${render.structure}`),
+      };
+    }
+    return { metadata, inventory };
+  } finally {
+    tracker.dispose();
+    await context.close();
+  }
+}
+
+async function observeScenario(route, viewport, scenario) {
+  const context = await browser.newContext({
+    viewport: { width: viewport.width, height: viewport.height },
+    storageState: args.storage || undefined,
+    hasTouch: viewport.width <= 500,
+  });
+  const page = await context.newPage();
+  const tracker = trackPageActivity(page);
+  try {
+    await page.goto(new URL(route, origin).href, { waitUntil:"domcontentloaded", timeout:45000 });
+    await settlePage(page, tracker, settleOptions, { routesOnly: true });
+    await runScenarioSetup(page, scenario, null);
+    await runTrigger(page, scenario.trigger);
+    const frameWait = Math.max(0, ...scenario.frames.map((frame) => Number(frame.atMs ?? 0)));
+    await advance(page, frameWait, null);
+    const interactionSettle = parseSettleOptions({}, {
+      ...settleOptions,
+      observeMs: Math.max(0, settleOptions.observeMs - frameWait),
+    });
+    const inventory = await settlePage(page, tracker, interactionSettle, { routesOnly: true });
+    return { links: inventory.links, finalUrl: page.url() };
+  } finally {
+    tracker.dispose();
+    await context.close();
+  }
+}
 
 async function ingestSitemap(url) {
   if (sitemapSeen.has(url)) return;

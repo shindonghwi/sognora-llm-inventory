@@ -6,6 +6,7 @@ import { argv, exit } from "node:process";
 import { load, missing } from "./_deps.mjs";
 import { loadStateContract, routeTarget, sha256 } from "./_shared.mjs";
 import { buildEntryScenarios, ENTRY_CHECKPOINTS_MS, inspectEntrySurfaces, mergeStateScenarios } from "./_popup.mjs";
+import { parseSettleOptions, settlePage, trackPageActivity } from "./_settle.mjs";
 
 const args = parseArgs(argv.slice(2));
 if ((!args.routes && !args.url) || !args.out) {
@@ -23,6 +24,9 @@ const origin = ledger?.origin ?? new URL(args.url).origin;
 const routes = ledger ? ledger.routes.map((entry) => entry.route ?? entry.path) : [routeTarget(args.url)];
 const viewports = parseViewports(args.viewports ?? "1440x900,768x1024,390x844");
 const checkpoints = parseCheckpoints(args.checkpoints);
+let settleOptions;
+try { settleOptions = parseSettleOptions(args, { observeMs: 0 }); }
+catch (error) { console.error(`안정화 옵션 오류: ${error.message}`); exit(2); }
 const base = args.base ? await loadStateContract(args.base) : { version: 2, scenarios: [], exclusions: [] };
 const browser = await pw.chromium.launch({ headless: !args.headed });
 const findings = [];
@@ -38,6 +42,7 @@ for (const route of routes) {
       hasTouch: viewport.width <= 500,
     });
     const page = await context.newPage();
+    const tracker = trackPageActivity(page);
     try {
       await page.goto(new URL(route, origin).href, { waitUntil: "domcontentloaded", timeout: 45000 });
       let elapsed = 0;
@@ -49,6 +54,11 @@ for (const route of routes) {
           if (!bySelector.has(surface.selector)) bySelector.set(surface.selector, { ...surface, discoveredAtMs: checkpoint });
         }
       }
+      const settled = await settlePage(page, tracker, settleOptions, { routesOnly: true });
+      const finalCheckpoint = elapsed + settled.elapsedMs;
+      for (const surface of await inspectEntrySurfaces(page)) {
+        if (!bySelector.has(surface.selector)) bySelector.set(surface.selector, { ...surface, discoveredAtMs: finalCheckpoint });
+      }
       if (bySelector.size) findings.push({
         route: routeTarget(route), viewport: viewport.label,
         discoveredAtMs: Math.min(...[...bySelector.values()].map((item) => item.discoveredAtMs)),
@@ -58,6 +68,7 @@ for (const route of routes) {
     } catch (error) {
       failed.push({ route: routeTarget(route), viewport: viewport.label, reason: error.message });
     } finally {
+      tracker.dispose();
       await context.close();
     }
   }
@@ -72,6 +83,7 @@ const payload = {
     version: 1,
     calendarMode: "browser-current-time-no-override",
     checkpointsMs: checkpoints,
+    settle: settleOptions,
     routesSha256: sha256(JSON.stringify(routes.map(routeTarget))),
     observedAt: new Date().toISOString(),
     probed,

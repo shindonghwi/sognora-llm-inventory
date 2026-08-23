@@ -7,6 +7,7 @@
 - 테마/locale: 원본 기본 상태. 사용자가 지정하면 계약에 추가한다.
 - 인증: guest 기본. 제공받은 storage state는 저장소·보고서에 복사하지 않는다.
 - 시각: 임의 고정 날짜를 쓰지 않는다. 원본 캡처 시작 순간을 기록해 해당 증거의 로컬 재현에만 사용한다.
+- 안정화: 기본 최소 관찰 3000ms·quiet 500ms·전체 상한 15000ms. 관찰 중 시작된 document/script/font/image/xhr/fetch를 완료하고 DOM이 quiet가 된 뒤 읽는다. 3초 뒤 시작하는 지연 UI가 실제 관찰되면 `--settle`을 늘리고 원장·기준 증거·자산 수집에 같은 값을 기록한다.
 - 스크롤: 문서 y좌표 기준 연속 viewport 타일. 마지막 타일은 문서 끝에 맞추며 커버리지 100%가 아니면 실패한다.
 - 게이트: strict 한 종류만 완료 판정에 사용한다. relaxed/no-pixel은 진단일 뿐이다.
 
@@ -23,6 +24,7 @@
 | full/scroll/interaction 이미지 크기 | 정확 일치 |
 | 문서 pixel 커버리지 | ref/local 모두 100% |
 | route × viewport × state 캡처·diff | 100% |
+| 동적 인벤토리 → scenario/exclusion 분류 | 100% |
 | 선언 interaction before/mid/after | 100% |
 | transition/animation duration·easing | 문자열 정확 일치 |
 | HTTP status·redirect·canonical | 원본 route 기준과 정확 일치 |
@@ -37,7 +39,21 @@ pixel diff는 안티앨리어싱을 흡수하기 위한 비율일 뿐 상태 누
 1. **정적 레이아웃 모드**: `reducedMotion: reduce`와 CSS transition/animation 비활성화. full page와 y좌표 타일, 요소 치수를 결정적으로 측정한다.
 2. **정상 모션 상태 모드**: `reducedMotion: no-preference`, CSS 비활성화 없음. 상태마다 새 context에서 before → trigger → 선언된 `atMs` 순으로 캡처한다.
 
-두 모드는 실제 관찰 시작 시각, elapsed settle budget, viewport, DPR, storage 조건을 증거에 기록한다. 기준과 로컬 조건이 다르면 비교하지 않는다. 날짜 기반 팝업을 억지로 켜거나 끄는 전역 기본 시각은 금지한다.
+두 모드는 실제 관찰 시작 시각, elapsed settle budget, quiet/timeout, viewport, DPR, storage 조건을 증거에 기록한다. 기준과 로컬 조건이 다르면 비교하지 않는다. 날짜 기반 팝업을 억지로 켜거나 끄는 전역 기본 시각은 금지한다.
+
+## 동적 범위 선확정
+
+레퍼런스를 정적 페이지로 가정하지 않는다. 구현 전에 route/template×viewport별로 수동 입력 없는 관찰과 안전한 입력 관찰을 모두 수행하고, 결과를 `states.json`과 `spec.md`에 연결한다.
+
+- 수동 입력 없음: 최초 로드, 지연 등장, 인트로, autoplay, 영상·오디오, timer, sticky/header, 자동 캐러셀.
+- 포인터·키보드: hover, focus, click, press, escape, tab 이동.
+- 스크롤·제스처: wheel, scroll, snap, drag, swipe, touch, 문서/window 전역 입력.
+- 상태 복원: reload, 뒤로가기, query/deep link, cookie/localStorage/sessionStorage.
+- 비DOM 렌더링: canvas, WebGL, Lottie, SVG animation, 배경 미디어.
+
+각 관찰 항목은 trigger, before/mid/after, duration/easing, 역방향·복귀·잠금, URL/storage 변화, viewport 차이를 기록한다. 관찰된 항목은 scenario 또는 구체적 사유가 있는 exclusion으로 전부 분류한다. 원본 기술 스택과 같은 라이브러리를 쓸 의무는 없지만 사용자에게 보이는 동작 계약은 같아야 한다.
+
+공통 템플릿 대표 조사는 가능하되 `representativeReason`을 남기고 각 route에 별도 동작이 없음을 확인한다. 동적 요소가 없다고 판정한 셀은 관찰 시간과 실행한 입력을 `spec.md`에 `none observed` 근거로 남긴다. 빈 계약, `pending`, `TODO`, 미분류 동작은 strict 입력으로 인정하지 않는다.
 
 ## 첫 진입 팝업과 저장상태
 
@@ -59,6 +75,7 @@ pixel diff는 안티앨리어싱을 흡수하기 위한 비율일 뿐 상태 누
 
 ## 라우트 완전성
 
+- desktop/mobile 링크 수집은 각 viewport를 지정한 새 context/page를 만든 뒤 URL을 방문한다. 로드된 page에서 `setViewportSize()`를 호출하면 resize→reload 원본의 실행 context가 파괴되므로 금지한다.
 - sitemap-only·bundle 후보도 실제 방문하지 않으면 원장 완료가 아니다. 상태 계약 뒤 `discover --states`를 다시 실행해 모바일 메뉴·탭·안전한 버튼 조작으로 드러나는 링크와 navigation도 원장에 합친다.
 - alias와 redirect는 요청 route, redirect chain, final route, canonical을 각각 보존한다.
 - 원본에서 서로 다른 render signature인 라우트들이 로컬에서 하나의 동일 signature가 되면 catch-all/fallback 결함이다.
@@ -101,4 +118,4 @@ pixel diff는 안티앨리어싱을 흡수하기 위한 비율일 뿐 상태 누
 
 ## 완료 정의
 
-`verify-site.mjs` exit 0, `completion.json.pass=true`, 대체 자산 0건이 동시에 성립해야 한다. 캡처 장수, console error 0건, 일부 라우트 report, 사람이 본 유사성은 완료 정의가 아니다.
+동적 인벤토리가 전부 scenario/exclusion/근거 있는 `none observed`로 분류된 상태에서 `verify-site.mjs` exit 0, `completion.json.pass=true`, 대체 자산 0건이 동시에 성립해야 한다. 캡처 장수, console error 0건, 일부 라우트 report, 사람이 본 유사성은 완료 정의가 아니다. interaction/motion 계약이 비어 있거나 `pending`이면 정적 골격일 뿐 완전 복제가 아니다.

@@ -4,6 +4,20 @@
 
 첫 진입 팝업은 먼저 `probe-states.mjs`로 자동 생성한다. 생성된 계약을 지우지 말고 나머지 메뉴·탭·캐러셀 상태를 보충한다.
 
+## 계약 작성 전 동적 인벤토리
+
+`probe-states.mjs`는 첫 진입 surface를 찾는 보조 도구이지 사이트의 모든 동작을 자동 판정하는 도구가 아니다. 구현 전에 브라우저에서 route/template×viewport별로 다음을 직접 관찰한다.
+
+- 최초 로드·지연 등장·인트로·autoplay·timer·영상처럼 입력 없이 변하는 상태
+- hover·focus·click·keyboard로 변하는 컨트롤과 메뉴·모달·탭·캐러셀
+- wheel·scroll·snap·drag·swipe·touch로 움직이는 장면과 전역 상태 머신
+- reload·뒤로가기·query/deep link·cookie/localStorage/sessionStorage로 복원되는 상태
+- canvas·WebGL·Lottie·SVG·배경 미디어처럼 일반 DOM 컨트롤 밖에서 변하는 화면
+
+관찰한 동작마다 trigger, before/mid/after, duration/easing, 역방향·복귀·입력 잠금, URL/storage 변화, viewport 차이를 정리한 뒤 아래 `scenarios`로 옮긴다. 시각 변화가 없거나 안전상 실행하지 않는 항목만 구체적 근거와 함께 `exclusions`에 둔다.
+
+`scenarios: []`는 기본값이나 미완성 표시가 아니다. 모든 route/template×viewport에서 동적 요소가 관찰되지 않았을 때만 관찰 시간·실행한 입력·확인한 URL/storage 조건을 `spec.md`에 `none observed`로 남기고 사용할 수 있다. `pending`, `TODO`, 빈 motion/interaction 목록, 원인을 모르는 제외는 완료 계약이 아니다.
+
 ```json
 {
   "version": 2,
@@ -90,5 +104,7 @@
 - `exclusions`: 시나리오에서 제외할 인터랙티브 요소의 selector와 구체적 사유. 사유 없는 제외는 거부한다.
 
 메뉴/모달/탭/캐러셀처럼 닫힘과 열림이 모두 의미 있으면 각각 관찰 가능한 프레임에 포함한다. autoplay는 `wait`, 키보드는 `focus` 뒤 `press`, 스크롤 전환은 `wheel` 또는 `scroll`로 별도 시나리오를 둔다.
+
+양방향이나 반복 동작은 한쪽만 검증하지 않는다. 열기/닫기, 다음/이전, 스크롤 진입/이탈, drag/swipe 방향, autoplay pause/resume, 마지막 장면 뒤 초기화처럼 사용자에게 보이는 복귀 경로를 별도 시나리오 또는 setup+trigger 조합으로 선언한다.
 
 오늘 하루 보지 않기는 체크 전후와 `setup: checkbox click → close click`, `trigger: reload` 뒤 popup `hidden` assertion을 별도 시나리오로 둔다. 각 시나리오는 새 context에서 시작하므로 다른 시나리오의 cookie/localStorage가 섞이지 않는다.

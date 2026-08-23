@@ -28,7 +28,7 @@ const results=[];
 for(const entry of ledger.routes){
   const route=entry.route??entry.path;const id=routeId(route);const out=join(args.out,id);
   const child=[captureScript,"--url",new URL(route,ledger.origin).href,"--route",route,"--out",out,"--states",args.states];
-  for(const key of ["viewports","dpr","storage","scroll-y","clock"]){if(args[key])child.push(`--${key}`,String(args[key]));}
+  for(const key of ["viewports","dpr","storage","scroll-y","clock","settle","settle-quiet","settle-timeout","settle-poll"]){if(args[key])child.push(`--${key}`,String(args[key]));}
   for(const flag of ["headed","force","no-clock"]){if(args[flag])child.push(`--${flag}`);}
   const code=await run(process.execPath,child);const evidence=[];
   if(code===0){

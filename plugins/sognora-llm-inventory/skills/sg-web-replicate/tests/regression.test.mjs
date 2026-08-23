@@ -1,10 +1,13 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { spawn } from "node:child_process";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
 import { autoScrollPositions, captureClock, coveragePct, scriptFingerprint, verifyEvidence, writeEvidence } from "../scripts/_shared.mjs";
+import { load } from "../scripts/_deps.mjs";
+import { parseSettleOptions } from "../scripts/_settle.mjs";
 import { comparePng, dimensionsMatch } from "../scripts/_pixel.mjs";
 import { validateSiteCompletion } from "../scripts/_verify.mjs";
 import { buildEntryScenarios, validatePopupProbe } from "../scripts/_popup.mjs";
@@ -14,6 +17,56 @@ test("기준 캡처 기본 시각은 하드코딩 날짜가 아니라 실제 관
   const clock = captureClock(undefined, observed);
   assert.equal(clock.epoch, observed.toISOString());
   assert.equal(clock.source, "observed-at-capture");
+});
+
+test("안정화 관찰 시간은 증거용 가상 시계와 같은 값으로 조정할 수 있다", () => {
+  const observed = new Date("2034-07-09T12:34:56.000Z");
+  const options = parseSettleOptions({ settle:"6500", "settle-timeout":"12000" });
+  assert.equal(captureClock(undefined, observed, options.observeMs).runFor, 6500);
+  assert.throws(() => parseSettleOptions({ settle:"5000", "settle-timeout":"5200" }), /settle-timeout/);
+});
+
+test("resize→reload 페이지도 viewport 선지정으로 탐색하고 늦은 API 링크를 수집한다", async (t) => {
+  const playwright = await load("playwright");
+  if (!playwright) { t.skip("playwright가 있는 런타임에서 실행되는 브라우저 회귀 테스트"); return; }
+  const dir = await mkdtemp(join(tmpdir(), "sg-replica-discover-"));
+  const fixturePath = fileURLToPath(new URL("./fixtures/discover-settle-server.mjs", import.meta.url));
+  const discoverPath = fileURLToPath(new URL("../scripts/discover.mjs", import.meta.url));
+  const capturePath = fileURLToPath(new URL("../scripts/capture.mjs", import.meta.url));
+  const fixture = spawn(process.execPath, [fixturePath, "0"], { stdio:["ignore","pipe","pipe"] });
+  try {
+    const port = await fixturePort(fixture);
+    const out = join(dir, "routes.json");
+    const result = await run(process.execPath, [
+      discoverPath, "--url", `http://127.0.0.1:${port}/`, "--out", out,
+      "--depth", "1", "--max", "10", "--settle", "1200",
+      "--settle-quiet", "200", "--settle-timeout", "5000", "--settle-poll", "50",
+    ]);
+    assert.equal(result.code, 0, `${result.stdout}\n${result.stderr}`);
+    const ledger = JSON.parse(await readFile(out, "utf8"));
+    assert.ok(ledger.routes.some((entry) => entry.route === "/late-api" && entry.visited));
+    assert.equal(ledger.routes.find((entry) => entry.route === "/")?.viewportObservations?.["390x844"]?.reason, "quiet");
+    assert.equal(ledger.settle.observeMs, 1200);
+    assert.deepEqual(ledger.skipped, []);
+
+    const states = join(dir, "states.json");
+    const captureOut = join(dir, "capture");
+    await writeFile(states, JSON.stringify({
+      version:1, scenarios:[], exclusions:[{ selector:"a", reason:"회귀 fixture의 탐색 링크" }],
+    }));
+    const capture = await run(process.execPath, [
+      capturePath, "--url", `http://127.0.0.1:${port}/`, "--route", "/", "--out", captureOut,
+      "--states", states, "--viewports", "390x844", "--settle", "1200",
+      "--settle-quiet", "200", "--settle-timeout", "5000", "--settle-poll", "50", "--force",
+    ]);
+    assert.equal(capture.code, 0, `${capture.stdout}\n${capture.stderr}`);
+    const measure = JSON.parse(await readFile(join(captureOut, "390x844", "measure.json"), "utf8"));
+    assert.equal(measure.meta.settle.options.observeMs, 1200);
+    assert.ok(measure.interactionInventory.some((item) => item.href === "/late-api" && item.excluded));
+  } finally {
+    fixture.kill("SIGTERM");
+    await rm(dir, { recursive:true, force:true });
+  }
 });
 
 test("첫 진입 팝업은 닫기·체크·재방문 억제 상태 계약으로 확장된다", () => {
@@ -148,4 +201,34 @@ function goodReport(route, localSignature, refSignature) {
     report:[{viewport:"390x844",pass:true,expectedStateCount:3,comparedStateCount:3,
       pixelCoveragePct:{ref:100,local:100},structureDelta:0,missingStates:[],failedPixels:[],executionErrors:[],
       route:{ref:{status:200,renderSignature:refSignature},local:{renderer:"next",renderSignature:localSignature},offenders:[]}}] };
+}
+
+function fixturePort(child) {
+  return new Promise((resolve, reject) => {
+    let stdout = "", stderr = "";
+    const timeout = setTimeout(() => reject(new Error(`fixture 시작 timeout: ${stderr}`)), 5000);
+    child.stdout.on("data", (chunk) => {
+      stdout += chunk;
+      const match = /discover-settle-fixture (\d+)/.exec(stdout);
+      if (!match) return;
+      clearTimeout(timeout);
+      resolve(Number(match[1]));
+    });
+    child.stderr.on("data", (chunk) => { stderr += chunk; });
+    child.once("exit", (code) => {
+      clearTimeout(timeout);
+      reject(new Error(`fixture 조기 종료 ${code}: ${stderr}`));
+    });
+  });
+}
+
+function run(command, args) {
+  return new Promise((resolve, reject) => {
+    const child = spawn(command, args, { env:process.env, stdio:["ignore","pipe","pipe"] });
+    let stdout = "", stderr = "";
+    child.stdout.on("data", (chunk) => { stdout += chunk; });
+    child.stderr.on("data", (chunk) => { stderr += chunk; });
+    child.on("error", reject);
+    child.on("exit", (code) => resolve({ code, stdout, stderr }));
+  });
 }

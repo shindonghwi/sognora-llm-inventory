@@ -14,13 +14,13 @@ export const MAX_SCROLL_SHOTS = 2000; // 폭주 방지. 이 상한에 닿으면 
  * 임의의 달력 날짜를 기본값으로 쓰지 않는다. 기준 캡처가 실제로 시작된 순간을
  * 동결해 같은 캡처 안의 viewport/state와 이후 로컬 재현만 동일하게 맞춘다.
  */
-export function captureClock(explicitEpoch, now = new Date()) {
+export function captureClock(explicitEpoch, now = new Date(), runFor = CAPTURE_SETTLE_MS) {
   const date = explicitEpoch ? new Date(String(explicitEpoch)) : new Date(now);
   if (Number.isNaN(date.getTime())) throw new Error(`잘못된 --clock 시각: ${explicitEpoch}`);
   return {
     source: explicitEpoch ? "explicit" : "observed-at-capture",
     epoch: date.toISOString(),
-    runFor: CAPTURE_SETTLE_MS,
+    runFor: Number(runFor),
   };
 }
 

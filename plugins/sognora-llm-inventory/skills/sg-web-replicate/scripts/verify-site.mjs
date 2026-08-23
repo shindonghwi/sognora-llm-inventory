@@ -11,6 +11,7 @@ import { argv, exit } from "node:process";
 import { load, missing } from "./_deps.mjs";
 import { canonicalTarget, rendererMeta, routeId, routeTarget, scriptFingerprint, sha256, verifyEvidence, writeEvidence } from "./_shared.mjs";
 import { validateSiteCompletion } from "./_verify.mjs";
+import { parseSettleOptions, settlePage, trackPageActivity } from "./_settle.mjs";
 
 const args = parseArgs(argv.slice(2));
 if (!args.routes || !args.ref || !args.local || !args.out) {
@@ -19,6 +20,9 @@ if (!args.routes || !args.ref || !args.local || !args.out) {
 }
 const ledger = JSON.parse(await readFile(args.routes, "utf8"));
 if (!Array.isArray(ledger.routes) || !ledger.origin) { console.error("routes.json v2 원장이 필요합니다"); exit(2); }
+let routeSettleOptions;
+try { routeSettleOptions = parseSettleOptions({}, ledger.settle ?? {}); }
+catch (error) { console.error(`routes.json 안정화 조건 오류: ${error.message}`); exit(2); }
 await mkdir(args.out, { recursive: true });
 const override = args.override ? JSON.parse(await readFile(args.override, "utf8")) : {};
 
@@ -61,14 +65,17 @@ if (ledger.notFoundProbe) {
   const browser = await pw.chromium.launch({ headless: !args.headed });
   const context = await browser.newContext({ storageState: args.storage || undefined });
   const page = await context.newPage();
+  const tracker = trackPageActivity(page);
   try {
     const route = ledger.notFoundProbe.route;
     const response = await page.goto(new URL(route, args.local).href, { waitUntil:"domcontentloaded", timeout:30000 });
+    await settlePage(page, tracker, routeSettleOptions, { routesOnly: true });
     const render = await rendererMeta(page);
     notFoundLocal = { route, status:response?.status()??null, finalRoute:routeTarget(page.url()),
       canonical:canonicalTarget(render.canonical), renderer:render.framework,
       renderSignature:sha256(`${render.text}\0${render.structure}`) };
   } catch (error) { execution.push({ route:ledger.notFoundProbe.route, error:`404 probe: ${error.message}` }); }
+  tracker.dispose();
   await browser.close();
 }
 

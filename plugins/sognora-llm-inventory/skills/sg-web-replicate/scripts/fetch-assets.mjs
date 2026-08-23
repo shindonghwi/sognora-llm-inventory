@@ -9,6 +9,7 @@ import { argv, exit } from "node:process";
 import { load, missing } from "./_deps.mjs";
 import { advance, loadStateContract, routeTarget, runScenarioSetup, runTrigger, scenariosFor, sha256 } from "./_shared.mjs";
 import { validatePopupProbe } from "./_popup.mjs";
+import { parseSettleOptions, settlePage, trackPageActivity } from "./_settle.mjs";
 
 const args = parseArgs(argv.slice(2));
 if ((!args.url && !args.routes) || !args.out) {
@@ -24,6 +25,9 @@ if (args.routes) ledger = JSON.parse(await readFile(args.routes, "utf8"));
 const origin = ledger?.origin ?? new URL(args.url).origin;
 const routes = ledger ? ledger.routes.map((r) => r.route ?? r.path) : [routeTarget(args.url)];
 const viewports = parseViewports(args.viewports ?? args.viewport ?? "1440x900,768x1024,390x844");
+let settleOptions;
+try { settleOptions = parseSettleOptions(args); }
+catch (error) { console.error(`안정화 옵션 오류: ${error.message}`); exit(2); }
 let stateContract;
 try { stateContract = await loadStateContract(args.states); }
 catch (error) { console.error(`상태 계약 오류: ${error.message}`); exit(2); }
@@ -54,10 +58,12 @@ for (const route of routes) {
       reducedMotion: "no-preference", hasTouch: vp.width <= 500,
     });
     const page = await context.newPage();
+    const tracker = trackPageActivity(page);
     observeResponses(page);
     const url = new URL(route, origin).href;
     try {
-      await page.goto(url, { waitUntil: "networkidle", timeout: 45000 });
+      await page.goto(url, { waitUntil: "domcontentloaded", timeout: 45000 });
+      await settlePage(page, tracker, settleOptions);
       await page.evaluate(async () => {
         const height = Math.max(document.body?.scrollHeight ?? 0, document.documentElement?.scrollHeight ?? 0);
         for (let y = 0; y < height; y += window.innerHeight) {
@@ -65,7 +71,7 @@ for (const route of routes) {
         }
         window.scrollTo(0, 0);
       });
-      await page.waitForTimeout(500);
+      await settlePage(page, tracker, { ...settleOptions, observeMs: 0 });
       await recordDom(page, route, vp.label);
       for (const scenario of scenariosFor(stateContract, route, vp.label)) {
         const scenarioContext = await browser.newContext({
@@ -73,9 +79,11 @@ for (const route of routes) {
           reducedMotion: "no-preference", hasTouch: vp.width <= 500,
         });
         const scenarioPage = await scenarioContext.newPage();
+        const scenarioTracker = trackPageActivity(scenarioPage);
         observeResponses(scenarioPage);
         try {
-          await scenarioPage.goto(url, { waitUntil: "networkidle", timeout: 45000 });
+          await scenarioPage.goto(url, { waitUntil: "domcontentloaded", timeout: 45000 });
+          await settlePage(scenarioPage, scenarioTracker, settleOptions);
           await runScenarioSetup(scenarioPage, scenario, null);
           await runTrigger(scenarioPage, scenario.trigger);
           const last = Math.max(0, ...scenario.frames.map((f) => Number(f.atMs ?? 0)));
@@ -84,6 +92,7 @@ for (const route of routes) {
         } catch (error) {
           failed.push({ route, viewport: vp.label, scenario: scenario.id, reason: error.message });
         } finally {
+          scenarioTracker.dispose();
           await Promise.allSettled([...pending]);
           await scenarioContext.close();
         }
@@ -91,6 +100,7 @@ for (const route of routes) {
     } catch (error) {
       failed.push({ route, viewport: vp.label, reason: `goto: ${error.message}` });
     }
+    tracker.dispose();
     await Promise.allSettled([...pending]);
     await context.close();
   }
@@ -111,6 +121,7 @@ for (const { url, text } of cssTexts) {
 
 const payload = {
   version: 2, origin, routes, viewports: viewports.map((v)=>v.label), fetchedAt: new Date().toISOString(),
+  settle: settleOptions,
   stateContractSha256: sha256(JSON.stringify(stateContract)),
   fontFaces: dedupe(fontFaces), inventories,
   saved, failed,

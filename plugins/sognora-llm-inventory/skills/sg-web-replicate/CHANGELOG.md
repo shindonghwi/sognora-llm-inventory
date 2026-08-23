@@ -1,5 +1,12 @@
 # sg-web-replicate — CHANGELOG
 
+## 1.14.3 — 2026-08-23 (resize reload와 지연 API 안정화)
+
+- `discover.mjs`가 로드된 단일 page에서 viewport를 바꾸던 구조를 제거했다. viewport별 새 context/page에 크기를 먼저 지정한 뒤 방문해 resize 시 현재 URL을 reload하는 사이트에서도 execution context가 파괴되지 않는다.
+- 최소 관찰·network/DOM quiet·전체 상한을 결합한 `_settle.mjs`를 추가했다. 탐색·기준 캡처·로컬 diff·자산 수집·팝업 probe가 늦은 API와 동적 import를 같은 규칙으로 기다린다.
+- 기본 안정화 계약(관찰 3000ms, quiet 500ms, 상한 15000ms)과 `--settle*` 조정값을 routes/assets/evidence에 기록하고 로컬 diff가 기준값을 재현하게 했다.
+- resize→reload fixture가 650ms 지연 API로 삽입하는 링크를 desktop/mobile 모두에서 발견하는 실제 Chromium 회귀 테스트를 추가했다.
+
 ## 1.14.2 — 2026-08-22 (전 사이트 완전 복제 게이트와 첫 진입 팝업)
 
 - 전역 `2026-01-01` 기본 시각을 제거했다. 기준 캡처가 실제로 시작된 순간을 기록해 같은 증거의 원본/로컬 재현에만 동결한다.

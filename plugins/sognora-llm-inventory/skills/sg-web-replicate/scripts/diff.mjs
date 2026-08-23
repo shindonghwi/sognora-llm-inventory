@@ -14,6 +14,7 @@ import {
   advance, canonicalTarget, coveragePct, evaluateScenarioAssertions, installFrozenClock, normalizeConsoleError,
   rendererMeta, routeTarget, runScenarioSetup, runTrigger, scriptFingerprint, sha256, stateStyle, verifyEvidence, writeEvidence,
 } from "./_shared.mjs";
+import { parseSettleOptions, settlePage, trackPageActivity } from "./_settle.mjs";
 
 const args = parseArgs(argv.slice(2));
 if (!args.ref || !args.local || !args.out) {
@@ -75,12 +76,20 @@ if (sameOrigin(firstMeta.url, args.local)) {
 }
 
 const clockSpecs = new Set();
+const settleSpecs = new Set();
 for (const label of viewportDirs) {
   const measure = JSON.parse(await readFile(join(args.ref, label, "measure.json"), "utf8"));
   clockSpecs.add(JSON.stringify(measure.meta?.clock));
+  settleSpecs.add(JSON.stringify(measure.meta?.settle?.options));
 }
 if (clockSpecs.size !== 1) { console.error("ref 뷰포트 간 클록 조건이 다릅니다"); exit(2); }
+if (settleSpecs.size !== 1 || [...settleSpecs][0] == null || [...settleSpecs][0] === undefined) {
+  console.error("ref 뷰포트 간 안정화 조건이 다르거나 없습니다 — 새 capture.mjs로 재캡처하세요"); exit(2);
+}
 const clock = JSON.parse([...clockSpecs][0]);
+let settleOptions;
+try { settleOptions = parseSettleOptions({}, JSON.parse([...settleSpecs][0])); }
+catch (error) { console.error(`ref 안정화 조건 오류: ${error.message}`); exit(2); }
 if (args["no-clock"] && clock) { console.error("ref는 클록 캡처인데 --no-clock이 지정됐습니다"); exit(2); }
 
 const browser = await chromium.launch({ headless: !args.headed });
@@ -104,6 +113,7 @@ for (const label of viewportDirs) {
   let localElements = [];
   let horizontalOverflow = false;
   let localPageHeight = 0;
+  let localSettle = null;
 
   if (!refMeasure.meta.trustworthy || refMeasure.pixelCoveragePct !== 100) {
     executionErrors.push(`원본 증거 불완전: trustworthy=${refMeasure.meta.trustworthy}, coverage=${refMeasure.pixelCoveragePct}`);
@@ -111,6 +121,7 @@ for (const label of viewportDirs) {
 
   try {
     opened = await openPage(vp, "static", consoleErrors, missingAssets);
+    localSettle = opened.settle;
     const { page, response } = opened;
     const render = await rendererMeta(page);
     localRoute = {
@@ -249,7 +260,7 @@ for (const label of viewportDirs) {
     structureDelta,
     boxOffenders: boxOffenders.sort((a, b) => b.delta - a.delta).slice(0, 30),
     fontOffenders: fontOffenders.slice(0, 30), decoOffenders: decoOffenders.slice(0, 30),
-    interactionStyleOffenders, interactionAssertionOffenders, representativeScenarios,
+    interactionStyleOffenders, interactionAssertionOffenders, representativeScenarios, settle: localSettle,
     horizontalOverflow, newConsoleErrors, missingAssets, executionErrors,
     pixelResults,
   };
@@ -283,17 +294,21 @@ async function openPage(vp, mode, consoleErrors, missingAssets) {
     storageState: args.storage || undefined, hasTouch: vp.width <= 500,
   });
   const page = await context.newPage();
+  const tracker = trackPageActivity(page);
   page.on("console", (m) => m.type() === "error" && consoleErrors.push(m.text().slice(0, 240)));
   page.on("response", (r) => r.status() === 404 && r.request().resourceType() !== "document" && missingAssets.push(r.url().slice(0, 200)));
   if (clock) await installFrozenClock(page, clock.epoch);
   try {
-    const response = await page.goto(args.local, { waitUntil: "networkidle", timeout: 45000 });
+    const response = await page.goto(args.local, { waitUntil: "domcontentloaded", timeout: 45000 });
+    const settled = await settlePage(page, tracker, settleOptions, {
+      advance: clock ? (ms) => advance(page, ms, clock) : null,
+    });
+    tracker.dispose();
     if (mode === "static") {
       await page.addStyleTag({ content: "*,*::before,*::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}" });
     }
-    await advance(page, clock?.runFor ?? 3000, clock);
-    return { context, page, response };
-  } catch (error) { await context.close(); throw error; }
+    return { context, page, response, settle: { elapsedMs: settled.elapsedMs, reason: settled.reason } };
+  } catch (error) { tracker.dispose(); await context.close(); throw error; }
 }
 
 async function measureElements(page) {

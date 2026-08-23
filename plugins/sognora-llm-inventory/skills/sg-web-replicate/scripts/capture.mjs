@@ -15,10 +15,11 @@ import {
   routeTarget, runScenarioSetup, runTrigger, scenariosFor, scriptFingerprint, scrollFile, sha256,
   stateStyle, verifyEvidence, writeEvidence,
 } from "./_shared.mjs";
+import { parseSettleOptions, settlePage, trackPageActivity } from "./_settle.mjs";
 
 const args = parseArgs(argv.slice(2));
 if (!args.url || !args.out) {
-  console.error("usage: capture.mjs --url <URL> --out <dir> [--states states.json] [--viewports WxH,...] [--force]");
+  console.error("usage: capture.mjs --url <URL> --out <dir> [--states states.json] [--viewports WxH,...] [--settle 3000] [--settle-timeout 15000] [--force]");
   exit(2);
 }
 
@@ -32,7 +33,10 @@ catch (error) { console.error(`상태 계약 오류: ${error.message}`); exit(2)
 
 const viewports = parseViewports(args.viewports ?? "1440x900,768x1024,390x844");
 const dpr = Number(args.dpr ?? 1);
-const clock = args["no-clock"] ? null : captureClock(args.clock);
+let settleOptions;
+try { settleOptions = parseSettleOptions(args); }
+catch (error) { console.error(`안정화 옵션 오류: ${error.message}`); exit(2); }
+const clock = args["no-clock"] ? null : captureClock(args.clock, new Date(), settleOptions.observeMs);
 const route = routeTarget(args.route ?? args.url);
 const scripts = await scriptFingerprint(dirname(fileURLToPath(import.meta.url)));
 const browser = await chromium.launch({ headless: !args.headed });
@@ -79,6 +83,7 @@ for (const vp of viewports) {
     capturedAt: new Date().toISOString(),
     headless: !args.headed,
     clock,
+    settle: { options: settleOptions, baseline: opened.settle },
     modes: { static: "reduced-motion+css-disabled", interaction: "normal-motion" },
   };
 
@@ -207,7 +212,7 @@ for (const item of written) {
   item.measure.consoleBaseline = baselineUnion;
   await writeFile(join(item.dir, "measure.json"), JSON.stringify(item.measure, null, 2));
   const conditions = {
-    route, viewport: item.vp.label, dpr, clock,
+    route, viewport: item.vp.label, dpr, clock, settle: settleOptions,
     modes: item.measure.meta.modes,
     scrollPositions: item.measure.scrollPositions,
     stateIds: item.states.map((s) => s.id),
@@ -228,17 +233,22 @@ async function openPage(vp, mode, consoleErrors) {
     hasTouch: vp.width <= 500,
   });
   const page = await context.newPage();
+  const tracker = trackPageActivity(page);
   page.on("console", (m) => m.type() === "error" && consoleErrors.push(m.text().slice(0, 240)));
   if (clock) await installFrozenClock(page, clock.epoch);
   let response;
   try {
-    response = await page.goto(args.url, { waitUntil: "networkidle", timeout: 45000 });
+    response = await page.goto(args.url, { waitUntil: "domcontentloaded", timeout: 45000 });
+    const settled = await settlePage(page, tracker, settleOptions, {
+      advance: clock ? (ms) => advance(page, ms, clock) : null,
+    });
+    tracker.dispose();
     if (mode === "static") {
       await page.addStyleTag({ content: "*,*::before,*::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}" });
     }
-    await advance(page, clock?.runFor ?? 3000, clock);
-    return { context, page, response };
+    return { context, page, response, settle: { elapsedMs: settled.elapsedMs, reason: settled.reason } };
   } catch (error) {
+    tracker.dispose();
     await context.close();
     throw error;
   }
