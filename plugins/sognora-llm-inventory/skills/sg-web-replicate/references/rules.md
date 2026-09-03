@@ -12,20 +12,20 @@
 
 ## 브라우저 비교 기준
 
-| 대상 | 완료 조건 |
+| 대상 | 완료 조건 · 판정자 |
 |---|---|
-| 주요 블록 x/y/w/h | 같은 viewport에서 오차 ≤ 1px |
+| 주요 블록 x/y/w/h | 같은 viewport에서 오차 ≤ 1px — **정의: 복제 목표치(관행, 근거 실측 없음)**. 판정자: 에이전트(인앱 브라우저 DOM box) |
 | font family/weight/size/line-height | 원본 computed style과 일치 |
 | 색·radius·shadow | 원본 computed style과 시각적으로 일치 |
-| responsive 구조·overflow | 원본과 동일, 의도하지 않은 가로 overflow 0건 |
-| route × viewport × state | 원본/로컬 증거와 QA 판정 100% |
-| 동적 인벤토리 | scenario/exclusion/근거 있는 `none observed` 분류 100% |
+| responsive 구조·overflow | 원본과 동일, 의도하지 않은 가로 overflow 0건 — 에이전트(브라우저) |
+| route × viewport × state | 원본/로컬 증거와 QA 판정 100% — `verify.mjs` `ledger.incomplete` |
+| 동적 인벤토리 | scenario/exclusion/근거 있는 `none observed` 분류 100% — `verify.mjs` `contract.pending`(version 2·pending 0·safe·before 프레임·exclusion 사유) |
 | interaction/motion | before/mid/after·복귀·저장상태 재현 100% |
-| visual slot | imagegen asset/variant 연결·검증 100% |
-| 이미지 내부 문구·브랜드 매핑 | 오탈자·원본 브랜드 잔존 0건 |
+| visual slot | imagegen asset/variant 연결·검증 100% — `verify.mjs` `asset.slot-mismatch`(slot 수=asset 수, 파일 픽셀 규격·alpha 일치) |
+| 이미지 내부 문구·브랜드 매핑 | 오탈자 0건(에이전트 확대 육안) · 원본 브랜드 잔존 0건(`verify.mjs` `residue.brand`) |
 | status·redirect·canonical·404 | 원본에서 관찰한 동작과 일치 |
-| console·링크·asset·runtime | 신규 오류·깨짐·누락 0건 |
-| 원본·stock·placeholder 자산 | 최종 앱 잔존 0건 |
+| console·링크·asset·runtime | 신규 오류·깨짐·누락 0건 — 에이전트(브라우저 console 원장) |
+| 원본·stock·placeholder 자산 | 최종 앱 잔존 0건 — `verify.mjs` `residue.asset-url`·`residue.asset-hash`(manifest.json originAssets 대조) |
 
 수치 오차는 인앱 브라우저의 DOM box와 computed style로 확인한다. 생성 이미지 내부는 원본 pixel equality 대상이 아니지만 slot 경계·위치·크기·aspect·crop과 주변 UI는 정확히 맞춘다. 주제·구도·색감·정보 밀도·문구 정확성은 확대된 원본/생성 결과를 나란히 보고 판정한다.
 
@@ -117,8 +117,8 @@
 
 배치는 프로젝트 문서 → 기존 코드 관례 → [layout-presets.md](layout-presets.md) 순이다. 자동 생성 구역은 수정하지 않는다. i18n 프로젝트는 기본 locale 메시지 파일을 사용한다.
 
-대상 프로젝트가 이미 제공하는 lint·type-check·build·test는 실행한다. 이 스킬 자체나 대상 프로젝트에 범용 crawler/capture/diff/완료 게이트를 새로 만들지 않는다. 사이트별 차이는 인앱 브라우저 관찰과 담당 에이전트의 증거 판정으로 처리한다.
+대상 프로젝트가 이미 제공하는 lint·type-check·build·test는 실행한다. 범용 crawler/capture/픽셀 diff는 만들지 않는다 — 사이트별 차이는 인앱 브라우저 관찰과 담당 에이전트의 증거 판정으로 처리한다. 파일만 읽어 결정적으로 잴 수 있는 다섯 축(잔존·상태 계약·QA 원장·slot↔asset·라우트 방문)은 `scripts/verify.mjs`가 판정한다(인자 없음, cwd의 `.sognora/replica/`).
 
 ## 완료 정의
 
-`qa-ledger.json`의 전 route×viewport×state가 증거와 함께 `pass`이고, 동적 인벤토리·visual slot·브랜드 교체가 모두 완결되며, 원본/stock/placeholder 자산과 `pending`·`TODO`가 0건일 때만 완전 복제다. 일부 캡처, 정적 골격, console error 0건, 사람이 한 번 본 유사성만으로 완료라고 하지 않는다.
+`verify.mjs` exit 0(잔존·계약·원장·슬롯·라우트 🔴 0) **그리고** 에이전트의 브라우저 판정(≤1px·overflow·console·모션 프레임)이 전부 pass일 때만 완전 복제다. `qa-ledger.json`의 전 route×viewport×state가 증거와 함께 `pass`이고, 동적 인벤토리·visual slot·브랜드 교체가 모두 완결되며, 원본/stock/placeholder 자산과 `pending`·`TODO`가 0건이어야 한다. 일부 캡처, 정적 골격, console error 0건, 사람이 한 번 본 유사성만으로 완료라고 하지 않는다.

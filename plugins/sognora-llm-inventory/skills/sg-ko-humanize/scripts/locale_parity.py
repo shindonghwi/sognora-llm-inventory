@@ -214,6 +214,9 @@ def main() -> int:
     files, base, target, as_json = [], "en", "ko", False
     it = iter(sys.argv[1:])
     for a in it:
+        if a in ("-h", "--help"):
+            print("usage: locale_parity.py <file...> [--base en] [--target ko] [--json]")
+            return 0
         if a == "--json":
             as_json = True
         elif a == "--base":

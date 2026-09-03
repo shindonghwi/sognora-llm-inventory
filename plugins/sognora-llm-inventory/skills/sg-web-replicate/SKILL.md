@@ -1,6 +1,6 @@
 ---
 name: sg-web-replicate
-description: 인앱 브라우저와 서브에이전트로 레퍼런스 웹사이트의 전 라우트·반응형·상호작용·모션을 직접 관찰해 복제하고, 브랜드는 유사한 가상 이름으로 바꾸며 모든 시각 자산은 영역·규격을 먼저 만든 뒤 imagegen으로 새로 생성한다. 트리거 — "이 사이트 똑같이 만들어줘", "완전 복제", "레퍼런스 복제", "이 페이지 클론", "원본이랑 비교", "픽셀 단위로 맞춰줘", "replicate this site", "clone this page". 비대상 — 새 디자인 창작은 sg-landing-forge, 백엔드·서버 기능 구현은 아님.
+description: 인앱 브라우저와 서브에이전트로 레퍼런스 웹사이트의 전 라우트·반응형·상호작용·모션을 직접 관찰해 복제하고, 브랜드는 유사한 가상 이름으로 바꾸며 모든 시각 자산은 영역·규격을 먼저 만든 뒤 imagegen으로 새로 생성한다. 트리거 — "이 사이트 똑같이 만들어줘", "완전 복제", "레퍼런스 복제", "이 페이지 클론", "원본이랑 비교", "픽셀 단위로 맞춰줘", "replicate this site", "clone this page". 비대상 — 새 디자인 제작은 sg-page-forge, 백엔드·서버 기능 구현은 아님.
 ---
 
 # sg-web-replicate — 브라우저 우선 완전 복제
@@ -9,10 +9,26 @@ description: 인앱 브라우저와 서브에이전트로 레퍼런스 웹사이
 
 측정·완료 기준은 [rules.md](references/rules.md), 상호작용 형식은 [state-contract.md](references/state-contract.md), 브랜드·이미지 생성은 [visual-adaptation.md](references/visual-adaptation.md), 명세는 [spec-template.md](references/spec-template.md), 빈 프로젝트 배치는 [layout-presets.md](references/layout-presets.md)를 따른다.
 
+## 0. 준비 — 계기 위치와 브라우저 (첫 실행에 한 번)
+
+이 스킬은 사용자 프로젝트에서 돌고 계기는 플러그인 안에 있다. 상대경로 `scripts/…`는 거기 없다.
+
+```bash
+S=$(sg path sg-web-replicate 2>/dev/null) || S=$(ls -td ~/.claude/plugins/cache/*/*/*/skills/sg-web-replicate/scripts ~/.codex/plugins/cache/*/*/*/skills/sg-web-replicate/scripts 2>/dev/null | head -1)
+```
+
+**인앱 브라우저가 이 스킬의 눈이다.** 다음 중 하나가 있어야 시작한다 — 없으면 "미측정"으로 넘기지 말고 갖춘다.
+
+- Claude Code: playwright MCP(`mcp__playwright__browser_*`)가 도구 목록에 있는가. 없으면 `claude mcp add playwright -- npx @playwright/mcp@latest` 뒤 새 세션.
+- Codex: 내장 브라우저 도구가 있는가. 없으면 `npm i -D playwright && npx playwright install chromium` 후 `SG_PLAYWRIGHT=<모듈 경로>`로 Playwright 스크립트 호출.
+- 어느 쪽도 못 갖추면 그 사실을 첫 줄에 보고하고 멈춘다 — 이 스킬은 브라우저 없이 아무 것도 관찰하지 못한다.
+
+**판정자 두 층.** 결정적으로 잴 수 있는 것(원본 잔존·상태 계약·QA 원장·slot↔asset·라우트 방문)은 `node $S/verify.mjs`가 파일만 읽어 판정한다(인자 없음, cwd의 `.sognora/replica/`). 브라우저가 필요한 것(≤1px 오차·가로 overflow·console 신규 오류·모션 프레임)은 담당 에이전트가 인앱 브라우저 증거 원장으로 판정한다. 둘 다 통과해야 완전 복제다.
+
 ## 작업 원칙
 
 1. 인앱 브라우저에서 실제로 관찰한 화면·DOM·computed style·URL·storage·network·입력을 근거로 삼는다.
-2. 이 스킬은 범용 크롤러·캡처·diff 스크립트를 제공하거나 그 통과를 작업 시작 조건으로 삼지 않는다. 대상 프로젝트에도 같은 범용 계기를 새로 만들지 않는다.
+2. 범용 크롤러·캡처·픽셀 diff는 만들지 않는다 — 사이트마다 달라지는 동작은 인앱 브라우저 관찰과 에이전트 판정으로 처리한다. 대신 **파일만 읽어도 결정적으로 잴 수 있는 것**(원본 잔존·상태 계약·QA 원장 완결·slot↔asset·라우트 전부 방문)은 `verify.mjs`가 판정한다. 대상 프로젝트에 이 스킬용 계기를 새로 만들지 않는다.
 3. Cloudflare·광고·분석·iframe 같은 제3자 요청이 계속 열려 있어도 페이지가 화면과 입력에 정상 반응하면 탐색을 계속하고 외부 잡음으로 기록한다.
 4. 전 라우트와 viewport를 실제 방문하고 각 동적 상태를 원본과 로컬에서 같은 입력 순서로 재생한다. 캡처 장수만으로 완료를 주장하지 않는다.
 5. 원본에서 측정하지 않은 치수·브레이크포인트·duration·easing을 지어내지 않는다.
@@ -26,11 +42,12 @@ description: 인앱 브라우저와 서브에이전트로 레퍼런스 웹사이
 
 `.sognora/replica/`에 다음 원장을 먼저 만든다.
 
-- `contract.json`: 원본 URL, viewport, DPR, locale/theme, 인증 범위, 의도적 차이
+- `contract.json`: 원본 URL, viewport, DPR, locale/theme, 인증 범위, 의도적 차이, **`brand.original`(원본 브랜드 문자열 목록)·`brand.originDomains`**, **`layout.preset`**(layout-presets.md 이름 — 한 번 정하면 되묻지 않는다), **`imagegen.fallback`**(`none`|`hold`|승인한 대안 — imagegen 실패 시 처분을 여기서 한 번 받는다)
 - `routes.json`: 요청 route와 query, status/redirect/canonical, 발견 근거, 실제 방문 여부
 - `states.json`: route×viewport별 안전한 입력과 before/mid/after 상태
 - `spec.md`: 측정값, 디자인 토큰, 동작, visual slot, 근거 위치
 - `qa-ledger.json`: 원본/로컬 비교 결과와 증거 파일
+- `manifest.json`: **원본 자산 지문**(`originAssets[{url, sha256}]` — 잔존 검사의 대조표)과 **visual slot 계약**(`slots[{assetId, file, width, height, alpha}]` — 생성 파일 규격 대조표)
 
 서브에이전트를 사용할 수 있으면 시작부터 병렬화한다.
 
@@ -89,13 +106,17 @@ description: 인앱 브라우저와 서브에이전트로 레퍼런스 웹사이
 
 원본이 CSS·Web Animations·jQuery·Framer Motion·GSAP·canvas 중 무엇을 썼는지는 강제하지 않는다. 프로젝트에 맞는 수단으로 관찰된 상태 전환, timing/easing, 입력 잠금, 역방향·초기화, URL/storage 복원과 viewport 차이를 재현한다.
 
-이미지는 먼저 전 viewport/state의 컨테이너·규격·crop을 구현하고 visual slot 계약을 완성한다. 그 뒤 가상 브랜드명을 확정하고 [visual-adaptation.md](references/visual-adaptation.md)를 전부 읽어 각 asset/variant마다 built-in imagegen을 별도로 실행한다. 이미지 내부 문구도 생성 결과에 포함하며 HTML/CSS overlay로 보정하지 않는다.
+이미지는 먼저 전 viewport/state의 컨테이너·규격·crop을 구현하고 visual slot 계약을 완성한다. 그 뒤 가상 브랜드명을 확정하고 [visual-adaptation.md](references/visual-adaptation.md)를 전부 읽어 각 asset/variant마다 `imagegen`을 별도로 실행한다(Codex=내장 imagegen 스킬, Claude Code=`codex exec`에 프롬프트 파이프 — 스킬명 imagegen. 둘 다 없으면 그 slot은 "미제공"). 이미지 내부 문구도 생성 결과에 포함하며 HTML/CSS overlay로 보정하지 않는다.
 
-built-in imagegen을 사용할 수 없거나 필수 문구·QR·구조를 반복 생성해도 충족하지 못하면 해당 visual slot을 누락하지 말고 완료를 보류한다. 사용자의 별도 승인 없이 다른 생성 API나 stock 자산으로 우회하지 않는다.
+imagegen을 사용할 수 없거나 필수 문구·구조를 반복 생성해도 충족하지 못하면 `contract.imagegen.fallback`이 정한 대로 처리한다(`hold`=slot을 누락하지 않고 완료 보류, `none`=미제공 보고, 승인한 대안 이름=그것으로). 계약에 없는 대안(다른 생성 API·stock)으로 스스로 우회하지 않는다. **QR은 imagegen 대상이 아니다** — 실제 QR 라이브러리로 가상 목적지를 인코딩해 생성한다(visual-adaptation.md §3).
 
-## 6. 브라우저 QA
+## 6. QA — 계기 먼저, 브라우저 다음
 
-원본과 로컬을 같은 viewport·route·state로 열어 `qa-ledger.json`의 모든 셀을 직접 비교한다.
+```bash
+node "$S/verify.mjs"     # .sognora/replica/ 원장 판정: residue.* · contract.pending · ledger.incomplete · asset.slot-mismatch · routes.unvisited — 🔴 있으면 exit 1
+```
+
+🔴이 남아 있으면 브라우저 QA에 들어가지 않는다(기계 결함을 안고 사람 시간을 쓰지 않는다). 그 다음 원본과 로컬을 같은 viewport·route·state로 열어 `qa-ledger.json`의 모든 셀을 직접 비교한다.
 
 - 첫 화면, full page, responsive 구조와 overflow
 - 주요 블록·타이포그래피·간격·색·테두리·그림자
@@ -104,11 +125,11 @@ built-in imagegen을 사용할 수 없거나 필수 문구·QR·구조를 반복
 - visual slot 규격·crop·주제·구도·문구·QR과 브랜드 잔존
 - console error, 깨진 링크, 누락 asset, 런타임 오류
 
-오차는 공통 컨테이너 → font/slot → 개별 상태 순으로 고친다. 대상 프로젝트가 이미 가진 lint·type-check·build·test 명령은 실행하되, 이 스킬을 위해 범용 크롤러나 완료 게이트를 새로 작성하지 않는다. 생성 이미지 내부는 원본 pixel equality 대상이 아니며 slot 경계·위치·크기·crop과 주변 UI는 정확히 맞춘다.
+오차는 공통 컨테이너 → font/slot → 개별 상태 순으로 고친다. 대상 프로젝트가 이미 가진 lint·type-check·build·test 명령은 실행하되, 이 스킬을 위해 범용 크롤러를 새로 작성하지 않는다. 생성 이미지 내부는 원본 pixel equality 대상이 아니며 slot 경계·위치·크기·crop과 주변 UI는 정확히 맞춘다.
 
 ## 7. 완료 보고
 
-다음이 모두 충족될 때만 완전 복제라고 보고한다.
+다음이 모두 충족될 때만 완전 복제라고 보고한다. 앞 다섯은 `verify.mjs` exit 0이 증명하고, 나머지는 브라우저 증거 원장과 프로젝트 검증 명령이 증명한다.
 
 - `routes.json`의 모든 후보가 실제 방문됨
 - route×viewport×state의 `qa-ledger.json` 모든 셀이 `pass`

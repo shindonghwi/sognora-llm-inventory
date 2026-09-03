@@ -1,0 +1,38 @@
+/* sg-page-forge 모션 프리셋 — wiki/systems/motion.md의 6종만. 수치는 tokens.json motion 어휘로 덮어쓴다.
+   근거: Emil Kowalski(150~250ms, ease-in 진입 금지, transition:all 금지), toss·linear 실측(호버는 색·알파만), `text.hidden-at-rest`(정지 시 텍스트 가시). */
+:root {
+  --m-dur: 200ms;          /* appear·reveal — 150~250ms 창 */
+  --m-dur-fast: 140ms;     /* hover·press — 100~200ms 창 */
+  --m-ease: cubic-bezier(.2, 0, 0, 1);   /* ease-out 계열 1개만 */
+  --m-rise: 14px;          /* appear translateY 12~16px */
+}
+
+/* appear — JS가 있을 때만 초기 숨김(no-JS·JS 실패 시 기본 가시). 재은닉 없음 */
+html.js [data-appear] { opacity: 0; transform: translateY(var(--m-rise)); }
+html.js [data-appear].is-in { opacity: 1; transform: none; transition: opacity var(--m-dur) var(--m-ease), transform var(--m-dur) var(--m-ease); transition-delay: var(--m-delay, 0ms); }
+
+/* scroll-progress — JS가 --p(0~1)를 발행. 요소는 transform/opacity만 --p로 계산 */
+[data-scroll-progress] { will-change: transform, opacity; }
+
+/* hover-state — 색·알파·brightness만. transform·box-shadow 금지 */
+@media (hover: hover) {
+  .m-hover { transition: color var(--m-dur-fast) var(--m-ease), background-color var(--m-dur-fast) var(--m-ease), border-color var(--m-dur-fast) var(--m-ease), filter var(--m-dur-fast) var(--m-ease); }
+  .m-hover:hover { filter: brightness(1.06); }
+}
+/* press — active에서 어두워짐. scale 금지 */
+.m-press:active { filter: brightness(.92); transition-duration: 100ms; }
+
+/* reveal-mask — 1회, 300ms 이내 */
+html.js [data-reveal-mask] { clip-path: inset(0 100% 0 0); }
+html.js [data-reveal-mask].is-in { clip-path: inset(0 0 0 0); transition: clip-path 300ms var(--m-ease) var(--m-delay, 0ms); }
+
+/* layout-morph — View Transitions. 같은 view-transition-name 요소가 상태 전환 시 자동 모핑 */
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: var(--m-dur); animation-timing-function: var(--m-ease); }
+
+/* reduced-motion — 전환·애니메이션 제거, 텍스트 항상 가시 */
+@media (prefers-reduced-motion: reduce) {
+  html.js [data-appear], html.js [data-reveal-mask] { opacity: 1 !important; transform: none !important; clip-path: none !important; transition: none !important; }
+  [data-scroll-progress] { transform: none !important; opacity: 1 !important; }
+  .m-hover, .m-press { transition: none !important; }
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+}

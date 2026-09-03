@@ -102,8 +102,8 @@ if (args.has("--list")) {
   }
 }
 
-let base = {};
-try { base = JSON.parse(readFileSync(BASELINE, "utf8")).files ?? {}; }
+let base = {}, hasBase = false;   // 미근거 0건이면 files가 빈 객체다 — 파일 존재 여부로 기준선을 판정한다(빈 객체 = 기준선 없음으로 읽던 사고 수정)
+try { base = JSON.parse(readFileSync(BASELINE, "utf8")).files ?? {}; hasBase = true; }
 catch { /* 첫 실행 — --bless로 기준선을 만든다 */ }
 
 const total = bare.length;
@@ -111,10 +111,10 @@ const baseTotal = Object.values(base).reduce((a, b) => a + b, 0);
 
 console.log(
   `\n판정에 닿는 숫자 ${rows.length}건 · 근거 있음 ${rows.length - total}건 · **미근거 ${total}건**` +
-  (Object.keys(base).length ? ` (기준선 ${baseTotal}건)` : " (기준선 없음)"));
+  (hasBase ? ` (기준선 ${baseTotal}건)` : " (기준선 없음)"));
 
 if (args.has("--bless")) {
-  if (Object.keys(base).length && total > baseTotal) {
+  if (hasBase && total > baseTotal) {
     console.error(`🔴 기준선을 늘리는 --bless는 받지 않는다 (${baseTotal} → ${total}). 래칫은 조이는 쪽으로만 돈다.`);
     exit(1);
   }
@@ -126,7 +126,7 @@ if (args.has("--bless")) {
   exit(0);
 }
 
-if (!Object.keys(base).length) {
+if (!hasBase) {
   console.error("🔴 기준선이 없다. 먼저 만들어라: node tools/consts.mjs --bless");
   exit(2);
 }

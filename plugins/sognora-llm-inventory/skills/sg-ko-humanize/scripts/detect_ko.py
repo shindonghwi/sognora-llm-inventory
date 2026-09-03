@@ -2,7 +2,7 @@
 """AI 티 패턴 검출기 — rules.md 중 정규식으로 결정 가능한 것만 기계 판정한다 (stdlib only).
 
 ## 왜 이 파일이 있나
-sg-landing-forge의 콘텐츠 검수(forge-rules §5)는 "카피에 sg-ko-humanize 🔴 패턴 0"을
+sg-page-forge의 카피 검수(copylint)는 "카피에 sg-ko-humanize 🔴 패턴 0"을
 요구하는데, 이를 판정하는 기계가 양쪽 어디에도 없었다("판정자 없는 규칙은 없다" 위반).
 이 스크립트가 그 판정자다. humanize 자신의 1차 선별 스캔(SKILL.md 일괄 모드)에도 쓴다.
 
@@ -20,7 +20,8 @@ sg-landing-forge의 콘텐츠 검수(forge-rules §5)는 "카피에 sg-ko-humani
 - 결론적으로·되어지·과장 어휘·"것이다.": 헌법 0회 → 🔴 정규식화 안전.
 
 사용:
-  python3 detect_ko.py <file...|-> [--genre UI|칼럼|리포트|블로그|공적|구어|법률|스펙] [--json] [--min red]
+  python3 detect_ko.py <file...|-> [--genre <GENRES 중 하나>] [--json] [--min red]
+  장르 목록의 단일 출처는 아래 GENRES 상수다(rules.md §장르 예외와 같다). 미등록 장르는 exit 3.
   '-' 는 stdin(개행 구분 카피 문자열 — forge가 DOM 텍스트를 파이프하는 인터페이스).
 전처리: 코드펜스·인라인 코드·URL·front-matter·큰따옴표 인용은 검사에서 제외(자리는 보존).
   단 `--genre UI`는 큰따옴표 안을 **검사한다** — i18n·TS·JSON 카피가 전부 거기 들어 있다.
@@ -101,6 +102,9 @@ RULES = [
      1, None, set(), "rules.md §9 🟡 — 행동·결과가 있는지 의미 검토 필요"),
 ]
 
+# 장르 화이트리스트 — rules.md §장르 예외의 판정 줄과 1:1. 여기 없는 값은 검사하지 않고 exit 3.
+# 오타(`landing`·`ui`)가 UI_FAMILY 밖으로 떨어지면 큰따옴표 마스킹이 켜져 i18n 파일이 🔴0 거짓 통과한다(v1.6.5 사고의 재개 경로) — 그래서 검증한다.
+GENRES = ("랜딩", "UI", "칼럼", "리포트", "블로그", "공적", "구어", "법률", "스펙")
 # UI 계열(제품 카피) — 산문 규칙을 끄고 §8 어휘 규칙을 켜는 장르들.
 # `랜딩`은 마케팅 카피(고객 설득), `UI`는 앱 기능 화면(조작). 어휘 허용치가 다르다.
 UI_FAMILY = {"UI", "랜딩"}
@@ -254,18 +258,28 @@ def term_drift(masked: str, text: str) -> list:
 
 def main() -> int:
     files, genre, as_json, min_sev = [], "", False, "yellow"
+    usage = f"usage: detect_ko.py <file...|-> [--genre {'|'.join(GENRES)}] [--json] [--min red]"
     it = iter(sys.argv[1:])
     for a in it:
+        if a in ("-h", "--help"):
+            print(usage)
+            return 0
         if a == "--json":
             as_json = True
         elif a == "--genre":
             genre = next(it, "")
+        elif a.startswith("--genre="):
+            genre = a.split("=", 1)[1]
         elif a == "--min":
             min_sev = next(it, "yellow")
         else:
             files.append(a)
     if not files:
-        print("usage: detect_ko.py <file...|-> [--genre 장르] [--json] [--min red]", file=sys.stderr)
+        print(usage, file=sys.stderr)
+        return 3
+    if genre and genre not in GENRES:
+        print(f"error: 미등록 장르 '{genre}' — 판정하지 않는다(exit 3). 허용: {'|'.join(GENRES)}\n"
+              "  마케팅 카피는 랜딩, 앱 기능 화면·i18n은 UI. (영문 landing/ui는 detect_bilingual.py가 매핑한다)", file=sys.stderr)
         return 3
 
     # 장르 미지정 + 코드/메시지 파일 = 판정 불가. **0을 반환하면 안 된다.**

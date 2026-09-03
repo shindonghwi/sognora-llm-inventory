@@ -91,7 +91,7 @@
 
 > Known-pattern scan passed. Naturalness and contextual fit still require review.
 
-한·영 혼합 카피는 `scripts/detect_bilingual.py`가 이 검출기와 `sg-ko-humanize/scripts/detect_ko.py`를 함께 실행한다. 두 검출기의 정규식 범위만 합친 것이며 의미 검토를 자동화하지 않는다.
+한·영 혼합 카피는 `scripts/detect_bilingual.py`(이 스킬 소유, `sg-page-forge` copylint가 호출)가 이 검출기와 형제 스킬의 `sg-ko-humanize/scripts/detect_ko.py`를 함께 실행한다. 두 검출기의 정규식 범위만 합친 것이며 의미 검토를 자동화하지 않는다. 장르 목록은 `detect_en.py`의 `GENRES`(landing·UI·prose·report·formal·conversational)가 단일 출처이고, 한국어 전용 장르 `법률`·`스펙`은 영어 쪽 `formal`로 매핑된다. 미등록 장르는 exit 3.
 
 ## 자체검증
 
@@ -104,7 +104,7 @@
 
 ## 등급
 
-- A: 🔴0 · 🟡2 이하 · 의미 검토 4/4 · 자체검증 6/6 · 변경률 10~25%
+- A: 🔴0 · 🟡2 이하 · 의미 검토 4/4 · 자체검증 6/6 · 변경률 10~25%(관행 기준 — sg-ko-humanize의 헌법 코퍼스 실측 12~24%를 준용, 영어 코퍼스 실측 없음)
 - B: 🔴0 · 🟡4 이하 · 의미 검토 4/4 · 자체검증 5/6 이상
 - C: 🔴1~2 또는 의미 검토 미완료 — 재실행·사람 검토
 - D: 🔴3 이상 또는 변경률 50% 초과 — 채택 금지

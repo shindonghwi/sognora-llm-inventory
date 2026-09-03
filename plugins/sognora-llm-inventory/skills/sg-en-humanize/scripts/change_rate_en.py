@@ -15,10 +15,12 @@ from collections import Counter
 from pathlib import Path
 
 
+# Thresholds — definition: convention set by the user rule "warn over 30%, reject over 50%" (SKILL.md rule 4);
+# mirrors sg-ko-humanize/change_rate.py so both gates read the same. No corpus calibration behind these numbers.
 WARN = 0.30
 ABORT = 0.50
-SHORT_TEXT = 200
-MIN_BIGRAM_KEEP = 0.30
+SHORT_TEXT = 200        # definition: below this, SequenceMatcher ratio is unstable — add the 2-gram warning (convention)
+MIN_BIGRAM_KEEP = 0.30  # definition: minimum shared 2-gram share for short copy (convention, no calibration)
 
 NUMBER_RE = re.compile(
     r"\b\d[\d,]*(?:\.\d+)?\s*(?:%|percent|seconds?|minutes?|hours?|days?|weeks?|months?|years?|"
@@ -62,16 +64,22 @@ def bigrams(text: str) -> set:
 
 def main() -> int:
     files, protect, as_json = [], [], False
+    usage = "usage: change_rate_en.py <before> <after> [--protect name,name] [--json]"
     it = iter(sys.argv[1:])
     for arg in it:
+        if arg in ("-h", "--help"):
+            print(usage)
+            return 0
         if arg == "--json":
             as_json = True
         elif arg == "--protect":
             protect = [item.strip() for item in next(it, "").split(",") if item.strip()]
+        elif arg.startswith("--protect="):
+            protect = [item.strip() for item in arg.split("=", 1)[1].split(",") if item.strip()]
         else:
             files.append(arg)
     if len(files) != 2:
-        print("usage: change_rate_en.py <before> <after> [--protect name,name] [--json]", file=sys.stderr)
+        print(usage, file=sys.stderr)
         return 3
     try:
         before = normalize(Path(files[0]).read_text(encoding="utf-8"))

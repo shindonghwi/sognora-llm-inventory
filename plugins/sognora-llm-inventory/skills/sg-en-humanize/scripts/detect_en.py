@@ -47,6 +47,9 @@ RULES = [
      1, None, set(), "rules.md §7 — check whether a concrete action or result follows"),
 ]
 
+# Genre whitelist — single source for docs and detect_bilingual. Unknown genre = exit 3 (a typo like `ui` would
+# silently re-enable quote masking and pass i18n files with red 0 — the incident this guard prevents).
+GENRES = ("landing", "UI", "prose", "report", "formal", "conversational")
 UI_FAMILY = {"landing", "UI"}
 CODE_EXT = (".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs", ".json", ".vue", ".svelte", ".py")
 
@@ -98,18 +101,27 @@ def scan(text: str, genre: str) -> dict:
 
 def main() -> int:
     files, genre, as_json, min_severity = [], "", False, "yellow"
+    usage = f"usage: detect_en.py <file...|-> [--genre {'|'.join(GENRES)}] [--json] [--min red]"
     it = iter(sys.argv[1:])
     for arg in it:
+        if arg in ("-h", "--help"):
+            print(usage)
+            return 0
         if arg == "--json":
             as_json = True
         elif arg == "--genre":
             genre = next(it, "")
+        elif arg.startswith("--genre="):
+            genre = arg.split("=", 1)[1]
         elif arg == "--min":
             min_severity = next(it, "yellow")
         else:
             files.append(arg)
     if not files:
-        print("usage: detect_en.py <file...|-> [--genre genre] [--json] [--min red]", file=sys.stderr)
+        print(usage, file=sys.stderr)
+        return 3
+    if genre and genre not in GENRES:
+        print(f"error: unknown genre '{genre}' — not evaluated (exit 3). Allowed: {'|'.join(GENRES)}", file=sys.stderr)
         return 3
     if not genre:
         code_files = [item for item in files if item.lower().endswith(CODE_EXT)]

@@ -39,7 +39,7 @@ source pixel 규격은 가장 크게 렌더되는 slot과 계약 DPR을 기준�
 
 ## 3. 자산별 imagegen 실행
 
-기본은 built-in `image_gen`이다. 서로 다른 자산이나 variant는 한 호출에 묶지 않고 각각 호출한다. CLI/API/model fallback은 사용자가 명시적으로 요청하거나 built-in 실패 뒤 승인했을 때만 쓴다.
+도구는 `imagegen` 하나다. Codex는 내장 imagegen 스킬, Claude Code는 `codex exec --sandbox workspace-write --skip-git-repo-check -`에 프롬프트를 파이프해 같은 imagegen을 부른다(sg-page-forge `comp.mjs`와 같은 경로). 둘 다 없으면 그 slot은 "미제공"으로 보고한다. 서로 다른 자산이나 variant는 한 호출에 묶지 않고 각각 호출한다. 실패 시 처분은 `contract.json`의 `imagegen.fallback`이 정한다(`none`|`hold`|승인한 대안) — 런마다 다시 승인받지 않는다.
 
 prompt에는 필요한 항목만 구체적으로 넣는다.
 
@@ -58,16 +58,16 @@ Avoid: <원본 브랜드·원본 로고·추가 문구·watermark>
 
 - 이미지 내부 문구는 prompt에 따옴표로 넣고 어려운 이름은 철자 단위로 반복한다. 오탈자·추가 글자·누락이 있으면 HTML overlay로 고치지 말고 imagegen edit 또는 재생성한다.
 - 지도·평면도·차트는 방향, 구획, 범례, 라벨과 정보 계층을 prompt에 열거한다. 브랜드·주소·수치는 가상 계약값만 쓴다.
-- QR이 원본에서 실제 기능을 가지면 생성 결과를 스캔해 가상/로컬 목적지로 해석되는지 확인한다. 실패하면 코드로 대체하지 말고 재생성하며, 끝내 통과하지 못하면 완료를 보류한다.
+- **QR은 imagegen으로 만들지 않는다.** 이미지 모델은 스캔 가능한 QR을 안정적으로 만들 수 없다(달성 불가 요구를 두면 완료가 영구히 보류된다). 실제 QR 라이브러리(예: `qrcode` npm)로 가상/로컬 목적지를 인코딩해 PNG로 생성하고, 스타일(색·여백)만 slot 계약에 맞춘다. 스캔 확인은 생성 라이브러리의 디코드 테스트로 한다.
 - 작은 아이콘과 투명 로고는 렌더 크기보다 충분히 크게 생성한 뒤 downscale하고 alpha·edge를 확인한다.
-- project-bound 결과는 `$CODEX_HOME/generated_images`에만 남기지 않고 프로젝트 static 경로로 옮겨 실제 코드에 연결한다. 기존 파일을 무단 덮어쓰지 않는다.
+- 생성 결과는 임시 경로(Codex의 생성 폴더, `codex exec` 작업 디렉터리 등)에 두지 않고 프로젝트 static 경로로 옮겨 실제 코드에 연결하고, `manifest.json` `slots[].file`에 그 경로를 적는다. 기존 파일을 무단 덮어쓰지 않는다.
 
 ## 4. 완료 판정
 
 - visual slot 수 = 생성·연결·검증된 asset/variant 수여야 한다.
 - 각 파일의 실제 pixel 규격·aspect·alpha와 slot의 렌더 박스·crop이 계약과 맞아야 한다.
-- 이미지 내부 문구는 확대 육안 검사와 가능한 OCR/QR scan으로 정확성을 확인한다.
-- 원본 asset URL·파일·SHA-256을 최종 앱이 참조하는 건 0건이어야 한다.
+- 이미지 내부 문구는 확대 육안 검사로 확인한다(에이전트 판정 — OCR 계기는 없다). QR은 생성 라이브러리의 디코드로 확인한다.
+- 원본 asset URL·파일·SHA-256을 최종 앱이 참조하는 건 0건이어야 한다 — `verify.mjs` `residue.asset-url`·`residue.asset-hash`가 `manifest.json` `originAssets`와 대조한다. slot 수=asset 수·파일 규격·alpha는 `asset.slot-mismatch`가 본다.
 - 생성 이미지 내부는 원본과 pixel equality 대상으로 보지 않는다. 대신 slot 경계·위치·크기·crop은 브라우저 실측값과 정확히 맞추고, 주제·구도·색감·정보 밀도·문구 정확성을 원본과 나란히 확대해 imagegen QA로 판정한다.
 - 승인된 생성 자산은 불가피한 `substituted_assets`가 아니다. stock·placeholder·원본 자산 재사용·미생성 slot만 대체 자산 실패다.
-- built-in 결과가 요구를 충족하지 못하면 목표를 구체화해 반복하고 다시 검증한다. 자산 수나 반복 횟수 때문에 누락시키지 않는다. built-in을 사용할 수 없거나 필수 문구·QR·구조를 끝내 충족하지 못하면 완료를 보류하며, 사용자 승인 없이 다른 생성 API나 stock으로 우회하지 않는다.
+- 생성 결과가 요구를 충족하지 못하면 목표를 구체화해 반복하고 다시 검증한다. 자산 수나 반복 횟수 때문에 누락시키지 않는다. imagegen을 사용할 수 없거나 필수 문구·구조를 끝내 충족하지 못하면 `contract.imagegen.fallback`대로 처리하며, 계약에 없는 대안으로 스스로 우회하지 않는다.

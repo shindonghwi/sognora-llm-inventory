@@ -1,5 +1,15 @@
 # sg-web-replicate — CHANGELOG
 
+## 2.0.1 — 2026-09-04 (판정자 복원 — 산문만 남은 15개 의무 중 결정적 5축을 계기로)
+
+감사(2026-09-03): 1.15.3에서 스크립트를 전부 지운 뒤 "잔존 0·pending 0·원장 전 셀 pass·slot=asset·라우트 전부 방문"이 판정자 없는 산문이 됐고, README "고정 규칙은 스크립트가 판정"과 모순됐다.
+
+- `scripts/verify.mjs` 신설 — 인자 없음, cwd의 `.sognora/replica/`. 순수 fs·정규식·PNG/JPEG/WebP 헤더 파싱(의존성 0). `residue.brand`·`residue.asset-url`·`residue.asset-hash`(contract.brand·manifest.originAssets 대조) · `contract.pending`(states.json version 2·pending/TODO·safe·before 프레임·exclusion 사유) · `ledger.incomplete`/`ledger.no-reason` · `asset.slot-mismatch`(manifest.slots ↔ 파일 규격·alpha) · `routes.unvisited`. 브라우저 축은 "미제공"으로 남긴다. `tests/verify.test.mjs` 6건.
+- `contract.json`에 `brand.original`·`brand.originDomains`·`layout.preset`·`imagegen.fallback` 필드 — 프리셋 확인·fallback 승인을 한 번만 받는다(되묻기 제거). `manifest.json`(originAssets·slots) 신설.
+- 런타임 중립: `image_gen`·`$CODEX_HOME/generated_images` 표기를 `imagegen`(Codex 내장 / Claude Code는 `codex exec` 파이프 / 둘 다 없으면 미제공)으로 통일.
+- 부트스트랩 절 신설(§0): `$S` 결정적 해석(`sg path` → 설치 캐시 `ls -td`), 인앱 브라우저 준비 명령. "미측정·완료 보류"가 아니라 갖춘다.
+- 모순 제거: SKILL.md 원칙 2 "범용 스크립트 제공 안 함"을 "결정적 검사는 verify, 브라우저 관측은 에이전트"로. `≤1px`을 "정의: 복제 목표치(관행)"로 표기. QR은 imagegen이 아니라 QR 라이브러리로(달성 불가 요구 제거).
+
 ## 1.15.3 — 2026-08-24 (브라우저 우선 전환과 범용 MJS 제거)
 
 - `scripts/*.mjs`와 그 전용 회귀 테스트를 전부 삭제했다. 범용 crawler·settle·capture·diff·strict gate 통과를 작업 시작이나 완료 조건으로 쓰지 않는다.
@@ -74,7 +84,7 @@
 - scripts: discover.mjs(sitemap+크롤, 로그인 벽 탐지) · capture.mjs(브라우저 1회 기동, 뷰포트×상태) · diff.mjs(수치+pixel 게이트).
 - daylab.dev로 실측 검증: 라우트 19개 탐색, 자기 비교 PASS, 오류 페이지 FAIL 확인.
 
-## 0.1.1 — 2026-08-15
+## 0.1.1b — 2026-08-15 (같은 날 두 번째 항목 — 버전 표기 중복 정리)
 
 - 자산 정책을 "원본 그대로"로 전환. fetch-assets.mjs 추가(폰트·이미지·인라인 SVG 원본 수집, @font-face·CSS 변수 추출).
 - 폰트 family 불일치를 독립 실패 조건으로 게이트에 추가.

@@ -1,22 +1,21 @@
 #!/usr/bin/env bash
-# sg — 이 무기고의 단일 진입점.
-#
-# 왜 있나 — 계기는 늘었는데 쓰는 법이 경로 외우기였다:
-#   node plugins/sognora-llm-inventory/skills/sg-landing-forge/scripts/corpus.mjs --run
-#   node <플러그인캐시>/skills/sg-page-craft/scripts/preflight.mjs --install
-# 사람이 경로를 외워야 하는 계기는 안 쓰인다. 한 단어로 되게 한다.
+# sg — 이 무기고의 단일 진입점. 사람은 스킬 이름만 부른다(/sg-page-forge …). 이 CLI는 스킬이 자기 계기를 찾을 때와 레포를 고칠 때만 쓴다.
 set -euo pipefail
 
-# ── 스킬 위치 해석 — 레포에서 돌리든 설치본에서 돌리든 같게 동작한다 ──────
+# ── 스킬 위치 해석 — 레포·심링크·플러그인 캐시 어디서 돌려도 같게. 기준 스킬은 sg-page-forge(계기가 가장 많은 스킬) ──
+ANCHOR="sg-page-forge"
 resolve_skills() {
   [ -n "${SG_HOME:-}" ] && [ -d "$SG_HOME" ] && { echo "$SG_HOME"; return; }
   local here repo
   here="$(cd "$(dirname "$(readlink "${BASH_SOURCE[0]}" 2>/dev/null || echo "${BASH_SOURCE[0]}")")" && pwd)"
   repo="$(cd "$here/.." && pwd)"
-  [ -d "$repo/plugins/sognora-llm-inventory/skills" ] && { echo "$repo/plugins/sognora-llm-inventory/skills"; return; }
-  [ -d "${CLAUDE_HOME:-$HOME/.claude}/skills/sg-page-craft" ] && { echo "${CLAUDE_HOME:-$HOME/.claude}/skills"; return; }
+  [ -d "$repo/plugins/sognora-llm-inventory/skills/$ANCHOR" ] && { echo "$repo/plugins/sognora-llm-inventory/skills"; return; }
+  [ -d "${CLAUDE_HOME:-$HOME/.claude}/skills/$ANCHOR" ] && { echo "${CLAUDE_HOME:-$HOME/.claude}/skills"; return; }
+  # 플러그인 캐시: 버전 디렉터리가 여럿이면 가장 최근 수정본 하나로 — find|head의 비결정성을 피한다
   local cache
-  cache="$(find "${CLAUDE_HOME:-$HOME/.claude}" -maxdepth 6 -type d -name sg-page-craft 2>/dev/null | head -1)"
+  cache="$(ls -td "${CLAUDE_HOME:-$HOME/.claude}"/plugins/cache/*/*/*/skills/$ANCHOR 2>/dev/null | head -1)"
+  [ -n "$cache" ] && { dirname "$cache"; return; }
+  cache="$(ls -td "${CODEX_HOME:-$HOME/.codex}"/plugins/cache/*/*/*/skills/$ANCHOR 2>/dev/null | head -1)"
   [ -n "$cache" ] && { dirname "$cache"; return; }
   echo ""
 }
@@ -24,50 +23,29 @@ SKILLS="$(resolve_skills)"
 REPO_ROOT="$(cd "$(dirname "$(readlink "${BASH_SOURCE[0]}" 2>/dev/null || echo "${BASH_SOURCE[0]}")")/.." && pwd)"
 [ -z "$SKILLS" ] && { echo "🔴 스킬을 못 찾았다. SG_HOME=<skills 디렉터리> 로 지정하거나 setup.sh 로 설치하라." >&2; exit 2; }
 
-PC="$SKILLS/sg-page-craft/scripts"
-LF="$SKILLS/sg-landing-forge/scripts"
-
 usage() {
 cat <<'H'
-sg — sognora 스킬 무기고
+sg — sognora 스킬 무기고 (스킬·레포 정비용. 사용자는 /sg-<스킬> 만 부른다)
 
-스킬이 부르는 것
-  sg path [스킬]             그 스킬의 scripts 경로 — SKILL.md의 $S가 이걸 쓴다
-
-스킬을 고칠 때 (이 레포에서)
-  sg check                  레포 자체 점검 — push 전
-  sg corpus                 AI 티 규칙이 판별력 있는지 (프리미엄 레퍼런스 18종)
-  sg corpus report          재실행 없이 지난 판정만
-
-  sg help                   이 화면
-
-사람은 스킬 이름만 부른다 — /sg-page-craft, /sg-landing-forge …
-이 CLI는 **스킬과 레포 정비용**이지 사용자 인터페이스가 아니다.
+  sg path <스킬>     그 스킬의 scripts 경로 — SKILL.md의 $S가 이걸 쓴다
+  sg check           레포 자체 점검 — push 전
+  sg corpus          AI 티 규칙이 판별력 있는지 — 레퍼런스 코퍼스에 재측정(sg-page-forge)
+  sg help
 H
 }
 
 cmd="${1:-help}"; shift || true
 case "$cmd" in
-
-
-
-
-
   check)  exec "$REPO_ROOT/tools/check.sh" ;;
-
   corpus)
-    # report는 저장된 기준선을 읽기만 한다 — 브라우저가 필요 없다.
-    # 실측 사고: 여기서도 preflight를 돌렸더니 **스킬 레포에 playwright를 설치**했다.
-    # 준비는 필요한 명령에서만 한다.
-    if [ "${1:-}" = "report" ]; then exec node "$LF/corpus.mjs" --report; fi
-    node "$PC/preflight.mjs" >/dev/null 2>&1 || node "$PC/preflight.mjs" --install
-    exec node "$LF/corpus.mjs" --run "$@" ;;
-
-
+    PF="$SKILLS/sg-page-forge/scripts"
+    if [ "${1:-}" = "report" ]; then exec node "$PF/corpus.mjs" --report; fi
+    node "$PF/preflight.mjs" >/dev/null 2>&1 || node "$PF/preflight.mjs" --install
+    exec node "$PF/corpus.mjs" --run ;;
   path)
-    # 스킬이 자기 계기를 찾는 자리. SKILL.md의 모든 명령이 `$S/<계기>.mjs`로 그대로 돌게 한다.
-    exec echo "$SKILLS/${1:-sg-page-craft}/scripts" ;;
-
+    [ -z "${1:-}" ] && { echo "usage: sg path <스킬>" >&2; exit 2; }
+    [ -d "$SKILLS/$1/scripts" ] || { echo "🔴 $1 에 scripts/ 가 없다 ($SKILLS/$1)" >&2; exit 2; }
+    exec echo "$SKILLS/$1/scripts" ;;
   help|-h|--help) usage ;;
   *) echo "알 수 없는 명령: $cmd" >&2; echo >&2; usage >&2; exit 2 ;;
 esac

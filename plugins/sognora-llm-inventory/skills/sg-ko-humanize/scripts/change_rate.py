@@ -36,10 +36,12 @@ import re
 import sys
 from collections import Counter
 
+# 임계의 근거 — 정의: 관행 기준(사용자 지시 "30% 초과 경고, 50% 초과 채택 금지" — SKILL.md 철칙 4). 실측 보정 없음.
+#   헌법 원문 191건 제자리 편집 실측에서 변경률 12~24%(rules.md 등급 A 10~25%의 근거), 문장 통째 재작성이 50%를 넘었다.
 WARN = 0.30
 ABORT = 0.50
-SHORT_TEXT = 200      # 이보다 짧으면 변경률 게이트 뒤에 공유 2-gram 보조 경고도 적용한다
-MIN_BIGRAM_KEEP = 0.30  # 짧은 텍스트가 원문과 공유해야 할 최소 2-gram 비율(미달 = WARN)
+SHORT_TEXT = 200      # 정의: 이보다 짧으면 변경률 게이트 뒤에 공유 2-gram 보조 경고도 적용한다(짧은 카피는 SequenceMatcher 비율이 불안정 — 관행 기준, 근거 없음)
+MIN_BIGRAM_KEEP = 0.30  # 정의: 짧은 텍스트가 원문과 공유해야 할 최소 2-gram 비율(미달 = WARN). 관행 기준 — 실측 보정 없음
 
 # ── 부정 표지 ────────────────────────────────────────────────────────────────
 # 개별 표기가 아니라 **의미 단위 개수**를 센다. "하지 않습니다"→"안 합니다"는 1개 유지(정당),
@@ -368,20 +370,33 @@ def normalize(text: str) -> str:
     return text.strip()
 
 
+USAGE = "usage: change_rate.py <before> <after> [--protect 이름,이름] [--mode text|code] [--json]  (모드는 확장자로 자동 — .ts/.js/.json이면 code)"
+
+
 def main() -> int:
     argv, protect, as_json, mode = [], [], False, ""
     it = iter(sys.argv[1:])
     for a in it:
+        if a in ("-h", "--help"):
+            print(USAGE)
+            return 0
         if a == "--json":
             as_json = True
         elif a == "--protect":
             protect = [p.strip() for p in next(it, "").split(",") if p.strip()]
+        elif a.startswith("--protect="):
+            protect = [p.strip() for p in a.split("=", 1)[1].split(",") if p.strip()]
         elif a == "--mode":
             mode = next(it, "")
+        elif a.startswith("--mode="):   # `--mode=code`와 `--mode code` 둘 다 받는다(문서·파서 불일치로 exit 3이 나던 사고)
+            mode = a.split("=", 1)[1]
         else:
             argv.append(a)
     if len(argv) != 2:
-        print("usage: change_rate.py <before> <after> [--protect 이름,이름] [--mode text|code] [--json]", file=sys.stderr)
+        print(USAGE, file=sys.stderr)
+        return 3
+    if mode and mode not in ("text", "code"):
+        print(f"error: --mode는 text|code (받은 값: {mode})", file=sys.stderr)
         return 3
     if not mode:
         mode = "code" if argv[0].endswith(CODE_EXTS) or argv[1].endswith(CODE_EXTS) else "text"

@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 """Run Korean and English known-pattern detectors over the same copy corpus (stdlib only).
 
-Usage: detect_bilingual.py <file...|-> [--genre landing|UI|prose|report|formal|conversational] [--json] [--min red]
+Owner: sg-en-humanize. Caller: sg-page-forge copylint (copy.bilingual-pattern). Requires the sibling skill
+sg-ko-humanize (detect_ko.py) to be installed next to this skill — exit 3 with an install hint otherwise.
+
+Usage: detect_bilingual.py <file...|-> [--genre landing|UI|prose|report|formal|conversational|법률|스펙] [--json] [--min red]
+  Korean-only genres 법률·스펙 map to English `formal` (legal/spec prose is formal register).
 Exit: 0 = no red findings / 1 = red findings / 2 = not evaluated / 3 = execution error
 """
 import importlib.util
@@ -22,6 +26,7 @@ GENRES = {
     "report": ("리포트", "report"), "리포트": ("리포트", "report"),
     "formal": ("공적", "formal"), "공적": ("공적", "formal"),
     "conversational": ("구어", "conversational"), "구어": ("구어", "conversational"),
+    "법률": ("법률", "formal"), "스펙": ("스펙", "formal"),   # ko 전용 장르 — en 쪽은 formal register
 }
 
 
@@ -36,21 +41,27 @@ def load_module(name: str, path: pathlib.Path):
 
 def main() -> int:
     files, genre, as_json, min_severity = [], "", False, "yellow"
+    usage = f"usage: detect_bilingual.py <file...|-> [--genre {'|'.join(sorted(set(GENRES)))}] [--json] [--min red]"
     it = iter(sys.argv[1:])
     for arg in it:
+        if arg in ("-h", "--help"):
+            print(usage)
+            return 0
         if arg == "--json":
             as_json = True
         elif arg == "--genre":
             genre = next(it, "")
+        elif arg.startswith("--genre="):
+            genre = arg.split("=", 1)[1]
         elif arg == "--min":
             min_severity = next(it, "yellow")
         else:
             files.append(arg)
     if not files:
-        print("usage: detect_bilingual.py <file...|-> [--genre genre] [--json] [--min red]", file=sys.stderr)
+        print(usage, file=sys.stderr)
         return 3
     if genre and genre not in GENRES:
-        print(f"error: unsupported genre: {genre}", file=sys.stderr)
+        print(f"error: unsupported genre: {genre} — allowed: {'|'.join(sorted(set(GENRES)))}", file=sys.stderr)
         return 3
     if not genre and any(item.lower().endswith(CODE_EXT) for item in files):
         print("error: genre required for code/message files — not evaluated (exit 2)", file=sys.stderr)
@@ -59,6 +70,10 @@ def main() -> int:
     try:
         ko_detector = load_module("sg_detect_ko", KO_PATH)
         en_detector = load_module("sg_detect_en", EN_PATH)
+    except FileNotFoundError as error:
+        print(f"error: {error}\n  sg-ko-humanize must be installed beside sg-en-humanize (same skills/ directory) — "
+              "install the whole sognora-llm-inventory plugin, not this skill alone. Not evaluated.", file=sys.stderr)
+        return 3
     except (OSError, AttributeError) as error:
         print(f"error: {error}", file=sys.stderr)
         return 3
