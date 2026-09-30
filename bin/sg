@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# sg — 이 무기고의 단일 진입점. 사람은 스킬 이름만 부른다(/sg-page-forge …). 이 CLI는 스킬이 자기 계기를 찾을 때와 레포를 고칠 때만 쓴다.
+# sg — 이 무기고의 단일 진입점. 사람은 스킬 이름만 부른다(/sg-web-replicate …). 이 CLI는 스킬이 자기 계기를 찾을 때와 레포를 고칠 때만 쓴다.
 set -euo pipefail
 
-# ── 스킬 위치 해석 — 레포·심링크·플러그인 캐시 어디서 돌려도 같게. 기준 스킬은 sg-page-forge(계기가 가장 많은 스킬) ──
-ANCHOR="sg-page-forge"
+# ── 스킬 위치 해석 — 레포·심링크·플러그인 캐시 어디서 돌려도 같게. 기준 스킬은 sg-web-replicate ──
+ANCHOR="sg-web-replicate"
 resolve_skills() {
   [ -n "${SG_HOME:-}" ] && [ -d "$SG_HOME" ] && { echo "$SG_HOME"; return; }
   local here repo
@@ -29,7 +29,6 @@ sg — sognora 스킬 무기고 (스킬·레포 정비용. 사용자는 /sg-<스
 
   sg path <스킬>     그 스킬의 scripts 경로 — SKILL.md의 $S가 이걸 쓴다
   sg check           레포 자체 점검 — push 전
-  sg corpus          AI 티 규칙이 판별력 있는지 — 레퍼런스 코퍼스에 재측정(sg-page-forge)
   sg help
 H
 }
@@ -37,11 +36,6 @@ H
 cmd="${1:-help}"; shift || true
 case "$cmd" in
   check)  exec "$REPO_ROOT/tools/check.sh" ;;
-  corpus)
-    PF="$SKILLS/sg-page-forge/scripts"
-    if [ "${1:-}" = "report" ]; then exec node "$PF/corpus.mjs" --report; fi
-    node "$PF/preflight.mjs" >/dev/null 2>&1 || node "$PF/preflight.mjs" --install
-    exec node "$PF/corpus.mjs" --run ;;
   path)
     [ -z "${1:-}" ] && { echo "usage: sg path <스킬>" >&2; exit 2; }
     [ -d "$SKILLS/$1/scripts" ] || { echo "🔴 $1 에 scripts/ 가 없다 ($SKILLS/$1)" >&2; exit 2; }

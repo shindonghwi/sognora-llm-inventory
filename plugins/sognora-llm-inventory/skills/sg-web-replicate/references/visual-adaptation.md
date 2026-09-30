@@ -39,7 +39,7 @@ source pixel 규격은 가장 크게 렌더되는 slot과 계약 DPR을 기준�
 
 ## 3. 자산별 imagegen 실행
 
-도구는 `imagegen` 하나다. Codex는 내장 imagegen 스킬, Claude Code는 `codex exec --sandbox workspace-write --skip-git-repo-check -`에 프롬프트를 파이프해 같은 imagegen을 부른다(sg-page-forge `comp.mjs`와 같은 경로). 둘 다 없으면 그 slot은 "미제공"으로 보고한다. 서로 다른 자산이나 variant는 한 호출에 묶지 않고 각각 호출한다. 실패 시 처분은 `contract.json`의 `imagegen.fallback`이 정한다(`none`|`hold`|승인한 대안) — 런마다 다시 승인받지 않는다.
+도구는 `imagegen` 하나다. Codex는 내장 imagegen 스킬, Claude Code는 `codex exec --sandbox workspace-write --skip-git-repo-check -`에 프롬프트를 파이프해 같은 imagegen을 부른다. 둘 다 없으면 그 slot은 "미제공"으로 보고한다. 서로 다른 자산이나 variant는 한 호출에 묶지 않고 각각 호출한다. 실패 시 처분은 `contract.json`의 `imagegen.fallback`이 정한다(`none`|`hold`|승인한 대안) — 런마다 다시 승인받지 않는다.
 
 prompt에는 필요한 항목만 구체적으로 넣는다.
 

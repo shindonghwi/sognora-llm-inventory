@@ -44,7 +44,7 @@ description: AI가 쓴 영어 텍스트의 추상 문장·상투구·과장·빈
 ## 이 스킬이 소유하는 계기
 
 - `detect_en.py` — 영어 알려진 패턴. `change_rate_en.py` — 영어 변경률·불변식 게이트.
-- `detect_bilingual.py` — **한·영 혼합 카피 검출기.** 이 스킬 폴더에 있고 `sg-page-forge`의 copylint(`copy.bilingual-pattern`)가 호출한다. 형제 스킬 `sg-ko-humanize`의 `detect_ko.py`를 같은 `skills/` 디렉터리에서 찾는다 — 플러그인 전체가 설치돼 있어야 하고, 없으면 exit 3과 설치 안내를 낸다(판정 안 함).
+- `detect_bilingual.py` — **한·영 혼합 카피 검출기.** 이 스킬 폴더에 있다. 형제 스킬 `sg-ko-humanize`의 `detect_ko.py`를 같은 `skills/` 디렉터리에서 찾는다 — 플러그인 전체가 설치돼 있어야 하고, 없으면 exit 3과 설치 안내를 낸다(판정 안 함).
 
 ## 옵션
 

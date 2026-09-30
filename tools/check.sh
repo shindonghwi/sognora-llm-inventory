@@ -30,14 +30,8 @@ bash -n setup.sh install.sh update.sh tools/sync-runtimes.sh || fail=1
 node --check tools/verify-runtime-sync.mjs || fail=1
 
 echo
-echo "── sg-page-forge 계기 문법·테스트 ────────────────────────"
-for f in plugins/sognora-llm-inventory/skills/sg-page-forge/scripts/*.mjs plugins/sognora-llm-inventory/skills/sg-page-forge/scripts/rules/*.mjs; do node --check "$f" || fail=1; done
-node --check plugins/sognora-llm-inventory/skills/sg-page-forge/assets/presets/motion.js || fail=1
-if ls plugins/sognora-llm-inventory/skills/sg-page-forge/tests/*.test.mjs >/dev/null 2>&1; then node --test plugins/sognora-llm-inventory/skills/sg-page-forge/tests/*.test.mjs || fail=1; fi
-
-echo
-echo "── sg-web-replicate · sg-biz-validate 계기 문법·테스트 ──────────"
-for sk in sg-web-replicate sg-biz-validate sg-growth-expose; do
+echo "── sg-web-replicate · sg-growth-expose 계기 문법·테스트 ──────────"
+for sk in sg-web-replicate sg-growth-expose; do
   for f in plugins/sognora-llm-inventory/skills/$sk/scripts/*.mjs; do [ -f "$f" ] && { node --check "$f" || fail=1; }; done
   if ls plugins/sognora-llm-inventory/skills/$sk/tests/*.test.mjs >/dev/null 2>&1; then node --test plugins/sognora-llm-inventory/skills/$sk/tests/*.test.mjs || fail=1; fi
 done
@@ -45,8 +39,8 @@ done
 echo
 echo "── bin/sg 진입점 ────────────────────────────────────────"
 bash -n bin/sg || fail=1
-[ "$(bin/sg path sg-page-forge)" = "$(cd plugins/sognora-llm-inventory/skills/sg-page-forge/scripts && pwd)" ] || { echo "🔴 sg path sg-page-forge 가 레포 scripts 를 가리키지 않는다"; fail=1; }
-grep -q "sg-page-craft\|sg-landing-forge" bin/sg && { echo "🔴 bin/sg 가 삭제된 스킬을 참조한다"; fail=1; }
+[ "$(bin/sg path sg-web-replicate)" = "$(cd plugins/sognora-llm-inventory/skills/sg-web-replicate/scripts && pwd)" ] || { echo "🔴 sg path sg-web-replicate 가 레포 scripts 를 가리키지 않는다"; fail=1; }
+grep -q "sg-page-craft\|sg-landing-forge\|sg-page-forge\|sg-biz-validate" bin/sg && { echo "🔴 bin/sg 가 삭제된 스킬을 참조한다"; fail=1; }
 
 echo
 if [ "$fail" -ne 0 ]; then echo "🔴 자체 점검 실패"; exit 1; fi

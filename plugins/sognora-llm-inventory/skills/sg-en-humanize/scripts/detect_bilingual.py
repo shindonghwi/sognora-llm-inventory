@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Run Korean and English known-pattern detectors over the same copy corpus (stdlib only).
 
-Owner: sg-en-humanize. Caller: sg-page-forge copylint (copy.bilingual-pattern). Requires the sibling skill
+Owner: sg-en-humanize. Requires the sibling skill
 sg-ko-humanize (detect_ko.py) to be installed next to this skill — exit 3 with an install hint otherwise.
 
 Usage: detect_bilingual.py <file...|-> [--genre landing|UI|prose|report|formal|conversational|법률|스펙] [--json] [--min red]

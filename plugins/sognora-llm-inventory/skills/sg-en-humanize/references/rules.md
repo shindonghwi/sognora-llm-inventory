@@ -91,7 +91,7 @@
 
 > Known-pattern scan passed. Naturalness and contextual fit still require review.
 
-한·영 혼합 카피는 `scripts/detect_bilingual.py`(이 스킬 소유, `sg-page-forge` copylint가 호출)가 이 검출기와 형제 스킬의 `sg-ko-humanize/scripts/detect_ko.py`를 함께 실행한다. 두 검출기의 정규식 범위만 합친 것이며 의미 검토를 자동화하지 않는다. 장르 목록은 `detect_en.py`의 `GENRES`(landing·UI·prose·report·formal·conversational)가 단일 출처이고, 한국어 전용 장르 `법률`·`스펙`은 영어 쪽 `formal`로 매핑된다. 미등록 장르는 exit 3.
+한·영 혼합 카피는 `scripts/detect_bilingual.py`(이 스킬 소유)가 이 검출기와 형제 스킬의 `sg-ko-humanize/scripts/detect_ko.py`를 함께 실행한다. 두 검출기의 정규식 범위만 합친 것이며 의미 검토를 자동화하지 않는다. 장르 목록은 `detect_en.py`의 `GENRES`(landing·UI·prose·report·formal·conversational)가 단일 출처이고, 한국어 전용 장르 `법률`·`스펙`은 영어 쪽 `formal`로 매핑된다. 미등록 장르는 exit 3.
 
 ## 자체검증
 
