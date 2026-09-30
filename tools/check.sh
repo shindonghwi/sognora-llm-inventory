@@ -40,7 +40,7 @@ echo
 echo "── bin/sg 진입점 ────────────────────────────────────────"
 bash -n bin/sg || fail=1
 [ "$(bin/sg path sg-web-replicate)" = "$(cd plugins/sognora-llm-inventory/skills/sg-web-replicate/scripts && pwd)" ] || { echo "🔴 sg path sg-web-replicate 가 레포 scripts 를 가리키지 않는다"; fail=1; }
-grep -q "sg-page-craft\|sg-landing-forge\|sg-page-forge\|sg-biz-validate" bin/sg && { echo "🔴 bin/sg 가 삭제된 스킬을 참조한다"; fail=1; }
+grep -q "sg-page-craft\|sg-landing-forge" bin/sg && { echo "🔴 bin/sg 가 삭제된 스킬을 참조한다"; fail=1; }
 
 echo
 if [ "$fail" -ne 0 ]; then echo "🔴 자체 점검 실패"; exit 1; fi

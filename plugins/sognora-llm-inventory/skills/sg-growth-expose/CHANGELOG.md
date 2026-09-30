@@ -4,7 +4,7 @@
 
 - 🔴 `audit.mjs` sitemap 인덱스 자식 `.slice(0, 5)` 제거 — 로케일 6개 이상 사이트에서 6번째 이후 URL이 빠져 H1 "alternate 대상이 sitemap에 없음"이 거짓 발화했다. 깊이 상한(2)은 남기되 넘치면 잘라내지 않고 "미제공"으로 보고.
 - 🔴 산출물을 `.sognora/growth/`로 통일(qa/audit.json · store-listing/ · report.md) — `--out` 없이도 항상 쓴다.
-- 🔴 description 비대상: 존재하지 않는 `site-copy-audit`·오귀속 "콘텐츠 기획(sg-biz-validate)" 제거.
+- 🔴 description 비대상: 존재하지 않는 `site-copy-audit` 제거.
 - **인자 최소화**(사용자 원칙 "옵션은 있어도 안 쓴다"): 필수는 `--origin <url>` 하나. `--detect`·`--preflight`는 cwd 기준, `--listing`은 디렉터리·스토어 자동 판별. 고급 플래그는 문서에서 뺐다.
 - `--detect` 신설 — 대상 판별(웹/앱/둘 다/없음)을 파일 존재 검사로 결정적으로. 모노레포 1단계 하위 스캔 포함.
 - JSON-LD `@type` 배열·`@graph` 재귀 수집(J1 오탐), 로케일 화이트리스트(ISO 639-1 — `/ai`·`/qa` 오인 제거), 리스팅 필수 필드 누락 🔴(자수 초과와 등급 역전 해소), `crawlers.json`의 `fix`를 코드가 그대로 사용(이중 진실 제거), `checkedAt` 180일 초과 `R0` 🟡, `SSR_YELLOW` 근거 주석.

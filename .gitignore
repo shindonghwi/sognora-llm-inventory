@@ -10,4 +10,3 @@ __pycache__/
 
 # 계기 실행 산출물
 .corpus-tmp/
-evals/**/.runs/
