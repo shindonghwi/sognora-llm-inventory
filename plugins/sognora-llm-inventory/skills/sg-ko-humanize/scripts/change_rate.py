@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """윤문 게이트 — 전후를 결정적으로 판정한다 (stdlib only).
 
-두 축을 본다. 둘 다 통과해야 채택할 수 있다.
+세 축을 본다. 셋 다 통과해야 채택할 수 있다.
 
   1) **불변식**(내용이 그대로인가) — 문장을 짝지어 **쌍 단위로** 숫자·부정·극성·조건·고유명사를 대조한다.
   2) **변경률**(과윤문인가) — 원문 대비 얼마나 갈아엎었는가.
+  3) **AI 티 유입**(윤문이 버릇을 새로 심었나) — detect_ko.py 규칙별 매치 수가 원문보다 늘었는가.
 
 ## 왜 문장 쌍인가 (설계의 핵심)
 
@@ -27,14 +28,19 @@ ${} 보간·삼항·주석이 골격에 남아 자동 동결되고, 골격이 �
 동결된다(안전한 방향의 오류).
 
 사용: python3 change_rate.py <원문파일> <윤문본파일> [--protect 이름,이름] [--mode text|code] [--json]
-Exit: 0 OK / 1 WARN(과윤문 경고) / 2 ABORT(채택 금지·롤백 / 코드 모드 관할 밖) / 3 실행 오류
-      불변식 위반은 변경률과 무관하게 항상 2다.
+Exit: 0 OK / 1 WARN(과윤문 경고·🟡 패턴 유입) / 2 ABORT(채택 금지·롤백 / 코드 모드 관할 밖) / 3 실행 오류
+      불변식 위반과 🔴급 패턴 유입은 변경률과 무관하게 항상 2다.
 """
 import difflib
 import json
+import os
 import re
 import sys
 from collections import Counter
+
+# 같은 폴더의 검출기에서 규칙 정의를 읽는다 — 패턴을 여기에 다시 적으면 두 벌이 갈라진다.
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import detect_ko  # noqa: E402
 
 # 임계의 근거 — 정의: 관행 기준(사용자 지시 "30% 초과 경고, 50% 초과 채택 금지" — SKILL.md 철칙 4). 실측 보정 없음.
 #   헌법 원문 191건 제자리 편집 실측에서 변경률 12~24%(rules.md 등급 A 10~25%의 근거), 문장 통째 재작성이 50%를 넘었다.
@@ -50,9 +56,11 @@ MIN_BIGRAM_KEEP = 0.30  # 정의: 짧은 텍스트가 원문과 공유해야 할
 #   · `안(?=\s?되)` — 붙여쓴 "안됩니다"와 띄어쓴 "안 됩니다"를 같게 센다(맞춤법 교정 오탐 제거)
 #   · `아니(?!라)` — "A가 아니라 B다"의 대구는 수사 구문이지 부정 서술이 아니다(룰북이 평서문화를 지시)
 #   · 관계없이·틀림없이 류는 굳어진 부사라 부정으로 세지 않는다
+#   · "따로 놀지 않습니다"는 사실을 부정하는 게 아니라 "서로 맞물려 있다"를 돌려 말한 수사다
+#     (rules.md §10 KOH29). 이걸 세면 룰북이 시키는 교정이 게이트에서 막힌다 — 실측된 충돌.
 NEG_RE = re.compile(
     r"(?<!관계)(?<!상관)(?<!다름)(?<!틀림)(?<!어김)(?<!끊임)(?<!하염)(?<!변함)없"
-    r"|않|마십시오|말 것|금지|제외"
+    r"|(?<!따로 놀지 )(?<!따로 놀지)(?<!따로 돌지 )(?<!따로 움직이지 )않|마십시오|말 것|금지|제외"
     r"|(?<!잘)못(?=\s|했|한|하|합|해)"
     r"|불가|불능|아니(?!라)"
     r"|(?<![가-힣])안(?=\s?(?:되|됩|돼|된))"
@@ -94,6 +102,27 @@ SENT_SPLIT_RE = re.compile(r"(?<=[.!?。])\s+|\n+")
 # 문장 안 자리 교환("환불 3일, 교환 7일" → "환불 7일, 교환 3일")은 문장 단위로는 못 잡는다.
 # 쉼표·나열 어미로 절까지 쪼개야 짝이 어긋난 것이 드러난다.
 CLAUSE_SPLIT_RE = re.compile(r",\s*|(?<=[가-힣])(?:이며|하며|하고)\s+")
+
+
+def injected(before: str, after: str, genre: str) -> list:
+    """윤문본에서 늘어난 AI 티 패턴 — 철칙 5 "빼기만, 넣기 금지"의 판정자.
+
+    왜 있나: 윤문하는 모델 자신이 버릇을 다시 심는다. 조사에서 반복된 증언이다 — "턱 금지시키니까
+    고개를 쳐든다고 바꾸더라", 점검 결과를 글로 정리하다 "A가 아니라 B"가 세 번 새로 생김.
+    이 게이트가 없을 때 윤문본은 검출기를 원문에만 대 보고 끝났다.
+    규칙별 매치 수만 비교한다. 같은 규칙 안에서 표현만 바뀐 교체(결론적으로 → 요약하자면)는 못 잡는다.
+    """
+    mb, ma = detect_ko.mask(before, genre), detect_ko.mask(after, genre)
+    out = []
+    for rid, name, pat, _y_at, r_at, _exempt, _note in detect_ko.RULES:
+        nb, na = len(re.findall(pat, mb)), len(re.findall(pat, ma))
+        if na <= nb:
+            continue
+        # §10 Claude 말버릇과 🔴 등급이 있는 규칙은 하나만 늘어도 롤백, 🟡 전용 규칙은 경고
+        hard = rid in detect_ko.CLAUDE_TICS or r_at is not None
+        out.append({"규칙": rid, "이름": name, "원문": nb, "윤문": na, "롤백": hard,
+                    "예": [m.group(0).strip() for m in re.finditer(pat, ma)][:3]})
+    return out
 
 
 def sentences(text: str) -> list:
@@ -438,8 +467,11 @@ def main() -> int:
         bb = bigrams(before)
         keep = len(bb & bigrams(after)) / len(bb) if bb else 1.0
 
+    inj = injected(before, after, "UI" if mode == "code" else "")
     if broken:
         verdict, code = "ABORT — 내용 변조·롤백", 2
+    elif any(x["롤백"] for x in inj):
+        verdict, code = "ABORT — AI 티 유입·롤백", 2
     elif rate > ABORT:
         # 짧은 문구도 예외가 아니다. 2-gram은 보조 신호이고 SKILL.md의 50% 하드 라인을
         # 우회시키지 않는다. 이전 구현은 short 분기가 먼저라 90% 재작성도 WARN으로 끝났다.
@@ -449,6 +481,8 @@ def main() -> int:
     elif short and keep < MIN_BIGRAM_KEEP:
         # 30% 이하여도 원문 흔적이 거의 없으면 보조 경고한다. 변경률 하드 라인은 위에서 이미 적용했다.
         verdict, code = f"WARN — 짧은 텍스트 전면 재작성(원문 2-gram {keep * 100:.0f}% 유지) · 사람 확인", 1
+    elif inj:
+        verdict, code = "WARN — 🟡 패턴 유입 · 사람 확인", 1
     elif short:
         verdict, code = f"OK — 짧은 텍스트({len(before)}자, 2-gram {keep * 100:.0f}% 유지)", 0
     else:
@@ -456,7 +490,7 @@ def main() -> int:
 
     if as_json:
         print(json.dumps({"mode": mode, "change_rate": round(pct, 1), "invariant_breaks": broken,
-                          "verdict": verdict, "exit": code}, ensure_ascii=False, indent=1))
+                          "injected": inj, "verdict": verdict, "exit": code}, ensure_ascii=False, indent=1))
         return code
 
     if code_note:
@@ -468,6 +502,11 @@ def main() -> int:
             print(f"     원문: {b['원문']}\n     윤문: {b['윤문']}")
     if len(broken) > 12:
         print(f"  … 외 {len(broken) - 12}건")
+    for x in inj:
+        print(f"  {'🔴' if x['롤백'] else '🟡'} {x['규칙']} {x['이름']} 유입 {x['원문']}→{x['윤문']} — 예: "
+              + "; ".join(f'"{e[:24]}"' for e in x["예"]))
+    if inj:
+        print("  → 윤문이 원문에 없던 AI 티를 심었다. 그 표현을 다른 버릇으로 바꾸지 말고, 원문 단어로 되돌리거나 문장을 지운다.")
     if broken:
         print("  → 문체만 바꾸는 작업에서 숫자·부정·극성·조건·고유명사가 달라졌다면 그건 윤문이 아니라 변조다.")
     print("  ※ 한글 고유명사는 --protect 로 명단을 줄 때만 검사한다(사전 없이 일반 추출하면 오탐이 터진다).")
