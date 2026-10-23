@@ -1,5 +1,10 @@
 # sg-inventory-sync — CHANGELOG
 
+## 0.1.2 — 2026-10-23
+
+- Codex 0.163에서 plugin-creator가 시스템 스킬에서 빠져 동기화가 cachebuster를 찾지 못하고 exit 2로 멈췄다. `codex plugin remove`가 로컬 캐시까지 지우므로 제거 뒤 재설치로 바꾸고, 검증기는 있을 때만 쓴다.
+- 검증이 Codex 쪽은 source 경로만 봐서, 버전이 같은 낡은 캐시(sg-en-humanize 변경분 누락)가 통과했다. Codex 캐시의 전체 스킬 SHA-256도 대조한다.
+
 ## 0.1.1 — 2026-08-24
 
 - 인자 없는 명시적 호출을 Claude Code와 Codex 양쪽 업데이트 승인으로 정의했다.

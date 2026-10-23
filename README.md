@@ -124,7 +124,7 @@ Codex에서는 `$sg-web-replicate`처럼 `$스킬명`이나 자연어 트리거�
 
 - `main` = 배포 브랜치. push 전 README가 실제 상태와 맞는지 확인.
 - 버전: 일상 변경 **patch** / 새 스킬 **minor** / 구조 변경 **major**. 매니페스트 4개 항목 동시 bump + `v<버전>` 태그.
-- 검증: `python3 ~/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/sognora-llm-inventory`
+- 검증: `./tools/check.sh`(= `sg check`). 설치 후 양쪽 지문 대조는 `node tools/verify-runtime-sync.mjs`
 
 ## License
 

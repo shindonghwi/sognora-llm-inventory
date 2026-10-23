@@ -3,6 +3,7 @@
 import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
 import { lstat, readFile, readdir, readlink, realpath } from "node:fs/promises";
+import { homedir } from "node:os";
 import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 import { exit } from "node:process";
@@ -41,6 +42,16 @@ if (claude?.installPath) {
     if (claudeHash !== sourceHash) failures.push("Claude 설치 스킬 지문이 소스와 다름");
   } catch (error) { failures.push(`Claude 스킬 지문 확인 실패: ${error.message}`); }
 }
+// Codex 목록에는 installPath가 없다. 캐시는 <CODEX_HOME>/plugins/cache/<marketplace>/<plugin>/<version>에 놓인다.
+// 이 대조가 없던 때는 버전이 같은 낡은 Codex 캐시가 통과했다(사고: 2026-10-23, sg-en-humanize 변경분 누락).
+let codexHash = null;
+if (codex) {
+  const codexHome = process.env.CODEX_HOME ?? join(homedir(), ".codex");
+  try {
+    codexHash = await hashTree(join(codexHome, "plugins", "cache", codex.marketplaceName, codex.name, String(codex.version), "skills"));
+    if (codexHash !== sourceHash) failures.push("Codex 설치 스킬 지문이 소스와 다름");
+  } catch (error) { failures.push(`Codex 스킬 지문 확인 실패: ${error.message}`); }
+}
 let codexSource = null;
 if (codex?.source?.path) {
   try {
@@ -53,7 +64,7 @@ const result = {
   pass: failures.length === 0,
   sourceVersion,
   claude: claude ? { version: claude.version, installPath: claude.installPath, skillsSha256: claudeHash } : null,
-  codex: codex ? { version: codex.version, source: codexSource } : null,
+  codex: codex ? { version: codex.version, source: codexSource, skillsSha256: codexHash } : null,
   sourceSkillsSha256: sourceHash,
   failures,
 };

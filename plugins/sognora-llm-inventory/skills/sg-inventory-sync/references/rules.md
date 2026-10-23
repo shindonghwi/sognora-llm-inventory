@@ -26,7 +26,7 @@
 - 먼저 `git -C <repo-root> status --short --branch`를 확인한다.
 - clean이면 `update.sh`가 `git pull --ff-only` 후 양쪽을 동기화한다. 이때만 원격 main 기준 최신이라고 보고할 수 있다.
 - dirty이면 사용자 변경을 보존하기 위해 pull을 건너뛰고 현재 작업트리를 양쪽에 동기화한다. 이를 “원격 최신”이라고 부르지 말고 “현재 로컬 소스 반영”이라고 보고한다.
-- `update.sh`는 저장소 점검, 플러그인 검증, Claude 재설치, Codex 임시 cachebuster 재설치, manifest 복원, 버전·전체 스킬 SHA-256 대조를 소유한다. 이 단계를 따로 복제하거나 캐시를 직접 삭제하지 않는다.
+- `update.sh`는 저장소 점검, 플러그인 검증, Claude 재설치, Codex 제거(로컬 캐시 포함)·재설치, 버전과 Claude·Codex 양쪽 전체 스킬 SHA-256 대조를 소유한다. 이 단계를 따로 복제하거나 캐시를 직접 삭제하지 않는다.
 - 설치 중 오류가 나면 자동으로 commit, stash, reset, checkout, 강제 pull을 하지 않는다.
 
 ## 완료 판정
@@ -38,6 +38,7 @@
 - Claude 설치본 `skillsSha256`과 source `sourceSkillsSha256` 일치
 - Codex 설치본 존재 및 source가 현재 plugin root와 일치
 - Codex 기본 버전과 source 기본 버전 일치
+- Codex 캐시 스킬 지문과 source `sourceSkillsSha256` 일치
 
 하나라도 다르면 설치 일부 성공으로 보고하고 완료라고 쓰지 않는다.
 

@@ -6,20 +6,22 @@ SYNC_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SYNC_PLUGIN="sognora-llm-inventory"
 SYNC_MARKET="sognora-llm-inventory"
 SYNC_PLUGIN_ROOT="$SYNC_ROOT/plugins/$SYNC_PLUGIN"
-SYNC_CODEX_MANIFEST="$SYNC_PLUGIN_ROOT/.codex-plugin/plugin.json"
-SYNC_CACHEBUSTER="${PLUGIN_CREATOR_ROOT:-$HOME/.codex/skills/.system/plugin-creator}/scripts/update_plugin_cachebuster.py"
+SYNC_VALIDATOR="${PLUGIN_CREATOR_ROOT:-$HOME/.codex/skills/.system/plugin-creator}/scripts/validate_plugin.py"
 
 for command_name in claude codex python3 node; do
   command -v "$command_name" >/dev/null 2>&1 || { echo "필수 명령 누락: $command_name" >&2; exit 2; }
 done
-test -f "$SYNC_CACHEBUSTER" || { echo "plugin-creator cachebuster를 찾지 못함: $SYNC_CACHEBUSTER" >&2; exit 2; }
 
 echo "== 소스 검증 =="
 "$SYNC_ROOT/tools/check.sh"
-if command -v uv >/dev/null 2>&1; then
-  uv run --with pyyaml python "${PLUGIN_CREATOR_ROOT:-$HOME/.codex/skills/.system/plugin-creator}/scripts/validate_plugin.py" "$SYNC_PLUGIN_ROOT"
+# 사고: Codex 0.163에서 plugin-creator가 시스템 스킬에서 빠져 동기화가 exit 2로 멈췄다(2026-10-23).
+# 검증기가 있으면 쓰고, 없으면 codex plugin add 자체의 매니페스트 검증과 마지막 지문 대조에 맡긴다.
+if [ ! -f "$SYNC_VALIDATOR" ]; then
+  echo "plugin-creator 검증기 없음 — codex plugin add의 매니페스트 검증으로 대신한다"
+elif command -v uv >/dev/null 2>&1; then
+  uv run --with pyyaml python "$SYNC_VALIDATOR" "$SYNC_PLUGIN_ROOT"
 elif python3 -c 'import yaml' >/dev/null 2>&1; then
-  python3 "${PLUGIN_CREATOR_ROOT:-$HOME/.codex/skills/.system/plugin-creator}/scripts/validate_plugin.py" "$SYNC_PLUGIN_ROOT"
+  python3 "$SYNC_VALIDATOR" "$SYNC_PLUGIN_ROOT"
 else
   echo "플러그인 검증에 PyYAML이 필요합니다: python3 -m pip install pyyaml" >&2
   exit 2
@@ -43,18 +45,10 @@ if [ "$SYNC_CODEX_SOURCE" != "$SYNC_ROOT" ]; then
   codex plugin marketplace add "$SYNC_ROOT"
 fi
 
-SYNC_MANIFEST_BACKUP="$(mktemp /tmp/sognora-codex-manifest.XXXXXX)"
-cp "$SYNC_CODEX_MANIFEST" "$SYNC_MANIFEST_BACKUP"
-restore_manifest() {
-  cp "$SYNC_MANIFEST_BACKUP" "$SYNC_CODEX_MANIFEST"
-  if command -v trash >/dev/null 2>&1; then trash "$SYNC_MANIFEST_BACKUP"; else rm -f "$SYNC_MANIFEST_BACKUP"; fi
-}
-trap restore_manifest EXIT
-python3 "$SYNC_CACHEBUSTER" "$SYNC_PLUGIN_ROOT"
+# codex plugin remove는 로컬 캐시까지 지운다(0.163 도움말). 같은 버전이어도 add가 현재 작업트리를 새로 복사하므로
+# 매니페스트 버전을 임시로 바꾸던 cachebuster는 필요 없다. 복사가 실제로 새로 됐는지는 아래 지문 대조가 판정한다.
 codex plugin remove "$SYNC_PLUGIN@$SYNC_MARKET" >/dev/null 2>&1 || true
 codex plugin add "$SYNC_PLUGIN@$SYNC_MARKET"
-restore_manifest
-trap - EXIT
 
 echo "== 양쪽 버전·지문 검증 =="
 node "$SYNC_ROOT/tools/verify-runtime-sync.mjs" "$SYNC_ROOT"
