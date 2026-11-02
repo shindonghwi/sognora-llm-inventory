@@ -14,16 +14,10 @@ echo
 echo "── 판정을 가르는 숫자의 근거(래칫) ───────────────────────"
 node tools/consts.mjs || fail=1
 echo
-echo "── sg-ko-humanize 회귀 테스트 ──────────────────────────"
+echo "── sg-ko-deslop 회귀 테스트 ────────────────────────────"
 python3 -m unittest discover \
-  -s plugins/sognora-llm-inventory/skills/sg-ko-humanize/tests \
+  -s plugins/sognora-llm-inventory/skills/sg-ko-deslop/tests \
   -p 'test_*.py' || fail=1
-echo
-echo "── sg-en-humanize 회귀 테스트 ──────────────────────────"
-python3 -m unittest discover \
-  -s plugins/sognora-llm-inventory/skills/sg-en-humanize/tests \
-  -p 'test_*.py' || fail=1
-
 echo
 echo "── 양쪽 런타임 동기화 계기 문법 ────────────────────────"
 bash -n setup.sh install.sh update.sh tools/sync-runtimes.sh || fail=1
