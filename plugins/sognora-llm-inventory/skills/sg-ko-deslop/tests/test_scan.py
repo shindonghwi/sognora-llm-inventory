@@ -81,6 +81,26 @@ class GenreGuess(unittest.TestCase):
         self.assertEqual(self.guess('제안서/content/1장.md'), '제안서')
         self.assertEqual(self.guess('발표/deck.html', '<h1>사업 이해</h1>'), '발표')
         self.assertEqual(self.guess('notes/memo.md'), '글')
+        self.assertEqual(self.guess('유튜브/댓글.md'), '댓글')
+        self.assertEqual(self.guess('쇼츠/채널 설명.txt'), '댓글')
+        self.assertEqual(self.guess('src/댓글.tsx', 'const a = "저장";\n'), '화면')
+
+
+class JsonShape(unittest.TestCase):
+    """다른 프로젝트의 호출이 이 모양을 읽는다."""
+
+    def test_hit_fields_and_line_numbers(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = write(tmp, 'c.md', '짧은 줄\n배경은 이렇습니다\n')
+            r = run(path, '--genre', '댓글', '--json')
+        self.assertEqual(r.returncode, 1, r.stderr)
+        hit = json.loads(r.stdout)['files'][0]['hits'][0]
+        self.assertEqual(hit['loc'], '2')
+        self.assertEqual(hit['sev'], '🔴')
+        self.assertEqual(hit['rule'], 'C2')
+        self.assertEqual(hit['name'], '머리말')
+        self.assertEqual(hit['match'], '배경은')
+        self.assertEqual(hit['text'], '배경은 이렇습니다')
 
 
 class Gate(unittest.TestCase):
@@ -104,6 +124,32 @@ class Gate(unittest.TestCase):
         r = self.gate('1년 치 762건에서 0.065초를 혁신적으로 달성했다. SFR-002 v1 기준이다.\n')
         self.assertEqual(r.returncode, 1)
         self.assertIn('G-D4', r.stdout)
+
+
+class CommentGate(unittest.TestCase):
+    BEFORE = '10월 27일 외교부 국감에서\n13상자를 보냈거든요\n'
+
+    def gate(self, after, genre='댓글'):
+        with tempfile.TemporaryDirectory() as tmp:
+            return run('gate', write(tmp, 'b.md', self.BEFORE), write(tmp, 'a.md', after), '--genre', genre)
+
+    def test_dropping_a_date_warns_and_passes(self):
+        r = self.gate('13상자를 보냈거든요\n')
+        self.assertEqual(r.returncode, 0, r.stdout)
+        self.assertIn('10월', r.stdout)
+        self.assertIn('27일', r.stdout)
+
+    def test_changed_number_still_fails(self):
+        r = self.gate('14상자를 보냈거든요\n')
+        self.assertEqual(r.returncode, 1, r.stdout)
+        self.assertIn('14', r.stdout)
+
+    def test_new_number_still_fails(self):
+        r = self.gate('10월 27일 외교부 국감에서\n13상자를 3번 보냈거든요\n')
+        self.assertEqual(r.returncode, 1, r.stdout)
+
+    def test_other_genres_keep_the_strict_gate(self):
+        self.assertEqual(self.gate('13상자를 보냈거든요\n', genre='영상').returncode, 1)
 
 
 if __name__ == '__main__':
