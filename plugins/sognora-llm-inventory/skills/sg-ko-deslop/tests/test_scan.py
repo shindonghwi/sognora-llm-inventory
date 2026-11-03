@@ -126,6 +126,23 @@ class Gate(unittest.TestCase):
         self.assertIn('G-D4', r.stdout)
 
 
+class ReportGate(unittest.TestCase):
+    BEFORE = '## 외울 숫자\n- 표준 18항목, 검사 12규칙\n- 365만 건에서 0.065초\n표준 항목 18개로 맞추고 365만 건에서 0.065초였습니다.\n'
+
+    def gate(self, after):
+        with tempfile.TemporaryDirectory() as tmp:
+            return run('gate', write(tmp, 'b.md', self.BEFORE), write(tmp, 'a.md', after), '--genre', '보고')
+
+    def test_dropping_a_repeat_passes(self):
+        r = self.gate('운행 기록을 표준 항목 18개로 맞추고 규칙 12개로 거릅니다. 365만 건을 넣어도 0.065초였어요.\n')
+        self.assertEqual(r.returncode, 0, r.stdout)
+
+    def test_losing_a_value_fails(self):
+        r = self.gate('운행 기록을 표준 항목 18개로 맞추고 규칙 12개로 거릅니다. 1년 치를 넣어도 빨랐어요.\n')
+        self.assertEqual(r.returncode, 1, r.stdout)
+        self.assertIn('0.065', r.stdout)
+
+
 class CommentGate(unittest.TestCase):
     BEFORE = '10월 27일 외교부 국감에서\n13상자를 보냈거든요\n'
 

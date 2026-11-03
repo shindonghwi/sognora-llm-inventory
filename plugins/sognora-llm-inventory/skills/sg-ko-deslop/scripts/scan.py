@@ -58,6 +58,10 @@ RULES = [
     ('P7', '화면이 자기를 해설', None, '----Y---', 'body'),
     ('P8', '화살표 대응', r'→|➔|->', 'YY--Y---', 'title'),
     ('P9', '개조식 자리의 「~합니다」', None, 'RR----W-', 'body'),
+    ('P10', '풀지 않은 업무 용어',
+     r'(?:앞|이전|직전)\s*기간\s*대비|증감|(?<![계환])산식|원시\s*(?:DB|데이터)|배치\s*오류율|인수\s*기준|런북'
+     r'|적재(?:했|합|한|하|된|되|해)|경계\s*\d+\s*(?:개|건)|산출(?:합니다|했|하고|해)',
+     'YYRYWYY-', 'any'),
     # ── 보고(B): 에이전트 작업 보고·채팅 답변에서 사용자가 짚은 것 ──
     ('B1', '성실함 예고',
      r'넘기지\s*않고[^.!?\n]*|직접\s*(?:확인|비교|열어|살펴)\S*(?:게요|겠습니다)|빈틈부터|꼼꼼(?:히|하게)',
@@ -65,6 +69,11 @@ RULES = [
     ('B2', '자책 고백', r'(?<![가-힣])제\s*(?:설계|판단)?\s*(?:실수|탓|잘못|불찰)|제가\s*(?:놓쳤|잘못|실수)',
      '-----Y--', 'any'),
     ('B3', '예고편 훅', r'이게\s*맞으면[^.!?\n]*|(?:결말|답|정체)이\s*나옵니다', '---W-YWW', 'any'),
+    ('B4', '개수 예고',
+     r'(?:두|세|네|다섯)\s*가지(?=[가는를도]|\s*(?:있|생|모두|입니다|예요|이다))|(?<![가-힣])(?:둘|셋|넷)(?:입니다|이다|이에요|예요)',
+     '-----YW-', 'any'),
+    ('B5', '문서식 답변: 제목', r'\S.*', '-----Y--', 'title'),
+    ('B5b', '문서식 답변: 굵은 머리말', r'\*\*[^*\n]{1,24}[:：]\*\*|\*\*[^*\n]{1,24}\*\*\s*[:：]', '-----Y--', 'any'),
     # ── 댓글(C): 유튜브 댓글·채널 설명에서 사용자가 짚은 것. 말투(어미)는 일부러 보지 않는다 ──
     # 「물은·따지는·나온 장면이에요」처럼 관형형 뒤만 잡는다. 「이 장면이에요」 「가짜 영상이에요」 「풀영상입니다」 「장면 전체입니다」는
     # 소개가 아니고, 반말 끝 「~장면임」은 감상일 때가 많아 보지 않는다
@@ -108,7 +117,7 @@ RULES = [
     ('G-C5', '이모지', '[\U0001F300-\U0001F533\U0001F536-\U0001F7DF\U0001F7EC-\U0001FAFF✨✅❌⭐]', 'RRRWRYYY', 'any'),
     ('G-C10', '콜론 부제 제목', r'\S\s*:\s+\S', 'YY--Y-Y-', 'title'),
     ('G-C11', '연결어미 뒤 쉼표', r'[가-힣]+(?:지만|면서|아서|어서|해서|하여|으며|는데|으나|며|고),\s', 'YYWWYWWW', 'any'),
-    ('G-C8', '대구·넘어서기', r'(?:이|가|것이)\s*아니라|뿐만\s*아니라|[을를]\s*넘어|단순한\s*\S+\s*아닌', 'YYYYYYYW', 'any'),
+    ('G-C8', '대구·넘어서기', r'(?:이|가|것이)\s*아니라|뿐만\s*아니라|[을를]\s*넘어(?!야)|단순한\s*\S+\s*아닌', 'YYYYYYYW', 'any'),
     ('G-D1', '결산 피벗', r'결론적으로|요약하(?:면|자면)|정리하(?:면|자면)|종합하면|종합해\s*보면|이를\s*통해|이처럼|이와\s*같이',
      'RRRRRRRR', 'any'),
     ('G-D2', '의의 과장', r'시사하는\s*바|주목할\s*만|주목할\s*점|본질적으로|핵심적으로|새로운\s*지평|이정표|한\s*획|패러다임|게임\s*체인저',
@@ -429,7 +438,18 @@ FACT = re.compile(
 
 def facts(path):
     text = ''.join(u[1] + '\n' for u in units(path))
-    return collections.Counter(re.sub(r'\s+', '', m.group(0)) for m in FACT.finditer(text))
+    return collections.Counter(re.sub(r'\s+', '', m.group(0)).rstrip(',') for m in FACT.finditer(text))
+
+
+def fact_values(counter):
+    # 보고는 같은 설명을 한 번만 남기는 게 처방이라 겹친 숫자가 줄어도 된다. 값만 대조하고,
+    # 단위 표기(「18개」 「18항목」)와 목록 번호·M1 같은 한 자리 맨숫자는 보지 않는다
+    out = set()
+    for k in counter:
+        if re.fullmatch(r'\d', k):
+            continue
+        out.add(k if re.match(r'[A-Z]{2,5}-|v\d', k) else re.match(r'[\d,.]+', k).group(0).rstrip(',.'))
+    return collections.Counter(out)
 
 
 def rule_counts(path, genre):
@@ -444,6 +464,8 @@ def cmd_gate(args):
     genre = args.genre or guess_genre(args.after)
     failed = False
     a, b = facts(args.before), facts(args.after)
+    if genre == '보고':
+        a, b = fact_values(a), fact_values(b)
     lost, added = a - b, b - a
     if genre == '댓글' and lost and not added:
         print('⚠️ 덜어낸 숫자(댓글은 날짜를 덜어낼 수 있다. 사실이 빠지지 않았는지 본다): ' + ', '.join(f'{k}×{v}' for k, v in sorted(lost.items())))
