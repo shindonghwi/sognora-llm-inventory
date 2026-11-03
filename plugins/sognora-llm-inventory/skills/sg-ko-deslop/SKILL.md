@@ -13,7 +13,7 @@ description: 한국어 업무 글과 유튜브 댓글에서 AI 슬롭을 검사�
 > S=$(sg path sg-ko-deslop 2>/dev/null) || S=$(ls -td ~/.claude/plugins/cache/*/*/*/skills/sg-ko-deslop/scripts ~/.codex/plugins/cache/*/*/*/skills/sg-ko-deslop/scripts ~/.claude/skills/sg-ko-deslop/scripts ~/.codex/skills/sg-ko-deslop/scripts 2>/dev/null | head -1)
 > ```
 
-일반 humanizer와 다른 점은 셋이다.
+일반 humanizer와 다른 점은 다음과 같다.
 
 - **제안서는 계약이다.** 문체를 고치다 단정을 흐리면 감점이고, 가능을 단정으로 바꾸면 새 약속이 생긴다.
 - **장르는 업무 글이다.** 개성·유머·1인칭 감상을 넣지 않는다. 합니다체·개조식·명사형 제목이 맞는 목소리다. `댓글`만 예외로 시청자가 단 것 같은 한 줄 반응이 맞는 목소리다.
@@ -52,7 +52,7 @@ description: 한국어 업무 글과 유튜브 댓글에서 AI 슬롭을 검사�
 
 ## 규칙 늘리기
 
-사용자가 새 표현을 슬롭이라고 하면 그 자리에서 넷을 고친다.
+사용자가 새 표현을 슬롭이라고 하면 아래 파일을 고친다.
 
 1. `references/rules.md`에 P(문서·화면), B(보고) 또는 C(댓글) 항목: 걸리는 말, 사용자 원문과 날짜, 전/후 예
 2. `scripts/scan.py`의 `RULES`에 정규식과 장르별 심각도
