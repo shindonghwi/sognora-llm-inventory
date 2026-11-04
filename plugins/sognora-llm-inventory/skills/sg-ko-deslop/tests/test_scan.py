@@ -47,6 +47,32 @@ class Cases(unittest.TestCase):
                     self.assertNotIn(rule, worst, f'{rule}: {hits}')
 
 
+class ReadAloudIntegration(unittest.TestCase):
+    def test_optional_analysis_and_structured_script(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            module = os.path.join(tmp, 'kiwipiepy.py')
+            with open(module, 'w', encoding='utf-8') as f:
+                f.write("class Token:\n def __init__(self, form, tag): self.form, self.tag = form, tag\n"
+                        "class Kiwi:\n def tokenize(self, sentences):\n  return [[Token('금', 'NNG'), Token('이', 'JKS'), Token('227', 'SN'), Token('톤', 'NNG')] for s in sentences]\n")
+            path = write(tmp, 'script.md', '# 제목\n그림: 아빠가 혼자 식탁에.\n- 모인 금이 227톤.\n')
+            env = dict(os.environ, PYTHONPATH=tmp)
+            r = subprocess.run([sys.executable, SCAN, path, '--genre', '대본', '--json'],
+                               capture_output=True, text=True, env=env)
+            self.assertEqual(r.returncode, 1, r.stderr)
+            hits = json.loads(r.stdout)['files'][0]['hits']
+            self.assertEqual(sum(h['rule'] == 'R1' for h in hits), 1)
+            self.assertFalse(any(h['rule'] == 'P6' for h in hits))
+
+    def test_missing_dependency_keeps_json_valid(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = write(tmp, 'script.md', '그렇게 모인 금이 227톤입니다.\n')
+            r = subprocess.run([sys.executable, '-S', SCAN, path, '--genre', '대본', '--json'],
+                               capture_output=True, text=True)
+            self.assertEqual(r.returncode, 0, r.stderr)
+            json.loads(r.stdout)
+            self.assertIn('낭독 검토 건너뜀', r.stderr)
+
+
 class ExitCodes(unittest.TestCase):
     def test_red_is_1_clean_is_0(self):
         with tempfile.TemporaryDirectory() as tmp:

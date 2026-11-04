@@ -21,6 +21,8 @@ import re
 import subprocess
 import sys
 
+import readaloud
+
 GENRES = ('제안서', '발표', '대본', '영상', '화면', '보고', '글', '댓글')
 SEV = {'R': '🔴', 'Y': '🟡', 'W': '⚪'}
 RANK = {'🔴': 1, '🟡': 2, '⚪': 3}
@@ -69,6 +71,23 @@ RULES = [
      r'|(?:의자|옆자리|반론|수치|연타|이유|인구)\s*(?:둘|셋|넷|다섯)(?![가-힣])'
      r'|(?:수치|반론|이유|연타)\s*\d+\s*개(?![가-힣])',
      '--YY-YY-', 'any'),
+    ('P12', '딱딱한 동사·글말 서술',
+     r'(?:한국은행|통계청|연구소|연구원|연구진|조사기관|정부|기관)(?:이|가|에서)\s*'
+     r'(?:셌습니다|셌다|셌어요|세어\s*봤(?:습니다|다|어요)?)'
+     r'|존재합니다|에\s*대해(?:서)?|하는\s*것입니다'
+     r'|수행(?:하다|합니다)|진행(?:하다|합니다)|라고\s*할\s*수\s*있습니다'
+     r'|되어지다|에\s*있어서|적인\s*측면',
+     '--YY--W-', 'any'),
+    ('P13', '전개 예고 단편',
+     r'(?:^\s*(?:[-*+]\s+)?|(?<=[.!?])\s+)(?!(?:아침|점심|저녁|새벽|오늘|어제|내일|처음)부터)'
+     r'(?:[가-힣A-Za-z0-9]+\s+)?[가-힣A-Za-z0-9]+부터(?:요|\s*(?:할게요|봅시다|갑니다))?[.!](?=\s|$)'
+     r'|(?:^\s*(?:[-*+]\s+)?|(?<=[.!?])\s+)[가-힣A-Za-z0-9]+로\s*(?:말합니다|말할게요|말씀드립니다)[.!](?=\s|$)'
+     r'|(?:^\s*(?:[-*+]\s+)?|(?<=[.!?])\s+)그래서\s+돌려봅니다[.!](?=\s|$)',
+     '--YY-W--', 'body'),
+    ('P14', '숫자·명사로 끊긴 내레이션',
+     r'(?:^|(?<=[.!?])\s+)(?:[-*]\s*)?[^.!?\n]{0,100}\d[\d,]*(?:\s*[가-힣\d,]+){0,5}\s*(?:달러|원|톤|명|건|년|월|일|봄|여름|가을|겨울|기아)[.](?=\s|$)',
+     '--YY----', 'body'),
+    ('P15', '「냐고」 생략 종결', r'냐고[.](?=\s|$)', '--YY----', 'body'),
     # ── 보고(B): 에이전트 작업 보고·채팅 답변에서 사용자가 짚은 것 ──
     ('B1', '성실함 예고',
      r'넘기지\s*않고[^.!?\n]*|직접\s*(?:확인|비교|열어|살펴)\S*(?:게요|겠습니다)|빈틈부터|꼼꼼(?:히|하게)',
@@ -125,6 +144,9 @@ RULES = [
     ('G-C10', '콜론 부제 제목', r'\S\s*:\s+\S', 'YY--Y-Y-', 'title'),
     ('G-C11', '연결어미 뒤 쉼표', r'[가-힣]+(?:지만|면서|아서|어서|해서|하여|으며|는데|으나|며|고),\s', 'YYWWYWWW', 'any'),
     ('G-C8', '대구·넘어서기', r'(?:이|가|것이)\s*아니라|뿐만\s*아니라|[을를]\s*넘어(?!야)|단순한\s*\S+\s*아닌', 'YYYYYYYW', 'any'),
+    ('G-C8b', '문장을 나눈 부정 대구',
+     r'(?:아닙니다|아니에요|아니었어요|아니고요)[.!]\s+[^.!?\n]{1,60}?(?:이에요|예요|입니다|거든요|거예요)[.!?]?(?=\s|$)',
+     '--YY--Y-', 'body'),
     ('G-D1', '결산 피벗', r'결론적으로|요약하(?:면|자면)|정리하(?:면|자면)|종합하면|종합해\s*보면|이를\s*통해|이처럼|이와\s*같이',
      'RRRRRRRR', 'any'),
     ('G-D2', '의의 과장', r'시사하는\s*바|주목할\s*만|주목할\s*점|본질적으로|핵심적으로|새로운\s*지평|이정표|한\s*획|패러다임|게임\s*체인저',
@@ -307,9 +329,15 @@ def comment_lines(rows):
                 yield loc, line, is_title, tag
 
 
+_readaloud_warned = False
+
+
 def scan_file(path, genre):
     hits = []
-    rows = comment_lines(units(path)) if genre == '댓글' else units(path)
+    rows = list(comment_lines(units(path)) if genre == '댓글' else units(path))
+    if genre == '대본':
+        rows = [row for row in rows if not re.match(r'^\s*(?:[-*+]\s*)?(?:그림|카드|뉴스|인용|실사)\s*[:：]', row[1])]
+
     quote_rx = QUOTED_COMMENT if genre == '댓글' else QUOTED
     for loc, s, is_title, tag in rows:
         for rid, name, rx, sev, where in COMPILED:
@@ -345,12 +373,54 @@ def scan_file(path, genre):
                 # 「」 안은 말을 가리키는 것(「가능합니다」는 쓰지 않는다)이지 쓰는 것이 아니다
                 if any(a <= m.start() < b for a, b in quoted):
                     continue
+                if rid == 'G-C8b' and re.search(r'(?:얘기|이야기|말|뜻)\s*가\s*$', s[:m.start()]):
+                    continue
                 if rid == 'G-C11' and m.group(0)[:-2].endswith(NOUN_GO):
                     continue
                 lv = level
                 if is_title and where == 'any' and genre in ESCALATE_TITLE and lv != '🔴':
                     lv = '🔴' if lv == '🟡' else '🟡'
                 hits.append((loc, lv, rid, name, m.group(0), s))
+    # 텍스트 문서에서 바로 다음 줄로 이어지는 두 문장도 본다. 빈 줄·제목은 넘지 않는다.
+    if genre in ('대본', '영상', '글') and os.path.splitext(path)[1].lower() in TEXT_EXT:
+        rx = next(r for rid, _, r, _, _ in COMPILED if rid == 'G-C8b')
+        for (loc, first, title, _), (next_loc, second, next_title, _) in zip(rows, rows[1:]):
+            if title or next_title or not isinstance(loc, int) or next_loc != loc + 1:
+                continue
+            joined = first + ' ' + second
+            for m in rx.finditer(joined):
+                if m.start() >= len(first) or m.end() <= len(first) + 1:
+                    continue
+                if re.search(r'(?:얘기|이야기|말|뜻)\s*가\s*$', joined[:m.start()]):
+                    continue
+                if any(a <= m.start() < b for a, b in quote_rx.finditer(joined)):
+                    continue
+                hits.append((loc, '🟡', 'G-C8b', '문장을 나눈 부정 대구', m.group(0), joined))
+    if genre in ('대본', '영상'):
+        global _readaloud_warned
+        kiwi = readaloud.tagger()
+        if kiwi is None:
+            if not _readaloud_warned:
+                print('낭독 검토 건너뜀: pip install kiwipiepy', file=sys.stderr)
+                _readaloud_warned = True
+        else:
+            table = readaloud.table()
+            # 구조화된 대본은 장면 지시 외 목록을 내레이션으로 간주한다.
+            structured = genre == '대본' and any(
+                re.match(r'^\s*(?:[-*+]\s*)?(?:그림|카드|뉴스|인용|실사)\s*[:：]', row[1])
+                for row in units(path)
+            )
+            items = []
+            for loc, s, title, tag in rows:
+                if title or (structured and not re.match(r'^\s*[-*+]\s+', s)):
+                    continue
+                s = re.sub(r'^\s*[-*+]\s+', '', s)
+                s = re.sub(r'^\([^)]*\)\s*', '', s)
+                items.extend((loc, sent) for sent in readaloud.sentences_of_text(s))
+            tokens = kiwi.tokenize([sent for _, sent in items]) if items else []
+            for (loc, sent), tok in zip(items, tokens):
+                for level, rid, note in readaloud.analyse(sent, tok, table):
+                    hits.append((loc, level, rid, note, sent, sent))
     return hits
 
 
