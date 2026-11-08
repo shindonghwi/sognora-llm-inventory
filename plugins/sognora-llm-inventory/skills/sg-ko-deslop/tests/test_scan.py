@@ -47,6 +47,24 @@ class Cases(unittest.TestCase):
                     self.assertNotIn(rule, worst, f'{rule}: {hits}')
 
 
+class ScreenLabelFallback(unittest.TestCase):
+    def test_screen_title_stays_yellow(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = write(tmp, 'screen.md', '# B면 더하기\n')
+            r = subprocess.run([sys.executable, '-S', SCAN, path, '--genre', '화면', '--json'], capture_output=True, text=True)
+            self.assertEqual(r.returncode, 0, r.stderr)
+            hits = json.loads(r.stdout)['files'][0]['hits']
+            self.assertEqual([h['sev'] for h in hits if h['rule'] == 'P17'], ['🟡'])
+
+    def test_screen_labels_without_kiwi(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = write(tmp, 'screen.json', json.dumps({'a': '보이는 칩', 'b': '숨긴 칩', 'c': '10MB 넘는 사진', 'd': '칠할 건물', 'e': '칠하는 중'}, ensure_ascii=False))
+            r = subprocess.run([sys.executable, '-S', SCAN, path, '--genre', '화면', '--json'], capture_output=True, text=True)
+            self.assertEqual(r.returncode, 0, r.stderr)
+            matches = [h['match'] for h in json.loads(r.stdout)['files'][0]['hits'] if h['rule'] == 'P16']
+            self.assertEqual(matches, ['보이는 칩', '숨긴 칩', '10MB 넘는 사진'])
+
+
 class StyleChecks(unittest.TestCase):
     def scan(self, text, *options):
         with tempfile.TemporaryDirectory() as tmp:

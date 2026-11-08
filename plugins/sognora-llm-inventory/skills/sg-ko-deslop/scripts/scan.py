@@ -88,6 +88,11 @@ RULES = [
      r'(?:^|(?<=[.!?])\s+)(?:[-*]\s*)?[^.!?\n]{0,100}\d[\d,]*(?:\s*[가-힣\d,]+){0,5}\s*(?:달러|원|톤|명|건|년|월|일|봄|여름|가을|겨울|기아)[.](?=\s|$)',
      '--YY----', 'body'),
     ('P15', '「냐고」 생략 종결', r'냐고[.](?=\s|$)', '--YY----', 'body'),
+    ('P16', '동사 꾸밈꼴 화면 이름표', None, '----Y---', 'any'),
+    ('P17', '화면 용어 검토',
+     r'(?<![가-힣])(?:더하기|빼기|더함|뺌)(?![가-힣])|지워(?:졌|진|짐)|지웠'
+     r'|\d+\s*개\s*고름|(?<![가-힣])다시\s*보이기(?![가-힣])',
+     '----Y---', 'any'),
     # ── 보고(B): 에이전트 작업 보고·채팅 답변에서 사용자가 짚은 것 ──
     ('B1', '성실함 예고',
      r'넘기지\s*않고[^.!?\n]*|직접\s*(?:확인|비교|열어|살펴)\S*(?:게요|겠습니다)|빈틈부터|꼼꼼(?:히|하게)',
@@ -332,6 +337,33 @@ def comment_lines(rows):
 _readaloud_warned = False
 
 
+# 짧은 화면 이름표의 후보만 표시한다. 실제 위치와 의미는 사람이 판정한다.
+P16_FALLBACK = re.compile(
+    r'^(?:이미\s*)?(?:보이는|숨긴|숨겨진|쓰인|쓴|고른|받은|찾는|찾은|올린|있는|없는)\s+[^\s]+'
+    r'|^\S+\s+기다리는\s+중$|^\d+\s*[A-Za-z가-힣]+\s+넘는\s+\S+')
+
+
+def p16_label(text):
+    t = re.sub(r'^\s*[-*+]\s+', '', text.strip())
+    if not HANGUL.search(t) or len(t) > 16 or re.search(r'[.!?]$|니다|세요|\$\{', t):
+        return None
+    if re.fullmatch(r'\S+(?:하는|되는)\s+중', t):
+        return None  # 「칠하는 중」 등 독립적인 진행 상태
+    if P16_FALLBACK.search(t):
+        return t
+    kiwi = readaloud.tagger()
+    if kiwi is None:
+        return None
+    toks = kiwi.tokenize(t)
+    for i, tok in enumerate(toks[:-1]):
+        nxt = toks[i + 1]
+        verb = tok.tag.startswith('VV') or tok.tag == 'XSV' or (tok.tag == 'VA' and tok.form == '고르')
+        if verb and nxt.tag == 'ETM' and nxt.form in ('ᆫ', 'ㄴ', '은', '는', '던'):
+            if any(x.tag.startswith('NN') for x in toks[i + 2:]):
+                return t
+    return None
+
+
 def scan_file(path, genre, style=False):
     hits = []
     rows = list(comment_lines(units(path)) if genre == '댓글' else units(path))
@@ -354,6 +386,11 @@ def scan_file(path, genre, style=False):
                     continue
                 if (len(t) > P7_EXPLAIN_LEN and re.search(r'니다[.]?$', t)) or re.search(r'[하으]면\s.*니다', t) or '해 주세요' in t:
                     hits.append((loc, level, rid, name, t, t))
+                continue
+            if rid == 'P16':
+                frag = p16_label(s)
+                if frag:
+                    hits.append((loc, level, rid, name, frag, s))
                 continue
             if rid == 'P9':
                 for cell in (s.split('|') if '|' in s else (s,)):
@@ -378,7 +415,7 @@ def scan_file(path, genre, style=False):
                 if rid == 'G-C11' and m.group(0)[:-2].endswith(NOUN_GO):
                     continue
                 lv = level
-                if is_title and where == 'any' and genre in ESCALATE_TITLE and lv != '🔴':
+                if is_title and where == 'any' and genre in ESCALATE_TITLE and lv != '🔴' and rid != 'P17':
                     lv = '🔴' if lv == '🟡' else '🟡'
                 hits.append((loc, lv, rid, name, m.group(0), s))
     # 텍스트 문서에서 바로 다음 줄로 이어지는 두 문장도 본다. 빈 줄·제목은 넘지 않는다.
