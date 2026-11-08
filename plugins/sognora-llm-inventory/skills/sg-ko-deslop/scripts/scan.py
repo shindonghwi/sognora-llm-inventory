@@ -332,7 +332,7 @@ def comment_lines(rows):
 _readaloud_warned = False
 
 
-def scan_file(path, genre):
+def scan_file(path, genre, style=False):
     hits = []
     rows = list(comment_lines(units(path)) if genre == '댓글' else units(path))
     if genre == '대본':
@@ -396,6 +396,26 @@ def scan_file(path, genre):
                 if any(a <= m.start() < b for a, b in quote_rx.finditer(joined)):
                     continue
                 hits.append((loc, '🟡', 'G-C8b', '문장을 나눈 부정 대구', m.group(0), joined))
+    if style and genre in ('대본', '영상', '댓글'):
+        # 구체적인 표지만 잡는다. 문법 판정이 아니므로 검토 대상으로 표시한다.
+        object_pattern = re.compile(r'(?:수돗물|빗물|물건|사과|자동차|돌반지)[을를]\s*(?:따지|따져|따졌|캐묻|캐물)')
+        sentences = []
+        for loc, line, title, tag in rows:
+            if title:
+                continue
+            for m in object_pattern.finditer(line):
+                if not any(a <= m.start() < b for a, b in quote_rx.finditer(line)):
+                    hits.append((loc, '🟡', 'S1', '목적어와 동사 호응', m.group(0), line))
+            for sent in readaloud.sentences_of_text(line):
+                if re.fullmatch(r'\s*「[^」]*」\s*[.!?]?\s*', sent):
+                    continue
+                sentences.append((loc, sent))
+        repeated = [(loc, sent) for loc, sent in sentences
+                    if re.search(r'버리는데요[.!?…]*[”’\"\']?\s*$', sent)]
+        if len(sentences) >= 5 and len(repeated) * 5 > len(sentences) * 2:
+            loc, sent = repeated[0]
+            note = f'버리는데요 {len(repeated)}/{len(sentences)}문장'
+            hits.append((loc, '🟡', 'S2', '끝맺음 반복', note, sent))
     if genre in ('대본', '영상'):
         global _readaloud_warned
         kiwi = readaloud.tagger()
@@ -466,7 +486,7 @@ def cmd_scan(args):
             unscanned.append((path, '지원하지 않는 형식'))
             continue
         genre = args.genre or guess_genre(path)
-        hits = [h for h in scan_file(path, genre)
+        hits = [h for h in scan_file(path, genre, args.style)
                 if RANK[h[1]] <= max_rank and (not only or h[2] in only)]
         for h in hits:
             total[h[1]] += 1
@@ -576,6 +596,7 @@ def main():
     ap.add_argument('--genre', choices=GENRES, help='장르(기본: 경로로 짐작)')
     ap.add_argument('--level', default='기본', choices=tuple(LEVELS), help='보수=🔴만 · 기본=🔴🟡 · 적극=⚪까지')
     ap.add_argument('--rule', help='이 규칙만(쉼표로 여럿: P1,P3)')
+    ap.add_argument('--style', action='store_true', help='호응·파일 내 끝맺음 반복도 검토')
     ap.add_argument('--summary', action='store_true', help='파일별 개수만')
     ap.add_argument('--json', action='store_true', help='JSON으로')
     return cmd_scan(ap.parse_args())

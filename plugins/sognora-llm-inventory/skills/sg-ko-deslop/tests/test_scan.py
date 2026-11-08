@@ -47,6 +47,31 @@ class Cases(unittest.TestCase):
                     self.assertNotIn(rule, worst, f'{rule}: {hits}')
 
 
+class StyleChecks(unittest.TestCase):
+    def scan(self, text, *options):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = write(tmp, 'script.md', text)
+            r = subprocess.run([sys.executable, '-S', SCAN, path, '--genre', '영상', '--json', *options],
+                               capture_output=True, text=True)
+            self.assertIn(r.returncode, (0, 1), r.stderr)
+            return json.loads(r.stdout)['files'][0]['hits']
+
+    def test_object_agreement_is_optional(self):
+        text = '빗물 얘기에 의원이 장관한테 수돗물을 따져 버리는데요.\n'
+        self.assertNotIn('S1', [h['rule'] for h in self.scan(text)])
+        self.assertIn('S1', [h['rule'] for h in self.scan(text, '--style')])
+        self.assertNotIn('S1', [h['rule'] for h in self.scan('수돗물이 나오냐고 따져 묻는데요. 이유를 따졌습니다.', '--style')])
+
+    def test_repeated_endings_threshold_and_minimum(self):
+        repeated = '그렇게 말해 버리는데요.\n'
+        normal = '다른 얘기입니다.\n'
+        def rules(text): return [h['rule'] for h in self.scan(text, '--style')]
+        self.assertIn('S2', rules(repeated * 3 + normal * 2))
+        self.assertNotIn('S2', rules(repeated * 2 + normal * 3))
+        self.assertNotIn('S2', rules(repeated * 2))
+        self.assertNotIn('S2', rules('「그렇게 말해 버리는데요.」\n' * 5))
+
+
 class ReadAloudIntegration(unittest.TestCase):
     def test_optional_analysis_and_structured_script(self):
         with tempfile.TemporaryDirectory() as tmp:
